@@ -1,0 +1,11 @@
+hesml
+hesml.benchmarks
+hesml.benchmarks.impl
+hesml.configurators
+hesml.configurators.icmodels
+hesml.measures
+hesml.measures.impl
+hesml.taxonomy
+hesml.taxonomy.impl
+hesml.taxonomyreaders.wordnet
+hesml.taxonomyreaders.wordnet.impl
