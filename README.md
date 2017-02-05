@@ -29,4 +29,24 @@ References:
 
 [5] Lastra Díaz, J. J., & García Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
 
+Steps to reproduce the library
 
+HESML V1R2 is distributed as a Java class library (HESML-V1R2.jar) plus a test driver application (HESMLclient.jar), which have been developed using NetBeans 8.0.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
+
+In order to compile HESML, you must follow the following steps:
+
+(1) Download the full distribution of HESML V1R2..
+
+(2) Install Java 8, Java SE Dev Kit 8 and NetBeans 8.0.2 or higher in your workstation.
+
+(3) Launch NetBeans IDE and open the HESML and HESMLclient projects contained in the root folder. NetBeans automatically detects the presence of a nbproject subfolder with the project files.
+
+(4) Select HESML and HESMLclient projects in the project treeview respectively. Then, invoke the "Clean and Build project (Shift + F11)" command in order to compile both projects.
+
+In order to remain up to date on new HESML versions, as well as asking for technical support, we invite the readers to subscribe to the HESML forum by sending an email to the following address:
+
+hesml+subscribe@googlegroups.com
+
+For more information, we refer the reader to the paper below:
+
+Lastra-Díaz, J. J., & García-Serrano, A. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
