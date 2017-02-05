@@ -1,0 +1,29 @@
+ El volumen de la unidad D no tiene etiqueta.
+ El n£mero de serie del volumen es: 140B-DB95
+
+ Directorio de D:\SVN_BRANCH_DevJICSL_1_0_0_2\Tesis\branches\BRANCH_DevJICSL_1_0_0_2\Projects\PedersenICmodels\WordNet-InfoContent-3.0
+
+18/04/2008  00:06         1.211.760 ic-bnc-add1.dat
+18/04/2008  06:52         1.549.644 ic-bnc-resnik-add1.dat
+18/04/2008  13:36         1.548.830 ic-bnc-resnik.dat
+17/04/2008  11:33         1.210.602 ic-bnc.dat
+17/04/2008  13:43         1.113.721 ic-brown-add1.dat
+17/04/2008  13:51         1.403.056 ic-brown-resnik-add1.dat
+17/04/2008  13:59         1.404.130 ic-brown-resnik.dat
+17/04/2008  02:11         1.111.623 ic-brown.dat
+19/04/2008  21:29         1.084.840 ic-semcor-add1.dat
+19/04/2008  21:28         1.081.208 ic-semcor.dat
+17/04/2008  14:05         1.095.099 ic-semcorraw-add1.dat
+17/04/2008  14:08         1.329.316 ic-semcorraw-resnik-add1.dat
+17/04/2008  14:11         1.332.196 ic-semcorraw-resnik.dat
+17/04/2008  14:02         1.092.193 ic-semcorraw.dat
+17/04/2008  02:16         1.144.837 ic-shaks-add1.dat
+17/04/2008  14:25         1.380.827 ic-shaks-resnik.dat
+17/04/2008  14:18         1.379.350 ic-shaks-resnink-add1.dat
+17/04/2008  02:11         1.142.812 ic-shaks.dat
+17/04/2008  14:47         1.111.429 ic-treebank-add1.dat
+17/04/2008  14:56         1.378.445 ic-treebank-resnik-add1.dat
+17/04/2008  15:07         1.379.997 ic-treebank-resnik.dat
+17/04/2008  14:38         1.109.158 ic-treebank.dat
+              22 archivos     27.595.073 bytes
+               0 dirs  12.527.673.344 bytes libres
