@@ -1,0 +1,3 @@
+;;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0;Wordnet-3.0
+Measure;IC model;Rubenstein_Goodenough_dataset.csv-Pearson;Rubenstein_Goodenough_dataset.csv-Spearman;Miller_Charles_28_dataset.csv-Pearson;Miller_Charles_28_dataset.csv-Spearman;Agirre201_dataset.csv-Pearson;Agirre201_dataset.csv-Spearman;PirroSeco_full_dataset.csv-Pearson;PirroSeco_full_dataset.csv-Spearman;SimLex665_dataset.csv-Pearson;SimLex665_dataset.csv-Spearman
+Taieb2014;;0.8670334903941526;0.7971700174825175;0.8247866012844839;0.8077449370552818;0.7123009088533627;0.6632555046549431;0.9067726896866805;0.7973229895104895;0.6093372370514117;0.5960015228563105

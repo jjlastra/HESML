@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="WordNetBasedExperiments">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="SingleICmodelExperiment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="NonICbasedSimMeasuresExperiment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="MultipleICmodelsExperiment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="CorpusICmodelsExperiment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="MixedICmodelsExperiment" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="MultipleDatasetsExperiment" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="WordNetBasedExperiment">
+		<xs:sequence>
+			<xs:element name="WordNetDatabaseFileName" type="xs:string"/>
+			<xs:element name="WordNetDatabaseDirectory" type="xs:string"/>
+			<xs:element name="OutputFileName" type="xs:string"/>
+			<xs:element name="DatasetFileName" type="xs:string"/>
+			<xs:element name="DatasetDirectory" type="xs:string"/>
+			<xs:element name="CorrelationOutputMetrics" type="CorrelationOutputMetrics"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="SingleICmodelExperiment">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="WordNetBasedExperiment">
+					<xs:sequence>
+						<xs:element name="OutputType">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Correlation"/>
+									<xs:enumeration value="SimilarityValues"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="ICmodel" type="IntrinsicICModelType"/>
+						<xs:element name="SimilarityMeasures">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SimilarityMeasure" type="SimilarityMeasureType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NonICbasedSimMeasuresExperiment">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="WordNetBasedExperiment">
+					<xs:sequence>
+						<xs:element name="SimilarityMeasures">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SimilarityMeasure" type="SimilarityMeasureType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MultipleICmodelsExperiment">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="WordNetBasedExperiment">
+					<xs:sequence>
+						<xs:element name="ICmodels">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ICmodel" type="IntrinsicICModelType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SimilarityMeasures">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SimilarityMeasure" type="SimilarityMeasureType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="SimilarityMeasureType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Rada"/>
+			<xs:enumeration value="LeacockChodorow"/>
+			<xs:enumeration value="WuPalmer"/>
+			<xs:enumeration value="PedersenPath"/>
+			<xs:enumeration value="Mubaid"/>
+			<xs:enumeration value="Resnik"/>
+			<xs:enumeration value="Lin"/>
+			<xs:enumeration value="JiangConrath"/>
+			<xs:enumeration value="PirroSeco"/>
+			<xs:enumeration value="FaITH"/>
+			<xs:enumeration value="Zhou"/>
+			<xs:enumeration value="Meng2012"/>
+			<xs:enumeration value="Meng2014"/>
+			<xs:enumeration value="LogisticLin"/>
+			<xs:enumeration value="CosineLin"/>
+			<xs:enumeration value="ExpNormJiangConrath"/>
+			<xs:enumeration value="LogisticNormJiangConrath"/>
+			<xs:enumeration value="CosineNormJiangConrath"/>
+			<xs:enumeration value="WeightedJiangConrath"/>
+			<xs:enumeration value="CosineNormWeightedJiangConrath"/>
+			<xs:enumeration value="Sanchez2012"/>
+			<xs:enumeration value="Taieb2014"/>
+			<xs:enumeration value="Gao2015Strategy3"/>
+			<xs:enumeration value="Li2003Strategy3"/>
+			<xs:enumeration value="Li2003Strategy4"/>
+			<xs:enumeration value="Li2003Strategy9"/>
+			<xs:enumeration value="Garla"/>
+			<xs:enumeration value="Taieb2014sim2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntrinsicICModelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Seco"/>
+			<xs:enumeration value="Blanchard"/>
+			<xs:enumeration value="Zhou"/>
+			<xs:enumeration value="Sanchez2011"/>
+			<xs:enumeration value="Harispe"/>
+			<xs:enumeration value="Sanchez2012"/>
+			<xs:enumeration value="Meng"/>
+			<xs:enumeration value="Yuan"/>
+			<xs:enumeration value="HadjTaieb"/>
+			<xs:enumeration value="CondProbHyponyms"/>
+			<xs:enumeration value="CondProbUniform"/>
+			<xs:enumeration value="CondProbLeaves"/>
+			<xs:enumeration value="CondProbCosine"/>
+			<xs:enumeration value="CondProbLogistic"/>
+			<xs:enumeration value="CondProbLogisticK10"/>
+			<xs:enumeration value="CondProbLogisticK12"/>
+			<xs:enumeration value="CondProbRefHyponyms"/>
+			<xs:enumeration value="CondProbRefUniform"/>
+			<xs:enumeration value="CondProbRefLeaves"/>
+			<xs:enumeration value="CondProbRefCosine"/>
+			<xs:enumeration value="CondProbRefLogistic"/>
+			<xs:enumeration value="CondProbRefCosineLeaves"/>
+			<xs:enumeration value="CondProbRefLogisticLeaves"/>
+			<xs:enumeration value="CondProbRefLeavesSubsumers"/>
+			<xs:enumeration value="CondProbRefLeavesSubsumersRatio"/>
+			<xs:enumeration value="CondProbRefSubsumedLeavesRatio"/>
+			<xs:enumeration value="Adhikari"/>
+			<xs:enumeration value="AouichaTaiebAsGIC"/>
+			<xs:enumeration value="AICAouichaTaiebHamadu2016"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorpusBasedICModelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Resnik"/>
+			<xs:enumeration value="CondProbCorpus"/>
+			<xs:enumeration value="CondProbRefCorpus"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="CorpusICmodelsExperiment">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="WordNetBasedExperiment">
+					<xs:sequence>
+						<xs:element name="ConceptFrequencyFilesDir"/>
+						<xs:element name="ICmodels">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ICmodel" type="CorpusBasedICModelType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ConceptFrequencyFiles">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="ConceptFrequencyFile" type="xs:string" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="SimilarityMeasures">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SimilarityMeasure" type="SimilarityMeasureType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="CorrelationOutputMetrics">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Pearson"/>
+			<xs:enumeration value="Spearman"/>
+			<xs:enumeration value="PearsonAndSpearman"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="MixedICmodelsExperiment">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="WordNetBasedExperiment">
+					<xs:sequence>
+						<xs:element name="ConceptFrequencyFilesDir"/>
+						<xs:element name="SimilarityMeasures">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="SimilarityMeasure" type="SimilarityMeasureType" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ICmodels">
+							<xs:complexType>
+								<xs:choice maxOccurs="unbounded">
+									<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element name="CorpusBasedICModel" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Method" type="CorpusBasedICModelType"/>
+												<xs:element name="ConceptFrequencyFilename" type="xs:string"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="MultipleDatasetsExperiment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OutputFileName" type="xs:string"/>
+				<xs:element name="DatasetDirectory" type="xs:string"/>
+				<xs:element name="ConceptFrequencyFilesDir"/>
+				<xs:element name="CorrelationOutputMetrics" type="CorrelationOutputMetrics"/>
+				<xs:element name="WordNetDatabaseFileName" type="xs:string"/>
+				<xs:element name="SimilarityMeasures">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SpecificSimilarityMeasure" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="MeasureType" type="SimilarityMeasureType"/>
+										<xs:choice minOccurs="0">
+											<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
+											<xs:element name="CorpusBasedICModel" minOccurs="0">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="Method" type="CorpusBasedICModelType"/>
+														<xs:element name="ConceptFrequencyFilename" type="xs:string"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:choice>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="WordNetVersions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="WordNetDatabaseDirectory" type="xs:string" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="WNDatasets">
+					<xs:complexType>
+						<xs:sequence maxOccurs="unbounded">
+							<xs:element name="DatasetFileName" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

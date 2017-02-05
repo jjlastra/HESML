@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WordNetBasedExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../WordNetBasedExperiments.xsd">
+	<MultipleDatasetsExperiment>
+		<OutputFileName>EAAI_table4_nonICmeasures.csv</OutputFileName>
+		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
+		<ConceptFrequencyFilesDir>../PedersenICmodels/WordNet-InfoContent-3.0</ConceptFrequencyFilesDir>
+		<CorrelationOutputMetrics>Pearson</CorrelationOutputMetrics>
+		<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
+		<SimilarityMeasures>
+			<SpecificSimilarityMeasure>
+				<MeasureType>Taieb2014</MeasureType>
+			</SpecificSimilarityMeasure>
+			<SpecificSimilarityMeasure>
+				<MeasureType>Taieb2014sim2</MeasureType>
+			</SpecificSimilarityMeasure>
+			<SpecificSimilarityMeasure>
+				<MeasureType>Li2003Strategy3</MeasureType>
+			</SpecificSimilarityMeasure>
+			<SpecificSimilarityMeasure>
+				<MeasureType>Li2003Strategy4</MeasureType>
+			</SpecificSimilarityMeasure>
+			<SpecificSimilarityMeasure>
+				<MeasureType>Sanchez2012</MeasureType>
+			</SpecificSimilarityMeasure>
+		</SimilarityMeasures>
+		<WordNetVersions>
+			<WordNetDatabaseDirectory>../WordNet-2.1/dict</WordNetDatabaseDirectory>
+			<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
+			<WordNetDatabaseDirectory>../Wordnet-3.1/dict</WordNetDatabaseDirectory>
+		</WordNetVersions>
+		<WNDatasets>
+			<DatasetFileName>Rubenstein_Goodenough_dataset.csv</DatasetFileName>
+			<DatasetFileName>PirroSeco_full_dataset.csv</DatasetFileName>
+		</WNDatasets>
+	</MultipleDatasetsExperiment>
+</WordNetBasedExperiments>
