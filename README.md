@@ -47,6 +47,8 @@ In order to remain up to date on new HESML versions, as well as asking for techn
 
 hesml+subscribe@googlegroups.com
 
-For more information, we refer the reader to the paper below:
+Steps to use the library
 
-Lastra-Díaz, J. J., & García-Serrano, A. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
+You can use the HESMLclient program to run reproducible experiments or create your own client programs using the HESMLclient code as example. For more information, including a detailed description of how to run the rerpoducible experiments and extend the library, we refer the reader to the paper [1] below.
+
+[1] Lastra-Díaz, J. J., García-Serrano, A., Batet, M., Fernández, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
