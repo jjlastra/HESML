@@ -19,7 +19,7 @@ HESML V1R2 is freely distributed for any non-commercial purpose under a CC By-NC
 
 References:
 
-[1] Lastra-Díaz, J. J., & García-Serrano, A. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
+[1] Lastra-Díaz, J. J., García-Serrano, A., Batet, M., Fernández, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
 
 [2] Lastra-Díaz, J. J., & García-Serrano, A. (2015). A novel family of IC-based similarity measures with a detailed experimental survey on WordNet. Engineering Applications of Artificial Intelligence Journal, 46, 140â€“153. http://dx.doi.org/10.1016/j.engappai.2015.09.006
 
