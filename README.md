@@ -47,7 +47,7 @@ HESML V1R3 is distributed as a Java class library (HESML-V1R3.jar) plus a test d
 
 In order to compile HESML, you must follow the following steps:
 
-(1) Download the full distribution of HESML V1R2..
+(1) Download the full distribution of HESML V1R3.
 
 (2) Install Java 8, Java SE Dev Kit 8 and NetBeans 8.0.2 or higher in your workstation.
 
@@ -61,4 +61,4 @@ hesml+subscribe@googlegroups.com
 
 Steps to use the library
 
-You can use the HESMLclient program to run reproducible experiments or create your own client programs using the HESMLclient code as example. For more information, including a detailed description of how to run the rerpoducible experiments and extend the library, we refer the reader to the paper [1] above.
+You can use the HESMLclient program to run reproducible experiments or create your own client programs using the HESMLclient code as example. For more information, including a detailed description of how to run the reproducible experiments and extending the library, we refer the reader to the paper [1] above.
