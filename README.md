@@ -1,4 +1,5 @@
-# HESML
+# HESML V1R3
+
 HESML Java software library of ontology-based semantic similarity measures and information content models
 
 This is the GitHub public repository for the HESML Java software library of ontology-based semantic similarity measures and information content models.
