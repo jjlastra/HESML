@@ -46,7 +46,7 @@ public interface IWordNetSynset
      * @return 
      */
     
-    boolean isParent(Integer synsetID);
+    boolean isParent(Long synsetID);
     
     /**
      * This function checks if the synset is a direct child of the current one.
@@ -54,7 +54,7 @@ public interface IWordNetSynset
      * @return 
      */
     
-    boolean isChild(Integer synsetID);
+    boolean isChild(Long synsetID);
     
     /**
      * This function returns the words evocating the concept
@@ -77,7 +77,7 @@ public interface IWordNetSynset
      * @return Unique Identifier for the synset.
      */
     
-    Integer getID();
+    Long getID();
     
     /**
      * This function returns the value of the visiting
@@ -100,5 +100,5 @@ public interface IWordNetSynset
      * @return The parents of the synset.
      */
     
-    Integer[] getParentsId();
+    Long[] getParentsId();
 }

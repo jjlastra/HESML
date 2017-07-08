@@ -141,7 +141,7 @@ public class HESMLclient
         
         // We print the HESML version
         
-        System.out.println("Running HESMLClient V1R2 (v1.2.0.1) based on "
+        System.out.println("Running HESMLClient V1R3 (v1.3.0.1) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -1370,8 +1370,8 @@ public class HESMLclient
         
         for (IVertex vertex: taxonomy.getVertexes())
         {
-            strData[i][0] = Integer.toString(vertex.getID());
-            strData[i][1] = Integer.toString(vertex.getDepthMax());
+            strData[i][0] = Long.toString(vertex.getID());
+            strData[i][1] = Long.toString(vertex.getDepthMax());
             strData[i++][2] = Double.toString(vertex.getProbability());
         }
         
@@ -1447,12 +1447,12 @@ public class HESMLclient
 
         // We create an array for a single parent.
         
-        Integer[] parents = new Integer[1];
+        Long[] parents = new Long[1];
         
         // We create the root with Id = 0 and enqueue it in order to
         // make a top-down expansion
 
-        IVertex root = taxonomy.addVertex(0, new Integer[0]);
+        IVertex root = taxonomy.addVertex((long)0, new Long[0]);
 
         // We enqueue the root
 
@@ -1484,7 +1484,7 @@ public class HESMLclient
             {
                 // We get the current vertexes count
                         
-                int vertexCount = taxonomy.getVertexes().getCount();
+                long vertexCount = taxonomy.getVertexes().getCount();
                 
                 // We create and enqueue the vertex to be expanded
                 // only if the taxonomy has not reached the target size

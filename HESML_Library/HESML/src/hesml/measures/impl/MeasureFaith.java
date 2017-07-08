@@ -79,7 +79,7 @@ class MeasureFaith extends SimilaritySemanticMeasure
      * This function returns the comparison between nodes.
      * @param left
      * @param right
-     * @return Similaity value.
+     * @return Similarity value.
      */
     
     @Override

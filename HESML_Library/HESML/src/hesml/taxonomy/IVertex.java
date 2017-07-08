@@ -295,7 +295,7 @@ public interface IVertex extends Comparable<IVertex>
      * @return The unique ID of the vertex.
      */
     
-    int getID();
+    long getID();
     
     /**
      * This function returns the taxonomy that contains the vertex.

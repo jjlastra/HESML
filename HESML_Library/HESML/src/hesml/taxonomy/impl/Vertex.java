@@ -49,7 +49,7 @@ class Vertex implements IVertex
      * to the WordNet graph.
      */
     
-    private final Integer  m_Id;
+    private final Long  m_Id;
     
     /**
      * First half edge outcoming from the vertex.
@@ -138,7 +138,7 @@ class Vertex implements IVertex
      */
     
     Vertex(
-            Integer     id,
+            long        id,
             ITaxonomy   taxonomy)
     {
         // We save the key
@@ -934,7 +934,7 @@ class Vertex implements IVertex
      */
     
     @Override
-    public int getID()
+    public long getID()
     {
         return (m_Id);
     }

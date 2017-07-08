@@ -50,7 +50,7 @@ class TaxonomyReader
      * Node records
      */
     
-    private final HashMap<Integer, TaxonomyNodeRecord>    m_IndexedNodes;
+    private final HashMap<Long, TaxonomyNodeRecord>    m_IndexedNodes;
     
     /**
      * Nodes sorted 
@@ -189,7 +189,7 @@ class TaxonomyReader
             
             allParentsVisited = true;
             
-            for (Integer parentId: pendingNode.getParentIDs())
+            for (Long parentId: pendingNode.getParentIDs())
             {
                 if (!m_IndexedNodes.get(parentId).getVisited())
                 {

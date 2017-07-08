@@ -114,9 +114,6 @@ abstract class PedersenFilesICmodel extends AbstractCondProbICmodel
         
         IVertex vertex;     // XConcept vertex in the taxonomy
         
-        int     idVertex;   // Id of the concepot vertex
-        double  frequency;
-        
         File    icDataFile; // Data file
         Scanner reader;     // File reader
         
@@ -166,10 +163,10 @@ abstract class PedersenFilesICmodel extends AbstractCondProbICmodel
 
                 strIdConcept = strIdConcept.replace("n", "");
 
-                // We get the ID of the concept vertex
+                // We get the ID of the concept vertex and its frequency count
 
-                idVertex = Integer.parseInt(strIdConcept);
-                frequency = Double.parseDouble(strNodeFreq);
+                long idVertex = Long.parseUnsignedLong(strIdConcept);
+                double frequency = Double.parseDouble(strNodeFreq);
 
                 // We get the vertex
 
@@ -196,7 +193,7 @@ abstract class PedersenFilesICmodel extends AbstractCondProbICmodel
     /**
      * This function checks the header of the file.
      * @param reader
-     * @return true if evrithing is OK
+     * @return true if everything is OK
      */
     
     private boolean checkHeader(

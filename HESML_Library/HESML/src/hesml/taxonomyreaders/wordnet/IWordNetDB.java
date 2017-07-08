@@ -78,7 +78,7 @@ public interface IWordNetDB extends Iterable<IWordNetSynset>
      * @throws Exception Unexpected error
      */
     
-    Integer[] getWordSynsetsID(
+    Long[] getWordSynsetsID(
         String  strWord) throws Exception;
     
     /**
@@ -95,7 +95,7 @@ public interface IWordNetDB extends Iterable<IWordNetSynset>
      * @return The synset for this ID
      */
     
-    IWordNetSynset getSynset(Integer synsetID);
+    IWordNetSynset getSynset(Long synsetID);
     
     /**
      * Clear the database

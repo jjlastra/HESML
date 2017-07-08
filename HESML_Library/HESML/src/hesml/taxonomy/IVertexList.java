@@ -42,7 +42,7 @@ public interface IVertexList extends Iterable<IVertex>
      * @throws java.lang.Exception Unexpected error
      */
     
-    IVertexList getByIds(Integer[] vertexIds) throws Exception;
+    IVertexList getByIds(Long[] vertexIds) throws Exception;
     
     /**
      * This function computes the difference set as regards the input set.
@@ -69,10 +69,20 @@ public interface IVertexList extends Iterable<IVertex>
      * and input lists.
      * @param others Input set to be compared
      * @return Intersection set
-     * @throws java.lang.Exception Unexpected error
+     * @throws java.lang.Exception
      */
     
     IVertexList getIntersectionSet(
+            IVertexList others)  throws Exception;
+    
+    /**
+     * This function computes the union set.
+     * @param others
+     * @return Union set
+     * @throws java.lang.Exception 
+     */
+    
+    IVertexList getUnionSet(
             IVertexList others) throws Exception;
 
     /**
@@ -80,11 +90,20 @@ public interface IVertexList extends Iterable<IVertex>
      * between the current vertex list and the input set.
      * @param others Input set to be compared
      * @return Number of elements in the intersection set
-     * @throws java.lang.Exception Unexpected error
      */
     
     long getIntersectionSetCount(
-            IVertexList others) throws Exception;
+            IVertexList others);
+
+    /**
+     * This function computes the number of elements in the union set
+     * between the current vertex list and the input set.
+     * @param others Input set to be compared
+     * @return Number of elements in the intersection set
+     */
+    
+    long getUnionSetCount(
+            IVertexList others);
     
     /**
      * This function computes the element count for the intersection set
@@ -180,7 +199,7 @@ public interface IVertexList extends Iterable<IVertex>
      * @return Vertex ID sequence
      */
     
-    int[] getIDs();
+    long[] getIDs();
     
     /**
      * This function sets the value of the traversal flag (visited) used
@@ -198,7 +217,7 @@ public interface IVertexList extends Iterable<IVertex>
      * @return True if the list contains the vertex with input ID
      */
     
-    boolean contains(Integer vertexID);
+    boolean contains(Long vertexID);
     
     /**
      * This function returns the count of vertexes in the list.
@@ -222,7 +241,7 @@ public interface IVertexList extends Iterable<IVertex>
      * @return The vertex with the id required
      */
     
-    IVertex getById(Integer vertexId);
+    IVertex getById(Long vertexId);
     
     /**
      * This functions returns the lock state of the list.

@@ -32,13 +32,13 @@ class TaxonomyNodeRecord
      * Node record unique ID
      */
     
-    private final Integer m_IdNode;
+    private final Long m_IdNode;
     
     /**
      * Parents ID
      */
     
-    private final Integer[]   m_ParentsID;
+    private final Long[]   m_ParentsID;
     
     /**
      * Visiting flag
@@ -55,8 +55,6 @@ class TaxonomyNodeRecord
     {
         String[]   strFields;  // Line decomposition
         
-        int i;  // Counter
-        
         // We set the visiting field
         
         m_Visited = false;
@@ -67,17 +65,17 @@ class TaxonomyNodeRecord
         
         // The first field is the ID for the node
         
-        m_IdNode = Integer.parseUnsignedInt(strFields[0]);
+        m_IdNode = Long.parseUnsignedLong(strFields[0]);
         
         // We read the parents
         
-        m_ParentsID = new Integer[strFields.length - 1];
+        m_ParentsID = new Long[strFields.length - 1];
         
         // We read the parents
         
-        for (i = 0; i < strFields.length - 1; i++)
+        for (int i = 0; i < strFields.length - 1; i++)
         {
-            m_ParentsID[i] = Integer.parseUnsignedInt(strFields[i + 1]);
+            m_ParentsID[i] = Long.parseUnsignedLong(strFields[i + 1]);
         }
     }
     
@@ -107,7 +105,7 @@ class TaxonomyNodeRecord
      * @return 
      */
     
-    Integer getID()
+    Long getID()
     {
         return (m_IdNode);
     }
@@ -117,7 +115,7 @@ class TaxonomyNodeRecord
      * @return 
      */
     
-    Integer[] getParentIDs()
+    Long[] getParentIDs()
     {
         return (m_ParentsID);
     }

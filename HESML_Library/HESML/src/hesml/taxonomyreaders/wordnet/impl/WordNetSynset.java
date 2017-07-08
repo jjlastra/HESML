@@ -44,7 +44,7 @@ class WordNetSynset implements IWordNetSynset
      * Parents of the current synset
      */
     
-    private final Integer[]  m_ParentsId;
+    private final Long[]  m_ParentsId;
     
     /**
      * Gloss associated to the Synsets
@@ -56,7 +56,7 @@ class WordNetSynset implements IWordNetSynset
      * Synset unique Id
      */
     
-    private final Integer m_SynsetId;
+    private final Long m_SynsetId;
     
     /**
      * Syntactical category
@@ -88,10 +88,10 @@ class WordNetSynset implements IWordNetSynset
     
     public WordNetSynset(
             WordNetDB   ownerDB,
-            Integer     synsetId,
+            Long        synsetId,
             char        partofSpeech,
             String[]    strWords,
-            Integer[]   parentsId,
+            Long[]      parentsId,
             String      strGloss)
     {
         // We store the fields
@@ -120,13 +120,13 @@ class WordNetSynset implements IWordNetSynset
      */
     
     @Override
-    public boolean isParent(Integer synsetID)
+    public boolean isParent(Long synsetID)
     {
         boolean parent = false; // Returned value
         
         // We check if the synset is a prent of the current synset
         
-        for (Integer parentID: m_ParentsId)
+        for (Long parentID: m_ParentsId)
         {
             if (Objects.equals(parentID, synsetID))
             {
@@ -147,7 +147,7 @@ class WordNetSynset implements IWordNetSynset
      */
     
     @Override
-    public boolean isChild(Integer synsetID)
+    public boolean isChild(Long synsetID)
     {
         boolean isChild = false;    // Retuened value
         
@@ -194,7 +194,7 @@ class WordNetSynset implements IWordNetSynset
      */
     
     @Override
-    public Integer[] getParentsId()
+    public Long[] getParentsId()
     {
         return (m_ParentsId.clone());
     }
@@ -314,7 +314,7 @@ class WordNetSynset implements IWordNetSynset
         
         // We get the parents from the owner DB
         
-        for (Integer parentId: m_ParentsId)
+        for (Long parentId: m_ParentsId)
         {
             parents.add(m_OwnerDB.getSynset(parentId));
         }
@@ -330,7 +330,7 @@ class WordNetSynset implements IWordNetSynset
      */
     
     @Override
-    public Integer getID()
+    public Long getID()
     {
         return (m_SynsetId);
     }

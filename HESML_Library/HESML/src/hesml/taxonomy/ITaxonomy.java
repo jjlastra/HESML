@@ -57,8 +57,8 @@ public interface ITaxonomy
      */
     
     IVertex addVertex(
-            Integer     vertexId,
-            Integer[]   parentVertexes) throws Exception;
+            Long     vertexId,
+            Long[]   parentVertexes) throws Exception;
 
     /**
      * This functions computes several cached values such as

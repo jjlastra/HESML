@@ -431,8 +431,8 @@ class Taxonomy implements ITaxonomy
 
     @Override
     public IVertex  addVertex(
-            Integer     vertexId,
-            Integer[]   parentVertexes) throws Exception
+            Long     vertexId,
+            Long[]   parentVertexes) throws Exception
     {
         Exception   error;      // Error thrown
         String      strError;   // Error message
@@ -467,7 +467,7 @@ class Taxonomy implements ITaxonomy
         
         // We get the parent vertexes
         
-        for (Integer parentId: parentVertexes)
+        for (Long parentId: parentVertexes)
         {
             // We get the parent vertex
             

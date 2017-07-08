@@ -38,18 +38,19 @@ public class HESMLversion
     {
         // We print the version information
     
-        System.out.println("\nHESML V1R2 Java software library of ontology-based");
+        System.out.println("\n" + getReleaseName() + " Java software library of ontology-based");
         System.out.println("semantic similarity measures and information content models");
         System.out.println("\nRelease name: " + getReleaseName());    
         System.out.println("Version code: " + getVersionCode());
-        System.out.println("Version date: November 2016");
-        System.out.println("Copyright (C) 2016 Universidad Nacional de Educación a Distancia (UNED)");
+        System.out.println("Version date: February 2017");
+        System.out.println("Copyright (C) 2017 Universidad Nacional de Educación a Distancia (UNED)");
         
         System.out.println("\nMain HESML publication:\n");
-        System.out.println("Lastra-Díaz, J. J., and García-Serrano, A. (2016).");
+        System.out.println("Lastra-Díaz, J. J. & García-Serrano, A. & Batet, M. & Fernández, M. & Chirigati, F. (2017).");
         System.out.println("HESML: a scalable ontology-based semantic similarity measures library");
         System.out.println("with a set of reproducible experiments and a replication dataset.");
-        System.out.println("Submitted for publication in Information Systems Journal.");
+        System.out.println("Information Systems 66, pp. 97-118.");
+        System.out.println("http://dx.doi.org/10.1016/j.is.2017.02.002\n");
     }
     
     /**
@@ -59,7 +60,7 @@ public class HESMLversion
     
     public static String getReleaseName()
     {
-        return ("HESML V1R2");
+        return ("HESML V1R3");
     }
     
     /**
@@ -69,6 +70,6 @@ public class HESMLversion
     
     public static String getVersionCode()
     {
-        return ("(1.2.0.1)");
+        return ("(1.3.0.1)");
     }
 }

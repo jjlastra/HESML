@@ -40,7 +40,7 @@ class WordNetDB implements IWordNetDB
      * Synsets indexed by their unique Id
      */
     
-    private HashMap<Integer, IWordNetSynset>    m_IndexedSynsets;
+    private HashMap<Long, IWordNetSynset>    m_IndexedSynsets;
     
     /**
      * Synset collection
@@ -143,7 +143,7 @@ class WordNetDB implements IWordNetDB
     
     @Override
     public IWordNetSynset getSynset(
-            Integer synsetID)
+            Long synsetID)
     {
         return (m_IndexedSynsets.get(synsetID));
     }
@@ -192,7 +192,7 @@ class WordNetDB implements IWordNetDB
             
             allParentsVisited = true;
             
-            for (Integer parentId: pendingSynset.getParentsId())
+            for (Long parentId: pendingSynset.getParentsId())
             {
                 if (!m_IndexedSynsets.get(parentId).getVisited())
                 {
@@ -371,11 +371,11 @@ class WordNetDB implements IWordNetDB
      */
     
     @Override
-    public Integer[] getWordSynsetsID(String strWord) throws Exception
+    public Long[] getWordSynsetsID(String strWord) throws Exception
     {
         Exception   error;  // Thrown exception
         
-        Integer[]    synsets;    // Returned value
+        Long[]    synsets;    // Returned value
         
         ArrayList<IWordNetSynset>   wordSynsets;    // Synsets for the word
         
@@ -393,7 +393,7 @@ class WordNetDB implements IWordNetDB
         
         // We create the arrya to copy the synsets
         
-        synsets = new Integer[wordSynsets.size()];
+        synsets = new Long[wordSynsets.size()];
         
         // We copy the synset ID values
         

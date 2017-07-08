@@ -42,7 +42,7 @@ class VertexList implements IVertexList
      * Vertexes indexed by the unique key URI
      */
     
-    private HashMap<Integer, IVertex>    m_IndexedVertexes;
+    private HashMap<Long, IVertex>    m_IndexedVertexes;
     
     /**
      * Ordered vertexes
@@ -109,7 +109,7 @@ class VertexList implements IVertexList
         
         // We get the vertex Id
         
-        int idVertex = vertex.getID();
+        long idVertex = vertex.getID();
         
         // We check for the existence of the vertex in the list
         
@@ -221,15 +221,51 @@ class VertexList implements IVertexList
     }
     
     /**
+     * This function computes the union set.
+     * @param others
+     * @return Union set
+     * @throws java.lang.Exception 
+     */
+    
+    @Override
+    public IVertexList getUnionSet(
+            IVertexList others) throws Exception
+    {
+        // We create the union set to be returned
+        
+        VertexList  union = new VertexList(false);
+        
+        // We insert the vertexes in the current set
+        
+        for (IVertex vertex: m_IndexedVertexes.values())
+        {
+            union.add(vertex);
+        }
+        
+        // We insert the vertexes in the other set
+        
+        for (IVertex vertex: others)
+        {
+            if (!union.contains(vertex.getID()))
+            {
+                union.add(vertex);
+            }
+        }
+        
+        // We return the value
+        
+        return (union);
+    }
+    
+    /**
      * This function computes the intersection set count = |{this and other}|
      * @param others
      * @return Cardinality of the intersection set
-     * @throws java.lang.Exception
      */
     
     @Override
     public long getIntersectionSetCount(
-            IVertexList others) throws Exception
+            IVertexList others)
     {
         long  intersection = 0; // Returned value
         
@@ -246,6 +282,37 @@ class VertexList implements IVertexList
         // We return the value
         
         return (intersection);
+    }
+
+    /**
+     * This function computes the number of elements in the resulting union set
+     * of the current list with the input list.
+     * @param others
+     * @return Cardinality of the union set
+     */
+    
+    @Override
+    public long getUnionSetCount(
+            IVertexList others)
+    {
+        // We initialize the couint to the current vertexes
+        
+        long  union = m_IndexedVertexes.size();
+        
+        // We compute the number of input vertexes not included in the
+        // current list.
+        
+        for (IVertex vertex: others)
+        {
+            if (!m_IndexedVertexes.containsKey(vertex.getID()))
+            {
+                union++;
+            }
+        }
+        
+        // We return the value
+        
+        return (union);
     }
     
     /**
@@ -611,7 +678,7 @@ class VertexList implements IVertexList
     
     @Override
     public boolean contains(
-            Integer vertexID)
+            Long vertexID)
     {
         return (m_IndexedVertexes.containsKey(vertexID));
     }
@@ -646,7 +713,7 @@ class VertexList implements IVertexList
      */
     
     @Override
-    public IVertex getById(Integer vertexId)
+    public IVertex getById(Long vertexId)
     {
         IVertex query = null;   // Returned value
         
@@ -671,7 +738,7 @@ class VertexList implements IVertexList
     
     @Override
     public IVertexList getByIds(
-            Integer[]   vertexIds) throws Exception
+            Long[]   vertexIds) throws Exception
     {
         VertexList  query;  // Returned value
         
@@ -681,7 +748,7 @@ class VertexList implements IVertexList
         
         // We recover all the vertexes required
         
-        for (Integer vertexID: vertexIds)
+        for (Long vertexID: vertexIds)
         {
             if (m_IndexedVertexes.containsKey(vertexID))
             {
@@ -695,21 +762,21 @@ class VertexList implements IVertexList
     }
     
     /**
-     * 
+     * This function returns the sequence of ID for the vertexes within the list.
      * @return One vector containing the IDs of all the vertexes contained
      * in the list.
      */
     
     @Override
-    public int[] getIDs()
+    public long[] getIDs()
     {
-        int[]   idVertexes; // returned value
+        long[]   idVertexes; // returned value
         
         int i = 0;  // Counter
         
         // We cretae the output vector
         
-        idVertexes = new int[m_Vertexes.size()];
+        idVertexes = new long[m_Vertexes.size()];
         
         // We copy the iDs
         

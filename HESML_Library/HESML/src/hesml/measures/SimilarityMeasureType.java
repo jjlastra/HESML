@@ -311,5 +311,46 @@ public enum SimilarityMeasureType
      * knowledge sources. BMC Bioinformatics, 13:261.
      */
     
-    Garla
+    Garla,
+
+    /**
+     * It asks for the similarity measure introduced in the paper below.
+     * Hao, D., Zuo, W., Peng, T., & He, F. (2011).
+     * An Approach for Calculating Semantic Similarity between Words Using WordNet.
+     * In Proc. of the Second International Conference on Digital Manufacturing
+     * Automation (pp. 177–180). IEEE.
+     */
+    
+    Hao,
+    
+    /**
+     * It asks for the similarity measure introduced in the paper below.
+     * Liu, X. Y., Zhou, Y. M., and Zheng, R. S. (2007).
+     * Measuring Semantic Similarity in Wordnet.
+     * In Proc. of the 2007 International Conference on Machine Learning and
+     * Cybernetics (Vol. 6, pp. 3431–3435). IEEE.
+     */
+    
+    LiuStrategy1,
+    LiuStrategy2,
+    
+    /**
+     * It asks for the similarity measure introduced in the paper below.
+     * Stojanovic, N., Maedche, A., Staab, S., Studer, R., and Sure, Y. (2001).
+     * SEAL: A Framework for Developing SEmantic PortALs.
+     * In Proceedings of the 1st International Conference on Knowledge Capture
+     * (pp. 155–162). New York, NY, USA: ACM.
+     */
+    
+    Stojanovic,
+    
+    /**
+     * It asks for the similarity measure introduced in the paper below.
+     * Pekar, V., and Staab, S. (2002). Taxonomy Learning: Factoring the Structure
+     * of a Taxonomy into a Semantic Classification Decision. In Proceedings of
+     * the 19th International Conference on Computational Linguistics
+     * (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
+     */
+    
+    PekarStaab
 }

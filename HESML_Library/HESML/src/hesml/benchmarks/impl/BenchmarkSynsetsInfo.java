@@ -315,7 +315,7 @@ class BenchmarkSynsetsInfo extends WordNetSimBenchmark
         
         double  similarity;      // Similarities
         
-        int shortestPathLength;
+        long shortestPathLength;
         
         int iColumnOffset;  // Offset to insert the similarity values
         
@@ -323,7 +323,7 @@ class BenchmarkSynsetsInfo extends WordNetSimBenchmark
         
         // We compute the shortest path length
         
-        shortestPathLength = (int) left.getShortestPathDistanceTo(right, false);
+        shortestPathLength = (long) left.getShortestPathDistanceTo(right, false);
         
         // We compute the MICA and LCS vertexes
         
@@ -332,11 +332,11 @@ class BenchmarkSynsetsInfo extends WordNetSimBenchmark
                
         // We save the results in the matrix
         
-        strResultMatrix[iRow][0] = Integer.toString(left.getID());
-        strResultMatrix[iRow][1] = Integer.toString(right.getID());
-        strResultMatrix[iRow][2] = Integer.toString(shortestPathLength);
-        strResultMatrix[iRow][3] = Integer.toString(lcsVertex.getID());
-        strResultMatrix[iRow][4] = Integer.toString(longestLCSvertex.getID());
+        strResultMatrix[iRow][0] = Long.toString(left.getID());
+        strResultMatrix[iRow][1] = Long.toString(right.getID());
+        strResultMatrix[iRow][2] = Long.toString(shortestPathLength);
+        strResultMatrix[iRow][3] = Long.toString(lcsVertex.getID());
+        strResultMatrix[iRow][4] = Long.toString(longestLCSvertex.getID());
         
         // We copy the IC-based features
         
@@ -344,7 +344,7 @@ class BenchmarkSynsetsInfo extends WordNetSimBenchmark
         {
             iColumnOffset = 7;
             micaVertex = m_Taxonomy.getMICA(left, right);            
-            strResultMatrix[iRow][5] = Integer.toString(micaVertex.getID());
+            strResultMatrix[iRow][5] = Long.toString(micaVertex.getID());
             strResultMatrix[iRow][6] = Double.toString(micaVertex.getICvalue());
         }
         else

@@ -167,7 +167,7 @@ class TaxonomyCSVWriter
         
         // We write the titles
         
-        strInfo = Integer.toString(vertex.getID()) + sep
+        strInfo = Long.toString(vertex.getID()) + sep
                 + vertex.getStringTag() + sep
                 + convertToCsvField(vertex.getParents().getIDs()) + sep
                 + Double.toString(vertex.getICvalue()) + sep;
@@ -224,9 +224,9 @@ class TaxonomyCSVWriter
         
         // We creaste the LINE
         
-        strInfo = Integer.toString(orientEdge.getOpposite().getTarget().getID())
+        strInfo = Long.toString(orientEdge.getOpposite().getTarget().getID())
                 + sep
-                + Integer.toString(orientEdge.getTarget().getID())
+                + Long.toString(orientEdge.getTarget().getID())
                 + sep + Double.toString(edge.getCondProbability())
                 + sep + Double.toString(edge.getWeight()) + "\n";
         
@@ -236,14 +236,14 @@ class TaxonomyCSVWriter
     }
     
     /**
-     * This function serializes the arry to string using the comma
+     * This function serializes the array to string using the comma
      * separator.
      * @param intFields
      * @return 
      */
     
     private static String convertToCsvField(
-        int[]    intFields)
+        long[]    intFields)
     {
         String  strUnion = "";   // Returned value
         

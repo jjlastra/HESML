@@ -238,10 +238,45 @@ public class MeasureFactory
                 
                 break;
                 
+            case Hao:
+                
+                // We use the default values provided in the paper
+                
+                measure = new MeasureHao(taxonomy, 0.0, 1.0);
+                
+                break;
+                
+            case LiuStrategy1:
+                
+                // We use the default values provided in the paper
+                
+                measure = new MeasureLiuStrategy1(taxonomy, 0.5, 0.55);
+                
+                break;
+                
+            case LiuStrategy2:
+                
+                // We use the default values provided in the paper
+                
+                measure = new MeasureLiuStrategy2(taxonomy, 0.25, 0.25);
+                
+                break;
+                
+            case Stojanovic:
+                
+                measure = new MeasureStojanovic(taxonomy);
+                
+                break;
+                
+            case PekarStaab:
+                
+                measure = new MeasurePekarStaab(taxonomy);
+                
+                break;
+                
             case Taieb2014sim2:
                 
-                throw (new InvalidParameterException("Use the other getMeasure() with a WordNetDB"));
-                
+                throw (new InvalidParameterException("Use the other getMeasure() function with a WordNetDB"));
         }
         
         // We return the result
@@ -251,9 +286,9 @@ public class MeasureFactory
     
     /**
      * This function creates an instance of an specific similarity measure.
-     * The only aim of this function is allowing the unified creation
-     * of th Taieb2014sim2 similarity measure with the remaining measures
-     * duirng the loading process of the MultipleDatasetsExperiment.
+     * The only aim of this function is to allow the unified creation
+     * of the Taieb2014sim2 similarity measure with the remaining measures
+     * during the loading process of the MultipleDatasetsExperiment.
      * Unlike the remaining similarity measures, the Taieb2014sim2 similarity
      * measure requires the maximum number of synsets per word in addition
      * to the base taxonomy. For this reason, this function defines an instance
@@ -278,179 +313,17 @@ public class MeasureFactory
             ITaxonomy               taxonomy,
             SimilarityMeasureType   measureType) throws Exception
     {
-        ISimilarityMeasure    measure = null; // Returned value
+        ISimilarityMeasure    measure; // Returned value
         
         // We create the measure
         
-        switch (measureType)
+        if (measureType != SimilarityMeasureType.Taieb2014sim2)
         {
-            case Rada:
-                
-                measure = new MeasureRada(taxonomy);
-                
-                break;
-                
-            case Mubaid:
-                
-                measure = new MeasureAlMubaidNguyen2009(taxonomy);
-                
-                break;
-                
-            case LeacockChodorow:
-                
-                measure = new MeasureLeacockChodorow(taxonomy);
-                
-                break;
-                
-            case PedersenPath:
-                
-                measure = new MeasurePedersenPath(taxonomy);
-                
-                break;
-                                
-            case Garla:
-                
-                measure = new MeasureGarla(taxonomy);
-                
-                break;
-                               
-            case WuPalmer:
-                
-                measure = new MeasureWuPalmer(taxonomy);
-                
-                break;
-                
-            case Li2003Strategy3:
-                
-                measure = new MeasureLi2003Strategy3(taxonomy);
-                
-                break;
-
-            case Li2003Strategy4:
-                
-                measure = new MeasureLi2003Strategy4(taxonomy);
-                
-                break;
-                
-            case Li2003Strategy9:
-                
-                measure = new MeasureLi2003Strategy9(taxonomy);
-                
-                break;
-                
-            case Sanchez2012:
-                
-                measure = new MeasureSanchez2012(taxonomy);
-                
-                break;
-                
-            case Zhou:
-                
-                measure = new MeasureZhou(taxonomy);
-                
-                break;
-                
-            case CosineNormWeightedJiangConrath:
-                
-                measure = new MeasureCosineNormWeightedJiangConrath(taxonomy);
-                
-                break;
-                
-            case WeightedJiangConrath:
-                
-                measure = new MeasureWeightedJiangConrath(taxonomy);
-                
-                break;
-                
-            case JiangConrath:
-                
-                measure = new MeasureJiangConrath(taxonomy);
-                
-                break;
-                
-            case LogisticLin:
-                
-                measure = new MeasureLogisticLin(taxonomy);
-                
-                break;
-                
-            case CosineLin:
-                
-                measure = new MeasureCosineLin(taxonomy);
-                
-                break;
-                
-            case ExpNormJiangConrath:
-                
-                measure = new MeasureExpNormJiangConrath(taxonomy);
-                
-                break;
-                
-            case CosineNormJiangConrath:
-                
-                measure = new MeasureCosineNormJiangConrath(taxonomy);
-                
-                break;
-                
-            case LogisticNormJiangConrath:
-                
-                measure = new MeasureLogisticNormJiangConrath(taxonomy);
-                
-                break;
-                               
-            case PirroSeco:
-                
-                measure = new MeasurePirroSeco(taxonomy);
-                
-                break;
-                
-            case FaITH:
-                
-                measure = new MeasureFaith(taxonomy);
-                
-                break;
-                
-            case Lin:
-                
-                measure = new MeasureLin(taxonomy);
-                
-                break;
-                
-            case Resnik:
-                
-                measure = new MeasureResnik(taxonomy);
-                
-                break;
-                
-            case Meng2012:
-                
-                measure = new MeasureMeng2012(taxonomy);
-                        
-                break;
-                
-            case Meng2014:
-                
-                measure = new MeasureMeng2014(taxonomy);
-                        
-                break;
-                
-            case Taieb2014:
-                
-                measure = new MeasureTaieb2014(taxonomy);
-                        
-                break;
-                
-            case Taieb2014sim2:
-                
-                measure = new MeasureTaieb2014(taxonomy, wordnet.getMaxSynsetsNumberPerWord());
-                        
-                break;
-                
-            case Gao2015Strategy3:
-
-                measure = new MeasureGao2015Method3(taxonomy);
-                
-                break;
+            measure = getMeasure(taxonomy, measureType);
+        }
+        else
+        {
+            measure = new MeasureTaieb2014(taxonomy, wordnet.getMaxSynsetsNumberPerWord());
         }
         
         // We return the result

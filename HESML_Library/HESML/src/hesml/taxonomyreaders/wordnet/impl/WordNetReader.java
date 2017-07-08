@@ -307,12 +307,12 @@ class WordNetReader
             
         String[]    strParts;       // Tokens and gloss
         String      strGloss = "";  // Gloss describing the synset
-        Integer[]   parentsId;      // Id of the parents
+        Long[]      parentsId;      // Id of the parents
         
         ArrayList<String>   strTokens;      // List of tokens
-        ArrayList<Integer>  parentsIdtemp;  // Id of the parents
+        ArrayList<Long>     parentsIdtemp;  // Id of the parents
         
-        Integer synsetId;       // Synset id
+        Long    synsetId;       // Synset id
         Integer wordCount;      // Number of words
 
         int iWord, iToken;  // Counters
@@ -336,7 +336,7 @@ class WordNetReader
         
         // Obtengo el id sel synset
         
-        synsetId = Integer.parseUnsignedInt(strTokens.get(0));
+        synsetId = Long.parseUnsignedLong(strTokens.get(0));
         
         // We get the number of words associated to this synset
         
@@ -361,13 +361,13 @@ class WordNetReader
         {
             if (strTokens.get(iToken).startsWith("@"))
             {
-                parentsIdtemp.add(Integer.parseUnsignedInt(strTokens.get(iToken + 1)));
+                parentsIdtemp.add(Long.parseUnsignedLong(strTokens.get(iToken + 1)));
             }
         }
         
         // We copy the parents Id and clear the temporary list
         
-        parentsId = new Integer[parentsIdtemp.size()];
+        parentsId = new Long[parentsIdtemp.size()];
         
         parentsIdtemp.toArray(parentsId);
 

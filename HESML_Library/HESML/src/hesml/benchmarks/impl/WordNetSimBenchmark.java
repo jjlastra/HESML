@@ -774,13 +774,13 @@ abstract class WordNetSimBenchmark extends AbstractBenchmark
     {
         IVertexList vertexes;   // Returned value
         
-        Integer[]   ids;    // Synset ids
+        Long[]   ids;    // Synset ids
         
         int i;  // Counter
         
         // We build the vector of vertxes ID (synsets)
         
-        ids = new Integer[synsets.length];
+        ids = new Long[synsets.length];
         
         // We get the ids of the synsets
         
