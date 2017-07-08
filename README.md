@@ -11,7 +11,7 @@ HESML V1R3 implements most ontology-based semantic similarity measures and Infor
 
 HESML is introduced and detailed in a companion reproducibility paper [1] of the methods and experiments introduced in [2,3,4].
 
-The main features of HEMSL are as follows: (1) it is based on an efficient and linearly scalable representation for taxonomies called PosetHERep introduced in [1], (2) its performance exhibits a linear scalability as regards the size of the taxonomy, and (3) it does not use any caching strategy of vertex sets.
+The main features of HESML are as follows: (1) it is based on an efficient and linearly scalable representation for taxonomies called PosetHERep introduced in [1], (2) its performance exhibits a linear scalability as regards the size of the taxonomy, and (3) it does not use any caching strategy of vertex sets.
 
 Main novelties in HESML V1R3
 
@@ -27,19 +27,19 @@ The V1R2 release significantly improves the performance of HESML V1R1, whilst HE
 
 Licensing information
 
-HESML V1R2 is freely distributed for any non-commercial purpose under a CC By-NC-SA-4.0 license, subject to the citing of the main HESML paper [1] as attribution requirement. On other hand, the commercial use of the similarity measures introduced in [2], as well as part of the intrinsic IC models introduced in [3] and [4], is protected by a patent application [5]. In addition, any user of HESML must fulfill other licensing terms described in [1] related to other resources distributed with the library, such as WordNet and a dataset of corpus-based IC models, among others.
+HESML library is freely distributed for any non-commercial purpose under a CC By-NC-SA-4.0 license, subject to the citing of the main HESML paper [1] as attribution requirement. On other hand, the commercial use of the similarity measures introduced in [2], as well as part of the intrinsic IC models introduced in [3] and [4], is protected by a patent application [5]. In addition, any user of HESML must fulfill other licensing terms described in [1] related to other resources distributed with the library, such as WordNet and a dataset of corpus-based IC models, among others.
 
 References:
 
-[1] Lastra-D√≠az, J. J., Garc√≠a-Serrano, A., Batet, M., Fern√°ndez, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems. http://dx.doi.org/10.1016/j.is.2017.02.002
+[1] Lastra-DÌaz, J. J., GarcÌa-Serrano, A., Batet, M., Fern·ndez, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems. http://dx.doi.org/10.1016/j.is.2017.02.002
 
-[2] Lastra-D√≠az, J. J., & Garc√≠a-Serrano, A. (2015). A novel family of IC-based similarity measures with a detailed experimental survey on WordNet. Engineering Applications of Artificial Intelligence Journal, 46, 140-153. http://dx.doi.org/10.1016/j.engappai.2015.09.006
+[2] Lastra-DÌaz, J. J., & GarcÌa-Serrano, A. (2015). A novel family of IC-based similarity measures with a detailed experimental survey on WordNet. Engineering Applications of Artificial Intelligence Journal, 46, 140-153. http://dx.doi.org/10.1016/j.engappai.2015.09.006
 
-[3] Lastra-D√≠az, J. J., & Garc√≠a-Serrano, A. (2015). A new family of information content models with an experimental survey on WordNet. Knowledge-Based Systems, 89, 509-526. http://dx.doi.org/10.1016/j.knosys.2015.08.019
+[3] Lastra-DÌaz, J. J., & GarcÌa-Serrano, A. (2015). A new family of information content models with an experimental survey on WordNet. Knowledge-Based Systems, 89, 509-526. http://dx.doi.org/10.1016/j.knosys.2015.08.019
 
-[4] Lastra-D√≠az, J. J., & Garc√≠a-Serrano, A. (2016). A refinement of the well-founded Information Content models with a very detailed experimental survey on WordNet. Universidad Nacional de Educaci√É¬≥n a Distancia (UNED). http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
+[4] Lastra-DÌaz, J. J., & GarcÌa-Serrano, A. (2016). A refinement of the well-founded Information Content models with a very detailed experimental survey on WordNet. Universidad Nacional de Educaci√É¬≥n a Distancia (UNED). http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
 
-[5] Lastra D√≠az, J. J., & Garc√≠a Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
+[5] Lastra DÌaz, J. J., & GarcÌa Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
 
 Steps to reproduce the library
 
@@ -61,6 +61,4 @@ hesml+subscribe@googlegroups.com
 
 Steps to use the library
 
-You can use the HESMLclient program to run reproducible experiments or create your own client programs using the HESMLclient code as example. For more information, including a detailed description of how to run the rerpoducible experiments and extend the library, we refer the reader to the paper [1] below.
-
-[1] Lastra-D√≠az, J. J., Garc√≠a-Serrano, A., Batet, M., Fern√°ndez, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems.
+You can use the HESMLclient program to run reproducible experiments or create your own client programs using the HESMLclient code as example. For more information, including a detailed description of how to run the rerpoducible experiments and extend the library, we refer the reader to the paper [1] above.
