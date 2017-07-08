@@ -5,13 +5,25 @@ This is the GitHub public repository for the HESML Java software library of onto
 
 The initial master code of this repository matches the HESML V1R2 version available as Mendeley dataset at http://dx.doi.org/10.17632/t87s78dg78.2.
 
-HESML V1R2 is the second release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models based on WordNet.
+HESML V1R3 is the third release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models based on WordNet.
 
-HESML V1R2 implements most ontology-based semantic similarity measures and Information Content (IC) models based on WordNet reported in the literature. In addition, it provides a XML-based input file format in order to specify the execution of reproducible experiments on WordNet-based similarity, even with no software coding.
+HESML V1R3 implements most ontology-based semantic similarity measures and Information Content (IC) models based on WordNet reported in the literature. In addition, it provides a XML-based input file format in order to specify the execution of reproducible experiments on WordNet-based similarity, even with no software coding.
 
-The V1R2 release significantly improves the performance of HESML V1R1. HESML is introduced and detailed in a companion reproducibility paper [1] of the methods and experiments introduced in [2,3,4].
+HESML is introduced and detailed in a companion reproducibility paper [1] of the methods and experiments introduced in [2,3,4].
 
 The main features of HEMSL are as follows: (1) it is based on an efficient and linearly scalable representation for taxonomies called PosetHERep introduced in [1], (2) its performance exhibits a linear scalability as regards the size of the taxonomy, and (3) it does not use any caching strategy of vertex sets.
+
+Main novelties in HESML V1R3
+
+The V1R2 release significantly improves the performance of HESML V1R1, whilst HESML V1R3 provides two minor changes on HESML V1R2. First, the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. Second, we have added five new similarity measures detailed in the papers below:
+
+(1) Hao, D., Zuo, W., Peng, T., & He, F. (2011). An Approach for Calculating Semantic Similarity between Words Using WordNet. In Proc. of the Second International Conference on Digital Manufacturing Automation (pp. 177–180). IEEE.
+
+(2) Liu, X. Y., Zhou, Y. M., & Zheng, R. S. (2007). Measuring Semantic Similarity in Wordnet. In Proc. of the 2007 International Conference on Machine Learning and Cybernetics (Vol. 6, pp. 3431–3435). IEEE.
+
+(3) Pekar, V., & Staab, S. (2002). Taxonomy Learning: Factoring the Structure of a Taxonomy into a Semantic Classification Decision. In Proceedings of the 19th International Conference on Computational Linguistics (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
+
+(4) Stojanovic, N., Maedche, A., Staab, S., Studer, R., & Sure, Y. (2001). SEAL: A Framework for Developing SEmantic PortALs. In Proceedings of the 1st International Conference on Knowledge Capture (pp. 155–162). New York, NY, USA: ACM.
 
 Licensing information
 
@@ -31,7 +43,7 @@ References:
 
 Steps to reproduce the library
 
-HESML V1R2 is distributed as a Java class library (HESML-V1R2.jar) plus a test driver application (HESMLclient.jar), which have been developed using NetBeans 8.0.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
+HESML V1R3 is distributed as a Java class library (HESML-V1R3.jar) plus a test driver application (HESMLclient.jar), which have been developed using NetBeans 8.0.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
 
 In order to compile HESML, you must follow the following steps:
 
