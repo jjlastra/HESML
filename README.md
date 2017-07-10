@@ -16,15 +16,7 @@ The main features of HESML are as follows: (1) it is based on an efficient and l
 
 Main novelties in HESML V1R3
 
-The V1R2 release significantly improves the performance of HESML V1R1, whilst HESML V1R3 provides two minor changes on HESML V1R2. First, the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. Second, we have added five new similarity measures detailed in the papers below:
-
-(1) Hao, D., Zuo, W., Peng, T., & He, F. (2011). An Approach for Calculating Semantic Similarity between Words Using WordNet. In Proc. of the Second International Conference on Digital Manufacturing Automation (pp. 177–180). IEEE.
-
-(2) Liu, X. Y., Zhou, Y. M., & Zheng, R. S. (2007). Measuring Semantic Similarity in Wordnet. In Proc. of the 2007 International Conference on Machine Learning and Cybernetics (Vol. 6, pp. 3431–3435). IEEE.
-
-(3) Pekar, V., & Staab, S. (2002). Taxonomy Learning: Factoring the Structure of a Taxonomy into a Semantic Classification Decision. In Proceedings of the 19th International Conference on Computational Linguistics (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
-
-(4) Stojanovic, N., Maedche, A., Staab, S., Studer, R., & Sure, Y. (2001). SEAL: A Framework for Developing SEmantic PortALs. In Proceedings of the 1st International Conference on Knowledge Capture (pp. 155–162). New York, NY, USA: ACM.
+The V1R2 release significantly improves the performance of HESML V1R1, whilst HESML V1R3 provides two minor changes on HESML V1R2. First, the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. Second, we have added five new similarity measures introduced in the papers [6-9] cited in the references section below.
 
 Licensing information
 
@@ -41,6 +33,14 @@ References:
 [4] Lastra-Díaz, J. J., & García-Serrano, A. (2016). A refinement of the well-founded Information Content models with a very detailed experimental survey on WordNet. Universidad Nacional de EducaciÃƒÂ³n a Distancia (UNED). http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
 
 [5] Lastra Díaz, J. J., & García Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
+
+[6] Hao, D., Zuo, W., Peng, T., & He, F. (2011). An Approach for Calculating Semantic Similarity between Words Using WordNet. In Proc. of the Second International Conference on Digital Manufacturing Automation (pp. 177–180). IEEE.
+
+[7] Liu, X. Y., Zhou, Y. M., & Zheng, R. S. (2007). Measuring Semantic Similarity in Wordnet. In Proc. of the 2007 International Conference on Machine Learning and Cybernetics (Vol. 6, pp. 3431–3435). IEEE.
+
+[8] Pekar, V., & Staab, S. (2002). Taxonomy Learning: Factoring the Structure of a Taxonomy into a Semantic Classification Decision. In Proceedings of the 19th International Conference on Computational Linguistics (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
+
+[9] Stojanovic, N., Maedche, A., Staab, S., Studer, R., & Sure, Y. (2001). SEAL: A Framework for Developing SEmantic PortALs. In Proceedings of the 1st International Conference on Knowledge Capture (pp. 155–162). New York, NY, USA: ACM.
 
 Steps to reproduce the library
 
