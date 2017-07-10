@@ -315,7 +315,7 @@ public enum SimilarityMeasureType
 
     /**
      * It asks for the similarity measure introduced in the paper below.
-     * Hao, D., Zuo, W., Peng, T., & He, F. (2011).
+     * Hao, D., Zuo, W., Peng, T., and He, F. (2011).
      * An Approach for Calculating Semantic Similarity between Words Using WordNet.
      * In Proc. of the Second International Conference on Digital Manufacturing
      * Automation (pp. 177–180). IEEE.
