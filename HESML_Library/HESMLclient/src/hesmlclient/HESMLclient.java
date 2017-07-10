@@ -141,7 +141,7 @@ public class HESMLclient
         
         // We print the HESML version
         
-        System.out.println("Running HESMLClient V1R3 (v1.3.0.1) based on "
+        System.out.println("Running HESMLClient V1R3 (1.3.0.1, July 2017) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "

@@ -42,7 +42,7 @@ public class HESMLversion
         System.out.println("semantic similarity measures and information content models");
         System.out.println("\nRelease name: " + getReleaseName());    
         System.out.println("Version code: " + getVersionCode());
-        System.out.println("Version date: February 2017");
+        System.out.println("Version date: July 2017");
         System.out.println("Copyright (C) 2017 Universidad Nacional de Educación a Distancia (UNED)");
         
         System.out.println("\nMain HESML publication:\n");
