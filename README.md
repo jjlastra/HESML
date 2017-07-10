@@ -16,7 +16,7 @@ The main features of HESML are as follows: (1) it is based on an efficient and l
 
 Main novelties in HESML V1R3
 
-The V1R2 release significantly improves the performance of HESML V1R1, whilst HESML V1R3 provides two minor changes on HESML V1R2. First, the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. Second, we have added five new similarity measures introduced in the papers [6-9] cited in the references section below.
+HESML V1R3 introduces two minor novelties as follows: the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. and it includes five new similarity measures introduced in the papers [6-9] cited in the references section below.
 
 Licensing information
 
