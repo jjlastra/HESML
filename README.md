@@ -16,7 +16,7 @@ The main features of HESML are as follows: (1) it is based on an efficient and l
 
 Main novelties in HESML V1R3
 
-HESML V1R3 introduces two minor novelties as follows: the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes. and it includes five new similarity measures introduced in the papers [6-9] cited in the references section below.
+HESML V1R3 introduces two minor novelties as follows: (1) the vertex ID has been updated from Integer to Long type in order to support a larger number of vertexes, and (2) it includes five new similarity measures introduced in the papers [6-9] cited in the references section below.
 
 Licensing information
 
@@ -46,7 +46,7 @@ Steps to reproduce the library
 
 HESML V1R3 is distributed as a Java class library (HESML-V1R3.jar) plus a test driver application (HESMLclient.jar), which have been developed using NetBeans 8.0.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
 
-In order to compile HESML, you must follow the following steps:
+The HESML-V1R3.jar file is already included in the HESML_Library\HESML\dist folder of the HESML_Release_V1R3.zip distribution file. In order to compile HESML from its source files, you must follow the following steps:
 
 (1) Download the full distribution of HESML V1R3.
 
