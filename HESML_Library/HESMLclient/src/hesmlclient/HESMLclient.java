@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -109,6 +109,25 @@ public class HESMLclient
     private static final String   SIMLEX665 = "SimLex665_dataset";
     
     /**
+     * Radinsky, K., Agichtein, E., Gabrilovich, E., & Markovitch, S. (2011).
+     * A word at a time: computing word relatedness using temporal semantic analysis.
+     * In Proceedings of the 20th international conference on World wide web (pp. 337–346).
+     * ACM.
+     */    
+    
+    private static final String   MTURK287 = "Radinsky_MTurk287_filtered_dataset";
+    
+    /**
+     * Halawi, G., Dror, G., Gabrilovich, E., & Koren, Y. (2012).
+     * Large-scale Learning of Word Relatedness with Constraints.
+     * In Proceedings of the 18th ACM SIGKDD International
+     * Conference on Knowledge Discovery and Data Mining (pp. 1406–1414).
+     * New York, NY, USA: ACM.
+     */
+    
+    private static final String   MTURK771 = "Halawi_MTURK771_dataset";
+    
+    /**
      * WordNet database path, corpus-based Pedersen IC files, and results
      * directory in the current PC. You should change the base HESML
      * directory according to your code installation.
@@ -141,7 +160,7 @@ public class HESMLclient
         
         // We print the HESML version
         
-        System.out.println("Running HESMLClient V1R3 (1.3.0.1, July 2017) based on "
+        System.out.println("Running HESMLClient V1R4 (1.4.0.0, January 2018) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -223,7 +242,7 @@ public class HESMLclient
         // the collection of hand-coded sample experiments that you can use
         // with the aim of learning to use HESML.
 
-        //SampleExperiments();        
+        SampleExperiments();        
     }
     
     /**
@@ -253,7 +272,7 @@ public class HESMLclient
         // measure in the RG65 dataset. It shows the use of the automatized
         // benchmark for single non IC-based similarity measures.
         
-        //testSingleNonICbasedMeasure();
+        testSingleNonICbasedMeasure();
         
         // (4) The following test evaluates a single IC-similarity measures
         // with multiple intrinsic IC models.
@@ -263,7 +282,7 @@ public class HESMLclient
         // (5) The following test evaluates a single IC-similarity measure
         // with a single intrinsic IC miodel.
         
-        testSingleICSimMeasureSingleICmodel();
+        //testSingleICSimMeasureSingleICmodel();
         
         // (6) The following test shows how to directly compute the
         // similarity between two words using two different similarity measures.
@@ -603,7 +622,7 @@ public class HESMLclient
         
         // We set the similarity measure to be evaluated
         
-        measureToEvaluate = SimilarityMeasureType.Mubaid;
+        measureToEvaluate = SimilarityMeasureType.Rada;
         
         // We load the WordNet database
         
@@ -626,7 +645,7 @@ public class HESMLclient
         
         // We define the dataset to be evaluated
         
-        String[] strDatasetNames = {RG65, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
+        String[] strDatasetNames = {MC28};//, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
@@ -749,7 +768,7 @@ public class HESMLclient
                     m_strWordNetDatasetsDir + MC28 + ".csv",
                     CorrelationOutputMetrics.PearsonAndSpearman,
                     IntrinsicICModelType.Seco,
-                    SimilarityMeasureType.CosineNormWeightedJiangConrath);
+                    SimilarityMeasureType.JiangConrath);
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
@@ -1213,7 +1232,7 @@ public class HESMLclient
         // We set the measures to be evaluated
         
         evalMeasures[0] = SimilarityMeasureType.Rada;
-        evalMeasures[1] = SimilarityMeasureType.WuPalmer;
+        evalMeasures[1] = SimilarityMeasureType.WuPalmerFast;
         evalMeasures[2] = SimilarityMeasureType.LeacockChodorow;
         evalMeasures[3] = SimilarityMeasureType.Li2003Strategy3;
         evalMeasures[4] = SimilarityMeasureType.Li2003Strategy4;
