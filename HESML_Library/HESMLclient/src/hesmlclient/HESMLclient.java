@@ -109,6 +109,25 @@ public class HESMLclient
     private static final String   SIMLEX665 = "SimLex665_dataset";
     
     /**
+     * Radinsky, K., Agichtein, E., Gabrilovich, E., & Markovitch, S. (2011).
+     * A word at a time: computing word relatedness using temporal semantic analysis.
+     * In Proceedings of the 20th international conference on World wide web (pp. 337–346).
+     * ACM.
+     */    
+    
+    private static final String   MTURK287 = "Radinsky_MTurk287_filtered_dataset";
+    
+    /**
+     * Halawi, G., Dror, G., Gabrilovich, E., & Koren, Y. (2012).
+     * Large-scale Learning of Word Relatedness with Constraints.
+     * In Proceedings of the 18th ACM SIGKDD International
+     * Conference on Knowledge Discovery and Data Mining (pp. 1406–1414).
+     * New York, NY, USA: ACM.
+     */
+    
+    private static final String   MTURK771 = "Halawi_MTURK771_dataset";
+    
+    /**
      * WordNet database path, corpus-based Pedersen IC files, and results
      * directory in the current PC. You should change the base HESML
      * directory according to your code installation.
@@ -749,7 +768,7 @@ public class HESMLclient
                     m_strWordNetDatasetsDir + MC28 + ".csv",
                     CorrelationOutputMetrics.PearsonAndSpearman,
                     IntrinsicICModelType.Seco,
-                    SimilarityMeasureType.CosineNormWeightedJiangConrath);
+                    SimilarityMeasureType.JiangConrath);
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
