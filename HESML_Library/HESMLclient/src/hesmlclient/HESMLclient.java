@@ -242,7 +242,7 @@ public class HESMLclient
         // the collection of hand-coded sample experiments that you can use
         // with the aim of learning to use HESML.
 
-        //SampleExperiments();        
+        SampleExperiments();        
     }
     
     /**
@@ -272,7 +272,7 @@ public class HESMLclient
         // measure in the RG65 dataset. It shows the use of the automatized
         // benchmark for single non IC-based similarity measures.
         
-        //testSingleNonICbasedMeasure();
+        testSingleNonICbasedMeasure();
         
         // (4) The following test evaluates a single IC-similarity measures
         // with multiple intrinsic IC models.
@@ -282,7 +282,7 @@ public class HESMLclient
         // (5) The following test evaluates a single IC-similarity measure
         // with a single intrinsic IC miodel.
         
-        testSingleICSimMeasureSingleICmodel();
+        //testSingleICSimMeasureSingleICmodel();
         
         // (6) The following test shows how to directly compute the
         // similarity between two words using two different similarity measures.
@@ -622,7 +622,7 @@ public class HESMLclient
         
         // We set the similarity measure to be evaluated
         
-        measureToEvaluate = SimilarityMeasureType.Mubaid;
+        measureToEvaluate = SimilarityMeasureType.Rada;
         
         // We load the WordNet database
         
@@ -645,7 +645,7 @@ public class HESMLclient
         
         // We define the dataset to be evaluated
         
-        String[] strDatasetNames = {RG65, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
+        String[] strDatasetNames = {MC28};//, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
@@ -1232,7 +1232,7 @@ public class HESMLclient
         // We set the measures to be evaluated
         
         evalMeasures[0] = SimilarityMeasureType.Rada;
-        evalMeasures[1] = SimilarityMeasureType.WuPalmer;
+        evalMeasures[1] = SimilarityMeasureType.WuPalmerFast;
         evalMeasures[2] = SimilarityMeasureType.LeacockChodorow;
         evalMeasures[3] = SimilarityMeasureType.Li2003Strategy3;
         evalMeasures[4] = SimilarityMeasureType.Li2003Strategy4;

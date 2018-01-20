@@ -57,6 +57,7 @@ public enum SimilarityMeasureType
      */
     
     WuPalmer,
+    WuPalmerFast,
 
     /**
      * It asks for the similarity measure introduced in the paper below.

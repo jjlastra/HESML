@@ -111,6 +111,12 @@ public class MeasureFactory
                 measure = new MeasureWuPalmer(taxonomy);
                 
                 break;
+
+            case WuPalmerFast:
+                
+                measure = new MeasureWuPalmerFast(taxonomy);
+                
+                break;
                 
             case Li2003Strategy3:
                 
