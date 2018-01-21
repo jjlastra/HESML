@@ -45,7 +45,7 @@ public class BenchmarkFactory
      * @param strWordPairsFile  Word similarity benchmark
      * @param outputMetrics
      * @param icModels          IC models to be evaluated
-     * @param measureType       IC-based simialrity measure
+     * @param measureType       IC-based similarity measure
      * @return                  Benchmark
      * @throws Exception 
      */
@@ -58,11 +58,9 @@ public class BenchmarkFactory
             IntrinsicICModelType[]      icModels,
             SimilarityMeasureType       measureType) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkSingleICmeasure(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkSingleICmeasure(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, icModels, measureType);
         
         // We return the value
@@ -71,6 +69,35 @@ public class BenchmarkFactory
     }
 
     /**
+     * This function creates a WordNet-based benchmark which computes a
+     * matrix with the raw similarity values for each word pair.
+     * @param taxonomy WordNet taxonomy
+     * @param wordnet  WordNet database
+     * @param strWordPairsFile Word similarity benchmark in CSV file format
+     * @param icModels IC models 
+     * @param measureTypes Measure types
+     * @return A matrix containing one column per each measure with the raw similarity values
+     * @throws Exception 
+     */
+    
+    public static ISimilarityBenchmark getSingleDatasetSimilarityValuesTes(
+            ITaxonomy                   taxonomy,
+            IWordNetDB                  wordnet,
+            String                      strWordPairsFile,
+            ITaxonomyInfoConfigurator[] icModels,
+            SimilarityMeasureType[]     measureTypes) throws Exception
+    {
+        // We create the benchmark
+        
+        ISimilarityBenchmark test = new BenchmarkSingleDatasetSimilarityValues(wordnet,
+                                        taxonomy, strWordPairsFile, icModels, measureTypes);
+        
+        // We return the result
+        
+        return (test);
+    }
+    
+    /**
      * This function returns the test for a single IC-based similarity
      * measure evaluated with a single intrinsic IC model.
      * @param taxonomy          WordNet taxonomy
@@ -78,7 +105,7 @@ public class BenchmarkFactory
      * @param strWordPairsFile  Word similarity benchmark
      * @param outputMetrics
      * @param icModel           IC model to be evaluated
-     * @param measureType       IC-based simialrity measure
+     * @param measureType       IC-based similarity measure
      * @return                  Benchmark
      * @throws Exception 
      */
@@ -91,11 +118,9 @@ public class BenchmarkFactory
             IntrinsicICModelType        icModel,
             SimilarityMeasureType       measureType) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkSingleICmeasure(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkSingleICmeasure(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, icModel, measureType);
         
         // We return the value
@@ -127,11 +152,9 @@ public class BenchmarkFactory
             String                  strOutputCSVfile,
             SimilarityMeasureType[] measureTypes) throws Exception
     {
-        BenchmarkSynsetsInfo    benchmark;  // Benchmark
-        
         // We createh the benchmark
         
-        benchmark = new BenchmarkSynsetsInfo(wordnet, wordnetTaxonomy,
+        BenchmarkSynsetsInfo benchmark = new BenchmarkSynsetsInfo(wordnet, wordnetTaxonomy,
                         CorrelationOutputMetrics.PearsonAndSpearman,
                         strSimilarityTestFile, exportICfeatures, measureTypes);
         
@@ -161,12 +184,10 @@ public class BenchmarkFactory
             IntrinsicICModelType[]      icModels,
             SimilarityMeasureType[]     measureTypes) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkCrossICModelMeasures(wordnet, taxonomy,
-                    outputMetrics, strWordPairsFile, icModels, measureTypes);
+        ISimilarityBenchmark test = new BenchmarkCrossICModelMeasures(wordnet, taxonomy,
+                                    outputMetrics, strWordPairsFile, icModels, measureTypes);
         
         // We return the value
         
@@ -194,11 +215,9 @@ public class BenchmarkFactory
             ITaxonomyInfoConfigurator[] icModels,
             SimilarityMeasureType[]     measureTypes) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkCrossICModelMeasures(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkCrossICModelMeasures(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, icModels, measureTypes);
         
         // We return the value
@@ -224,12 +243,10 @@ public class BenchmarkFactory
             CorrelationOutputMetrics    outputMetrics,
             SimilarityMeasureType[]     measures) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkNonICMultiMeasures(wordnet, taxonomy,
-                    outputMetrics, strWordPairsFile,  measures);
+        ISimilarityBenchmark test = new BenchmarkNonICMultiMeasures(wordnet, taxonomy,
+                                    outputMetrics, strWordPairsFile,  measures);
         
         // We return the value
         
@@ -261,11 +278,9 @@ public class BenchmarkFactory
             CorpusBasedICModelType      corpusICmodel,
             SimilarityMeasureType[]     measureTypes) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkCrossCorpusICModelMeasures(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkCrossCorpusICModelMeasures(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, strICPedersenModels,
                     strICfilesDir, corpusICmodel, measureTypes);
         
@@ -299,11 +314,9 @@ public class BenchmarkFactory
             String[]                    strICPedersenModels,            
             SimilarityMeasureType[]     measureTypes) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkCrossCorpusICModels(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkCrossCorpusICModels(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, strICPedersenModels,
                     strICfilesDir, corpusICmodels, measureTypes);
         
@@ -332,11 +345,9 @@ public class BenchmarkFactory
             CorrelationOutputMetrics    outputMetrics,
             SimilarityMeasureType       measureType) throws Exception
     {
-        ISimilarityBenchmark    test;   // Returned value
-        
         // We create the test
         
-        test = new BenchmarkSingleNonICMeasure(wordnet, taxonomy,
+        ISimilarityBenchmark test = new BenchmarkSingleNonICMeasure(wordnet, taxonomy,
                     outputMetrics, strWordPairsFile, measureType);
         
         // We return the value
@@ -364,13 +375,11 @@ public class BenchmarkFactory
             ITaxonomyInfoConfigurator[] icModels,
             SimilarityMeasureType[]     measureTypes) throws Exception
     {
-        BenchmarkMultipleDatasets   benchmark;  // Returned value
-        
         // We create the benchmark
         
-        benchmark = new BenchmarkMultipleDatasets(wordnetVersions,
-                        taxonomies, metrics, strWordPairsFiles,
-                        icModels, measureTypes);
+        BenchmarkMultipleDatasets benchmark = new BenchmarkMultipleDatasets(wordnetVersions,
+                                                taxonomies, metrics, strWordPairsFiles,
+                                                icModels, measureTypes);
         
         // We return the result
         
