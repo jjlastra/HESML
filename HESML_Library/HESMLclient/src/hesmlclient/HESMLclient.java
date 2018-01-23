@@ -272,7 +272,7 @@ public class HESMLclient
         // measure in the RG65 dataset. It shows the use of the automatized
         // benchmark for single non IC-based similarity measures.
         
-        testSingleNonICbasedMeasure();
+        //testSingleNonICbasedMeasure();
         
         // (4) The following test evaluates a single IC-similarity measures
         // with multiple intrinsic IC models.
@@ -282,7 +282,7 @@ public class HESMLclient
         // (5) The following test evaluates a single IC-similarity measure
         // with a single intrinsic IC miodel.
         
-        //testSingleICSimMeasureSingleICmodel();
+        testSingleICSimMeasureSingleICmodel();
         
         // (6) The following test shows how to directly compute the
         // similarity between two words using two different similarity measures.
@@ -767,14 +767,13 @@ public class HESMLclient
                     wordnetTaxonomy, wordnet,
                     m_strWordNetDatasetsDir + MC28 + ".csv",
                     CorrelationOutputMetrics.PearsonAndSpearman,
-                    IntrinsicICModelType.Seco,
+                    IntrinsicICModelType.Cai,
                     SimilarityMeasureType.JiangConrath);
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
         
-        benchmark.executeTests(m_strResultsDir +
-                "CosineNormWeightedJiangConrath_RG65.csv", true);
+        benchmark.executeTests(m_strResultsDir + "JiangConrath.csv", true);
         
         // We release the resources
         
