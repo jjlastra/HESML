@@ -118,6 +118,8 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     {
         double  distance = 1e10;   // Returned value
 
+        // We compute the MICA vertex
+        
         IVertex micaVertex = left.getTaxonomy().getMICA(left, right);
        
         // We check the existence of the MICA vertex. It only fails when

@@ -280,6 +280,18 @@ public class MeasureFactory
                 
                 break;
                 
+            case CaiStrategy1:
+                
+                measure = new MeasureCaiStrategy1(taxonomy, 0.5, 0.1);
+                
+                break;
+
+            case CaiStrategy2:
+                
+                measure = new MeasureCaiStrategy2(taxonomy, 0.5, 0.1);
+                
+                break;
+                
             case Taieb2014sim2:
                 
                 throw (new InvalidParameterException("Use the other getMeasure() function with a WordNetDB"));

@@ -84,11 +84,9 @@ class MeasureJiangConrath extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  distance;   // Returned value
-
         // We compute the distance
         
-        distance = getClassicJiangConrathDist(left, right);
+        double distance = getClassicJiangConrathDist(left, right);
         
         // We return the result
         
