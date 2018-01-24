@@ -24,7 +24,6 @@ package hesml.measures.impl;
 // HESML references
 
 import hesml.measures.*;
-import static hesml.measures.impl.BaseJiangConrathMeasure.getClassicJiangConrathDist;
 import hesml.taxonomy.*;
 
 /**

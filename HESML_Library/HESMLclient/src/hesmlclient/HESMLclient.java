@@ -768,7 +768,7 @@ public class HESMLclient
                     m_strWordNetDatasetsDir + MC28 + ".csv",
                     CorrelationOutputMetrics.PearsonAndSpearman,
                     IntrinsicICModelType.Cai,
-                    SimilarityMeasureType.CaiStrategy1);
+                    SimilarityMeasureType.CaiStrategy2);
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
