@@ -217,6 +217,8 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         {
             strMatrix[iWordPair + 1][0] = m_WordPairs[iWordPair].getWord1() + ","
                                             + m_WordPairs[iWordPair].getWord2();
+            
+            strMatrix[iWordPair + 1][1] = Double.toString(m_WordPairs[iWordPair].getHumanJudgement());
         }
         
         // We return the result

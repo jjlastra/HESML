@@ -80,7 +80,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static ISimilarityBenchmark getSingleDatasetSimilarityValuesTes(
+    public static ISimilarityBenchmark getSingleDatasetSimilarityValuesTest(
             ITaxonomy                   taxonomy,
             IWordNetDB                  wordnet,
             String                      strWordPairsFile,
