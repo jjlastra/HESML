@@ -124,6 +124,12 @@
 			<xs:enumeration value="Li2003Strategy9"/>
 			<xs:enumeration value="Garla"/>
 			<xs:enumeration value="Taieb2014sim2"/>
+			<xs:enumeration value="CaiStrategy1"/>
+			<xs:enumeration value="CaiStrategy2"/>
+			<xs:enumeration value="Hao"/>
+			<xs:enumeration value="PekarStaab"/>
+			<xs:enumeration value="Stojanovic"/>
+			<xs:enumeration value="WuPalmerFast"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="IntrinsicICModelType">
