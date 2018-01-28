@@ -151,6 +151,11 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             m_Measure = MeasureFactory.getMeasure(m_Wordnet, m_Taxonomy,
                             m_MeasureTypes[iMeasure]);
                 
+            if (showDebugInfo)
+            {
+                System.out.println(strDebugMsg);
+            }
+            
             // We evaluate the similarity for each word pair
 
             for (int iWord = 0; iWord < m_WordPairs.length; iWord++)

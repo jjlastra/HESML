@@ -1550,7 +1550,7 @@ public class ReproducibleExperimentsInfo
         
         for (ISimilarityBenchmark benchmark: m_Experiments)
         {
-            benchmark.executeTests(benchmark.getDefaultOutputFilename(), false);
+            benchmark.executeTests(benchmark.getDefaultOutputFilename(), true);
         }
     }
         
