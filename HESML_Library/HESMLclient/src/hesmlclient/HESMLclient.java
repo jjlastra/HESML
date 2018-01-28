@@ -241,7 +241,7 @@ public class HESMLclient
         // the collection of hand-coded sample experiments that you can use
         // with the aim of learning to use HESML.
 
-        SampleExperiments();        
+        //SampleExperiments();        
     }
     
     /**
