@@ -199,9 +199,8 @@ public class HESMLclient
                     // We parse the input file in order to recover the
                     // experiments definition.
 
-                    ReproducibleExperimentsInfo reproInfo;
-
-                    reproInfo = new ReproducibleExperimentsInfo(inputFile, m_SchemaFilename);
+                    ReproducibleExperimentsInfo reproInfo = new ReproducibleExperimentsInfo(
+                                                                inputFile, m_SchemaFilename);
 
                     // We execute all the experiments defined in the input file
 

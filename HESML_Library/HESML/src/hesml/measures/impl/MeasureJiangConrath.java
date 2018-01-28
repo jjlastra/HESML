@@ -92,4 +92,17 @@ class MeasureJiangConrath extends BaseJiangConrathMeasure
         
         return (distance);
     }
+    
+    /**
+     * This function returns the value returned by the similarity measure when
+     * there is none similarity between both input concepts, or the concept
+     * is not contained in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public double getNullSimilarityValue()
+    {
+        return (1.0 - m_Taxonomy.getVertexes().getGreatestICValue());
+    }
 }

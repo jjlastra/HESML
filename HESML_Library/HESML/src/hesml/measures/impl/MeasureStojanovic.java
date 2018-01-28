@@ -86,8 +86,6 @@ class MeasureStojanovic extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity = 0.0;   // Returned value
-
         // We get the inclusive ancestors of the input vertexes
         // in accordance with the definition provided in equation (7)
         // of Stojanovic et al. (2001).
@@ -106,9 +104,9 @@ class MeasureStojanovic extends SimilaritySemanticMeasure
         rightAncestors.clear();
         
         // We compute the similarity as the ratio between the intersection
-        // and union sets, as defiend in equation (9) of the paper.
+        // and union sets, as defined in equation (9) of the paper.
         
-        similarity = intersectionCount / unionCount;
+        double similarity = intersectionCount / unionCount;
         
         // We return the result
         

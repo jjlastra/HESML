@@ -163,6 +163,7 @@
 			<xs:enumeration value="Adhikari"/>
 			<xs:enumeration value="AouichaTaiebAsGIC"/>
 			<xs:enumeration value="AICAouichaTaiebHamadu2016"/>
+			<xs:enumeration value="Cai"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="CorpusBasedICModelType">
@@ -308,17 +309,7 @@
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element name="MeasureType" type="SimilarityMeasureType"/>
-										<xs:choice minOccurs="0">
-											<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
-											<xs:element name="CorpusBasedICModel" minOccurs="0">
-												<xs:complexType>
-													<xs:sequence>
-														<xs:element name="Method" type="CorpusBasedICModelType"/>
-														<xs:element name="ConceptFrequencyFilename" type="xs:string"/>
-													</xs:sequence>
-												</xs:complexType>
-											</xs:element>
-										</xs:choice>
+										<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>

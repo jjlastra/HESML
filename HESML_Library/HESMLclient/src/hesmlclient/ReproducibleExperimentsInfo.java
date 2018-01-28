@@ -217,7 +217,7 @@ public class ReproducibleExperimentsInfo
                         
                     case "SingleDatasetSimilarityValuesExperiment":
                         
-                        
+                        readSingleDatasetSimilarityValuesExperiment(experiment);
                         
                         break;
                 }
@@ -360,7 +360,7 @@ public class ReproducibleExperimentsInfo
 
         // We assembly the filename of the dataset
         
-        strDatasetFileName = strDatasetDir + strDatasetFileName;
+        strDatasetFileName = strDatasetDir + "/" + strDatasetFileName;
         
         // We read the specific similarity measures
         
@@ -371,9 +371,7 @@ public class ReproducibleExperimentsInfo
         
         NodeList xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
         
-        for (int i = 0, nChild = xmlSpecificMeasures.getLength();
-                i < nChild;
-                i++)
+        for (int i = 0, nChild = xmlSpecificMeasures.getLength(); i < nChild; i++)
         {
             // We get the current i-esim node
             
@@ -383,8 +381,8 @@ public class ReproducibleExperimentsInfo
             
             if (child.getNodeType() == Node.ELEMENT_NODE)
             {
-                readSpecificSimilarityMeasure("",
-                       (Element) child, measureTypeList, icModelsList);
+                readSpecificSimilarityMeasure("", (Element) child, 
+                        measureTypeList, icModelsList);
             }
         }
         

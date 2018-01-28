@@ -148,11 +148,9 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     protected double convertToCosineNormSimilarity(
         double  distance)
     {
-        double  similarity; // retgurned value
-        
         // We normalize the distance
         
-        similarity = distanceToSimilarity(distance);
+        double similarity = distanceToSimilarity(distance);
         
         // Aplicamos la correción coseno
         

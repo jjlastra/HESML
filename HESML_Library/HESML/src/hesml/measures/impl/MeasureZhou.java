@@ -122,5 +122,29 @@ class MeasureZhou extends SimilaritySemanticMeasure
         
         return (similarity);
     }
+    
+    /**
+     * This function returns the value returned by the similarity measure when
+     * there is none similarity between both input concepts, or the concept
+     * is not contained in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public double getNullSimilarityValue()
+    {
+        // We compute the largest depth facto
+        
+        double depthFactor = Math.log(2.0 * m_DepthMax + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
+        
+        // We compute the lowest similarity value
+        
+        double lowestSimiliarity = 1.0 - 0.5 * (depthFactor
+                + m_Taxonomy.getVertexes().getGreatestICValue());
+        
+        // We return the value
+        
+        return (lowestSimiliarity);
+    }    
 }
 

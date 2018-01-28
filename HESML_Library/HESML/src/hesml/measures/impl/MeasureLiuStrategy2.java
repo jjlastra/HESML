@@ -105,31 +105,38 @@ class MeasureLiuStrategy2 extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex lcsVertex; // Lowest Common Subsummer
+        // We filter the equal case
         
-        // We get the LCS vertex
-
-        lcsVertex = m_Taxonomy.getLCS(left, right, false);
-
-        // We compute the distance
-
-        if (lcsVertex != null)
+        if (left == right)
         {
-            // We obtain the shortest path distance (edge weight = 1.0)
-            // between the input vertexes
-            
-            double length = left.getShortestPathDistanceTo(right, false);
-            
-            // We obtain the depth of the LCS vertex defiend as the the
-            // length of shortest path from the vertex to the root
-            
-            double depth = lcsVertex.getDepthMin();
-            
-            // We compute the similarity as defined in equation (5)
-            // of the paper
-            
-            similarity = (Math.exp(m_Alfa * depth) - 1.0)/
-                        (Math.exp(m_Alfa * depth) + Math.exp(m_Beta * length) - 2.0);
+            similarity = 1.0;
+        }
+        else
+        {
+            // We get the Lowest Common Subsummer (LCS) vertex
+
+            IVertex lcsVertex = m_Taxonomy.getLCS(left, right, false);
+
+            // We compute the distance
+
+            if (lcsVertex != null)
+            {
+                // We obtain the shortest path distance (edge weight = 1.0)
+                // between the input vertexes
+
+                double length = left.getShortestPathDistanceTo(right, false);
+
+                // We obtain the depth of the LCS vertex defiend as the the
+                // length of shortest path from the vertex to the root
+
+                double depth = lcsVertex.getDepthMin();
+
+                // We compute the similarity as defined in equation (5)
+                // of the paper
+
+                similarity = (Math.exp(m_Alfa * depth) - 1.0)/
+                            (Math.exp(m_Alfa * depth) + Math.exp(m_Beta * length) - 2.0);
+            }
         }
         
         // We return the result

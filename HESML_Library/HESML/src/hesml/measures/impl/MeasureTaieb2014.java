@@ -241,11 +241,9 @@ class MeasureTaieb2014 extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        
         // We get the similarity value
         
-        similarity = similarityWithFactor(left, right, 0.0);
+        double similarity = similarityWithFactor(left, right, 0.0);
         
         // We return the result
         

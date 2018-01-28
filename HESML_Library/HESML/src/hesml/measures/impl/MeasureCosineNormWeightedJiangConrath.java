@@ -99,17 +99,13 @@ class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        
-        double  distance;   // Standard JC distance
-
         // We compute the distance
         
-        distance = left.getShortestPathDistanceTo(right, true);
+        double distance = left.getShortestPathDistanceTo(right, true);
         
         // We normalize the distance
         
-        similarity = convertToCosineNormSimilarity(distance);
+        double similarity = convertToCosineNormSimilarity(distance);
 
         // We return the result
         
