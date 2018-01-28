@@ -160,6 +160,16 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
 
             for (int iWord = 0; iWord < m_WordPairs.length; iWord++)
             {
+                // We evaluate the similarity between word 1 and word2
+                
+                if (showDebugInfo)
+                {
+                    strDebugMsg = "Evaluating " + (iWord + 1) + " of "
+                            + m_WordPairs.length + " word pairs";
+                    
+                    System.out.println(strDebugMsg);
+                }
+                
                 // We compute the highest similarity value
                 
                 double similarity = highestSimilarityValue(m_Measure,
