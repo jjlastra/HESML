@@ -88,27 +88,36 @@ class MeasurePekarStaab extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        // We obtain the Lowest Common Subsumer
+        // We filter the equal case
         
-        IVertex lcsVertex = left.getTaxonomy().getLCS(left, right, false);
-
-        // We check that there is a LCS vertex
-        
-        if (lcsVertex != null)
+        if (left == right)
         {
-            // We get the root vertex
-            
-            IVertex root = left.getTaxonomy().getVertexes().getRoots().getAt(0);
-            
-            // We compute the distance between the input vertexes, LCS and root
-            
-            double distLcsRoot = lcsVertex.getShortestPathDistanceTo(root, false);
-            double distLeftLcs = left.getShortestPathDistanceTo(lcsVertex, false);
-            double distRightLcs = right.getShortestPathDistanceTo(lcsVertex, false);
-                    
-            // We compute the similarity as defined in equation (2) of the paper
-            
-            similarity = distLcsRoot / (distLeftLcs + distRightLcs + distLcsRoot);
+            similarity = 1.0;
+        }
+        else
+        {
+            // We obtain the Lowest Common Subsumer
+
+            IVertex lcsVertex = left.getTaxonomy().getLCS(left, right, false);
+
+            // We check that there is a LCS vertex
+
+            if (lcsVertex != null)
+            {
+                // We get the root vertex
+
+                IVertex root = left.getTaxonomy().getVertexes().getRoots().getAt(0);
+
+                // We compute the distance between the input vertexes, LCS and root
+
+                double distLcsRoot = lcsVertex.getShortestPathDistanceTo(root, false);
+                double distLeftLcs = left.getShortestPathDistanceTo(lcsVertex, false);
+                double distRightLcs = right.getShortestPathDistanceTo(lcsVertex, false);
+
+                // We compute the similarity as defined in equation (2) of the paper
+
+                similarity = distLcsRoot / (distLeftLcs + distRightLcs + distLcsRoot);
+            }
         }
         
         // We return the result

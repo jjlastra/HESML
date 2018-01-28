@@ -159,11 +159,9 @@ public class ReproducibleExperimentsInfo
     private void parseExperiments(
         Element rootNode) throws Exception
     {
-        NodeList    experimentNodes;    // Collectionof experiments
-        
         // We get the node with collection of experiments 
         
-        experimentNodes = rootNode.getChildNodes();
+        NodeList experimentNodes = rootNode.getChildNodes();
         
         // We traverse the collection of experiments parsing them
         
@@ -216,13 +214,19 @@ public class ReproducibleExperimentsInfo
                         readMultipleDatasetsExperiment(experiment);
                         
                         break;
+                        
+                    case "SingleDatasetSimilarityValuesExperiment":
+                        
+                        readSingleDatasetSimilarityValuesExperiment(experiment);
+                        
+                        break;
                 }
             }
         }
     }
     
     /**
-     * This function recovers a multiple dataset experiments from its
+     * This function loads a multiple dataset experiments from its
      * Xml definition.
      * @param experimentRoot 
      */
@@ -263,14 +267,12 @@ public class ReproducibleExperimentsInfo
         
         // We read the specific similarity measures
         
-        ArrayList<SimilarityMeasureType>        measureTypeList = new ArrayList<>();
-        ArrayList<ITaxonomyInfoConfigurator>    icModelsList;
-        
-        icModelsList = new ArrayList<>();
+        ArrayList<SimilarityMeasureType> measureTypeList = new ArrayList<>();
+        ArrayList<ITaxonomyInfoConfigurator> icModelsList = new ArrayList<>();
         
         Element xmlSimMeasures = getFirstChildWithTagName(experimentRoot, "SimilarityMeasures");
         
-        NodeList    xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
+        NodeList xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
         
         for (int i = 0, nChild = xmlSpecificMeasures.getLength();
                 i < nChild;
@@ -278,7 +280,7 @@ public class ReproducibleExperimentsInfo
         {
             // We get the current i-esim node
             
-            Node    child = xmlSpecificMeasures.item(i);
+            Node child = xmlSpecificMeasures.item(i);
             
             // We filter the Xmlelements
             
@@ -339,7 +341,87 @@ public class ReproducibleExperimentsInfo
     }
     
     /**
-     * This functionrecovers the Wordnet version from the directory name
+     * This function loads a single dataset experiments from its
+     * Xml definition.
+     * @param experimentRoot 
+     */
+    
+    private void readSingleDatasetSimilarityValuesExperiment(
+            Element experimentRoot) throws Exception
+    {
+        
+        // We read the dataset filename and path
+        
+        String strDatasetDir = readStringField(experimentRoot, "DatasetDirectory");
+        String strDatasetFileName = readStringField(experimentRoot, "DatasetFileName");
+        String strOutputFilename = readStringField(experimentRoot, "OutputFileName");
+        String strWNdbFilename = readStringField(experimentRoot, "WordNetDatabaseFileName");
+        String strWordNetDirectory = readStringField(experimentRoot, "WordNetDatabaseDirectory");
+
+        // We assembly the filename of the dataset
+        
+        strDatasetFileName = strDatasetDir + "/" + strDatasetFileName;
+        
+        // We read the specific similarity measures
+        
+        ArrayList<SimilarityMeasureType> measureTypeList = new ArrayList<>();
+        ArrayList<ITaxonomyInfoConfigurator> icModelsList = new ArrayList<>();
+        
+        Element xmlSimMeasures = getFirstChildWithTagName(experimentRoot, "SimilarityMeasures");
+        
+        NodeList xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
+        
+        for (int i = 0, nChild = xmlSpecificMeasures.getLength(); i < nChild; i++)
+        {
+            // We get the current i-esim node
+            
+            Node child = xmlSpecificMeasures.item(i);
+            
+            // We filter the Xmlelements
+            
+            if (child.getNodeType() == Node.ELEMENT_NODE)
+            {
+                readSpecificSimilarityMeasure("", (Element) child, 
+                        measureTypeList, icModelsList);
+            }
+        }
+        
+        // We copy the IC models and measures to the arrays and clear them.
+        
+        ITaxonomyInfoConfigurator[] icModels = new ITaxonomyInfoConfigurator[icModelsList.size()];
+        icModelsList.toArray(icModels);
+        icModelsList.clear();
+        
+        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[measureTypeList.size()];
+        measureTypeList.toArray(measureTypes);
+        measureTypeList.clear();
+    
+        // We load the WordNet database
+
+        String  strWNfullname = strWordNetDirectory + "/" + strWNdbFilename;
+            
+        // We load the WN database and its taxonomy from the cache
+        
+        IWordNetDB  wordnet = getExperimentWordNetDB(experimentRoot);
+        ITaxonomy   taxonomy = getExpWordNetTaxonomy(experimentRoot);
+        
+        // We create an instance from a multiple dataset experiment
+        
+        ISimilarityBenchmark experiment = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
+                                            taxonomy, wordnet,
+                                            strDatasetFileName, icModels, measureTypes);
+        
+        // We set the output full filename
+        
+        experiment.setDefaultOutputFilename(m_strOutputDir + "/" + strOutputFilename);
+        
+        // We store the experiment
+        
+        m_Experiments.add(experiment);
+    }
+    
+    /**
+     * This function loads the Wordnet version from the directory name
      * containing the WordNet database.
      * @param strWordNetDirectory
      * @return 
@@ -431,7 +513,7 @@ public class ReproducibleExperimentsInfo
     }
     
     /**
-     * This function recovers an experiment from its Xml definition.
+     * This function loads an experiment from its Xml definition.
      * @param experimentRoot 
      */
     
@@ -966,7 +1048,7 @@ public class ReproducibleExperimentsInfo
     }
     
     /**
-     * This function recovers an experiment from its Xml definition.
+     * This function loads an experiment from its Xml definition.
      * @param experimentRoot 
      */
     
@@ -1021,7 +1103,7 @@ public class ReproducibleExperimentsInfo
     }
 
     /**
-     * This function recovers an experiment from its Xml definition.
+     * This function loads an experiment from its Xml definition.
      * @param experimentRoot 
      */
     
@@ -1074,7 +1156,7 @@ public class ReproducibleExperimentsInfo
     }
 
     /**
-     * This function recovers an experiment from its Xml definition.
+     * This function loads an experiment from its Xml definition.
      * @param experimentRoot 
      */
     
@@ -1136,7 +1218,7 @@ public class ReproducibleExperimentsInfo
     }
 
     /**
-     * This function recovers an experiment from its XML definition.
+     * This function loads an experiment from its XML definition.
      * @param experimentRoot 
      */
     

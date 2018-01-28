@@ -118,6 +118,8 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     {
         double  distance = 1e10;   // Returned value
 
+        // We compute the MICA vertex
+        
         IVertex micaVertex = left.getTaxonomy().getMICA(left, right);
        
         // We check the existence of the MICA vertex. It only fails when
@@ -146,11 +148,9 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     protected double convertToCosineNormSimilarity(
         double  distance)
     {
-        double  similarity; // retgurned value
-        
         // We normalize the distance
         
-        similarity = distanceToSimilarity(distance);
+        double similarity = distanceToSimilarity(distance);
         
         // Aplicamos la correción coseno
         

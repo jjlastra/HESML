@@ -85,9 +85,6 @@ class MeasureSanchez2012 extends SimilaritySemanticMeasure
             IVertex right) throws InterruptedException, Exception
     {
         double  dissimilarity;   // Returned value
-
-        IVertexList leftAncestors;  // Ancestors
-        IVertexList rightAncestors;
        
         double    leftDif, rightDif;  // CARDINAL OF THE DIFFERENCE SETS
         double    intersection;       // cardinal of the intersexction set
@@ -96,8 +93,8 @@ class MeasureSanchez2012 extends SimilaritySemanticMeasure
         
         // We get the ancestro sets
         
-        leftAncestors = left.getAncestors(true);
-        rightAncestors = right.getAncestors(true);
+        IVertexList leftAncestors = left.getAncestors(true);
+        IVertexList rightAncestors = right.getAncestors(true);
         
         // We measure the difference sets and the intersection
         

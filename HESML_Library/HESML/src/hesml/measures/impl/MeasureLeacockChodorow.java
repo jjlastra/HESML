@@ -96,11 +96,9 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
         // We compute the similarity
 
-        similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
+        double similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
                             + (2.0 * m_largestDepthMin));
         
         // We return the result

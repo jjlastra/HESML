@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -21,35 +21,46 @@
 
 package hesml.measures.impl;
 
-import hesml.measures.SimilarityMeasureClass;
-import hesml.measures.SimilarityMeasureType;
-import hesml.taxonomy.ITaxonomy;
-import hesml.taxonomy.IVertex;
-import hesml.taxonomy.IVertexList;
+// HESML references
+
+import hesml.measures.*;
+import hesml.taxonomy.*;
 
 /**
- * This class implements the similarity measures defined in equation (9)
- * of the paper introduced by Stojanovic et al. (2001) cited below:
+ * This class implements the semantic similarity measure called strategy1 in
+ * the paper by Cai et  al. (2017) cited below.
+ * Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017).
+ * A hybrid approach for measuring semantic similarity based on IC-weighted path
+ * distance in WordNet. Journal of Intelligent Information Systems, 1–25.
  * 
- * Stojanovic, N., Maedche, A., Staab, S., Studer, R., and Sure, Y. (2001).
- * SEAL: A Framework for Developing SEmantic PortALs.
- * In Proceedings of the 1st International Conference on Knowledge Capture
- * (pp. 155–162). New York, NY, USA: ACM.
- * 
- * @author j.lastra
+ * @author Juan Lastra-Díaz
  */
 
-class MeasureStojanovic extends SimilaritySemanticMeasure
+class MeasureCaiStrategy2 extends BaseJiangConrathMeasure
 {
+    /**
+     * Free parameters in formula (7) of the paper cited above
+     */
+    
+    private double  m_alplha;
+    private double  m_beta;
+    
     /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
-    MeasureStojanovic(
-            ITaxonomy   taxonomy)
+    MeasureCaiStrategy2(
+            ITaxonomy   taxonomy,
+            double      alpha,
+            double      beta) throws Exception
     {
         super(taxonomy);
+        
+        // We store the free parameters
+        
+        m_alplha = alpha;
+        m_beta = beta;
     }
 
     /**
@@ -60,7 +71,7 @@ class MeasureStojanovic extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Stojanovic);
+        return (SimilarityMeasureType.CaiStrategy2);
     }
     
     /**
@@ -78,7 +89,7 @@ class MeasureStojanovic extends SimilaritySemanticMeasure
      * This function returns the comparison between nodes.
      * @param left
      * @param right
-     * @return Similarity value.
+     * @return The semantic distance between the nodes.
      */
     
     @Override
@@ -86,30 +97,27 @@ class MeasureStojanovic extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        // We get the inclusive ancestors of the input vertexes
-        // in accordance with the definition provided in equation (7)
-        // of Stojanovic et al. (2001).
+        // We obtain the MICA vertex
         
-        IVertexList leftAncestors = left.getAncestors(true);
-        IVertexList rightAncestors = right.getAncestors(true);
+        IVertex micaVertex = left.getTaxonomy().getMICA(left, right);
+
+        // We compute splW (Jiang-Coraanh distance)
         
-        // We get the count of the insersection set
+        double splW = left.getICvalue() + right.getICvalue() - 2 * micaVertex.getICvalue();
         
-        double intersectionCount = leftAncestors.getIntersectionSetCount(rightAncestors);
-        double unionCount = leftAncestors.getUnionSetCount(rightAncestors);
+        // We compute the splO term (formula 6 in the paper)
         
-        // We release the ancestor sets
+        ITaxonomy taxonomy = left.getTaxonomy();
         
-        leftAncestors.clear();
-        rightAncestors.clear();
+        double splO = Math.log((1.0 + left.getDepthMax() + right.getDepthMax())
+                    / (1.0 + 2.0 * taxonomy.getLCS(left, right, true).getDepthMax()));
         
-        // We compute the similarity as the ratio between the intersection
-        // and union sets, as defined in equation (9) of the paper.
+        // Now we compute the similarity value
         
-        double similarity = intersectionCount / unionCount;
+        double sim1 = Math.exp(-(m_alplha * splW + m_beta * splO));
         
         // We return the result
         
-        return (similarity);
+        return (sim1);
     }
 }

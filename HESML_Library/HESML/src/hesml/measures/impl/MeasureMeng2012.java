@@ -106,5 +106,4 @@ class MeasureMeng2012 extends SimilaritySemanticMeasure
         
         return (similarity);
     }
-    
 }

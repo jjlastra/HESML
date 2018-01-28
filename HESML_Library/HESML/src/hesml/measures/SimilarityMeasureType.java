@@ -98,7 +98,7 @@ public enum SimilarityMeasureType
     Lin,
 
     /**
-     * It asks for the similarity measure introduced in the paper below.v
+     * It asks for the similarity measure introduced in the paper below.
      * Jiang, J. J., and Conrath, D. W. (1997).
      * Semantic similarity based on corpus statistics and lexical taxonomy.
      * In Proceedings of International Conference Research on Computational
@@ -106,6 +106,16 @@ public enum SimilarityMeasureType
      */
     
     JiangConrath,
+
+    /**
+     * It asks for the similarity measures introduced in the paper below.
+     * Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017).
+     * A hybrid approach for measuring semantic similarity based on IC-weighted path
+     * distance in WordNet. Journal of Intelligent Information Systems, 1–25.
+     */
+    
+    CaiStrategy1,
+    CaiStrategy2,
 
     /**
      * It asks for the similarity measure introduced in the paper below.

@@ -91,16 +91,13 @@ class MeasureLogisticNormJiangConrath extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        double  distance;   // Standard JC distance
-
         // We compute the distance
         
-        distance = getClassicJiangConrathDist(left, right);
+        double distance = getClassicJiangConrathDist(left, right);
         
         // We normalize the distance
         
-        similarity = getLogisticNormSimilarity(distance);
+        double similarity = getLogisticNormSimilarity(distance);
 
         // We return the result
         

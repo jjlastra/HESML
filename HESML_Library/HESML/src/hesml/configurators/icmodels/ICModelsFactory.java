@@ -270,6 +270,16 @@ public class ICModelsFactory
                 
                 break;
                 
+            case Cai:
+                
+                // We set the best value reported for the free parameter
+                // called 'lambda' in formula (3) of the paper introducing
+                // the Cai et al. (2017) IC model
+                
+                icModel = new CaiICmodel(0.4);
+                
+                break;
+                
             case AICAouichaTaiebHamadu2016:
                 
                 String  strError = "This IC model is not reproducible and usable\n"
