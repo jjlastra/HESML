@@ -577,12 +577,14 @@ public class HESMLclient
         measureTypes[0] = SimilarityMeasureType.Resnik;
         measureTypes[1] = SimilarityMeasureType.Lin;
         
+        String[] strWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
+        
         // We create the benchmark
         
         ISimilarityBenchmark benchmark = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
                                             wordnetTaxonomy, wordnet,
                                             m_strWordNetDatasetsDir + RG65 + ".csv",
-                                            icModels, measureTypes);
+                                            icModels, measureTypes, strWordVectorFiles);
 
         // We run the experiments
         

@@ -395,7 +395,11 @@ public class ReproducibleExperimentsInfo
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[measureTypeList.size()];
         measureTypeList.toArray(measureTypes);
         measureTypeList.clear();
+
+        // We load the (*.emb) word mebedding models
     
+        String[] strWordVectorFilenames = readStringFields(experimentRoot, "RawWordVectorFiles");
+        
         // We load the WordNet database
 
         String  strWNfullname = strWordNetDirectory + "/" + strWNdbFilename;
@@ -408,8 +412,8 @@ public class ReproducibleExperimentsInfo
         // We create an instance from a multiple dataset experiment
         
         ISimilarityBenchmark experiment = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
-                                            taxonomy, wordnet,
-                                            strDatasetFileName, icModels, measureTypes);
+                                            taxonomy, wordnet, strDatasetFileName,
+                                            icModels, measureTypes, strWordVectorFilenames);
         
         // We set the output full filename
         
