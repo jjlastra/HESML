@@ -76,6 +76,7 @@ public class BenchmarkFactory
      * @param strWordPairsFile Word similarity benchmark in CSV file format
      * @param icModels IC models 
      * @param measureTypes Measure types
+     * @param strEmbeddingModelFilenames
      * @return A matrix containing one column per each measure with the raw similarity values
      * @throws Exception 
      */
@@ -85,12 +86,14 @@ public class BenchmarkFactory
             IWordNetDB                  wordnet,
             String                      strWordPairsFile,
             ITaxonomyInfoConfigurator[] icModels,
-            SimilarityMeasureType[]     measureTypes) throws Exception
+            SimilarityMeasureType[]     measureTypes,
+            String[]                    strEmbeddingModelFilenames) throws Exception
     {
         // We create the benchmark
         
         ISimilarityBenchmark test = new BenchmarkSingleDatasetSimilarityValues(wordnet,
-                                        taxonomy, strWordPairsFile, icModels, measureTypes);
+                                        taxonomy, strWordPairsFile, icModels,
+                                        measureTypes, strEmbeddingModelFilenames);
         
         // We return the result
         

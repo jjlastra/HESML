@@ -137,7 +137,7 @@ class WordNetWordSimilarityMeasure implements IWordNetWordSimilarityMeasure
     }
     
     /**
-     * This function returns the measure class.
+     * This function returns the similarity measure class.
      * @return 
      */
 

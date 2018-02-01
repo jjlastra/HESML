@@ -360,12 +360,25 @@ public class MeasureFactory
      * @throws Exception 
      */
     
-    public IWordNetWordSimilarityMeasure getWordNetWordSimilarityMeasure(
+    public static IWordSimilarityMeasure getWordNetWordSimilarityMeasure(
             IWordNetDB                  wordnetDB,
             ITaxonomy                   wordnetTaxonomy,
             SimilarityMeasureType       measureType,
             ITaxonomyInfoConfigurator   icModel) throws Exception
     {
         return (new WordNetWordSimilarityMeasure(wordnetDB, wordnetTaxonomy, measureType, icModel));
+    }
+    
+    /**
+     * This function loads a word embedding model implementing
+     * a word similarity measure.
+     * @param strRawVectorFile
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getRawWordEmbeddingModel(
+            String  strRawVectorFile)
+    {
+        return (new RawWordEmbeddingModel(strRawVectorFile));
     }
 }

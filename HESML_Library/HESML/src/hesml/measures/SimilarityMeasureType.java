@@ -363,5 +363,11 @@ public enum SimilarityMeasureType
      * (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
      */
     
-    PekarStaab
+    PekarStaab,
+    
+    /**
+     * Word embedding pre-trained model
+     */
+    
+    RawWordEmbedding
 }
