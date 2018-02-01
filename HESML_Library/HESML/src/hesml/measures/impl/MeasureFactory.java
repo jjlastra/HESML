@@ -23,6 +23,7 @@ package hesml.measures.impl;
 
 // HESML references
 
+import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
@@ -347,5 +348,24 @@ public class MeasureFactory
         // We return the result
         
         return (measure);
-    }    
+    }   
+    
+    /**
+     * This function creates a new similarity measure based on WordNet.
+     * @param wordnetDB WordNet database
+     * @param wordnetTaxonomy Base taxonomy. It will be updated by the IC model
+     * @param measureType Type of measure to be created
+     * @param icModel ICmodel used which can be null for non IC_based measures
+     * @return The new measure
+     * @throws Exception 
+     */
+    
+    public IWordNetWordSimilarityMeasure getWordNetWordSimilarityMeasure(
+            IWordNetDB                  wordnetDB,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       measureType,
+            ITaxonomyInfoConfigurator   icModel) throws Exception
+    {
+        return (new WordNetWordSimilarityMeasure(wordnetDB, wordnetTaxonomy, measureType, icModel));
+    }
 }
