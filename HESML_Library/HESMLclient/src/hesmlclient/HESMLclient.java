@@ -532,13 +532,15 @@ public class HESMLclient
     
     /**
      * This function runs the tests for a collection of similarity measures
-     * in a same dataset and produces an output file containing a matris
-     * of raw similairty values.
+     * in a same dataset and produces an output file containing a matrix
+     * of raw similarity values. The benchmark evaluates ontology-based measures
+     * based on WordNet and word embeddings.
      * 
      * The function loads WordNet and creates a HESML taxonomy to represent it.
      * The benchmarks loads the dataset files with the word pairs and
      * creates a experiment matrix to evaluate each selected
-     * similarity measure.
+     * similarity measure. In addition, the word embedding files in *.emb
+     * file format are loaded and evaluated.
      * @throws Exception 
      */
     

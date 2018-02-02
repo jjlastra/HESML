@@ -5,30 +5,6 @@
 		<OutputFileName>raw_ontology_measures_MC28_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
 		<DatasetFileName>Miller_Charles_28_dataset.csv</DatasetFileName>
-		<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
-		<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
-		<SimilarityMeasures>
-			<SpecificSimilarityMeasure>
-				<MeasureType>CosineNormJiangConrath</MeasureType>
-				<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
-			</SpecificSimilarityMeasure>
-			<SpecificSimilarityMeasure>
-				<MeasureType>PirroSeco</MeasureType>
-				<IntrinsicICModel>Seco</IntrinsicICModel>
-			</SpecificSimilarityMeasure>
-			<SpecificSimilarityMeasure>
-				<MeasureType>Resnik</MeasureType>
-				<IntrinsicICModel>CondProbRefLeavesSubsumersRatio</IntrinsicICModel>
-			</SpecificSimilarityMeasure>
-			<SpecificSimilarityMeasure>
-				<MeasureType>Lin</MeasureType>
-				<IntrinsicICModel>Seco</IntrinsicICModel>
-			</SpecificSimilarityMeasure>
-			<SpecificSimilarityMeasure>
-				<MeasureType>JiangConrath</MeasureType>
-				<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
-			</SpecificSimilarityMeasure>
-		</SimilarityMeasures>
 		<RawWordVectorFiles>
 			<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
@@ -38,6 +14,33 @@
 			<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
 			<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
 			<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+			<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
 		</RawWordVectorFiles>
+		<WordNetMeasures>
+			<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
+			<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
+			<SimilarityMeasures>
+				<SpecificSimilarityMeasure>
+					<MeasureType>CosineNormJiangConrath</MeasureType>
+					<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>PirroSeco</MeasureType>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Resnik</MeasureType>
+					<IntrinsicICModel>CondProbRefLeavesSubsumersRatio</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Lin</MeasureType>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>JiangConrath</MeasureType>
+					<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+			</SimilarityMeasures>
+		</WordNetMeasures>
 	</SingleDatasetSimilarityValuesExperiment>
 </WordNetBasedExperiments>
