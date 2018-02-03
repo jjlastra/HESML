@@ -379,6 +379,6 @@ public class MeasureFactory
     public static IWordSimilarityMeasure getRawWordEmbeddingModel(
             String  strRawVectorFile)
     {
-        return (new RawWordEmbeddingModel(strRawVectorFile));
+        return (new EMBWordEmbeddingModel(strRawVectorFile));
     }
 }

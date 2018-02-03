@@ -78,8 +78,6 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
         
         String strDatasetDir = readStringField(experimentRoot, "DatasetDirectory");
         String strDatasetFileName = readStringField(experimentRoot, "DatasetFileName");
-        String strWNdbFilename = readStringField(experimentRoot, "WordNetDatabaseFileName");
-        String strWordNetDirectory = readStringField(experimentRoot, "WordNetDatabaseDirectory");
 
         // We assembly the filename of the dataset
         
@@ -90,49 +88,75 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
         ArrayList<SimilarityMeasureType> measureTypeList = new ArrayList<>();
         ArrayList<ITaxonomyInfoConfigurator> icModelsList = new ArrayList<>();
         
-        Element xmlSimMeasures = getFirstChildWithTagName(experimentRoot, "SimilarityMeasures");
+        // Inicializamos los objetos relacionados con WordNet
         
-        NodeList xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
+        IWordNetDB  wordnet = null;
+        ITaxonomy   taxonomy = null;
+        ITaxonomyInfoConfigurator[] icModels = {};
+        SimilarityMeasureType[] measureTypes = {};
         
-        for (int i = 0, nChild = xmlSpecificMeasures.getLength(); i < nChild; i++)
+        // We search for the WordNet-based measures
+        
+        Element wordNetMeasuresRoot = getFirstChildWithTagName(experimentRoot, "WordNetMeasures");
+        
+        if (wordNetMeasuresRoot != null)
         {
-            // We get the current i-esim node
-            
-            Node child = xmlSpecificMeasures.item(i);
-            
-            // We filter the Xmlelements
-            
-            if (child.getNodeType() == Node.ELEMENT_NODE)
+            String strWNdbFilename = readStringField(wordNetMeasuresRoot, "WordNetDatabaseFileName");
+            String strWordNetDirectory = readStringField(wordNetMeasuresRoot, "WordNetDatabaseDirectory");
+        
+            Element xmlSimMeasures = getFirstChildWithTagName(wordNetMeasuresRoot, "SimilarityMeasures");
+        
+            NodeList xmlSpecificMeasures = xmlSimMeasures.getChildNodes();
+        
+            for (int i = 0, nChild = xmlSpecificMeasures.getLength(); i < nChild; i++)
             {
-                readSpecificSimilarityMeasure("", (Element) child, 
-                        measureTypeList, icModelsList);
+                // We get the current i-esim node
+
+                Node child = xmlSpecificMeasures.item(i);
+
+                // We filter the Xmlelements
+
+                if (child.getNodeType() == Node.ELEMENT_NODE)
+                {
+                    readSpecificSimilarityMeasure("", (Element) child, 
+                            measureTypeList, icModelsList);
+                }
             }
+        
+            // We copy the IC models and measures to the arrays and clear them.
+
+            icModels = new ITaxonomyInfoConfigurator[icModelsList.size()];
+            icModelsList.toArray(icModels);
+            icModelsList.clear();
+
+            measureTypes = new SimilarityMeasureType[measureTypeList.size()];
+            measureTypeList.toArray(measureTypes);
+            measureTypeList.clear();
+
+            // We load the WN database and its taxonomy from the cache
+
+            String  strWNfullpath = strWordNetDirectory + "/" + strWNdbFilename;
+            
+            wordnet = getExpWordNetDB(strWNfullpath);
+            taxonomy = getExpWordNetTaxonomy(strWNfullpath);
         }
-        
-        // We copy the IC models and measures to the arrays and clear them.
-        
-        ITaxonomyInfoConfigurator[] icModels = new ITaxonomyInfoConfigurator[icModelsList.size()];
-        icModelsList.toArray(icModels);
-        icModelsList.clear();
-        
-        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[measureTypeList.size()];
-        measureTypeList.toArray(measureTypes);
-        measureTypeList.clear();
 
         // We load the (*.emb) word embedding models
     
-        String[] strEmbVectorFilenames = readStringFields(experimentRoot, "EmbVectorFiles");
-        String[] strUKBVectorFilenames = readStringFields(experimentRoot, "UKBVectorFiles");
-        String[] strNasariVectorFilenames = readStringFields(experimentRoot, "NasariVectorFiles");
+        String[] strEmbVectorFilenames = {};
+        String[] strUKBVectorFilenames = {};
+        String[] strNasariVectorFilenames = {};
         
-        // We load the WordNet database
-
-        String  strWNfullname = strWordNetDirectory + "/" + strWNdbFilename;
-            
-        // We load the WN database and its taxonomy from the cache
+        // We load the embeddings
         
-        IWordNetDB  wordnet = getExperimentWordNetDB(experimentRoot);
-        ITaxonomy   taxonomy = getExpWordNetTaxonomy(experimentRoot);
+        Element wordVectorsRoot = getFirstChildWithTagName(experimentRoot, "RawWordVectorFiles");
+        
+        if (wordVectorsRoot != null)
+        {
+            strEmbVectorFilenames = readStringFields(wordVectorsRoot, "EmbVectorFiles");
+            strUKBVectorFilenames = readStringFields(wordVectorsRoot, "UKBVectorFiles");
+            strNasariVectorFilenames = readStringFields(wordVectorsRoot, "NasariVectorFiles");
+        }
         
         // We create an instance from a multiple dataset experiment
         

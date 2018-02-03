@@ -24,7 +24,6 @@ package hesml.measures.impl;
 import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,12 +32,13 @@ import java.io.IOException;
 /**
  * This class implements a cosine-similarity function based on the word vectors
  * provided by the pre-trained word embedding model contained in the
- * companion vector file.
+ * companion vector file. This class implements the reader and evaluator
+ * of the EMB file format
  * 
  * @author j.lastra
  */
 
-class RawWordEmbeddingModel implements IWordSimilarityMeasure
+class EMBWordEmbeddingModel implements IWordSimilarityMeasure
 {
     /**
      * This file contains the word vectors provided by the pre-trained
@@ -52,7 +52,7 @@ class RawWordEmbeddingModel implements IWordSimilarityMeasure
      * @param strVectorFilename 
      */
     
-    RawWordEmbeddingModel(
+    EMBWordEmbeddingModel(
         String  strVectorFilename)
     {
         m_strRawPretrainedEmbeddingFilename = strVectorFilename;

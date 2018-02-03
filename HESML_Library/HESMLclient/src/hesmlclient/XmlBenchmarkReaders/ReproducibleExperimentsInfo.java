@@ -21,14 +21,7 @@
 
 package hesmlclient.XmlBenchmarkReaders;
 
-import hesml.benchmarks.CorrelationOutputMetrics;
 import hesml.benchmarks.ISimilarityBenchmark;
-import hesml.benchmarks.impl.BenchmarkFactory;
-import hesml.configurators.CorpusBasedICModelType;
-import hesml.configurators.ITaxonomyInfoConfigurator;
-import hesml.configurators.IntrinsicICModelType;
-import hesml.configurators.icmodels.ICModelsFactory;
-import hesml.measures.SimilarityMeasureType;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;

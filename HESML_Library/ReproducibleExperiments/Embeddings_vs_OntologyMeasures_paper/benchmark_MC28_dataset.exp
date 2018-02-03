@@ -5,17 +5,6 @@
 		<OutputFileName>raw_ontology_measures_MC28_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
 		<DatasetFileName>Miller_Charles_28_dataset.csv</DatasetFileName>
-		<RawWordVectorFiles>
-			<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
-			<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
-		</RawWordVectorFiles>
 		<WordNetMeasures>
 			<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
 			<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
@@ -42,5 +31,27 @@
 				</SpecificSimilarityMeasure>
 			</SimilarityMeasures>
 		</WordNetMeasures>
+		<RawWordVectorFiles>
+			<EmbVectorFiles>
+				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
+				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+			</EmbVectorFiles>
+			<UKBVectorFiles>
+				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+			</UKBVectorFiles>
+			<NasariVectorFiles>
+				<NasariVectorFile>
+					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>..\WordEmbeddings\nasari\nasari-unifiedt</VectorFile>
+				</NasariVectorFile>
+			</NasariVectorFiles>
+		</RawWordVectorFiles>
 	</SingleDatasetSimilarityValuesExperiment>
 </WordNetBasedExperiments>

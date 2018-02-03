@@ -300,6 +300,28 @@
 				<xs:element name="OutputFileName" type="xs:string"/>
 				<xs:element name="DatasetDirectory" type="xs:string"/>
 				<xs:element name="DatasetFileName" type="xs:string"/>
+				<xs:element name="WordNetMeasures" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="WordNetDatabaseFileName" type="xs:string"/>
+							<xs:element name="WordNetDatabaseDirectory" type="xs:string"/>
+							<xs:element name="SimilarityMeasures">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="SpecificSimilarityMeasure" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="MeasureType" type="SimilarityMeasureType"/>
+													<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="RawWordVectorFiles" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
@@ -325,28 +347,6 @@
 												<xs:sequence>
 													<xs:element name="SensesFile" type="xs:string"/>
 													<xs:element name="VectorFile" type="xs:string"/>
-												</xs:sequence>
-											</xs:complexType>
-										</xs:element>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="WordNetMeasures" minOccurs="0">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="WordNetDatabaseFileName" type="xs:string"/>
-							<xs:element name="WordNetDatabaseDirectory" type="xs:string"/>
-							<xs:element name="SimilarityMeasures">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="SpecificSimilarityMeasure" maxOccurs="unbounded">
-											<xs:complexType>
-												<xs:sequence>
-													<xs:element name="MeasureType" type="SimilarityMeasureType"/>
-													<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
