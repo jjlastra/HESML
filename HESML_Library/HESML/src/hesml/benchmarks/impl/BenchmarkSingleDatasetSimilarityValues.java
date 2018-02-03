@@ -57,10 +57,22 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
     private final SimilarityMeasureType[]   m_MeasureTypes;
     
     /**
-     * Filenames of the pre-trained embedding models
+     * Filenames of the pre-trained embedding models in EMB file format
      */
     
     private final String[]  m_strRawEmbeddingFilenames;
+    
+    /**
+     * Filenames of the pre.trained embedding models in Nasari file format
+     */
+    
+    private final String[] m_strNasariModelFilenames;
+    
+    /**
+     * Filenames of the pre-trained emebdding files in UKB file format
+     */
+    
+    private final String[]  m_strUKBModelFilenames;
     
     /**
      * Constructor
@@ -72,7 +84,9 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             String                      strWordPairsFile,
             ITaxonomyInfoConfigurator[] icModels,
             SimilarityMeasureType[]     measureTypes,
-            String[]                    strEmbeddingModelFilenames) throws Exception
+            String[]                    strEmbModelFilenames,
+            String[]                    strNasariModelFilenames,
+            String[]                    strUKBModelFilenames) throws Exception
     {   
         // We initialize the base class
         
@@ -91,7 +105,9 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         
         m_MeasureTypes = measureTypes;
         m_ICmodels = icModels;
-        m_strRawEmbeddingFilenames = strEmbeddingModelFilenames;
+        m_strRawEmbeddingFilenames = strEmbModelFilenames;
+        m_strNasariModelFilenames = strNasariModelFilenames;
+        m_strUKBModelFilenames = strUKBModelFilenames;
     }
 
     /**

@@ -77,6 +77,8 @@ public class BenchmarkFactory
      * @param icModels IC models 
      * @param measureTypes Measure types
      * @param strEmbeddingModelFilenames
+     * @param strNasariModelFilenames
+     * @param strUKBModelFilenames
      * @return A matrix containing one column per each measure with the raw similarity values
      * @throws Exception 
      */
@@ -87,13 +89,16 @@ public class BenchmarkFactory
             String                      strWordPairsFile,
             ITaxonomyInfoConfigurator[] icModels,
             SimilarityMeasureType[]     measureTypes,
-            String[]                    strEmbeddingModelFilenames) throws Exception
+            String[]                    strEmbeddingModelFilenames,
+            String[]                    strNasariModelFilenames,
+            String[]                    strUKBModelFilenames) throws Exception
     {
         // We create the benchmark
         
         ISimilarityBenchmark test = new BenchmarkSingleDatasetSimilarityValues(wordnet,
                                         taxonomy, strWordPairsFile, icModels,
-                                        measureTypes, strEmbeddingModelFilenames);
+                                        measureTypes, strEmbeddingModelFilenames,
+                                        strNasariModelFilenames, strUKBModelFilenames);
         
         // We return the result
         

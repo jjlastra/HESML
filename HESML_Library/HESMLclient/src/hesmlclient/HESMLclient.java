@@ -23,6 +23,7 @@ package hesmlclient;
 
 // Java references
 
+import hesmlclient.XmlBenchmarkReaders.ReproducibleExperimentsInfo;
 import hesml.HESMLversion;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.benchmarks.CorrelationOutputMetrics;
@@ -571,7 +572,7 @@ public class HESMLclient
         ITaxonomyInfoConfigurator[] icModels = new ITaxonomyInfoConfigurator[2];
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[2];
         
-        // We set the methods to be evaluated
+        // We set the similarity methods to be evaluated
         
         icModels[0] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
         icModels[1] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
@@ -579,14 +580,20 @@ public class HESMLclient
         measureTypes[0] = SimilarityMeasureType.Resnik;
         measureTypes[1] = SimilarityMeasureType.Lin;
         
-        String[] strWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
+        // We set the word embbedding to be evaluated. Note that we split them into
+        // three lists, one for each emdedding file format (EMB, NASARI, UKB)
+        
+        String[] strEMBWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
+        String[] strNasariEmbeddingFiles = {};
+        String[] strUKBEmbeddingFiles = {};
         
         // We create the benchmark
         
         ISimilarityBenchmark benchmark = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
                                             wordnetTaxonomy, wordnet,
                                             m_strWordNetDatasetsDir + RG65 + ".csv",
-                                            icModels, measureTypes, strWordVectorFiles);
+                                            icModels, measureTypes, strEMBWordVectorFiles,
+                                            strNasariEmbeddingFiles, strUKBEmbeddingFiles);
 
         // We run the experiments
         

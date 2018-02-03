@@ -302,8 +302,35 @@
 				<xs:element name="DatasetFileName" type="xs:string"/>
 				<xs:element name="RawWordVectorFiles" minOccurs="0">
 					<xs:complexType>
-						<xs:sequence minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="VectorFile" type="xs:string"/>
+						<xs:sequence>
+							<xs:element name="EmbVectorFiles">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="VectorFile" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="UKBVectorFiles">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="VectorFile" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="NasariVectorFiles">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NasariVectorFile" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="SensesFile" type="xs:string"/>
+													<xs:element name="VectorFile" type="xs:string"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
