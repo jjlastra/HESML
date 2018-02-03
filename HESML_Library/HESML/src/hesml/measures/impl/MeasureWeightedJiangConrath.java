@@ -109,6 +109,7 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
     @Override
     public double getNullSimilarityValue()
     {
-        return (1.0 - m_Taxonomy.getVertexes().getGreatestICValue());
+        //return (1.0 - m_Taxonomy.getVertexes().getGreatestICValue());
+        return (Double.NEGATIVE_INFINITY);
     }    
 }

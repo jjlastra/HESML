@@ -135,7 +135,7 @@ class MeasureZhou extends SimilaritySemanticMeasure
     {
         // We compute the largest depth facto
         
-        double depthFactor = Math.log(2.0 * m_DepthMax + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
+        /*double depthFactor = Math.log(2.0 * m_DepthMax + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
         
         // We compute the lowest similarity value
         
@@ -144,7 +144,8 @@ class MeasureZhou extends SimilaritySemanticMeasure
         
         // We return the value
         
-        return (lowestSimiliarity);
+        return (lowestSimiliarity);*/
+        return (Double.NEGATIVE_INFINITY);
     }    
 }
 
