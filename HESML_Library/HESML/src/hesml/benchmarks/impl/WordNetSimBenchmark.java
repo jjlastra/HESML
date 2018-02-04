@@ -102,7 +102,10 @@ abstract class WordNetSimBenchmark extends AbstractBenchmark
         
         // We check the existence of all the words
         
-        checkWords();
+        if (m_Wordnet != null)
+        {
+            checkWords();
+        }
     }
     
     /**

@@ -45,7 +45,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
      * embedding model defining this measure.
      */
     
-    private String  m_strRawPretrainedEmbeddingFilename;
+    private final String  m_strRawPretrainedEmbeddingFilename;
     
     /**
      * Constructor
@@ -88,7 +88,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.RawWordEmbedding);
+        return (SimilarityMeasureType.EMBWordEmbedding);
     }
     
     /**
@@ -191,7 +191,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
             
             // We extract the fields in line
             
-            if (strLine != null)
+            if ((strLine != null) && (strLine.startsWith(strWord)))
             {
                 String[] strFields = strLine.split("\\t| |,|;");
             

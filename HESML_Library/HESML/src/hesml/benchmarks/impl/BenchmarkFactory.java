@@ -90,15 +90,15 @@ public class BenchmarkFactory
             ITaxonomyInfoConfigurator[] icModels,
             SimilarityMeasureType[]     measureTypes,
             String[]                    strEmbeddingModelFilenames,
-            String[]                    strNasariModelFilenames,
-            String[]                    strUKBModelFilenames) throws Exception
+            String[]                    strUKBModelFilenames,
+            String[]                    strNasariModelFilenames) throws Exception
     {
         // We create the benchmark
         
         ISimilarityBenchmark test = new BenchmarkSingleDatasetSimilarityValues(wordnet,
                                         taxonomy, strWordPairsFile, icModels,
                                         measureTypes, strEmbeddingModelFilenames,
-                                        strNasariModelFilenames, strUKBModelFilenames);
+                                        strUKBModelFilenames, strNasariModelFilenames);
         
         // We return the result
         

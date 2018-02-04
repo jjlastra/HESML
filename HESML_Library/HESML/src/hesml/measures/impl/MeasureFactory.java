@@ -370,15 +370,43 @@ public class MeasureFactory
     }
     
     /**
-     * This function loads a word embedding model implementing
+     * This function loads a EMB word embedding model implementing
      * a word similarity measure.
      * @param strRawVectorFile
      * @return 
      */
     
-    public static IWordSimilarityMeasure getRawWordEmbeddingModel(
+    public static IWordSimilarityMeasure getEMBWordEmbeddingModel(
             String  strRawVectorFile)
     {
         return (new EMBWordEmbeddingModel(strRawVectorFile));
     }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strUKBppvVectorFile
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getUKBppvEmbeddingModel(
+            String  strUKBppvVectorFile)
+    {
+        return (new UKBppvWordEmbeddingModel(strUKBppvVectorFile));
+    }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strSensesFilename
+     * @param strVectorFilename
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getNasariEmbeddingModel(
+            String  strSensesFilename,
+            String  strVectorFilename)
+    {
+        return (null);
+    }    
 }
