@@ -25,13 +25,10 @@ import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 /**
  * This class implements a similarity function based on the word vectors
@@ -66,6 +63,18 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     private final String    m_strWordSensesFilename;
     
     /**
+     * Senses for each word
+     */
+    
+    private final HashMap<String, HashSet<String>>  m_WordSenses;
+    
+    /**
+     * Weight vector for each sense
+     */
+    
+    private final HashMap<String, HashMap<String, Double>>  m_SensesCoords;
+    
+    /**
      * Constructor
      * @param strVectorFilename 
      */
@@ -78,18 +87,27 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         m_strWordSensesFilename = strWordSenseFilename;
         m_strSenseVectorsFilename = strSenseVectorFilename;
+        
+        // We initialize the overall tables
+                        
+        m_WordSenses = new HashMap<>();
+        m_SensesCoords = new HashMap<>();
+        
+        // We load the word senses and coords
+        
+        loadWordSenses();
+        loadSenseVectors();
     }
     
     /**
      * This function loads the word senses
      */
     
-    private HashSet<String> getWordSenses(
-            String  strWord) throws IOException
+    private void loadWordSenses() throws IOException
     {
-        // We cretae an auxiliary list
-        
-        HashSet<String> strWordSenses = new HashSet<>();
+        // Loading the word senses
+                
+        System.out.println("Loading the Nasari word senses");
         
         // We open for reading the vectors file
         
@@ -101,26 +119,26 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         while (strLine != null)
         {
-            // We only check the lines which could contain the word
+            // We extract the next word-sense pair
 
-            if (strLine.startsWith(strWord))
+            String[] strFields = strLine.split("\\t");
+
+            // We check the first field for the input word and
+            // save the sense
+
+            if (strFields.length == 2)
             {
-                // We extract the next word-sense pair
-
-                String[] strFields = strLine.split("\\t");
-
-                // We check the first field for the input word
-
-                if ((strFields.length == 2) && strFields[0].equals(strWord))
+                // We check for the existence of the word
+                
+                if (!m_WordSenses.containsKey(strFields[0]))
                 {
-                    // We remove 'bn:' from the sense
-
-                    String strSense = strFields[1].replaceFirst("bn:", "");
-
-                    // We add the new sense to the word
-
-                    strWordSenses.add(strSense);
+                    HashSet<String> senses = new HashSet<>();
+                    m_WordSenses.put(strFields[0], senses);
                 }
+                
+                // We save the sense of the word
+                
+                m_WordSenses.get(strFields[0]).add(strFields[1]);
             }
 
             // We read the next line
@@ -131,22 +149,17 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We close the file
         
         reader.close();
-        
-        // We re turn the result
-        
-        return (strWordSenses);
     }
 
     /**
      * This function loads the sense vectors
      */
     
-    private HashMap<String, Double> getSenseVectors(
-            String  strSense) throws IOException
+    private void loadSenseVectors() throws IOException
     {
-        // We initializae the output
-        
-        HashMap<String, Double> senseCoords = new HashMap<>();
+        // Loading the sense vectors
+                
+        System.out.println("Loading the Nasari sense vectors");
         
         // We open for reading the vectors file
         
@@ -158,36 +171,39 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         while (strLine != null)
         {
-            // We only chekc the lines containing the sense
+            // We extract the next word-sense pair
+
+            String[] strFields = strLine.split("\\t");
+
+            // We initializae the output
+
+            HashMap<String, Double> senseCoords = new HashMap<>();
             
-            if (strLine.startsWith("bn:" + strSense))
+            // We save the sense entry
+            
+            m_SensesCoords.put(strFields[0], senseCoords);
+            
+            // We check the first field for the input word
+
+            for (int i = 2; i < strFields.length; i++)
             {
-                // We extract the next word-sense pair
+                // We split the vector into sense and weight
 
-                String[] strFields = strLine.split("\\t");
+                String[] strSenseWeightPair = strFields[i].split("_");
 
-                // We check the first field for the input word
-
-                for (int i = 2; i < strFields.length; i++)
+                if (strSenseWeightPair.length == 2)
                 {
-                    // We split the vector into sense and weight
+                    // We retrieve the sense and weight value
 
-                    String[] strSenseWeightPair = strFields[i].split("-");
+                    String strCoordSense = strSenseWeightPair[0];
 
-                    if (strSenseWeightPair.length == 2)
+                    double weight = Double.parseDouble(strSenseWeightPair[1]);
+
+                    // We add the new sense to the word
+
+                    if (!senseCoords.containsKey(strCoordSense))
                     {
-                        // We retrieve the sense and weight value
-
-                        String strCoordSense = strSenseWeightPair[0].replaceFirst("bn:", "");
-
-                        double weight = Double.parseDouble(strSenseWeightPair[1]);
-
-                        // We add the new sense to the word
-
-                        if (!senseCoords.containsKey(strCoordSense))
-                        {
-                            senseCoords.put(strCoordSense, weight);
-                        }
+                        senseCoords.put(strCoordSense, weight);
                     }
                 }
             }
@@ -200,10 +216,6 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We close the file
         
         reader.close();
-        
-        // We return the result
-        
-        return (senseCoords);
     }
     
     /**
@@ -258,8 +270,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We obtain the word senses
         
-        HashSet<String> senses1 = getWordSenses(strWord1);
-        HashSet<String> senses2 = getWordSenses(strWord2);
+        HashSet<String> senses1 = m_WordSenses.get(strWord1);
+        HashSet<String> senses2 = m_WordSenses.get(strWord2);
 
         // We check the existence of the words in the dictionary
         
@@ -330,8 +342,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We get the sense vectors for each sense
         
-        HashMap<String, Double> vector1 = getSenseVectors(strSense1);
-        HashMap<String, Double> vector2 = getSenseVectors(strSense2);
+        HashMap<String, Double> vector1 = m_SensesCoords.get(strSense1);
+        HashMap<String, Double> vector2 = m_SensesCoords.get(strSense2);
         
         // We initialize the score
         
