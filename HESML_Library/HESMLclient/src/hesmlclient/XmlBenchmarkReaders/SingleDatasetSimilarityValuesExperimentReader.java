@@ -145,7 +145,7 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
     
         String[] strEmbVectorFilenames = {};
         String[] strUKBVectorFilenames = {};
-        String[] strNasariVectorFilenames = {};
+        String[][] strNasariVectorFilenames = {};
         
         // We load the embeddings
         
@@ -155,7 +155,7 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
         {
             strEmbVectorFilenames = readStringFields(wordVectorsRoot, "EmbVectorFiles");
             strUKBVectorFilenames = readStringFields(wordVectorsRoot, "UKBVectorFiles");
-            strNasariVectorFilenames = readStringFields(wordVectorsRoot, "NasariVectorFiles");
+            strNasariVectorFilenames = readNasariVectorFiles(wordVectorsRoot);
         }
         
         // We create an instance from a multiple dataset experiment
@@ -170,5 +170,67 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
         // We return the result
         
         return (experiment);
+    }
+    
+    /**
+     * This function reads the Nasari pre-trained models
+     * @param wordVectorRoot
+     * @return 
+     */
+    
+    private String[][] readNasariVectorFiles(
+        Element wordVectorRoot)
+    {
+        // We initialzie the output
+        
+        String[][] strNasariModels = {};
+        
+        // We get the root node of the Nasari pre-trained models
+        
+        Element xmlNasariModels = getFirstChildWithTagName(wordVectorRoot, "NasariVectorFiles");
+        
+        // We get the pre-traiend models
+        
+        if (xmlNasariModels != null)
+        {
+            ArrayList<Element>   pretrainedModels = new ArrayList<>();
+
+            NodeList xmlModels = xmlNasariModels.getChildNodes();
+
+            for (int i = 0, nChild = xmlModels.getLength(); i < nChild; i++)
+            {
+                // We get the current i-esim node
+
+                Node child = xmlModels.item(i);
+
+                // We filter the Xmlelements
+
+                if ((child.getNodeType() == Node.ELEMENT_NODE)
+                        && (child.getNodeName() == "NasariVectorFile"))
+                {
+                    pretrainedModels.add((Element) child);
+                }
+            }
+
+            // Creamos la matriz de pares de ficheros Nasari
+
+            strNasariModels = new String[pretrainedModels.size()][2];
+
+            int i = 0;
+
+            for (Element model: pretrainedModels)
+            {
+                strNasariModels[i][0] = readStringField((Element) model, "SensesFile");
+                strNasariModels[i][1] = readStringField((Element) model, "VectorFile");
+            }
+
+            // Destroy the modell list
+
+            pretrainedModels.clear();
+        }
+        
+        // We return the result
+        
+        return (strNasariModels);
     }
 }

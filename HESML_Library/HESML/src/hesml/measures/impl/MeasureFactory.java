@@ -27,6 +27,7 @@ import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import java.io.IOException;
 import java.security.InvalidParameterException;
 
 /**
@@ -405,8 +406,8 @@ public class MeasureFactory
     
     public static IWordSimilarityMeasure getNasariEmbeddingModel(
             String  strSensesFilename,
-            String  strVectorFilename)
+            String  strVectorFilename) throws IOException
     {
-        return (null);
+        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename));
     }    
 }

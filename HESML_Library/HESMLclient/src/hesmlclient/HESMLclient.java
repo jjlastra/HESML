@@ -584,7 +584,7 @@ public class HESMLclient
         // three lists, one for each emdedding file format (EMB, NASARI, UKB)
         
         String[] strEMBWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
-        String[] strNasariEmbeddingFiles = {};
+        String[][] strNasariEmbeddingFiles = {};
         String[] strUKBEmbeddingFiles = {};
         
         // We create the benchmark
@@ -593,7 +593,7 @@ public class HESMLclient
                                             wordnetTaxonomy, wordnet,
                                             m_strWordNetDatasetsDir + RG65 + ".csv",
                                             icModels, measureTypes, strEMBWordVectorFiles,
-                                            strNasariEmbeddingFiles, strUKBEmbeddingFiles);
+                                            strUKBEmbeddingFiles, strNasariEmbeddingFiles);
 
         // We run the experiments
         

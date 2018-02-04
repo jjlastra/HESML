@@ -66,7 +66,7 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
      * Filenames of the pre.trained embedding models in Nasari file format
      */
     
-    private final String[] m_strNasariModelFilenames;
+    private final String[][] m_strNasariModelFilenames;
     
     /**
      * Filenames of the pre-trained emebdding files in UKB file format
@@ -86,7 +86,7 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             SimilarityMeasureType[]     measureTypes,
             String[]                    strEmbModelFilenames,
             String[]                    strUKBModelFilenames,
-            String[]                    strNasariModelFilenames) throws Exception
+            String[][]                  strNasariModelFilenames) throws Exception
     {   
         // We initialize the base class
         
@@ -261,10 +261,9 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
 
                 // We retrieve the filanems of the two Nasari files
                 
-                String[] strNasariFiles = m_strNasariModelFilenames[iMeasure - spans[iSpan]].split(";");
-                
                 measure = MeasureFactory.getNasariEmbeddingModel(
-                            strNasariFiles[0], strNasariFiles[1]);
+                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][0],
+                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][1]);
                 
                 break;
         }
@@ -339,7 +338,8 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
                 
             case 3:
 
-                strName = m_strNasariModelFilenames[iMeasure - spans[iSpan]];
+                strName = m_strNasariModelFilenames[iMeasure - spans[iSpan]][0]
+                        + m_strNasariModelFilenames[iMeasure - spans[iSpan]][1];
                 
                 break;
         }

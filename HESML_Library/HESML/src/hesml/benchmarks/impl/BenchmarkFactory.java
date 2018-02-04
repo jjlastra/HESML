@@ -91,7 +91,7 @@ public class BenchmarkFactory
             SimilarityMeasureType[]     measureTypes,
             String[]                    strEmbeddingModelFilenames,
             String[]                    strUKBModelFilenames,
-            String[]                    strNasariModelFilenames) throws Exception
+            String[][]                  strNasariModelFilenames) throws Exception
     {
         // We create the benchmark
         
