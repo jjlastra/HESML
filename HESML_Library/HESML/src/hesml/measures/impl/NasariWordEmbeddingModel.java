@@ -321,11 +321,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
 
         // We check the existence of the words in the dictionary
         
-        if (senses1.isEmpty() || senses2.isEmpty())
-        {
-            similarity = 0.5;
-        }
-        else
+        if (!senses1.isEmpty() && !senses2.isEmpty())
         {
             // We search for the highest similarity value between both sense sets
 
@@ -333,7 +329,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
             
             for (String strSense1 : senses1)
             {
-                // We check if both words are synomnims
+                // We check if both words are synomnyms
 
                 if (senses2.contains(strSense1))
                 {
@@ -351,7 +347,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                     
                     // We save the maximum value
                     
-                    similarity = Math.max(similarity, weightedOverlap);
+                    similarity = Math.max(similarity, Math.sqrt(weightedOverlap));
                 }
             }
         }
