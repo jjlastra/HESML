@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Scanner;
 
 /**
  * This class implements a similarity function based on the word vectors
@@ -162,7 +163,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We open the file to read all word senses
         
-        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 1000000);
+        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 2000000);
         
         // We initialize the line offset value
         
@@ -184,11 +185,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
             
             // We do not check if the word is already in the table
                 
-            m_SenseLineOffsets.put(strSense, lineOffset);
-            
-            // We update the line offset counter
-            
-            lineOffset += strLine.length() + 1;
+            m_SenseLineOffsets.put(strSense, lineOffset++);
             
             // We read the next line
             
@@ -217,19 +214,20 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         {
             // We open the file
         
-            RandomAccessFile reader = new RandomAccessFile(m_strSenseVectorsFilename, "r");
+            BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 2000000);
             
             // We get the line offset
             
             long lineOffset = m_SenseLineOffsets.get(strSense);
             
-            // We set the reading cursor
-            
-            reader.seek(lineOffset);
-            
             // We read the sense line
             
             String strLine = reader.readLine();
+            
+            for (int i = 0; i < lineOffset; i++)
+            {
+                strLine = reader.readLine();
+            }
             
             // We split into fields
             
@@ -347,7 +345,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                     
                     // We save the maximum value
                     
-                    similarity = Math.max(similarity, Math.sqrt(weightedOverlap));
+                    similarity = Math.max(similarity, weightedOverlap);
                 }
             }
         }
@@ -398,8 +396,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         {
             if (vector2.containsKey(word))
             {
-                cont++;
-                normalization += 1.0 / (cont*2.0);
+                cont += 1;
+                normalization += 1.0 / (2.0 * cont);
                 score_prov += 1.0 / (vector1.get(word) + vector2.get(word));
             }
         }
