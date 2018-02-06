@@ -123,11 +123,11 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Loading sense vectors of words to be evaluated");
+        System.out.println("Loading sense vectors of words to be evaluated = " + pendingSenses.size());
         
         // We scan the sense vector file to retrieve all senses at the same time
         
-        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 10000000);
+        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 1000000);
         
         String strLine = reader.readLine();
         
@@ -157,7 +157,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Finished the the sense vector buffering");
+        System.out.println("Finished the the sense vector buffering, senses = "
+                + m_BufferedSenseVectors.size());
         
         // We close the file
         
