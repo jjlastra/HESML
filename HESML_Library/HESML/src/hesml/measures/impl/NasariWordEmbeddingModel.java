@@ -24,8 +24,10 @@ package hesml.measures.impl;
 import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -155,37 +157,33 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We open the file
 
         BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 100000000);
-            
+
         String strLine = reader.readLine();
         
-        while ((strLine != null) && !strLine.startsWith(strSense))
+        while (strLine != null)
         {
-            strLine = reader.readLine();
-        }
-         
-        // We check that the line starts with sense
-            
-        if (strLine.startsWith(strSense))
-        {
-            // We split into fields
-            
-            String[] strFields = strLine.split("\t");
-            
-            // We check that the first field contains the sense
-            
-            if (strFields[0].equals(strSense))
+            if (strLine.startsWith(strSense))
             {
-                // We read all weights
-                
-                for (int i = 2; i < strFields.length; i++)
+                // We split into fields
+
+                String[] strFields = strLine.split("\t");
+
+                // We check that the first field contains the sense
+
+                if (strFields[0].equals(strSense))
                 {
-                    String[] strSenseWeight = strFields[i].split("_");
-                    
-                    if (strSenseWeight.length == 2)
+                    // We read all weights
+
+                    for (int i = 2; i < strFields.length; i++)
                     {
-                        double weight = Double.parseDouble(strSenseWeight[1]);
-                        
-                        weightsVector.put(strSenseWeight[0], weight);
+                        String[] strSenseWeight = strFields[i].split("_");
+
+                        if (strSenseWeight.length == 2)
+                        {
+                            double weight = Double.parseDouble(strSenseWeight[1]);
+
+                            weightsVector.put(strSenseWeight[0], weight);
+                        }
                     }
                 }
             }
