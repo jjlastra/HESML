@@ -186,11 +186,13 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                         }
                     }
                 }
+                
+                break;
             }
-            
-            // We read the next line
-            
-            strLine = reader.readLine();
+            else
+            {
+                strLine = reader.readLine();
+            }
         }
             
         // We close the sense vector file
