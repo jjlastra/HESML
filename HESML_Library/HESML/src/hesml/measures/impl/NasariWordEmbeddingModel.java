@@ -304,7 +304,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         double similarity = 0.5;
         
-        // We obtain the worprd senses
+        // We obtain the word senses
         
         HashSet<String> senses1 = m_WordSenses.get(strWord1);
         HashSet<String> senses2 = m_WordSenses.get(strWord2);
@@ -345,9 +345,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                         {
                             // We compute the weighted overlap
                     
-                            double weightedOverlap = getWeightedOverlap(
-                                                    m_BufferedSenseVectors.get(strSense1),
-                                                    m_BufferedSenseVectors.get(strSense2));
+                            double weightedOverlap = getWeightedOverlap(strSense1, strSense2);
                     
                             // We save the maximum value
                     
@@ -381,9 +379,14 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      */
     
     private double getWeightedOverlap(
-            HashMap<String, Double> vector1,
-            HashMap<String, Double> vector2) throws IOException
+            String  strSense1,
+            String  strSense2) throws IOException
     {
+        // We retieve the sense vectors
+        
+        HashMap<String, Double> vector1 = m_BufferedSenseVectors.get(strSense1);
+        HashMap<String, Double> vector2 = m_BufferedSenseVectors.get(strSense2);
+        
         // We initiliaze the output
         
         double weightedOverlap = 0.0;
