@@ -31,6 +31,7 @@ import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.security.InvalidParameterException;
+import java.util.HashSet;
 
 /**
  * This class evaluates a specific word similarity benchmarks (single dataset)
@@ -263,7 +264,8 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
                 
                 measure = MeasureFactory.getNasariEmbeddingModel(
                             m_strNasariModelFilenames[iMeasure - spans[iSpan]][0],
-                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][1]);
+                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][1],
+                            getDatasetWords());
                 
                 break;
         }
@@ -271,6 +273,47 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         // We return the measure
         
         return (measure);
+    }
+    
+    /**
+     * This function retrieves the words to be evaluated
+     * @return 
+     */
+    
+    private String[] getDatasetWords()
+    {
+        // We create the set of words in the benchmark
+        
+        HashSet<String> words = new HashSet<>();
+        
+        // We retrieve all words
+        
+        for (WordPairSimilarity pair: m_WordPairs)
+        {
+            if (!words.contains(pair.getWord1()))
+            {
+                words.add(pair.getWord1());
+            }
+            
+            if (!words.contains(pair.getWord2()))
+            {
+                words.add(pair.getWord2());
+            }            
+        }
+        
+        // We convert the set to array
+        
+        String[] strWords = new String[words.size()];
+        
+        words.toArray(strWords);
+        
+        // We reset the set
+        
+        words.clear();
+        
+        // We return the result
+        
+        return (strWords);
     }
     
     /**

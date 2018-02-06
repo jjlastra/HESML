@@ -405,9 +405,10 @@ public class MeasureFactory
      */
     
     public static IWordSimilarityMeasure getNasariEmbeddingModel(
-            String  strSensesFilename,
-            String  strVectorFilename) throws IOException
+            String      strSensesFilename,
+            String      strVectorFilename,
+            String[]    words) throws IOException
     {
-        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename));
+        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, words));
     }    
 }

@@ -68,13 +68,20 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     private final HashMap<String, HashSet<String>>    m_WordSenses;
     
     /**
+     * Buffered Sense vectors
+     */
+    
+    private final HashMap<String, HashMap<String, Double>>  m_BufferedSenseVectors;
+    
+    /**
      * Constructor
      * @param strVectorFilename 
      */
     
     NasariWordEmbeddingModel(
-            String  strWordSenseFilename,
-            String  strSenseVectorFilename) throws IOException
+            String      strWordSenseFilename,
+            String      strSenseVectorFilename,
+            String[]    words) throws IOException
     {
         // We save the two filenames
         
@@ -83,10 +90,78 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We initialize the overall tables
                         
         m_WordSenses = new HashMap<>();
+        m_BufferedSenseVectors = new HashMap<>();
         
         // We load the word senses and coords
         
         loadWordSenses(strWordSenseFilename);
+        loadBufferedSenseVectors(words);
+    }
+    
+    /**
+     * This function retrieves all sense vectors corresponding to the
+     * senses of the input words.
+     * @param words 
+     */
+    
+    private void loadBufferedSenseVectors(
+        String[]    words) throws IOException
+    {
+        // We create the list of all senses of the input words
+        
+        HashSet<String> pendingSenses = new HashSet<>();
+        
+        // We iterate on words to get their senses
+        
+        for (int i = 0; i < words.length; i++)
+        {
+            if (m_WordSenses.containsKey(words[i]))
+            {
+                pendingSenses.addAll(m_WordSenses.get(words[i]));
+            }
+        }
+        
+        // Debug message
+        
+        System.out.println("Loading sense vectors of words to be evaluated");
+        
+        // We scan the sense vector file to retrieve all senses at the same time
+        
+        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 10000000);
+        
+        String strLine = reader.readLine();
+        
+        while ((strLine != null) && (pendingSenses.size() > 0))
+        {
+            // We get the synset of the line
+            
+            String strSense = strLine.substring(0, strLine.indexOf("\t"));
+            
+            // We check if the sense is in the list
+            
+            if (pendingSenses.contains(strSense))
+            {
+                // We save the sense vector
+                
+                m_BufferedSenseVectors.put(strSense, parseSenseVector(strLine));
+                
+                // We remove the sense from list
+                
+                pendingSenses.remove(strSense);
+            }
+            
+            // We read the next line
+            
+            strLine = reader.readLine();
+        }
+        
+        // Debug message
+        
+        System.out.println("Finished the the sense vector buffering");
+        
+        // We close the file
+        
+        reader.close();
     }
     
     /**
@@ -144,61 +219,36 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     }
 
     /**
-     * This function loads the sense vectors
+     * This function parses a text line in order to retrieve
+     * @param strSenseLine
+     * @return 
      */
     
-    private HashMap<String, Double> getSenseVector(
-            String  strSense) throws FileNotFoundException, IOException
+    private HashMap<String, Double> parseSenseVector(
+            String strSenseLine)
     {
         // We initialize the output
         
         HashMap<String, Double> weightsVector = new HashMap<>();
         
-        // We open the file
+        // We split into fields
 
-        BufferedReader reader = new BufferedReader(new FileReader(m_strSenseVectorsFilename), 100000000);
+        String[] strFields = strSenseLine.split("\t");
 
-        String strLine = reader.readLine();
-        
-        while (strLine != null)
+        // We read all weights
+
+        for (int i = 2; i < strFields.length; i++)
         {
-            if (strLine.startsWith(strSense))
+            String[] strSenseWeight = strFields[i].split("_");
+
+            if (strSenseWeight.length == 2)
             {
-                // We split into fields
+                double weight = Double.parseDouble(strSenseWeight[1]);
 
-                String[] strFields = strLine.split("\t");
-
-                // We check that the first field contains the sense
-
-                if (strFields[0].equals(strSense))
-                {
-                    // We read all weights
-
-                    for (int i = 2; i < strFields.length; i++)
-                    {
-                        String[] strSenseWeight = strFields[i].split("_");
-
-                        if (strSenseWeight.length == 2)
-                        {
-                            double weight = Double.parseDouble(strSenseWeight[1]);
-
-                            weightsVector.put(strSenseWeight[0], weight);
-                        }
-                    }
-                }
-                
-                break;
-            }
-            else
-            {
-                strLine = reader.readLine();
+                weightsVector.put(strSenseWeight[0], weight);
             }
         }
-            
-        // We close the sense vector file
-            
-        reader.close();
-        
+
         // We return the result
         
         return (weightsVector);
@@ -282,47 +332,29 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
 
             if (!synonyms)
             {
-                // Before to evaluate the overlap, we retrieve
-                // all sense vectors
-                
-                HashMap<String, HashMap<String, Double>> senseVectorBuffer = new HashMap<>();
-                
-                for (String strSense1: senses1)
-                {
-                    senseVectorBuffer.put(strSense1, getSenseVector(strSense1));
-                }
-
-                for (String strSense2: senses2)
-                {
-                    senseVectorBuffer.put(strSense2, getSenseVector(strSense2));
-                }
-                
                 // We compute the similarity using weighted overlap
                 
                 for (String strSense1: senses1)
                 {
                     for (String strSense2: senses2)
                     {
-                        // We compute the weighted overlap
+                        // We check that both sense vectors exist
+                        
+                        if (m_BufferedSenseVectors.containsKey(strSense1)
+                                && m_BufferedSenseVectors.containsKey(strSense2))
+                        {
+                            // We compute the weighted overlap
                     
-                        double weightedOverlap = getWeightedOverlap(
-                                                    senseVectorBuffer.get(strSense1),
-                                                    senseVectorBuffer.get(strSense2));
+                            double weightedOverlap = getWeightedOverlap(
+                                                    m_BufferedSenseVectors.get(strSense1),
+                                                    m_BufferedSenseVectors.get(strSense2));
                     
-                        // We save the maximum value
+                            // We save the maximum value
                     
-                        similarity = Math.max(similarity, weightedOverlap);
+                            similarity = Math.max(similarity, weightedOverlap);
+                        }
                     }
                 }
-                
-                // We release all buffered sense vectors
-                
-                for (HashMap<String, Double> vectors : senseVectorBuffer.values())
-                {
-                    vectors.clear();
-                }
-                
-                senseVectorBuffer.clear();
             }
         }
         
