@@ -181,23 +181,19 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We search for the word within the vectors file
         
-        String strLine;
+        String strLine = reader.readLine();
         
-        do
+        while (strLine != null)
         {
-            // We read the next line
-            
-            strLine = reader.readLine();
-            
             // We extract the fields in line
             
-            if ((strLine != null) && (strLine.startsWith(strWord)))
+            if (strLine.startsWith(strWord))
             {
                 String[] strFields = strLine.split("\\t| |,|;");
             
                 // We check the first field for the input word
                 
-                if ((strFields.length > 0) && (strFields[0].trim().equals(strWord)))
+                if ((strFields.length > 0) && strFields[0].trim().equals(strWord))
                 {
                     // We create the vector
 
@@ -214,7 +210,10 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
                 }
             }
             
-        } while (strLine != null);
+            // We read the next line
+            
+            strLine = reader.readLine();
+        }
          
         // We close the file
             
