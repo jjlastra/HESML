@@ -24,13 +24,14 @@ package hesml.benchmarks.impl;
 import hesml.benchmarks.CorrelationOutputMetrics;
 import static hesml.benchmarks.impl.AbstractBenchmark.saveCSVfile;
 import hesml.configurators.ITaxonomyInfoConfigurator;
+import hesml.measures.IWordNetWordSimilarityMeasure;
+import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
-import java.io.File;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * This class evaluates a specific word similarity benchmarks (single dataset)
@@ -57,6 +58,24 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
     private final SimilarityMeasureType[]   m_MeasureTypes;
     
     /**
+     * Filenames of the pre-trained embedding models in EMB file format
+     */
+    
+    private final String[]  m_strRawEmbeddingFilenames;
+    
+    /**
+     * Filenames of the pre.trained embedding models in Nasari file format
+     */
+    
+    private final String[][] m_strNasariModelFilenames;
+    
+    /**
+     * Filenames of the pre-trained emebdding files in UKB file format
+     */
+    
+    private final String[]  m_strUKBModelFilenames;
+    
+    /**
      * Constructor
      */
     
@@ -65,7 +84,10 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             ITaxonomy                   taxonomy,
             String                      strWordPairsFile,
             ITaxonomyInfoConfigurator[] icModels,
-            SimilarityMeasureType[]     measureTypes) throws Exception
+            SimilarityMeasureType[]     measureTypes,
+            String[]                    strEmbModelFilenames,
+            String[]                    strUKBModelFilenames,
+            String[][]                  strNasariModelFilenames) throws Exception
     {   
         // We initialize the base class
         
@@ -84,6 +106,9 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         
         m_MeasureTypes = measureTypes;
         m_ICmodels = icModels;
+        m_strRawEmbeddingFilenames = strEmbModelFilenames;
+        m_strNasariModelFilenames = strNasariModelFilenames;
+        m_strUKBModelFilenames = strUKBModelFilenames;
     }
 
     /**
@@ -104,10 +129,6 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
     {
         String[][]  strOutputMatrix;  // Output matrix
         
-        double[]  pearsonSpearman;    // Correlation value
-
-        int step = getMetricFillingStep();  // Filling step
-        
         // User message reporting the output file to be computed
         
         System.out.println("/**");
@@ -121,26 +142,11 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         
         // We iterate over the similarity measures
 
-        for (int iMeasure = 0; iMeasure < m_MeasureTypes.length; iMeasure++)
+        for (int iMeasure = 0;
+                iMeasure < m_MeasureTypes.length + m_strRawEmbeddingFilenames.length
+                        + m_strUKBModelFilenames.length + m_strNasariModelFilenames.length;
+                iMeasure++)
         {
-            // We initialize the running message
-
-            String  strDebugMsg = "Evaluating " + m_MeasureTypes[iMeasure].toString();
-
-            // We set the IC model associated to the similarity measure.
-            // The IC model sets the IC values of the current taxonomy
-            // associated to the current WordNet version. because of the
-            // IC models depends on the underlying taxonomy, they must
-            // be update for each Wordnet version.
-
-            if (m_ICmodels[iMeasure] != null)
-            {
-                m_ICmodels[iMeasure].setTaxonomyData(m_Taxonomy);
-
-                strDebugMsg += " + " + m_ICmodels[iMeasure].toString()
-                        + " IC model on " + m_Wordnet.getVersion();
-            }
-                
             // The measure needs to be created every time in this place,
             // in order to allow the upgrade of the internal parameters
             // depending of the base taxonomy. It is necessary to use
@@ -148,12 +154,11 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             // WordNet as input paprameter, because of the TaiebSim2
             // only can be created through this function.
 
-            m_Measure = MeasureFactory.getMeasure(m_Wordnet, m_Taxonomy,
-                            m_MeasureTypes[iMeasure]);
-                
+            IWordSimilarityMeasure measure = getMeasure(iMeasure);
+            
             if (showDebugInfo)
             {
-                System.out.println(strDebugMsg);
+                System.out.println(measure.toString());
             }
             
             // We evaluate the similarity for each word pair
@@ -164,7 +169,7 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
                 
                 if (showDebugInfo)
                 {
-                    strDebugMsg = "Evaluating " + (iWord + 1) + " of "
+                    String strDebugMsg = "Evaluating " + (iWord + 1) + " of "
                             + m_WordPairs.length + " word pairs";
                     
                     System.out.println(strDebugMsg);
@@ -172,8 +177,7 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
                 
                 // We compute the highest similarity value
                 
-                double similarity = highestSimilarityValue(m_Measure,
-                                    m_WordPairs[iWord].getWord1(),
+                double similarity = measure.getSimilarity(m_WordPairs[iWord].getWord1(),
                                     m_WordPairs[iWord].getWord2());
                 
                 // We save the similarity value in the output matrix
@@ -185,6 +189,207 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         // We save the file in CSV format
         
         saveCSVfile(strOutputMatrix, strMatrixResultsFile);
+    }
+    
+    /**
+     * This function instances a word similarity measure according to
+     * the selected index. This benchmark evaluates four types of
+     * measures as follows:
+     * (1) ontology-based measures based on WOrdNet,
+     * (2) embedding models in EMB file format,
+     * (3) embedding models in UKB (ppv) file format,
+     * (4) embedding models in EMB file format,
+     * @param index
+     * @return 
+     */
+    
+    private IWordSimilarityMeasure getMeasure(
+            int iMeasure) throws Exception
+    {
+        IWordSimilarityMeasure measure = null;
+        
+        // We create the intervals vector and fill it with the starting
+        // positions of each family of measures
+        
+        int[] spans = new int[5];
+                    
+        spans[0] = 0;
+        spans[1] = m_MeasureTypes.length;
+        spans[2] = spans[1] + m_strRawEmbeddingFilenames.length;
+        spans[3] = spans[2] + m_strUKBModelFilenames.length;
+        spans[4] = spans[3] + m_strNasariModelFilenames.length;
+        
+        // We find the span of the input index
+        
+        int iSpan = 0;
+        
+        for (int i = 0; i < spans.length - 1; i++)
+        {
+            if ((iMeasure >= spans[i]) && (iMeasure < spans[i + 1]))
+            {
+                iSpan = i;
+                break;
+            }
+        }
+        
+        // We creates the measure defined by the input index
+        
+        switch (iSpan)
+        {
+            case 0:
+                
+                measure = MeasureFactory.getWordNetWordSimilarityMeasure(
+                            m_Wordnet, m_Taxonomy, m_MeasureTypes[iMeasure],
+                            m_ICmodels[iMeasure]);
+                
+                break;
+
+            case 1:
+                
+                measure = MeasureFactory.getEMBWordEmbeddingModel(
+                            m_strRawEmbeddingFilenames[iMeasure - spans[iSpan]]);
+                
+                break;
+         
+            case 2:
+
+                measure = MeasureFactory.getUKBppvEmbeddingModel(
+                            m_strUKBModelFilenames[iMeasure - spans[iSpan]]);
+                
+                break;
+                
+            case 3:
+
+                // We retrieve the filanems of the two Nasari files
+                
+                measure = MeasureFactory.getNasariEmbeddingModel(
+                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][0],
+                            m_strNasariModelFilenames[iMeasure - spans[iSpan]][1],
+                            getDatasetWords());
+                
+                break;
+        }
+        
+        // We return the measure
+        
+        return (measure);
+    }
+    
+    /**
+     * This function retrieves the words to be evaluated
+     * @return 
+     */
+    
+    private String[] getDatasetWords()
+    {
+        // We create the set of words in the benchmark
+        
+        HashSet<String> words = new HashSet<>();
+        
+        // We retrieve all words
+        
+        for (WordPairSimilarity pair: m_WordPairs)
+        {
+            if (!words.contains(pair.getWord1()))
+            {
+                words.add(pair.getWord1());
+            }
+            
+            if (!words.contains(pair.getWord2()))
+            {
+                words.add(pair.getWord2());
+            }            
+        }
+        
+        // We convert the set to array
+        
+        String[] strWords = new String[words.size()];
+        
+        words.toArray(strWords);
+        
+        // We reset the set
+        
+        words.clear();
+        
+        // We return the result
+        
+        return (strWords);
+    }
+    
+    /**
+     * This function returns the name of the measure in the iMeasure position.
+     * @param iMeasure
+     * @return
+     * @throws Exception 
+     */
+    
+    private String getMeasureName(
+            int iMeasure)
+    {
+        String strName = "";    // Returned value
+        
+        // We create the intervals vector and fill it with the starting
+        // positions of each family of measures
+        
+        int[] spans = new int[5];
+                    
+        spans[0] = 0;
+        spans[1] = m_MeasureTypes.length;
+        spans[2] = spans[1] + m_strRawEmbeddingFilenames.length;
+        spans[3] = spans[2] + m_strUKBModelFilenames.length;
+        spans[4] = spans[3] + m_strNasariModelFilenames.length;
+        
+        // We find the span of the input index
+        
+        int iSpan = 0;
+        
+        for (int i = 0; i < spans.length - 1; i++)
+        {
+            if ((iMeasure >= spans[i]) && (iMeasure < spans[i + 1]))
+            {
+                iSpan = i;
+                break;
+            }
+        }
+        
+        // We creates the measure defined by the input index
+        
+        switch (iSpan)
+        {
+            case 0:
+                
+                strName = m_MeasureTypes[iMeasure].toString();
+                
+                if (m_ICmodels[iMeasure] != null)
+                {
+                    strName += "+" + m_ICmodels[iMeasure].toString();
+                }
+                
+                break;
+
+            case 1:
+                
+                strName = m_strRawEmbeddingFilenames[iMeasure - spans[iSpan]];
+                
+                break;
+         
+            case 2:
+
+                strName = m_strUKBModelFilenames[iMeasure - spans[iSpan]];
+                
+                break;
+                
+            case 3:
+
+                strName = m_strNasariModelFilenames[iMeasure - spans[iSpan]][0]
+                        + m_strNasariModelFilenames[iMeasure - spans[iSpan]][1];
+                
+                break;
+        }
+        
+        // We return the measure
+        
+        return (strName);
     }
     
     /**
@@ -202,10 +407,15 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         
         int step = getMetricFillingStep();  // Columns for the metrics
         
+        // We compute the number of measures evaluated
+        
+        int nMeasures = m_MeasureTypes.length + m_strRawEmbeddingFilenames.length
+                    + m_strUKBModelFilenames.length + m_strNasariModelFilenames.length;
+        
         // We create the output matrix of raw similarity values.
         // The matrix will have one row per word pair.
         
-        strMatrix = new String[1 + m_WordPairs.length][2 + m_MeasureTypes.length];
+        strMatrix = new String[1 + m_WordPairs.length][2 + nMeasures];
         
         // We fill the titles of the first two columns
         
@@ -214,19 +424,12 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
         
         // We fill the titles for the remaining columns
         
-        for (int iMeasure = 0; iMeasure < m_MeasureTypes.length; iMeasure++)
+        for (int iMeasure = 0; iMeasure < nMeasures; iMeasure++)
         {
-            strMatrix[0][iMeasure + 2]= m_MeasureTypes[iMeasure].toString();
-            
-            // Second column shows the name of the IC model
-            
-            if (m_ICmodels[iMeasure] != null)
-            {
-                strMatrix[0][iMeasure + 2] += " + " + m_ICmodels[iMeasure].toString();
-            }
+            strMatrix[0][iMeasure + 2]= getMeasureName(iMeasure);
         }
         
-        // We fill the first column
+        // We fill the first two columns
         
         for (int iWordPair = 0; iWordPair < m_WordPairs.length; iWordPair++)
         {

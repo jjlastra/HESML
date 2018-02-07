@@ -23,6 +23,7 @@ package hesmlclient;
 
 // Java references
 
+import hesmlclient.XmlBenchmarkReaders.ReproducibleExperimentsInfo;
 import hesml.HESMLversion;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.benchmarks.CorrelationOutputMetrics;
@@ -532,13 +533,15 @@ public class HESMLclient
     
     /**
      * This function runs the tests for a collection of similarity measures
-     * in a same dataset and produces an output file containing a matris
-     * of raw similairty values.
+     * in a same dataset and produces an output file containing a matrix
+     * of raw similarity values. The benchmark evaluates ontology-based measures
+     * based on WordNet and word embeddings.
      * 
      * The function loads WordNet and creates a HESML taxonomy to represent it.
      * The benchmarks loads the dataset files with the word pairs and
      * creates a experiment matrix to evaluate each selected
-     * similarity measure.
+     * similarity measure. In addition, the word embedding files in *.emb
+     * file format are loaded and evaluated.
      * @throws Exception 
      */
     
@@ -569,7 +572,7 @@ public class HESMLclient
         ITaxonomyInfoConfigurator[] icModels = new ITaxonomyInfoConfigurator[2];
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[2];
         
-        // We set the methods to be evaluated
+        // We set the similarity methods to be evaluated
         
         icModels[0] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
         icModels[1] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
@@ -577,12 +580,20 @@ public class HESMLclient
         measureTypes[0] = SimilarityMeasureType.Resnik;
         measureTypes[1] = SimilarityMeasureType.Lin;
         
+        // We set the word embbedding to be evaluated. Note that we split them into
+        // three lists, one for each emdedding file format (EMB, NASARI, UKB)
+        
+        String[] strEMBWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
+        String[][] strNasariEmbeddingFiles = {};
+        String[] strUKBEmbeddingFiles = {};
+        
         // We create the benchmark
         
         ISimilarityBenchmark benchmark = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
                                             wordnetTaxonomy, wordnet,
                                             m_strWordNetDatasetsDir + RG65 + ".csv",
-                                            icModels, measureTypes);
+                                            icModels, measureTypes, strEMBWordVectorFiles,
+                                            strUKBEmbeddingFiles, strNasariEmbeddingFiles);
 
         // We run the experiments
         

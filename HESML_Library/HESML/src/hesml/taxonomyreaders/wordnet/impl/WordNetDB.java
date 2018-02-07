@@ -333,23 +333,18 @@ class WordNetDB implements IWordNetDB
     @Override
     public IWordNetSynset[] getWordSynsets(String strWord) throws Exception
     {
-        Exception   error;  // Thrown exception
-        
         IWordNetSynset[]    synsets;    // Returned value
-        
-        ArrayList<IWordNetSynset>   wordSynsets;    // Synsets for the word
         
         // We get the synsets for the word
         
-        wordSynsets = m_IndexedByWord.get(strWord);
+        ArrayList<IWordNetSynset> wordSynsets = m_IndexedByWord.get(strWord);
         
         if (wordSynsets == null)
         {
-            error = new Exception("The word is not in WordNet " + strWord);
-            throw (error);
+            throw (new Exception("The word is not in WordNet " + strWord));
         }
         
-        // We create the arrya to copy the synsets
+        // We create the array to copy the synsets
         
         synsets = new IWordNetSynset[wordSynsets.size()];
         

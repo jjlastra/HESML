@@ -23,9 +23,11 @@ package hesml.measures.impl;
 
 // HESML references
 
+import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import java.io.IOException;
 import java.security.InvalidParameterException;
 
 /**
@@ -347,5 +349,66 @@ public class MeasureFactory
         // We return the result
         
         return (measure);
+    }   
+    
+    /**
+     * This function creates a new similarity measure based on WordNet.
+     * @param wordnetDB WordNet database
+     * @param wordnetTaxonomy Base taxonomy. It will be updated by the IC model
+     * @param measureType Type of measure to be created
+     * @param icModel ICmodel used which can be null for non IC_based measures
+     * @return The new measure
+     * @throws Exception 
+     */
+    
+    public static IWordSimilarityMeasure getWordNetWordSimilarityMeasure(
+            IWordNetDB                  wordnetDB,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       measureType,
+            ITaxonomyInfoConfigurator   icModel) throws Exception
+    {
+        return (new WordNetWordSimilarityMeasure(wordnetDB, wordnetTaxonomy, measureType, icModel));
+    }
+    
+    /**
+     * This function loads a EMB word embedding model implementing
+     * a word similarity measure.
+     * @param strRawVectorFile
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getEMBWordEmbeddingModel(
+            String  strRawVectorFile)
+    {
+        return (new EMBWordEmbeddingModel(strRawVectorFile));
+    }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strUKBppvVectorFile
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getUKBppvEmbeddingModel(
+            String  strUKBppvVectorFile)
+    {
+        return (new UKBppvWordEmbeddingModel(strUKBppvVectorFile));
+    }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strSensesFilename
+     * @param strVectorFilename
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getNasariEmbeddingModel(
+            String      strSensesFilename,
+            String      strVectorFilename,
+            String[]    words) throws IOException
+    {
+        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, words));
     }    
 }

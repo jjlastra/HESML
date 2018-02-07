@@ -33,6 +33,11 @@ public enum SimilarityMeasureType
      * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
      * Development and application of a metric on semantic nets.
      * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
+     *//**
+     * It asks for the similarity measure introduced in the paper below.
+     * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
+     * Development and application of a metric on semantic nets.
+     * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
      */
     
     Rada,
@@ -363,5 +368,13 @@ public enum SimilarityMeasureType
      * (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
      */
     
-    PekarStaab
+    PekarStaab,
+    
+    /**
+     * Word embedding pre-trained model
+     */
+    
+    EMBWordEmbedding,
+    UKBppvEmbedding,
+    NasariEmbedding
 }

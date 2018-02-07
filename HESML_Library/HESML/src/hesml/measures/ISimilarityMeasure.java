@@ -26,7 +26,8 @@ package hesml.measures;
 import hesml.taxonomy.*;
 
 /**
- * This interface represents an abstract ontology-based semantic measure
+ * This interface represents an abstract ontology-based semantic
+ * similarity measure between concepts in a base taxonomy.
  * @author Juan Lastra-Díaz
  */
 
