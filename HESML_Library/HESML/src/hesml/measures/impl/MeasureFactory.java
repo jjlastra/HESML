@@ -29,6 +29,7 @@ import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.text.ParseException;
 
 /**
  * The aim of this class is to instantiate all the similarity measures in
@@ -407,7 +408,7 @@ public class MeasureFactory
     public static IWordSimilarityMeasure getNasariEmbeddingModel(
             String      strSensesFilename,
             String      strVectorFilename,
-            String[]    words) throws IOException
+            String[]    words) throws IOException, ParseException
     {
         return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, words));
     }    
