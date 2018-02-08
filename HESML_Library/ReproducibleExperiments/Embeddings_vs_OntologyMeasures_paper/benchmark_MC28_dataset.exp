@@ -47,7 +47,7 @@
 			<NasariVectorFiles>
 				<NasariVectorFile>
 					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unifiedt</VectorFile>
+					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>

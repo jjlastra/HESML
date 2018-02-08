@@ -105,7 +105,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         {
             // We get the synset of the line
             
-            String strWord = strLine.substring(0, strLine.indexOf("\t"));
+            String strWord = strLine.substring(0, strLine.indexOf(" "));
             
             // We check if the sense is in the list
             

@@ -158,7 +158,7 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             
             if (showDebugInfo)
             {
-                System.out.println(measure.toString());
+                System.out.println("Loading " + measure.toString());
             }
             
             // We evaluate the similarity for each word pair
