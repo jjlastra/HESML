@@ -63,4 +63,11 @@ public interface IWordSimilarityMeasure
      */
     
     double getNullSimilarityValue();
+    
+    /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    void clear();
 }

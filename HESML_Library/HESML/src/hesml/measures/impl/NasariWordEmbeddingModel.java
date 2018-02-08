@@ -28,12 +28,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
-import java.util.SortedMap;
 
 /**
  * This class implements a similarity function based on the word vectors
@@ -49,6 +46,13 @@ import java.util.SortedMap;
  * Computational Linguistics and the 7th International Joint
  * Conference on Natural Language Processing (ACL-IJCNLP 2015).
  * Beijing, China: ACL.
+ * 
+ * NASARI is detailed in the paper cited below.
+ * Camacho-Collados, J., Pilehvar, M. T., & Navigli, R. (2016).
+ * Nasari: Integrating explicit knowledge and corpus statistics
+ * for a multilingual representation of concepts and entities.
+ * Artificial Intelligence, 240, 36–64.
+ * 
  * @author j.lastra
  */
 
@@ -96,6 +100,18 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         loadWordSenses(strWordSenseFilename);
         loadBufferedSenseVectors(words);
+    }
+    
+    /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    @Override
+    public void clear()
+    {
+        m_BufferedSenseVectors.clear();
+        m_WordSenses.clear();
     }
     
     /**
@@ -154,10 +170,6 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
             
             strLine = reader.readLine();
         }
-        
-        // Debug message
-        
-        System.out.println("Finished the the sense vector buffering, senses = ");
         
         // We close the file
         
@@ -358,7 +370,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     
     /**
      * This function computes the weighted overlap as detailed in the papers
-     * [1] and [2] below.
+     * [1], [2] and [3] below. Function is better explained in [3, pp. ]
      * 
      * [1] Pilehvar, M. T., Jurgens, D., & Navigli, R. (2013).
      * Align, disambiguate and walk: A unified approach for measuring semantic
@@ -370,6 +382,12 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      * In Proc. of the 53rd Annual Meeting of the ACL and the 7th International
      * Joint Conference on Natural Language Processing (ACL-IJCNLP 2015).
      * Beijing, China: ACL.
+     * 
+     * [3]NASARI is detailed in the paper cited below.
+     * Camacho-Collados, J., Pilehvar, M. T., & Navigli, R. (2016).
+     * Nasari: Integrating explicit knowledge and corpus statistics
+     * for a multilingual representation of concepts and entities.
+     * Artificial Intelligence, 240, 36–64.
      * 
      */
     

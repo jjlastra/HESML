@@ -60,6 +60,16 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     }
     
     /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    @Override
+    public void clear()
+    {
+    }
+    
+    /**
      * This function returns the name of the vectors file.
      * @return 
      */

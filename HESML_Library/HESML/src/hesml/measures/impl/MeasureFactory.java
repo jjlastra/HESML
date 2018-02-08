@@ -375,13 +375,15 @@ public class MeasureFactory
      * This function loads a EMB word embedding model implementing
      * a word similarity measure.
      * @param strRawVectorFile
+     * @param words
      * @return 
      */
     
     public static IWordSimilarityMeasure getEMBWordEmbeddingModel(
-            String  strRawVectorFile)
+            String      strRawVectorFile,
+            String[]    words) throws IOException, ParseException
     {
-        return (new EMBWordEmbeddingModel(strRawVectorFile));
+        return (new EMBWordEmbeddingModel(strRawVectorFile, words));
     }
     
     /**
@@ -402,7 +404,10 @@ public class MeasureFactory
      * a word similarity measure.
      * @param strSensesFilename
      * @param strVectorFilename
+     * @param words Words which will be evaluated later
      * @return 
+     * @throws java.io.IOException 
+     * @throws java.text.ParseException 
      */
     
     public static IWordSimilarityMeasure getNasariEmbeddingModel(

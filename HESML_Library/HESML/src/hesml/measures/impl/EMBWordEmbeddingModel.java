@@ -28,6 +28,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * This class implements a cosine-similarity function based on the word vectors
@@ -48,14 +51,93 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     private final String  m_strRawPretrainedEmbeddingFilename;
     
     /**
+     * Buffer saving the word vectors to be used in a similarity benchmark.
+     */
+    
+    private HashMap<String, Double[]>  m_bufferedWordVectors;
+    
+    /**
      * Constructor
      * @param strVectorFilename 
      */
     
     EMBWordEmbeddingModel(
-        String  strVectorFilename)
+        String      strVectorFilename,
+        String[]    words) throws IOException, ParseException
     {
         m_strRawPretrainedEmbeddingFilename = strVectorFilename;
+        m_bufferedWordVectors = new HashMap<>();
+        
+        // We loand only those word vectors to be evaluated
+        
+        loadBufferedWordVectors(words);
+    }
+    
+    /**
+     * This function retrieves all sense vectors corresponding to the
+     * senses of the input words.
+     * @param words 
+     */
+    
+    private void loadBufferedWordVectors(
+        String[]    words) throws IOException, ParseException
+    {
+        // We create the list with all input words
+        
+        HashSet<String> pendingWords = new HashSet<>();
+        
+        for (String strWord: words)
+        {
+            pendingWords.add(strWord);
+        }
+        
+        // Debug message
+        
+        System.out.println("Loading words vectors to be evaluated");
+        
+        // We scan the sense vector file to retrieve all senses at the same time
+        
+        BufferedReader reader = new BufferedReader(new FileReader(m_strRawPretrainedEmbeddingFilename), 1000000);
+        
+        String strLine = reader.readLine();
+        
+        while ((strLine != null) && (pendingWords.size() > 0))
+        {
+            // We get the synset of the line
+            
+            String strWord = strLine.substring(0, strLine.indexOf("\t"));
+            
+            // We check if the sense is in the list
+            
+            if (pendingWords.contains(strWord))
+            {
+                // We save the sense vector
+                
+                m_bufferedWordVectors.put(strWord, parseWordVector(strLine));
+                
+                // We remove the sense from list
+                
+                pendingWords.remove(strWord);
+            }
+            
+            // We read the next line
+            
+            strLine = reader.readLine();
+        }
+               
+        // We close the file
+        
+        reader.close();
+    }
+    
+    /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    @Override
+    public void clear()
+    {
     }
     
     /**
@@ -108,8 +190,8 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We get vectors representing both words
         
-        double[] word1 = getWordVector(strWord1);
-        double[] word2 = getWordVector(strWord2);
+        Double[] word1 = m_bufferedWordVectors.get(strWord1);
+        Double[] word2 = m_bufferedWordVectors.get(strWord2);
         
         // We check the validity of the word vectors. They could be null if
         // any word is not contained in the vocabulary of the embedding.
@@ -142,7 +224,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
      */
     
     private double getVectorNorm(
-        double[]    vector)
+        Double[]    vector)
     {
         double norm = 0.0;  // Returned value
         
@@ -168,56 +250,23 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
      * @return 
      */
     
-    private double[] getWordVector(
-            String strWord) throws FileNotFoundException, IOException
+    private Double[] parseWordVector(
+            String strLine) throws FileNotFoundException, IOException
     {
         // We initialize the output
         
-        double[] vector = null;
-        
-        // We open for reading the vectors file
-        
-        BufferedReader reader = new BufferedReader(new FileReader(m_strRawPretrainedEmbeddingFilename));
-        
-        // We search for the word within the vectors file
-        
-        String strLine = reader.readLine();
-        
-        while (strLine != null)
+        String[] strFields = strLine.split("\\t| |,|;");
+
+        // We create the vector
+
+        Double[] vector = new Double[strFields.length - 1];
+
+        // We copy the coordinates
+
+        for (int i = 0; i < vector.length; i++)
         {
-            // We extract the fields in line
-            
-            if (strLine.startsWith(strWord))
-            {
-                String[] strFields = strLine.split("\\t| |,|;");
-            
-                // We check the first field for the input word
-                
-                if ((strFields.length > 0) && strFields[0].trim().equals(strWord))
-                {
-                    // We create the vector
-
-                    vector = new double[strFields.length - 1];
-
-                    // We copy the coordinates
-
-                    for (int i = 0; i < vector.length; i++)
-                    {
-                        vector[i] = Double.parseDouble(strFields[i + 1]);
-                    }
-
-                    break;
-                }
-            }
-            
-            // We read the next line
-            
-            strLine = reader.readLine();
+            vector[i] = Double.parseDouble(strFields[i + 1]);
         }
-         
-        // We close the file
-            
-        reader.close();
         
         // We return the result
         
