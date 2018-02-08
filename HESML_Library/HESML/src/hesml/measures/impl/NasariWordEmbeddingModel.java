@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -45,6 +46,13 @@ import java.util.HashSet;
  * Computational Linguistics and the 7th International Joint
  * Conference on Natural Language Processing (ACL-IJCNLP 2015).
  * Beijing, China: ACL.
+ * 
+ * NASARI is detailed in the paper cited below.
+ * Camacho-Collados, J., Pilehvar, M. T., & Navigli, R. (2016).
+ * Nasari: Integrating explicit knowledge and corpus statistics
+ * for a multilingual representation of concepts and entities.
+ * Artificial Intelligence, 240, 36–64.
+ * 
  * @author j.lastra
  */
 
@@ -67,7 +75,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      * Buffered Sense vectors
      */
     
-    private final HashMap<String, HashMap<String, Double>>  m_BufferedSenseVectors;
+    private final HashMap<String, HashMap<String, Integer>>  m_BufferedSenseVectors;
     
     /**
      * Constructor
@@ -77,7 +85,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     NasariWordEmbeddingModel(
             String      strWordSenseFilename,
             String      strSenseVectorFilename,
-            String[]    words) throws IOException
+            String[]    words) throws IOException, ParseException
     {
         // We save the two filenames
         
@@ -95,13 +103,25 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     }
     
     /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    @Override
+    public void clear()
+    {
+        m_BufferedSenseVectors.clear();
+        m_WordSenses.clear();
+    }
+    
+    /**
      * This function retrieves all sense vectors corresponding to the
      * senses of the input words.
      * @param words 
      */
     
     private void loadBufferedSenseVectors(
-        String[]    words) throws IOException
+        String[]    words) throws IOException, ParseException
     {
         // We create the list of all senses of the input words
         
@@ -119,7 +139,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Loading sense vectors of words to be evaluated = " + pendingSenses.size());
+        System.out.println("Loading sense vectors of words to be evaluated");
         
         // We scan the sense vector file to retrieve all senses at the same time
         
@@ -150,11 +170,6 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
             
             strLine = reader.readLine();
         }
-        
-        // Debug message
-        
-        System.out.println("Finished the the sense vector buffering, senses = "
-                + m_BufferedSenseVectors.size());
         
         // We close the file
         
@@ -216,39 +231,40 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     }
 
     /**
-     * This function parses a text line in order to retrieve
+     * This function parses a text line in order to retrieve the synset
+     * vector of an input sense.
      * @param strSenseLine
      * @return 
      */
     
-    private HashMap<String, Double> parseSenseVector(
-            String strSenseLine)
+    private HashMap<String, Integer> parseSenseVector(
+            String strSenseLine) throws ParseException
     {
         // We initialize the output
         
-        HashMap<String, Double> weightsVector = new HashMap<>();
+        HashMap<String, Integer> ranksVector = new HashMap<>();
         
         // We split into fields
 
         String[] strFields = strSenseLine.split("\t");
 
-        // We read all weights
+        // We read all vector components which are ranked in accordance
+        // with their weigths. We are assuming that the vectors are already
+        // sorted by their weights.
 
-        for (int i = 2; i < strFields.length; i++)
+        for (int i = 2, rank = 1; i < strFields.length; i++, rank++)
         {
             String[] strSenseWeight = strFields[i].split("_");
 
             if (strSenseWeight.length == 2)
             {
-                double weight = Double.parseDouble(strSenseWeight[1]);
-
-                weightsVector.put(strSenseWeight[0], weight);
+                ranksVector.put(strSenseWeight[0], rank);
             }
         }
 
         // We return the result
         
-        return (weightsVector);
+        return (ranksVector);
     }
     
     /**
@@ -312,7 +328,6 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         {
             // We search for the highest similarity value between both sense sets
 
-            similarity = 0.0;
             boolean synonyms = false;
             
             for (String strSense1 : senses1)
@@ -324,29 +339,24 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                     break;
                 }
             }
-
-            // We compute the similarity between senses
+            
+            // We evaluate the Cartesian product lookig for the
+            // highest similarity value
 
             if (!synonyms)
             {
-                // We compute the similarity using weighted overlap
-                
+                similarity = 0.0;
+            
                 for (String strSense1: senses1)
                 {
                     for (String strSense2: senses2)
                     {
                         // We check that both sense vectors exist
-                        
+
                         if (m_BufferedSenseVectors.containsKey(strSense1)
-                                && m_BufferedSenseVectors.containsKey(strSense2))
+                            && m_BufferedSenseVectors.containsKey(strSense2))
                         {
-                            // We compute the weighted overlap
-                    
-                            double weightedOverlap = getWeightedOverlap(strSense1, strSense2);
-                    
-                            // We save the maximum value
-                    
-                            similarity = Math.max(similarity, weightedOverlap);
+                            similarity = Math.max(similarity, getWeightedOverlap(strSense1, strSense2));
                         }
                     }
                 }
@@ -359,8 +369,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     }
     
     /**
-     * This function computes the weighted overlap as detaield in the papers
-     * [1] and [2] below.
+     * This function computes the weighted overlap as detailed in the papers
+     * [1], [2] and [3] below. Function is better explained in [3, pp. ]
      * 
      * [1] Pilehvar, M. T., Jurgens, D., & Navigli, R. (2013).
      * Align, disambiguate and walk: A unified approach for measuring semantic
@@ -373,6 +383,12 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      * Joint Conference on Natural Language Processing (ACL-IJCNLP 2015).
      * Beijing, China: ACL.
      * 
+     * [3]NASARI is detailed in the paper cited below.
+     * Camacho-Collados, J., Pilehvar, M. T., & Navigli, R. (2016).
+     * Nasari: Integrating explicit knowledge and corpus statistics
+     * for a multilingual representation of concepts and entities.
+     * Artificial Intelligence, 240, 36–64.
+     * 
      */
     
     private double getWeightedOverlap(
@@ -381,19 +397,17 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     {
         // We retieve the sense vectors
         
-        HashMap<String, Double> vector1 = m_BufferedSenseVectors.get(strSense1);
-        HashMap<String, Double> vector2 = m_BufferedSenseVectors.get(strSense2);
+        HashMap<String, Integer> vector1 = m_BufferedSenseVectors.get(strSense1);
+        HashMap<String, Integer> vector2 = m_BufferedSenseVectors.get(strSense2);
         
-        // We initiliaze the output
-        
-        double weightedOverlap = 0.0;
-        
-        // We initialize the score
+        // We initialize the score and counters
         
         double score_prov = 0.0;
         double normalization = 0.0;
         
         int cont = 0;
+        
+        // We compute the weighted overlap score
         
         for (String word: vector1.keySet())
         {
@@ -407,10 +421,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     
         // We compute the final weighted overlap
         
-        if (cont > 0)
-        {
-            weightedOverlap = Math.sqrt(score_prov/normalization);
-        }
+        double weightedOverlap = (cont > 0) ? Math.sqrt(score_prov/normalization) : 0.0;
         
         // We return the result
         

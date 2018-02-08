@@ -93,6 +93,16 @@ class WordNetWordSimilarityMeasure implements IWordNetWordSimilarityMeasure
     }
     
     /**
+     * This function is called with the aim of releasing all resources used
+     * by the measure.
+     */
+    
+    @Override
+    public void clear()
+    {
+    }
+    
+    /**
      * This function returns the WordNet database.
      * @return 
      */

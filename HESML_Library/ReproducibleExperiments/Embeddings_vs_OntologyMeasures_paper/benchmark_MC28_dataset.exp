@@ -43,13 +43,11 @@
 				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
 				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
-			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
-			</UKBVectorFiles>
+			<UKBVectorFiles/>
 			<NasariVectorFiles>
 				<NasariVectorFile>
 					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unifiedt</VectorFile>
+					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
