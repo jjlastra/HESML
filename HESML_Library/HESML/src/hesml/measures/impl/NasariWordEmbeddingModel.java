@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.SortedMap;
 
 /**
  * This class implements a similarity function based on the word vectors
@@ -70,7 +71,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      * Buffered Sense vectors
      */
     
-    private final HashMap<String, HashMap<String, Double>>  m_BufferedSenseVectors;
+    private final HashMap<String, HashMap<String, Integer>>  m_BufferedSenseVectors;
     
     /**
      * Constructor
@@ -218,43 +219,40 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     }
 
     /**
-     * This function parses a text line in order to retrieve
+     * This function parses a text line in order to retrieve the synset
+     * vector of an input sense.
      * @param strSenseLine
      * @return 
      */
     
-    private HashMap<String, Double> parseSenseVector(
+    private HashMap<String, Integer> parseSenseVector(
             String strSenseLine) throws ParseException
     {
         // We initialize the output
         
-        HashMap<String, Double> weightsVector = new HashMap<>();
+        HashMap<String, Integer> ranksVector = new HashMap<>();
         
         // We split into fields
 
         String[] strFields = strSenseLine.split("\t");
 
-        // We instance a number formar reader
-        
-        NumberFormat numberParser = NumberFormat.getInstance(Locale.ENGLISH);
-        
-        // We read all weights
+        // We read all vector components which are ranked in accordance
+        // with their weigths. We are assuming that the vectors are already
+        // sorted by their weights.
 
-        for (int i = 2; i < strFields.length; i++)
+        for (int i = 2, rank = 1; i < strFields.length; i++, rank++)
         {
             String[] strSenseWeight = strFields[i].split("_");
 
             if (strSenseWeight.length == 2)
             {
-                Number weight = numberParser.parse(strSenseWeight[1]);
-                
-                weightsVector.put(strSenseWeight[0], weight.doubleValue());
+                ranksVector.put(strSenseWeight[0], rank);
             }
         }
 
         // We return the result
         
-        return (weightsVector);
+        return (ranksVector);
     }
     
     /**
@@ -381,8 +379,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     {
         // We retieve the sense vectors
         
-        HashMap<String, Double> vector1 = m_BufferedSenseVectors.get(strSense1);
-        HashMap<String, Double> vector2 = m_BufferedSenseVectors.get(strSense2);
+        HashMap<String, Integer> vector1 = m_BufferedSenseVectors.get(strSense1);
+        HashMap<String, Integer> vector2 = m_BufferedSenseVectors.get(strSense2);
         
         // We initialize the score and counters
         
@@ -398,8 +396,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
             if (vector2.containsKey(word))
             {
                 cont += 1;
-                normalization += (1.0 / (2.0 * cont));
-                score_prov += (1.0 / (vector1.get(word) + vector2.get(word)));
+                normalization += 1.0 / (2.0 * cont);
+                score_prov += 1.0 / (vector1.get(word) + vector2.get(word));
             }
         }
     
