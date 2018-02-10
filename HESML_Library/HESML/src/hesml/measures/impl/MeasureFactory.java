@@ -381,9 +381,9 @@ public class MeasureFactory
     
     public static IWordSimilarityMeasure getEMBWordEmbeddingModel(
             String      strRawVectorFile,
-            String[]    words) throws IOException, ParseException
+            String[]    strWords) throws IOException, ParseException
     {
-        return (new EMBWordEmbeddingModel(strRawVectorFile, words));
+        return (new EMBWordEmbeddingModel(strRawVectorFile, strWords));
     }
     
     /**
@@ -394,9 +394,10 @@ public class MeasureFactory
      */
     
     public static IWordSimilarityMeasure getUKBppvEmbeddingModel(
-            String  strUKBppvVectorFile)
+            String      strUKBppvVectorFile,
+            String[]    strWords) throws IOException, ParseException
     {
-        return (new UKBppvWordEmbeddingModel(strUKBppvVectorFile));
+        return (new UKBppvWordEmbeddingModel(strUKBppvVectorFile, strWords));
     }
     
     /**
@@ -404,7 +405,7 @@ public class MeasureFactory
      * a word similarity measure.
      * @param strSensesFilename
      * @param strVectorFilename
-     * @param words Words which will be evaluated later
+     * @param strWords Words which will be evaluated later
      * @return 
      * @throws java.io.IOException 
      * @throws java.text.ParseException 
@@ -413,8 +414,8 @@ public class MeasureFactory
     public static IWordSimilarityMeasure getNasariEmbeddingModel(
             String      strSensesFilename,
             String      strVectorFilename,
-            String[]    words) throws IOException, ParseException
+            String[]    strWords) throws IOException, ParseException
     {
-        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, words));
+        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, strWords));
     }    
 }

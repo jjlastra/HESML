@@ -74,9 +74,9 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     }
     
     /**
-     * This function retrieves all sense vectors corresponding to the
-     * senses of the input words.
-     * @param words 
+     * This function retrieves all word vectors corresponding to the
+     * the input words to be evaluated.
+     * @param words Word set to be evaluated
      */
     
     private void loadBufferedWordVectors(
@@ -256,7 +256,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     {
         // We initialize the output
         
-        String[] strFields = strLine.split("\\t| |,|;");
+        String[] strFields = strLine.split("\t| ");
 
         // We create the vector
 

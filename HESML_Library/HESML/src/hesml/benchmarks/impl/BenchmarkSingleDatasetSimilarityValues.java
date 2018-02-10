@@ -249,7 +249,8 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             case 2:
 
                 measure = MeasureFactory.getUKBppvEmbeddingModel(
-                            m_strUKBModelFilenames[iMeasure - spans[iSpan]]);
+                            m_strUKBModelFilenames[iMeasure - spans[iSpan]],
+                        getDatasetWords());
                 
                 break;
                 
