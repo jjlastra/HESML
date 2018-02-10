@@ -20,11 +20,11 @@ Main novelties provided by HESML V1R4 are as follows:
 
 (1) software implementation of a fast version of the Wu&Palmer [7] similarity measure  defined by the formula sim(a,b) = 2*depth(LCS(a,b)) / (depth(a) + depth(b))
 
-(2) software implementation of a new similarity measure which allows to evaluate pre-trained word embedding models.
+(2) software implementation of three new similarity measure which allows to evaluate pre-trained word embedding models in EMB, UKB(ppv) and Nasari file formats.
 
 (3) software implementation of the IC model proposed by Cai et al. (2017)[6]
 
-(4) software implementation of a IC-based simialrity measure proposed by Cai et al. (2017)[6]
+(4) software implementation of a IC-based similarity measure proposed by Cai et al. (2017)[6]
 
 # Licensing information
 
