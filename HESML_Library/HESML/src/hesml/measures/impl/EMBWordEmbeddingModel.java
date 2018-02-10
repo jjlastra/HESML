@@ -138,6 +138,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public void clear()
     {
+        m_bufferedWordVectors.clear();
     }
     
     /**
