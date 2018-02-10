@@ -30,6 +30,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 
@@ -249,7 +250,8 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
             case 2:
 
                 measure = MeasureFactory.getUKBppvEmbeddingModel(
-                            m_strUKBModelFilenames[iMeasure - spans[iSpan]]);
+                            m_strUKBModelFilenames[iMeasure - spans[iSpan]],
+                        getDatasetWords());
                 
                 break;
                 
@@ -364,20 +366,26 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
 
             case 1:
                 
-                strName = m_strRawEmbeddingFilenames[iMeasure - spans[iSpan]];
+                File embFile = new File(m_strRawEmbeddingFilenames[iMeasure - spans[iSpan]]);
+                
+                strName = embFile.getName();
                 
                 break;
          
             case 2:
 
-                strName = m_strUKBModelFilenames[iMeasure - spans[iSpan]];
+                File ukbFile = new File(m_strUKBModelFilenames[iMeasure - spans[iSpan]]);
+                
+                strName = ukbFile.getName();
                 
                 break;
                 
             case 3:
 
-                strName = m_strNasariModelFilenames[iMeasure - spans[iSpan]][0]
-                        + m_strNasariModelFilenames[iMeasure - spans[iSpan]][1];
+                File nasariWordSenseFile = new File(m_strNasariModelFilenames[iMeasure - spans[iSpan]][0]);
+                File nasariSenseVectorFile = new File(m_strNasariModelFilenames[iMeasure - spans[iSpan]][1]);
+                
+                strName = nasariWordSenseFile.getName() + "+" + nasariSenseVectorFile.getName();
                 
                 break;
         }

@@ -25,6 +25,7 @@ import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -74,9 +75,9 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     }
     
     /**
-     * This function retrieves all sense vectors corresponding to the
-     * senses of the input words.
-     * @param words 
+     * This function retrieves all word vectors corresponding to the
+     * the input words to be evaluated.
+     * @param words Word set to be evaluated
      */
     
     private void loadBufferedWordVectors(
@@ -138,6 +139,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public void clear()
     {
+        m_bufferedWordVectors.clear();
     }
     
     /**
@@ -148,7 +150,13 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public String toString()
     {
-        return (m_strRawPretrainedEmbeddingFilename);
+        // We get the path of the files
+        
+        File path1 = new File(m_strRawPretrainedEmbeddingFilename);
+        
+        // We return the result
+        
+        return (path1.getName());
     }
     
     /**
@@ -255,7 +263,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
     {
         // We initialize the output
         
-        String[] strFields = strLine.split("\\t| |,|;");
+        String[] strFields = strLine.split("\t| ");
 
         // We create the vector
 

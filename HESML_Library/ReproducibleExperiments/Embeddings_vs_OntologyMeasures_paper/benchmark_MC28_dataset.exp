@@ -2,7 +2,7 @@
 <!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
 <WordNetBasedExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Versiones_Git_Oficiales_HESML\HESML\HESML_Library\ReproducibleExperiments\WordNetBasedExperiments.xsd">
 	<SingleDatasetSimilarityValuesExperiment>
-		<OutputFileName>raw_ontology_measures_MC28_dataset.csv</OutputFileName>
+		<OutputFileName>raw_similarity_values_MC28_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
 		<DatasetFileName>Miller_Charles_28_dataset.csv</DatasetFileName>
 		<WordNetMeasures>
@@ -43,7 +43,9 @@
 				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
 				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
-			<UKBVectorFiles/>
+			<UKBVectorFiles>
+				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
 					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>

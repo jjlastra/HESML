@@ -25,10 +25,13 @@ import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * This class implements a cosine-similarity function based on the word vectors
@@ -49,14 +52,85 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     private final String  m_strRawPretrainedEmbeddingFilename;
     
     /**
+     * Buffer saving the word vectors to be used in a similarity benchmark.
+     */
+    
+    private HashMap<String, HashMap<String,Double>>  m_bufferedWordVectors;
+    
+    /**
      * Constructor
      * @param strVectorFilename 
      */
     
     UKBppvWordEmbeddingModel(
-        String  strVectorFilename)
+        String      strVectorFilename,
+        String[]    words) throws IOException, ParseException
     {
+        // We save the filename and create the buiffered vector table
+        
         m_strRawPretrainedEmbeddingFilename = strVectorFilename;
+        m_bufferedWordVectors = new HashMap<>();
+        
+        // We loand only those word vectors to be evaluated
+        
+        loadBufferedWordVectors(words);
+    }
+    
+    /**
+     * This function retrieves all word vectors corresponding to the
+     * the input words to be evaluated.
+     * @param words Word set to be evaluated
+     */
+    
+    private void loadBufferedWordVectors(
+        String[]    words) throws IOException, ParseException
+    {
+        // We create the list with all input words
+        
+        HashSet<String> pendingWords = new HashSet<>();
+        
+        for (String strWord: words)
+        {
+            pendingWords.add(strWord);
+        }
+        
+        // Debug message
+        
+        System.out.println("Loading words vectors to be evaluated");
+        
+        // We scan the sense vector file to retrieve all senses at the same time
+        
+        BufferedReader reader = new BufferedReader(new FileReader(m_strRawPretrainedEmbeddingFilename), 1000000);
+        
+        String strLine = reader.readLine();
+        
+        while ((strLine != null) && (pendingWords.size() > 0))
+        {
+            // We get the synset of the line
+            
+            String strWord = strLine.substring(0, strLine.indexOf(" "));
+            
+            // We check if the sense is in the list
+            
+            if (pendingWords.contains(strWord))
+            {
+                // We save the sense vector
+                
+                m_bufferedWordVectors.put(strWord, parseWordVector(strLine));
+                
+                // We remove the sense from list
+                
+                pendingWords.remove(strWord);
+            }
+            
+            // We read the next line
+            
+            strLine = reader.readLine();
+        }
+               
+        // We close the file
+        
+        reader.close();
     }
     
     /**
@@ -67,6 +141,7 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public void clear()
     {
+        m_bufferedWordVectors.clear();
     }
     
     /**
@@ -77,7 +152,13 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public String toString()
     {
-        return (m_strRawPretrainedEmbeddingFilename);
+        // We get the path of the files
+        
+        File path1 = new File(m_strRawPretrainedEmbeddingFilename);
+        
+        // We return the result
+        
+        return (path1.getName());
     }
     
     /**
@@ -99,7 +180,7 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.UKBppvEmbedding);
+        return (SimilarityMeasureType.EMBWordEmbedding);
     }
     
     /**
@@ -117,30 +198,29 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     {
         double similarity = 0.0;    // Returned value
         
-        // We get vectors representing both words in the sparse
-        // synset-based representation of UKB
+        // We get vectors representing both words
         
-        HashMap<String, Double> word1 = getWordVector(strWord1);
-        HashMap<String, Double> word2 = getWordVector(strWord2);
+        HashMap<String,Double> wordVector1 = m_bufferedWordVectors.get(strWord1);
+        HashMap<String,Double> wordVector2 = m_bufferedWordVectors.get(strWord2);
         
         // We check the validity of the word vectors. They could be null if
         // any word is not contained in the vocabulary of the embedding.
         
-        if ((word1 != null) && (word2 != null))
+        if ((wordVector1 != null) && (wordVector2 != null))
         {
             // We compute the cosine similarity function (dot product)
 
-            for (String strSynset1: word1.keySet())
+            for (String strSynset1: wordVector1.keySet())
             {
-                if (word2.containsKey(strSynset1))
+                if (wordVector2.containsKey(strSynset1))
                 {
-                    similarity += word1.get(strSynset1) * word2.get(strSynset1);
+                    similarity += wordVector1.get(strSynset1) * wordVector2.get(strSynset1);
                 }
             }
             
             // We divide by the vector norms
             
-            similarity /= (getVectorNorm(word1) * getVectorNorm(word2));
+            similarity /= (getVectorNorm(wordVector1) * getVectorNorm(wordVector2));
         }
         
         // We return the result
@@ -155,15 +235,15 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
      */
     
     private double getVectorNorm(
-        HashMap<String, Double> sparseVector)
+        HashMap<String, Double> vector)
     {
         double norm = 0.0;  // Returned value
         
         // We compute the acumulated square-coordinates
         
-        for (Double coord: sparseVector.values())
+        for (Double value: vector.values())
         {
-            norm += coord * coord;
+            norm += value * value;
         }
         
         // Finally, we compute the square root
@@ -181,61 +261,32 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
      * @return 
      */
     
-    private HashMap<String, Double> getWordVector(
-            String strWord) throws FileNotFoundException, IOException
+    private HashMap<String,Double> parseWordVector(
+            String strLine) throws FileNotFoundException, IOException
     {
         // We initialize the output
         
-        HashMap<String, Double> vector = new HashMap<>();
-        
-        // We open for reading the vectors file
-        
-        BufferedReader reader = new BufferedReader(new FileReader(m_strRawPretrainedEmbeddingFilename));
-        
-        // We search for the word within the vectors file
-        
-        String strLine;
-        
-        do
+        String[] strFields = strLine.split("\t| ");
+
+        // We create the vector
+
+        HashMap<String,Double> senseCoords = new HashMap<>();
+
+        // We copy the coordinates
+
+        for (int i = 1; i < strFields.length; i++)
         {
-            // We read the next line
+            String[] strCoordVector = strFields[i].split("_");
             
-            strLine = reader.readLine();
-            
-            // We extract the fields in line
-            
-            if (strLine != null)
+            if (!senseCoords.containsKey(strCoordVector[0]))
             {
-                String[] strFields = strLine.split("\\t| |,|;");
-            
-                // We check the first field for the input word
-                
-                //if ((strFields.length > 0) && (strFields[0].trim().equals(strWord)))
-                {
-                    // We create the vector
-
-                    /*vector = new double[strFields.length - 1];
-
-                    // We copy the coordinates
-
-                    for (int i = 0; i < vector.length; i++)
-                    {
-                        vector[i] = Double.parseDouble(strFields[i + 1]);
-                    }
-
-                    break;*/
-                }
+                senseCoords.put(strCoordVector[0], Double.parseDouble(strCoordVector[1]));
             }
-            
-        } while (strLine != null);
-         
-        // We close the file
-            
-        reader.close();
+        }
         
         // We return the result
         
-        return (null);
+        return (senseCoords);
     }
 
     /**

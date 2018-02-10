@@ -25,6 +25,7 @@ import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureClass;
 import hesml.measures.SimilarityMeasureType;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -66,6 +67,12 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     private final String  m_strSenseVectorsFilename;
     
     /**
+     * Filename of the file containing the word senses
+     */
+    
+    private final String m_strWordSenseFilename;
+    
+    /**
      * Word senses
      */
     
@@ -90,6 +97,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We save the two filenames
         
         m_strSenseVectorsFilename = strSenseVectorFilename;
+        m_strWordSenseFilename = strWordSenseFilename;
         
         // We initialize the overall tables
                         
@@ -98,7 +106,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We load the word senses and coords
         
-        loadWordSenses(strWordSenseFilename);
+        loadWordSenses(strWordSenseFilename, words);
         loadBufferedSenseVectors(words);
     }
     
@@ -182,7 +190,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
      */
     
     private void loadWordSenses(
-        String  strWordSensesFilename) throws FileNotFoundException, IOException
+            String      strWordSensesFilename,
+            String[]    strInputWords) throws FileNotFoundException, IOException
     {
         // Debugging message
         
@@ -191,6 +200,20 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         // We open the file to read all word senses with a buffer of 10 Mbytes
         
         BufferedReader reader = new BufferedReader(new FileReader(strWordSensesFilename), 1000000);
+
+        // We create the list of all senses of the input words
+        
+        HashSet<String> pendingWords = new HashSet<>();
+        
+        // We insert the words to be filtered
+        
+        for (int i = 0; i < strInputWords.length; i++)
+        {
+            if (!pendingWords.contains(strInputWords[i]))
+            {
+                pendingWords.add(strInputWords[i]);
+            }
+        }
         
         // We read all word senses
         
@@ -210,14 +233,17 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                 
                 // We check if the word is already in the table
                 
-                if (!m_WordSenses.containsKey(strWord))
+                if (pendingWords.contains(strWord))
                 {
-                    m_WordSenses.put(strWord, new HashSet<>());
+                    if (!m_WordSenses.containsKey(strWord))
+                    {
+                        m_WordSenses.put(strWord, new HashSet<>());
+                    }
+                
+                    // We add the sense
+                
+                    m_WordSenses.get(strWord).add(strFields[1]);
                 }
-                
-                // We add the sense
-                
-                m_WordSenses.get(strWord).add(strFields[1]);
             }
             
             // We read the next line
@@ -275,7 +301,14 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public String toString()
     {
-        return (m_strSenseVectorsFilename);
+        // We get the path of the files
+        
+        File path1 = new File(m_strSenseVectorsFilename);
+        File path2 = new File(m_strWordSenseFilename);
+        
+        // We return the result
+        
+        return (path1.getName() + " + " + path2.getName());
     }
     
     /**
