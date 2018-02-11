@@ -24,7 +24,6 @@ package hesml.benchmarks.impl;
 import hesml.benchmarks.CorrelationOutputMetrics;
 import static hesml.benchmarks.impl.AbstractBenchmark.saveCSVfile;
 import hesml.configurators.ITaxonomyInfoConfigurator;
-import hesml.measures.IWordNetWordSimilarityMeasure;
 import hesml.measures.IWordSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
