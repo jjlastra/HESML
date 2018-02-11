@@ -147,7 +147,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Loading sense vectors of words to be evaluated");
+        System.out.println("Loading sense vectors from " + m_strSenseVectorsFilename);
         
         // We scan the sense vector file to retrieve all senses at the same time
         
