@@ -79,6 +79,8 @@ class SingleDatasetSimilarityValuesExperimentReader extends XmlBenchmarkReader
         String strDatasetDir = readStringField(experimentRoot, "DatasetDirectory");
         String strDatasetFileName = readStringField(experimentRoot, "DatasetFileName");
 
+        System.out.println("Loading benchmark on dataset = " + strDatasetFileName);
+        
         // We assembly the filename of the dataset
         
         strDatasetFileName = strDatasetDir + "/" + strDatasetFileName;
