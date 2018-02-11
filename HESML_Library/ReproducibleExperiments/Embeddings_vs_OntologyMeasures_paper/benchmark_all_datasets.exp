@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
 <WordNetBasedExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Versiones_Git_Oficiales_HESML\HESML\HESML_Library\ReproducibleExperiments\WordNetBasedExperiments.xsd">
 	<SingleDatasetSimilarityValuesExperiment>
 		<OutputFileName>raw_similarity_values_MC28_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
 		<DatasetFileName>Miller_Charles_28_dataset.csv</DatasetFileName>
+		<WordNetMeasures>
+			<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
+			<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
+			<SimilarityMeasures>
+				<SpecificSimilarityMeasure>
+					<MeasureType>CosineNormWeightedJiangConrath</MeasureType>
+					<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Zhou</MeasureType>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>CosineNormJiangConrath</MeasureType>
+					<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>PirroSeco</MeasureType>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Taieb2014</MeasureType>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>CaiStrategy2</MeasureType>
+					<IntrinsicICModel>Cai</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>JiangConrath</MeasureType>
+					<IntrinsicICModel>Sanchez2011</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Resnik</MeasureType>
+					<IntrinsicICModel>CondProbRefLeavesSubsumersRatio</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Lin</MeasureType>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SpecificSimilarityMeasure>
+				<SpecificSimilarityMeasure>
+					<MeasureType>Rada</MeasureType>
+				</SpecificSimilarityMeasure>
+			</SimilarityMeasures>
+		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
 				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
