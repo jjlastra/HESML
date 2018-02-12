@@ -266,7 +266,7 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     {
         // We initialize the output
         
-        String[] strFields = strLine.split("\t| ");
+        String[] strFields = strLine.split(" ");
 
         // We create the vector
 
