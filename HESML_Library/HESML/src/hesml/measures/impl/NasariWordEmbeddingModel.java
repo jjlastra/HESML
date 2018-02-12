@@ -147,7 +147,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Loading sense vectors of words to be evaluated");
+        System.out.println("Loading sense vectors from " + m_strSenseVectorsFilename);
         
         // We scan the sense vector file to retrieve all senses at the same time
         
@@ -207,12 +207,9 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         
         // We insert the words to be filtered
         
-        for (int i = 0; i < strInputWords.length; i++)
+        for (String strWord : strInputWords)
         {
-            if (!pendingWords.contains(strInputWords[i]))
-            {
-                pendingWords.add(strInputWords[i]);
-            }
+            pendingWords.add(strWord);
         }
         
         // We read all word senses
@@ -357,7 +354,8 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
 
         // We check the existence of the words in the dictionary
         
-        if (!senses1.isEmpty() && !senses2.isEmpty())
+        if ((senses1 != null) && (senses2 != null)
+                && !senses1.isEmpty() && !senses2.isEmpty())
         {
             // We search for the highest similarity value between both sense sets
 

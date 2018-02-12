@@ -94,7 +94,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         
         // Debug message
         
-        System.out.println("Loading words vectors to be evaluated");
+        System.out.println("Loading words vectors from " + m_strRawPretrainedEmbeddingFilename);
         
         // We scan the sense vector file to retrieve all senses at the same time
         

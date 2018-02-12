@@ -80,7 +80,10 @@ abstract class AbstractBenchmark implements ISimilarityBenchmark
     @Override
     public void clear()
     {
-        m_Taxonomy.clear();
+        if (m_Taxonomy != null)
+        {
+            m_Taxonomy.clear();
+        }
     }
     
     /**

@@ -121,7 +121,11 @@ abstract class WordNetSimBenchmark extends AbstractBenchmark
         
         // We release our resources
                 
-        m_Wordnet.clear();
+        if (m_Wordnet != null)
+        {
+            m_Wordnet.clear();
+        }
+        
         m_WordPairsRanking.clear();
     }
     
