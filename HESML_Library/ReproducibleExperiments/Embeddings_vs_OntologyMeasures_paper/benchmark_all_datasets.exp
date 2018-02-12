@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
 <WordNetBasedExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Versiones_Git_Oficiales_HESML\HESML\HESML_Library\ReproducibleExperiments\WordNetBasedExperiments.xsd">
 	<SingleDatasetSimilarityValuesExperiment>
 		<OutputFileName>raw_similarity_values_MC28_dataset.csv</OutputFileName>
