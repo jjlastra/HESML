@@ -19,7 +19,7 @@ fuck;sex;9.44
 football;soccer;9.03
 football;basketball;6.81
 football;tennis;6.63
-Arafat;Jackson;2.5
+arafat;jackson;2.5
 physics;chemistry;7.35
 vodka;gin;8.46
 vodka;brandy;8.13
@@ -61,11 +61,11 @@ jaguar;cat;7.42
 jaguar;car;7.27
 mile;kilometer;8.66
 skin;eye;6.22
-Japanese;American;6.5
+japanese;american;6.5
 century;year;7.59
 announcement;news;7.56
 doctor;personnel;5
-Harvard;Yale;8.13
+harvard;yale;8.13
 hospital;infrastructure;4.63
 life;death;7.88
 travel;activity;5
@@ -91,7 +91,7 @@ man;woman;8.3
 man;governor;5.25
 murder;manslaughter;8.53
 opera;performance;6.88
-Mexico;Brazil;7.44
+mexico;brazil;7.44
 glass;metal;5.56
 aluminum;metal;7.83
 rock;jazz;7.59
@@ -173,7 +173,7 @@ sign;recess;2.38
 problem;airport;2.38
 reason;hypertension;2.31
 direction;combination;2.25
-Wednesday;news;2.22
+wednesday;news;2.22
 glass;magician;2.08
 cemetery;woodland;2.08
 possibility;girl;1.94
