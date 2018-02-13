@@ -30,6 +30,7 @@ import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.text.ParseException;
+import java.util.HashSet;
 
 /**
  * The aim of this class is to instantiate all the similarity measures in
@@ -418,4 +419,36 @@ public class MeasureFactory
     {
         return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, strWords));
     }    
+
+    /**
+     * This function returns the list of measures which use any path-based feature
+     * into their computation, and thus are slower than the remaining ones.
+     * @return 
+     */
+    
+    public static HashSet<SimilarityMeasureType> getPathBasedMeasureTypes()
+    {
+        HashSet<SimilarityMeasureType>  pathBasedMeasures = new HashSet<>();
+        
+        pathBasedMeasures.add(SimilarityMeasureType.CosineNormWeightedJiangConrath);
+        pathBasedMeasures.add(SimilarityMeasureType.Rada);
+        pathBasedMeasures.add(SimilarityMeasureType.Zhou);
+        pathBasedMeasures.add(SimilarityMeasureType.WuPalmer);
+        pathBasedMeasures.add(SimilarityMeasureType.Mubaid);
+        pathBasedMeasures.add(SimilarityMeasureType.CaiStrategy1);
+        pathBasedMeasures.add(SimilarityMeasureType.Gao2015Strategy3);
+        pathBasedMeasures.add(SimilarityMeasureType.Hao);
+        pathBasedMeasures.add(SimilarityMeasureType.LeacockChodorow);
+        pathBasedMeasures.add(SimilarityMeasureType.Li2003Strategy3);
+        pathBasedMeasures.add(SimilarityMeasureType.LiuStrategy1);
+        pathBasedMeasures.add(SimilarityMeasureType.LiuStrategy2);
+        pathBasedMeasures.add(SimilarityMeasureType.Meng2014);
+        pathBasedMeasures.add(SimilarityMeasureType.PedersenPath);
+        pathBasedMeasures.add(SimilarityMeasureType.PekarStaab);
+        pathBasedMeasures.add(SimilarityMeasureType.WeightedJiangConrath);
+        
+        // We return the result
+        
+        return (pathBasedMeasures);
+    }
 }

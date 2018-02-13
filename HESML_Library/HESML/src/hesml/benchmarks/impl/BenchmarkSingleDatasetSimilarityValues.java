@@ -129,6 +129,10 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
     {
         String[][]  strOutputMatrix;  // Output matrix
         
+        // We obtain the list of path-based measures
+        
+        HashSet<SimilarityMeasureType> pathBasedMeasures = MeasureFactory.getPathBasedMeasureTypes();
+        
         // User message reporting the output file to be computed
         
         System.out.println("/**");
@@ -165,6 +169,13 @@ public class BenchmarkSingleDatasetSimilarityValues extends WordNetSimBenchmark
 
             for (int iWord = 0; iWord < m_WordPairs.length; iWord++)
             {
+                // We show the debugging message
+                
+                if (showDebugInfo && pathBasedMeasures.contains(measure.getMeasureType()))
+                {
+                    System.out.println("Computing " + (iWord + 1) + " of " + m_WordPairs.length);
+                }
+                
                 // We compute the highest similarity value
                 
                 double similarity = measure.getSimilarity(m_WordPairs[iWord].getWord1(),
