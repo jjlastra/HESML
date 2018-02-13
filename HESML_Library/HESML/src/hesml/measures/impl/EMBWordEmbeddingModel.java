@@ -204,8 +204,7 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         // We check the validity of the word vectors. They could be null if
         // any word is not contained in the vocabulary of the embedding.
         
-        if ((word1 != null)
-                && (word2 != null)
+        if ((word1 != null) && (word2 != null)
                 && (word1.length == word2.length))
         {
             // We compute the cosine similarity function (dot product)
