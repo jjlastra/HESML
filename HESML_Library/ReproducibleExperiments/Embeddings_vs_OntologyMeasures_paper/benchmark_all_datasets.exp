@@ -216,7 +216,7 @@
 	<SingleDatasetSimilarityValuesExperiment>
 		<OutputFileName>raw_similarity_values_Agirre201_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
-		<DatasetFileName>Agirre201_dataset.csv</DatasetFileName>
+		<DatasetFileName>Agirre201_lowercase_dataset.csv</DatasetFileName>
 		<WordNetMeasures>
 			<WordNetDatabaseFileName>data.noun</WordNetDatabaseFileName>
 			<WordNetDatabaseDirectory>../Wordnet-3.0/dict</WordNetDatabaseDirectory>
