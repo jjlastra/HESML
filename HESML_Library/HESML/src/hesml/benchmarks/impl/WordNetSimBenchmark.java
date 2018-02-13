@@ -36,6 +36,8 @@ import java.util.Scanner;
 
 import hesml.measures.*;
 import hesml.taxonomy.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
@@ -468,59 +470,46 @@ abstract class WordNetSimBenchmark extends AbstractBenchmark
     protected WordPairSimilarity[] loadWordPairsFile(
             String  strFilename) throws Exception
     {
-        Exception   error;      // Thrown error
-        String      strError;   // Error message
-                
-        WordPairSimilarity[]    allpairs;   // Returned value
-        
-        ArrayList<WordPairSimilarity>   readedPairs;    // Loading temp list
-        
-        File    csvFile;    // Data file
-        Scanner reader;     // File reader
-        
-        String      strLine;    // Line with 3 fields per word pair
-        String[]    strFields;  // Fields in the row
-        
-        int iPair = 0;  // Pairs counter
-        
-        // We create the file object to read the file
-        
-        csvFile = new File(strFilename);
-        
-        // We check the existence of the file
-        
-        if (!csvFile.exists())
-        {
-            strError = "The benchmark " + csvFile.getPath() + " file doesn´t exist";
-            error = new Exception(strError);
-            throw (error);
-        }
-        
         // Create the temporal list to read the file
         
-        readedPairs = new ArrayList<>();
+        ArrayList<WordPairSimilarity> readedPairs = new ArrayList<>();
         
         // We create the reader of the file
         
-        reader = new Scanner(csvFile);
+        BufferedReader reader = new BufferedReader(new FileReader(strFilename));
         
         // We read the content of the file in row mode
         
-        while (reader.hasNextLine())
+        int iPair = 0;  // Pairs counter
+        
+        String strLine = reader.readLine();
+        
+        while (strLine != null)
         {
             // We retrieve the 3 fields
             
-            strLine = reader.nextLine();
-            strFields = strLine.split(";");
+            String[] strFields = strLine.split(";|,");
             
             // We create a new word pair
             
             if (strFields.length == 3)
             {
-                readedPairs.add(new WordPairSimilarity(iPair++,
-                    strFields[0], strFields[1],
-                    Double.valueOf(strFields[2])));
+                try
+                {
+                    readedPairs.add(new WordPairSimilarity(iPair++,
+                        strFields[0], strFields[1],
+                        Double.parseDouble(strFields[2])));
+                }
+                
+                catch (NumberFormatException badFormatError)
+                {
+                    throw new Exception("Badly formatted line -> " + strLine);
+                }
             }
+            
+            // We get the next line
+            
+            strLine = reader.readLine();
         }
         
         // We close the file
@@ -529,7 +518,7 @@ abstract class WordNetSimBenchmark extends AbstractBenchmark
         
         // We get the word pairs included in the file
         
-        allpairs = new WordPairSimilarity[readedPairs.size()];
+        WordPairSimilarity[] allpairs = new WordPairSimilarity[readedPairs.size()];
         readedPairs.toArray(allpairs);
         
         // Cleaning the temporary list
