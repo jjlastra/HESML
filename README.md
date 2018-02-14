@@ -20,7 +20,7 @@ Main novelties provided by HESML V1R4 are as follows:
 
 (1) software implementation of a fast version of the Wu&Palmer [7] similarity measure  defined by the formula sim(a,b) = 2*depth(LCS(a,b)) / (depth(a) + depth(b))
 
-(2) software implementation of three new similarity measures based on the evaluation of pre-trained word embedding models in EMB, UKB(ppv) and Nasari file formats. Each row of the EMB file format contains a word vector with the raw coordinates of each word in a fixed dimension, whilst coordinates of word vectors in the UKB file format are defined by WordNet synsets, and finally Nasari vectors represent babelNet synsets by a weighted set of other BabelNet synsets. In addition, Nasari provides an additional file with the BabelNet synsets corresponding to each word.
+(2) software implementation of three new similarity measures based on the evaluation of pre-trained word embedding models in EMB, UKB(ppv) and Nasari file formats. Each row of the EMB file format contains a word vector with the raw coordinates of each word in a fixed dimension, whilst coordinates of word vectors in the UKB file format are defined by WordNet synsets, and finally Nasari vectors represent BabelNet synsets by a weighted and ranked set of other BabelNet synsets. In addition, Nasari provides an additional file with the BabelNet synsets corresponding to each word. Similarity measure based on the EMB and UKB files use the standard cosine function to compute the degree of similarity between words, whilst the similarity measure based on the Nasari files use the weighted overlap fucntion as detaield by the authors in [8]. HESML V1R4 release distribution will be published in Mendeley and it will include a dozen of pre-trained embedding models which cannot be included in Github because of their large size.
 
 (3) software implementation of the IC model proposed by Cai et al. (2017)[6]
 
@@ -45,6 +45,8 @@ HESML library is freely distributed for any non-commercial purpose under a CC By
 [6] Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017). A hybrid approach for measuring semantic similarity based on IC-weighted path distance in WordNet. Journal of Intelligent Information Systems, 1–25.
 
 [7] Wu, Z., & Palmer, M. (1994). Verbs Semantics and Lexical Selection. In Proceedings of the 32nd Annual Meeting on Association for Computational Linguistics (pp. 133–138). Stroudsburg, PA, USA: Association for Computational Linguistics.
+
+[8] Camacho-Collados, J., Pilehvar, M. T., & Navigli, R. (2016). Nasari: Integrating explicit knowledge and corpus statistics for a multilingual representation of concepts and entities. Artificial Intelligence, 240, 36�64.
 
 Steps to reproduce the library
 
