@@ -20,7 +20,7 @@ Main novelties provided by HESML V1R4 are as follows:
 
 (1) software implementation of a fast version of the Wu&Palmer [7] similarity measure  defined by the formula sim(a,b) = 2*depth(LCS(a,b)) / (depth(a) + depth(b))
 
-(2) software implementation of three new similarity measure which allows to evaluate pre-trained word embedding models in EMB, UKB(ppv) and Nasari file formats.
+(2) software implementation of three new similarity measures based on the evaluation of pre-trained word embedding models in EMB, UKB(ppv) and Nasari file formats. Each row of the EMB file format contains a word vector with the raw coordinates of each word in a fixed dimension, whilst coordinates of word vectors in the UKB file format are defined by WordNet synsets, and finally Nasari vectors represent babelNet synsets by a weighted set of other BabelNet synsets. In addition, Nasari provides an additional file with the BabelNet synsets corresponding to each word.
 
 (3) software implementation of the IC model proposed by Cai et al. (2017)[6]
 
