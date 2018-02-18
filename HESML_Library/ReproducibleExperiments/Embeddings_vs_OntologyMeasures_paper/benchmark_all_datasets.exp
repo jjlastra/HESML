@@ -215,7 +215,7 @@
 		</RawWordVectorFiles>
 	</SingleDatasetSimilarityValuesExperiment>
 	<SingleDatasetSimilarityValuesExperiment>
-		<OutputFileName>raw_similarity_values_Agirre201_dataset.csv</OutputFileName>
+		<OutputFileName>raw_similarity_values_Agirre201_lowercase_dataset.csv</OutputFileName>
 		<DatasetDirectory>../WN_Datasets</DatasetDirectory>
 		<DatasetFileName>Agirre201_lowercase_dataset.csv</DatasetFileName>
 		<WordNetMeasures>

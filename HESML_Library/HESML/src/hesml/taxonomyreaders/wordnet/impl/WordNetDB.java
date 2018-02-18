@@ -160,15 +160,9 @@ class WordNetDB implements IWordNetDB
 
     void sortSynsets() throws InterruptedException
     {
-        LinkedList<IWordNetSynset>    pending;    // Processing queue
-        
-        IWordNetSynset   pendingSynset;  // Synset to read
-        
-        boolean allParentsVisited; // Flag
-        
         // We cretae the pending queue
         
-        pending = new LinkedList<>();
+        LinkedList<IWordNetSynset> pending = new LinkedList<>();
         
         for (IWordNetSynset synset: m_Synsets)
         {
@@ -186,11 +180,11 @@ class WordNetDB implements IWordNetDB
         {
             // We get the next synset to load
             
-            pendingSynset = pending.remove();
+            IWordNetSynset pendingSynset = pending.remove();
             
             // We check if all its parents have been visited
             
-            allParentsVisited = true;
+            boolean allParentsVisited = true;
             
             for (Long parentId: pendingSynset.getParentsId())
             {

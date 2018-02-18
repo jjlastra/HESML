@@ -104,9 +104,13 @@ class EMBWordEmbeddingModel implements IWordSimilarityMeasure
         
         while ((strLine != null) && (pendingWords.size() > 0))
         {
-            // We get the synset of the line
+            // We get the word of the line
             
             String strWord = strLine.substring(0, strLine.indexOf(" "));
+            
+            // We normalize the multiple-word terms by removing the unbderline
+            
+            strWord = strWord.replace('_', ' ');
             
             // We check if the sense is in the list
             
