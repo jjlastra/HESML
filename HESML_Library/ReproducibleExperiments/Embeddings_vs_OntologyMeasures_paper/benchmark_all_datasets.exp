@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
 <WordNetBasedExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Versiones_Git_Oficiales_HESML\HESML\HESML_Library\ReproducibleExperiments\WordNetBasedExperiments.xsd">
 	<SingleDatasetSimilarityValuesExperiment>
 		<OutputFileName>raw_similarity_values_MC28_dataset.csv</OutputFileName>
@@ -51,23 +50,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -122,23 +121,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -193,23 +192,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -264,23 +263,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -335,23 +334,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -406,23 +405,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -477,23 +476,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -548,23 +547,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -619,23 +618,23 @@
 		</WordNetMeasures>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -646,23 +645,23 @@
 		<DatasetFileName>WordSim353Full_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -673,23 +672,23 @@
 		<DatasetFileName>SimLex111_adjectives_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -700,23 +699,23 @@
 		<DatasetFileName>SimLex222_verbs_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -727,23 +726,23 @@
 		<DatasetFileName>SimLex999_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -754,23 +753,23 @@
 		<DatasetFileName>Gerz_SimVerb3500_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -781,23 +780,23 @@
 		<DatasetFileName>MEN_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -808,23 +807,23 @@
 		<DatasetFileName>Yang_YP130_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -835,23 +834,23 @@
 		<DatasetFileName>RareWords2034_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -862,23 +861,23 @@
 		<DatasetFileName>RareWords1401_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
@@ -889,23 +888,23 @@
 		<DatasetFileName>SCWS1994_dataset.csv</DatasetFileName>
 		<RawWordVectorFiles>
 			<EmbVectorFiles>
-				<VectorFile>..\WordEmbeddings\attract-reppel.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\fastext.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\glove.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cbow.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\sp.500d.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-ws.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\paragram-sl.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\cf.emb</VectorFile>
-				<VectorFile>..\WordEmbeddings\wordnet-randomwalks.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/attract-reppel.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/fastext.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/glove.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cbow.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/sp.500d.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-ws.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/paragram-sl.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/cf.emb</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-randomwalks.emb</VectorFile>
 			</EmbVectorFiles>
 			<UKBVectorFiles>
-				<VectorFile>..\WordEmbeddings\wordnet-1000d.ppv</VectorFile>
+				<VectorFile>../WordEmbeddings/wordnet-ukb.ppv</VectorFile>
 			</UKBVectorFiles>
 			<NasariVectorFiles>
 				<NasariVectorFile>
-					<SensesFile>..\WordEmbeddings\nasari\en_wordsenses_BN.txt</SensesFile>
-					<VectorFile>..\WordEmbeddings\nasari\nasari-unified</VectorFile>
+					<SensesFile>../WordEmbeddings/nasari/en_wordsenses_BN.txt</SensesFile>
+					<VectorFile>../WordEmbeddings/nasari/nasari-unified</VectorFile>
 				</NasariVectorFile>
 			</NasariVectorFiles>
 		</RawWordVectorFiles>
