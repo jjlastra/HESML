@@ -75,49 +75,99 @@ rawdata_RareWords2034<-read.csv(paste(inputDir, sep = "", raw_RareWords2034_file
 rawdata_RareWords1401<-read.csv(paste(inputDir, sep = "", raw_RareWords1401_file),dec = ".", sep = ';')
 rawdata_SCWS1994<-read.csv(paste(inputDir, sep = "", raw_SCWS1994_file),dec = ".", sep = ';')
 
-# IMPORTANT: you must install the 'BioPhysConnectoR' package before to run the next three lines of code
-# We sort the tables in descending order by using the row-based Average values (last column)
-
-library(BioPhysConnectoR)
-
 # ---------------------------------------------------------------------
-# Table 1: Pearson correlation of all measures and embeddings in
-# the nine datasets evaluated both by the ontoloy-based measures based
-# on Wordnet as the pre-trained word emebedding models.
+# Table 1: Pearson, Spearman and Harmonic mean metrics of all measures
+# and embeddings in the 5 similarity datasets evaluated both by the
+# ontoloy-based measures basedon Wordnet as the pre-trained word
+# embedding models.
 # ---------------------------------------------------------------------
-
-table1<-matrix(nrow = 21, ncol = 9)
-
-colnames(table1)<-c("MC28", "RG65", "PSfull", "Agirre201", "SimLex665", "MTurk771", "MTurk287/235", "WS353Rel", "Rel122");
-rownames(table1)<- colnames(rawdata_MC28)[3:23]
 
 # We define all datasets represented in table 1
 
-rawdataAllDatasets = list(rawdata_MC28, rawdata_RG65, rawdata_PSfull, rawdata_Agirre201, rawdata_SimLex665, rawdata_MTurk771, rawdata_MTurk287_235, rawdata_WS353Rel, rawdata_Rel122)
+rawdataSimNounDatasets = list(rawdata_MC28, rawdata_RG65, rawdata_PSfull, rawdata_Agirre201, rawdata_SimLex665)
+
+# We create the table 1
+
+table1<-matrix(nrow = 21, ncol = 3 * length(rawdataSimNounDatasets))
+
+colnames(table1)<-c("MC28-Pearson", "MC28-Spearman", "MC28-Harmonic", "RG65-Pearson", "RG65-Spearman", "RG65-Harmonic", "PSfull-Pearson", "PSfull-Spearman", "PSfull-Harmonic", "Agirre201-Pearson", "Agirre201-Spearman", "Agirre201-Harmonic", "SimLex665-Pearson", "SimLex665-Spearman", "SimLex665-Harmonic");
+rownames(table1)<-colnames(rawdata_MC28)[3:23]
 
 nMeasures = nrow(table1)
-nDatasets = length(rawdataAllDatasets)
+nDatasets = length(rawdataSimNounDatasets)
 
 for (iDataset in 1:nDatasets)
 {
 	# We get the raw data of the next dataset
 
-	rawdata = rawdataAllDatasets[[iDataset]]
+	rawdata = rawdataSimNounDatasets[[iDataset]]
 
-	# We evaluate the Pearson correlation value for each measure in the current dataset
+	# We evaluate the Pearson, Spearman and Harmonic metrics for each measure in the current dataset
 
 	for (iMeasure in 1:nMeasures)
 	{
-		table1[iMeasure, iDataset] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
+		iColumn = 3 * (iDataset - 1) + 1
+		table1[iMeasure, iColumn] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
+		table1[iMeasure, iColumn + 1] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "spearman")
+		table1[iMeasure, iColumn + 2] = 2 * table1[iMeasure, iColumn] * table1[iMeasure, iColumn + 1] / (table1[iMeasure, iColumn] + table1[iMeasure, iColumn + 1])
 	}
 }
 
-# We compute the average of the rows and add it as last column
+#We make a copy of the table in order to round its values to 3 decimal digits
 
-table1 = cbind(table1, Avg = rowMeans(table1[,1:ncol(table1)]))
-table1 = mat.sort(table1, ncol(table1), decreasing = TRUE)
+table1_rounded = round(table1, 3);
 
 # We save all the final assembled data tables 
 
-write.csv(table1, file = paste(outputDir, sep="","table1.csv"))
+write.csv(table1, file = paste(outputDir, sep="","table1_raw_values.csv"))
+write.csv(table1_rounded, file = paste(outputDir, sep="","table1_rounded_values.csv"))
+
+# ---------------------------------------------------------------------
+# Table 2: Pearson, Spearman and Harmonic mean metrics of all measures
+# and embeddings in the 4 relatedness datasets evaluated both by the
+# ontoloy-based measures basedon Wordnet as the pre-trained word
+# embedding models.
+# ---------------------------------------------------------------------
+
+# We define all datasets represented in table 1
+
+rawdataRelNounDatasets = list(rawdata_MTurk771, rawdata_MTurk287_235, rawdata_WS353Rel, rawdata_Rel122)
+
+# We create the table 1
+
+table2<-matrix(nrow = 21, ncol = 3 * length(rawdataRelNounDatasets))
+
+colnames(table2)<-c("MTurk771-Pearson", "MTurk771-Spearman", "MTurk771-Harmonic", "MTurk287_235-Pearson", "MTurk287_235-Spearman", "MTurk287_235-Harmonic", "WS353Rel-Pearson", "WS353Rel-Spearman", "WS353Rel-Harmonic", "Rel122-Pearson", "Rel122-Spearman", "Rel122-Harmonic");
+rownames(table2)<-colnames(rawdata_MTurk771)[3:23]
+
+nMeasures = nrow(table2)
+nDatasets = length(rawdataRelNounDatasets)
+
+for (iDataset in 1:nDatasets)
+{
+	# We get the raw data of the next dataset
+
+	rawdata = rawdataRelNounDatasets[[iDataset]]
+
+	# We evaluate the Pearson, Spearman and Harmonic metrics for each measure in the current dataset
+
+	for (iMeasure in 1:nMeasures)
+	{
+		iColumn = 3 * (iDataset - 1) + 1
+		table2[iMeasure, iColumn] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
+		table2[iMeasure, iColumn + 1] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "spearman")
+		table2[iMeasure, iColumn + 2] = 2 * table2[iMeasure, iColumn] * table2[iMeasure, iColumn + 1] / (table2[iMeasure, iColumn] + table2[iMeasure, iColumn + 1])
+	}
+}
+
+#We make a copy of the table in order to round its values to 3 decimal digits
+
+table2_rounded = round(table2, 3);
+
+# We save all the final assembled data tables 
+
+write.csv(table2, file = paste(outputDir, sep="","table2_raw_values.csv"))
+write.csv(table2_rounded, file = paste(outputDir, sep="","table2_rounded_values.csv"))
+
+
 
