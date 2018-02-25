@@ -129,11 +129,11 @@ write.csv(table1_rounded, file = paste(outputDir, sep="","table1_rounded_values.
 # embedding models.
 # ---------------------------------------------------------------------
 
-# We define all datasets represented in table 1
+# We define all datasets represented in table 2
 
 rawdataRelNounDatasets = list(rawdata_MTurk771, rawdata_MTurk287_235, rawdata_WS353Rel, rawdata_Rel122)
 
-# We create the table 1
+# We create the table 2
 
 table2<-matrix(nrow = 21, ncol = 3 * length(rawdataRelNounDatasets))
 
