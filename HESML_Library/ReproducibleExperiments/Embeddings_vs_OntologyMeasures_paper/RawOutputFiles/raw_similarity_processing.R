@@ -212,9 +212,9 @@ for (iDataset in 1:nDatasets)
 
 # We transpose the matrix in order to compute the average of columns
 
-table3 = rbind(table3, Avg = colMeans(table3[1:ncol(table3),]))
-table4 = rbind(table4, Avg = colMeans(table4[1:ncol(table4),]))
-table5 = rbind(table5, Avg = colMeans(table5[1:ncol(table5),]))
+table3 = rbind(table3, Avg = colMeans(table3[,1:ncol(table3)]))
+table4 = rbind(table4, Avg = colMeans(table4[,1:ncol(table4)]))
+table5 = rbind(table5, Avg = colMeans(table5[,1:ncol(table5)]))
 
 # IMPORTANT: you must install the 'BioPhysConnectoR' package before to run the next three lines of code
 # We sort the tables 3,4 and 5 in descending order by using the column-based Average values (last row)
