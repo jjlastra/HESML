@@ -200,12 +200,26 @@ for (iDataset in 1:nDatasets)
 
 	rawdata = rawdataAllDatasets[[iDataset]]
 
+	# We define the offset position to extract the column of each embedding model.
+	# First nine datasets include the evaluation of 10 ontology-based measures and
+	# 11 embedding models. However, the remaining 10 datasets are only evaluated
+	# on the embedding models.
+
+	if (iDataset < 10)
+	{
+		iOffset = 12;
+	}
+	else
+	{
+		iOffset = 2;
+	}
+
 	# We evaluate the Pearson, Spearman and Harmonic metrics for each measure in the current dataset
 
 	for (iMeasure in 1:nMeasures)
 	{
-		table3[iDataset, iMeasure] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
-		table4[iDataset, iMeasure] = cor(rawdata[,2], rawdata[, iMeasure + 2], method = "spearman")
+		table3[iDataset, iMeasure] = cor(rawdata[,2], rawdata[, iMeasure + iOffset], method = "pearson")
+		table4[iDataset, iMeasure] = cor(rawdata[,2], rawdata[, iMeasure + iOffset], method = "spearman")
 		table5[iDataset, iMeasure] = 2 * table3[iDataset, iMeasure] * table4[iDataset, iMeasure] / (table3[iDataset, iMeasure] + table4[iDataset, iMeasure])
 	}
 }
