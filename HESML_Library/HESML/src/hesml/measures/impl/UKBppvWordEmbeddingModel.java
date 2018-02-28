@@ -184,7 +184,7 @@ class UKBppvWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.EMBWordEmbedding);
+        return (SimilarityMeasureType.UKBppvEmbedding);
     }
     
     /**

@@ -327,7 +327,7 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.EMBWordEmbedding);
+        return (SimilarityMeasureType.NasariEmbedding);
     }
     
     /**
@@ -357,27 +357,35 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
         if ((senses1 != null) && (senses2 != null)
                 && !senses1.isEmpty() && !senses2.isEmpty())
         {
-            // We search for the highest similarity value between both sense sets
-
-            boolean synonyms = false;
+            // We initialize the output and state variables
+            
+            similarity = 0.0;
+            boolean synonym = false;
+            
+            // We check ids the words are synonym
             
             for (String strSense1 : senses1)
             {
                 if (senses2.contains(strSense1))
                 {
                     similarity = 1.0;
-                    synonyms = true;
+                    synonym = true;
                     break;
                 }
             }
             
-            // We evaluate the Cartesian product lookig for the
-            // highest similarity value
-
-            if (!synonyms)
-            {
-                similarity = 0.0;
+            // We evaluate the similarity when both words are not synonym
             
+            if (!synonym)
+            {
+                // We initialize the maximum score value before to init the search
+                
+                double scoreMax = 0.0;
+                boolean vectorsFound = false;
+
+                // We evaluate the Cartesian product looking for the
+                // highest similarity value
+                
                 for (String strSense1: senses1)
                 {
                     for (String strSense2: senses2)
@@ -387,10 +395,15 @@ class NasariWordEmbeddingModel implements IWordSimilarityMeasure
                         if (m_BufferedSenseVectors.containsKey(strSense1)
                             && m_BufferedSenseVectors.containsKey(strSense2))
                         {
-                            similarity = Math.max(similarity, getWeightedOverlap(strSense1, strSense2));
+                            scoreMax = Math.max(scoreMax, getWeightedOverlap(strSense1, strSense2));
+                            vectorsFound = true;
                         }
                     }
                 }
+                
+                // We obtain the similairty value
+                
+                similarity = vectorsFound ? scoreMax : 0.5;
             }
         }
         
