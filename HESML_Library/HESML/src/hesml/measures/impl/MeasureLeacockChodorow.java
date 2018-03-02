@@ -99,8 +99,8 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
         // We compute the similarity
 
         double similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
-                            + (2.0 * m_largestDepthMin));
-        
+                            / (2.0 * m_largestDepthMin));
+       
         // We return the result
         
         return (similarity);
