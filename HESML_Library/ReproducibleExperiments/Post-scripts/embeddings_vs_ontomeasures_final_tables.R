@@ -556,3 +556,8 @@ averaged_Harmonic_results_rounded <- round(averaged_Harmonic_results, 3)
 write.csv(averaged_Pearson_results_rounded, file = paste(outputDir, sep="","table_Pearson_averaged_results_rounded.csv"))
 write.csv(averaged_Spearman_results_rounded, file = paste(outputDir, sep="","table_Spearman_averaged_results_rounded.csv"))
 write.csv(averaged_Harmonic_results_rounded, file = paste(outputDir, sep="","table_Harmonic_averaged_results_rounded.csv"))
+
+write.csv(averaged_Pearson_results_rounded[,1:10], file = paste(outputDir, sep="","table_Pearson_averaged_results_rounded_selection.csv"))
+write.csv(averaged_Spearman_results_rounded[, 1:10], file = paste(outputDir, sep="","table_Spearman_averaged_results_rounded_selection.csv"))
+write.csv(averaged_Harmonic_results_rounded[, 1:10], file = paste(outputDir, sep="","table_Harmonic_averaged_results_rounded_selection.csv"))
+
