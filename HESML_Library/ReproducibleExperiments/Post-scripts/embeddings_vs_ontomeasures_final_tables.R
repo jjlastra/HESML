@@ -368,35 +368,62 @@ write.csv(table_joined_allEmbeddings_relatedness_rounded, file = paste(outputDir
 # of Attract-reppel model.
 # ---------------------------------------------------------------------
 
+# We initialize the p-valu vectors incuding their names
+
+pvalues_r <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
+pvalues_rho <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
+pvalues_harmonic <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
+
+rownames(pvalues_r) <- c(1:nrow(pvalues_r))
+rownames(pvalues_rho) <- c(1:nrow(pvalues_rho))
+rownames(pvalues_harmonic) <- c(1:nrow(pvalues_harmonic))
+
+for (iMeasure in 1:nrow(pvalues_r))
+{
+  # We set the names of the measures evaluated
+  
+	rownames(pvalues_r)[iMeasure] <- rownames(table_Pearson_SimDatasets)[iMeasure + 1]
+	rownames(pvalues_rho)[iMeasure] <- rownames(table_Spearman_SimDatasets)[iMeasure + 1]
+	rownames(pvalues_harmonic)[iMeasure] <- rownames(table_Harmonic_SimDatasets)[iMeasure + 1]
+	
+	# We set the p-values
+	
+	pvalues_r[iMeasure] <- signif(t.test(table_Pearson_SimDatasets[1,1:5],
+	                                        table_Pearson_SimDatasets[iMeasure + 1,1:5],
+	                                        paired = TRUE,alternative="greater")$p.value,
+	                                 digits=2)
+	
+	
+	pvalues_rho[iMeasure] <- signif(t.test(table_Spearman_SimDatasets[1,1:5],
+	                                          table_Spearman_SimDatasets[iMeasure + 1,1:5],
+	                                          paired = TRUE,alternative="greater")$p.value,
+	                                   digits=2)
+	
+	
+	pvalues_harmonic[iMeasure] <- signif(t.test(table_Harmonic_SimDatasets[1,1:5],
+	                                            table_Harmonic_SimDatasets[iMeasure + 1,1:5],
+	                                            paired = TRUE,alternative="greater")$p.value,
+	                                     digits=2)
+}
+
+# We sort the p-values in descending order
+
+pvalues_r <- mat.sort(pvalues_r, 1, decreasing = TRUE)
+pvalues_rho <- mat.sort(pvalues_rho, ncol(pvalues_rho), decreasing = TRUE)
+pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasing = TRUE)
+
+# We group p-values in a matrix
+
 table_pvalues_AttractReppel_SimDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_SimDatasets) - 1)
 
 colnames(table_pvalues_AttractReppel_SimDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
 
-for (iMeasure in 1:nrow(table_pvalues_AttractReppel_SimDatasets))
-{
-  # We set the names of the measures evaluated
-  
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 1] <- rownames(table_Pearson_SimDatasets)[iMeasure + 1]
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 3] <- rownames(table_Spearman_SimDatasets)[iMeasure + 1]
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 5] <- rownames(table_Harmonic_SimDatasets)[iMeasure + 1]
-	
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 2] <- signif(t.test(table_Pearson_SimDatasets[1,1:5],
-	                                                                      table_Pearson_SimDatasets[iMeasure + 1,1:5],
-	                                                                      paired = TRUE,alternative="greater")$p.value,
-	                                                               digits=2)
-	
-	
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 4] <- signif(t.test(table_Spearman_SimDatasets[1,1:5],
-	                                                                      table_Spearman_SimDatasets[iMeasure + 1,1:5],
-	                                                                      paired = TRUE,alternative="greater")$p.value,
-	                                                               digits=2)
-	
-	
-	table_pvalues_AttractReppel_SimDatasets[iMeasure, 6] <- signif(t.test(table_Harmonic_SimDatasets[1,1:5],
-	                                                                      table_Harmonic_SimDatasets[iMeasure + 1,1:5],
-	                                                                      paired = TRUE,alternative="greater")$p.value,
-	                                                               digits=2)
-}
+table_pvalues_AttractReppel_SimDatasets[,1] <- names(pvalues_r)
+table_pvalues_AttractReppel_SimDatasets[,2] <- pvalues_r
+table_pvalues_AttractReppel_SimDatasets[,3] <- names(pvalues_rho)
+table_pvalues_AttractReppel_SimDatasets[,4] <- pvalues_rho
+table_pvalues_AttractReppel_SimDatasets[,5] <- names(pvalues_harmonic)
+table_pvalues_AttractReppel_SimDatasets[,6] <- pvalues_harmonic
 
 write.csv(table_pvalues_AttractReppel_SimDatasets, file = paste(outputDir, sep="","table_pvalues_AttractReppel_SimDataset_values.csv"))
 
