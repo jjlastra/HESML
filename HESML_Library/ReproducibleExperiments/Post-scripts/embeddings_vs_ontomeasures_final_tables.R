@@ -414,18 +414,18 @@ pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasin
 
 # We group p-values in a matrix
 
-table_pvalues_AttractReppel_SimDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_SimDatasets) - 1)
+table_pvalues_AttractReppel_nounSimDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_SimDatasets) - 1)
 
-colnames(table_pvalues_AttractReppel_SimDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+colnames(table_pvalues_AttractReppel_nounSimDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
 
-table_pvalues_AttractReppel_SimDatasets[,1] <- names(pvalues_r)
-table_pvalues_AttractReppel_SimDatasets[,2] <- pvalues_r
-table_pvalues_AttractReppel_SimDatasets[,3] <- names(pvalues_rho)
-table_pvalues_AttractReppel_SimDatasets[,4] <- pvalues_rho
-table_pvalues_AttractReppel_SimDatasets[,5] <- names(pvalues_harmonic)
-table_pvalues_AttractReppel_SimDatasets[,6] <- pvalues_harmonic
+table_pvalues_AttractReppel_nounSimDatasets[,1] <- names(pvalues_r)
+table_pvalues_AttractReppel_nounSimDatasets[,2] <- pvalues_r
+table_pvalues_AttractReppel_nounSimDatasets[,3] <- names(pvalues_rho)
+table_pvalues_AttractReppel_nounSimDatasets[,4] <- pvalues_rho
+table_pvalues_AttractReppel_nounSimDatasets[,5] <- names(pvalues_harmonic)
+table_pvalues_AttractReppel_nounSimDatasets[,6] <- pvalues_harmonic
 
-write.csv(table_pvalues_AttractReppel_SimDatasets, file = paste(outputDir, sep="","table_pvalues_AttractReppel_SimDataset_values.csv"))
+write.csv(table_pvalues_AttractReppel_nounSimDatasets, file = paste(outputDir, sep="","table_pvalues_AttractReppel_nounSimDataset_values.csv"))
 
 # ---------------------------------------------------------------------
 # Table of p-values between Paragram-ws model and the remaining
@@ -494,18 +494,162 @@ pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasin
 
 # We group p-values in a matrix
 
-table_pvalues_Paragramws_RelatednessDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_RelDatasets) - 1)
+table_pvalues_Paragramws_nounRelatednessDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_RelDatasets) - 1)
 
-colnames(table_pvalues_Paragramws_RelatednessDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+colnames(table_pvalues_Paragramws_nounRelatednessDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
 
-table_pvalues_Paragramws_RelatednessDatasets[,1] <- names(pvalues_r)
-table_pvalues_Paragramws_RelatednessDatasets[,2] <- pvalues_r
-table_pvalues_Paragramws_RelatednessDatasets[,3] <- names(pvalues_rho)
-table_pvalues_Paragramws_RelatednessDatasets[,4] <- pvalues_rho
-table_pvalues_Paragramws_RelatednessDatasets[,5] <- names(pvalues_harmonic)
-table_pvalues_Paragramws_RelatednessDatasets[,6] <- pvalues_harmonic
+table_pvalues_Paragramws_nounRelatednessDatasets[,1] <- names(pvalues_r)
+table_pvalues_Paragramws_nounRelatednessDatasets[,2] <- pvalues_r
+table_pvalues_Paragramws_nounRelatednessDatasets[,3] <- names(pvalues_rho)
+table_pvalues_Paragramws_nounRelatednessDatasets[,4] <- pvalues_rho
+table_pvalues_Paragramws_nounRelatednessDatasets[,5] <- names(pvalues_harmonic)
+table_pvalues_Paragramws_nounRelatednessDatasets[,6] <- pvalues_harmonic
 
-write.csv(table_pvalues_Paragramws_RelatednessDatasets, file = paste(outputDir, sep="","table_pvalues_Paragramws_RelatednessDatasets_values.csv"))
+write.csv(table_pvalues_Paragramws_nounRelatednessDatasets, file = paste(outputDir, sep="","table_pvalues_Paragramws_nounRelatednessDatasets_values.csv"))
+
+# ---------------------------------------------------------------------
+# Table of p-values between Attract-reppel model and the remaining
+# word embedding models in following tables:
+#
+# (1) table_Pearson_allEmbeddings_similarity
+# (2) table_Spearman_allEmbeddings_similarity
+# (3) table_Harmonic_allEmbeddings_similarity
+#
+# This information is used to draw strong conclusions on the performance
+# of Attract-reppel model.
+# ---------------------------------------------------------------------
+
+# We initialize the p-value vectors incuding their names
+
+pvalues_r <- matrix(ncol = 1, nrow = ncol(table_Pearson_allEmbeddings_similarity) - 1)
+pvalues_rho <- matrix(ncol = 1, nrow = ncol(table_Spearman_allEmbeddings_similarity) - 1)
+pvalues_harmonic <- matrix(ncol = 1, nrow = ncol(table_Harmonic_allEmbeddings_similarity) - 1)
+
+rownames(pvalues_r) <- c(1:nrow(pvalues_r))
+rownames(pvalues_rho) <- c(1:nrow(pvalues_rho))
+rownames(pvalues_harmonic) <- c(1:nrow(pvalues_harmonic))
+
+for (iMeasure in 1:nrow(pvalues_r))
+{
+  # We set the names of the measures evaluated
+  
+  rownames(pvalues_r)[iMeasure] <- colnames(table_Pearson_allEmbeddings_similarity)[iMeasure + 1]
+  rownames(pvalues_rho)[iMeasure] <- colnames(table_Spearman_allEmbeddings_similarity)[iMeasure + 1]
+  rownames(pvalues_harmonic)[iMeasure] <- colnames(table_Harmonic_allEmbeddings_similarity)[iMeasure + 1]
+  
+  # We set the p-values
+  
+  pvalues_r[iMeasure] <- signif(t.test(table_Pearson_allEmbeddings_similarity[1:9, 1],
+                                       table_Pearson_allEmbeddings_similarity[1:9, iMeasure + 1],
+                                       paired = TRUE,alternative="greater")$p.value,
+                                digits=2)
+  
+  
+  pvalues_rho[iMeasure] <- signif(t.test(table_Spearman_allEmbeddings_similarity[1:9, 1],
+                                         table_Spearman_allEmbeddings_similarity[1:9, iMeasure + 1],
+                                         paired = TRUE,alternative="greater")$p.value,
+                                  digits=2)
+  
+  
+  pvalues_harmonic[iMeasure] <- signif(t.test(table_Harmonic_allEmbeddings_similarity[1:9, 1],
+                                              table_Harmonic_allEmbeddings_similarity[1:9, iMeasure + 1],
+                                              paired = TRUE,alternative="greater")$p.value,
+                                       digits=2)
+}
+
+# We sort the p-values in descending order
+
+pvalues_r <- mat.sort(pvalues_r, 1, decreasing = TRUE)
+pvalues_rho <- mat.sort(pvalues_rho, ncol(pvalues_rho), decreasing = TRUE)
+pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasing = TRUE)
+
+# We group p-values in a matrix
+
+table_pvalues_AttractReppel_allembeddings_similarity <- matrix(ncol = 6, nrow = ncol(table_Pearson_allEmbeddings_similarity) - 1)
+
+colnames(table_pvalues_AttractReppel_allembeddings_similarity)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+
+table_pvalues_AttractReppel_allembeddings_similarity[,1] <- names(pvalues_r)
+table_pvalues_AttractReppel_allembeddings_similarity[,2] <- pvalues_r
+table_pvalues_AttractReppel_allembeddings_similarity[,3] <- names(pvalues_rho)
+table_pvalues_AttractReppel_allembeddings_similarity[,4] <- pvalues_rho
+table_pvalues_AttractReppel_allembeddings_similarity[,5] <- names(pvalues_harmonic)
+table_pvalues_AttractReppel_allembeddings_similarity[,6] <- pvalues_harmonic
+
+write.csv(table_pvalues_AttractReppel_allembeddings_similarity, file = paste(outputDir, sep="","table_pvalues_AttractReppel_allembeddings_similarity.csv"))
+
+# ---------------------------------------------------------------------
+# Table of p-values between Paragra,-ws model and the remaining
+# word embedding models in following tables:
+#
+# (1) table_Pearson_allEmbeddings_relatedness
+# (2) table_Spearman_allEmbeddings__relatedness
+# (3) table_Harmonic_allEmbeddings__relatedness
+#
+# This information is used to draw strong conclusions on the performance
+# of Attract-reppel model.
+# ---------------------------------------------------------------------
+
+# We initialize the p-value vectors incuding their names
+
+pvalues_r <- matrix(ncol = 1, nrow = ncol(table_Pearson_allEmbeddings_relatedness) - 1)
+pvalues_rho <- matrix(ncol = 1, nrow = ncol(table_Spearman_allEmbeddings_relatedness) - 1)
+pvalues_harmonic <- matrix(ncol = 1, nrow = ncol(table_Harmonic_allEmbeddings_relatedness) - 1)
+
+rownames(pvalues_r) <- c(1:nrow(pvalues_r))
+rownames(pvalues_rho) <- c(1:nrow(pvalues_rho))
+rownames(pvalues_harmonic) <- c(1:nrow(pvalues_harmonic))
+
+indexMeasures <-c(1:5,7:11)
+
+for (iMeasure in 1:nrow(pvalues_r))
+{
+  # We set the names of the measures evaluated
+  
+  rownames(pvalues_r)[iMeasure] <- colnames(table_Pearson_allEmbeddings_relatedness)[indexMeasures[iMeasure]]
+  rownames(pvalues_rho)[iMeasure] <- colnames(table_Spearman_allEmbeddings_relatedness)[indexMeasures[iMeasure]]
+  rownames(pvalues_harmonic)[iMeasure] <- colnames(table_Harmonic_allEmbeddings_relatedness)[indexMeasures[iMeasure]]
+  
+  # We set the p-values. Paragram-ws is in the sixth column.
+  
+  pvalues_r[iMeasure] <- signif(t.test(table_Pearson_allEmbeddings_relatedness[1:10, 6],
+                                       table_Pearson_allEmbeddings_relatedness[1:10, indexMeasures[iMeasure]],
+                                       paired = TRUE,alternative="greater")$p.value,
+                                digits=2)
+  
+  
+  pvalues_rho[iMeasure] <- signif(t.test(table_Spearman_allEmbeddings_relatedness[1:10, 6],
+                                         table_Spearman_allEmbeddings_relatedness[1:10, indexMeasures[iMeasure]],
+                                         paired = TRUE,alternative="greater")$p.value,
+                                  digits=2)
+  
+  
+  pvalues_harmonic[iMeasure] <- signif(t.test(table_Harmonic_allEmbeddings_relatedness[1:10, 6],
+                                              table_Harmonic_allEmbeddings_relatedness[1:10, indexMeasures[iMeasure]],
+                                              paired = TRUE,alternative="greater")$p.value,
+                                       digits=2)
+}
+
+# We sort the p-values in descending order
+
+pvalues_r <- mat.sort(pvalues_r, 1, decreasing = TRUE)
+pvalues_rho <- mat.sort(pvalues_rho, ncol(pvalues_rho), decreasing = TRUE)
+pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasing = TRUE)
+
+# We group p-values in a matrix
+
+table_pvalues_Paragramws_allembeddings_relatedness <- matrix(ncol = 6, nrow = ncol(table_Pearson_allEmbeddings_relatedness) - 1)
+
+colnames(table_pvalues_Paragramws_allembeddings_relatedness)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+
+table_pvalues_Paragramws_allembeddings_relatedness[,1] <- names(pvalues_r)
+table_pvalues_Paragramws_allembeddings_relatedness[,2] <- pvalues_r
+table_pvalues_Paragramws_allembeddings_relatedness[,3] <- names(pvalues_rho)
+table_pvalues_Paragramws_allembeddings_relatedness[,4] <- pvalues_rho
+table_pvalues_Paragramws_allembeddings_relatedness[,5] <- names(pvalues_harmonic)
+table_pvalues_Paragramws_allembeddings_relatedness[,6] <- pvalues_harmonic
+
+write.csv(table_pvalues_Paragramws_allembeddings_relatedness, file = paste(outputDir, sep="","table_pvalues_Paragramws_allembeddings_relatedness.csv"))
 
 # ---------------------------------------------------------------------
 # Tables of average similarity for each word embedding pair.
