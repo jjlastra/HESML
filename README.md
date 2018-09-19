@@ -1,4 +1,4 @@
-# HESML V1R4 (under construction)
+# HESML V1R4
 
 HESML Java software library of ontology-based semantic similarity measures and information content (IC) models
 
