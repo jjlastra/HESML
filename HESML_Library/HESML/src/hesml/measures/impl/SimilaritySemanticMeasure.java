@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -68,7 +68,9 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
             IVertexList secondWordVertexes)
             throws InterruptedException, Exception
     {
-        double  bestSimilarityValue = Double.NEGATIVE_INFINITY;  // Returned value
+        // We initialize the returned value
+        
+        double  bestSimilarityValue = getNullSimilarityValue();
         
         double  similarity; // Similarity value
         
@@ -91,6 +93,19 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
         // We return the result
         
         return (bestSimilarityValue);
+    }
+    
+    /**
+     * This function returns the value returned by the similarity measure when
+     * there is none similarity between both input concepts, or the concept
+     * is not contained in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public double getNullSimilarityValue()
+    {
+        return (0.0);
     }
     
     /*

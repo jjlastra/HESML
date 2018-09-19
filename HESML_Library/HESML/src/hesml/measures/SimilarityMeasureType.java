@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -33,6 +33,11 @@ public enum SimilarityMeasureType
      * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
      * Development and application of a metric on semantic nets.
      * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
+     *//**
+     * It asks for the similarity measure introduced in the paper below.
+     * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
+     * Development and application of a metric on semantic nets.
+     * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
      */
     
     Rada,
@@ -57,6 +62,7 @@ public enum SimilarityMeasureType
      */
     
     WuPalmer,
+    WuPalmerFast,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -97,7 +103,7 @@ public enum SimilarityMeasureType
     Lin,
 
     /**
-     * It asks for the similarity measure introduced in the paper below.v
+     * It asks for the similarity measure introduced in the paper below.
      * Jiang, J. J., and Conrath, D. W. (1997).
      * Semantic similarity based on corpus statistics and lexical taxonomy.
      * In Proceedings of International Conference Research on Computational
@@ -105,6 +111,16 @@ public enum SimilarityMeasureType
      */
     
     JiangConrath,
+
+    /**
+     * It asks for the similarity measures introduced in the paper below.
+     * Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017).
+     * A hybrid approach for measuring semantic similarity based on IC-weighted path
+     * distance in WordNet. Journal of Intelligent Information Systems, 1–25.
+     */
+    
+    CaiStrategy1,
+    CaiStrategy2,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -352,5 +368,13 @@ public enum SimilarityMeasureType
      * (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
      */
     
-    PekarStaab
+    PekarStaab,
+    
+    /**
+     * Word embedding pre-trained model
+     */
+    
+    EMBWordEmbedding,
+    UKBppvEmbedding,
+    NasariEmbedding
 }

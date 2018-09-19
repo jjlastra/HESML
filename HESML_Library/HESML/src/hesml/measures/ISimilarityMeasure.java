@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -26,7 +26,8 @@ package hesml.measures;
 import hesml.taxonomy.*;
 
 /**
- * This interface represents an abstract ontology-based semantic measure
+ * This interface represents an abstract ontology-based semantic
+ * similarity measure between concepts in a base taxonomy.
  * @author Juan Lastra-Díaz
  */
 
@@ -80,6 +81,15 @@ public interface ISimilarityMeasure
             IVertex left,
             IVertex right)
             throws InterruptedException, Exception;
+    
+    /**
+     * This function returns the value returned by the similarity measure when
+     * there is none similarity between both input concepts, or the concept
+     * is not contained in the taxonomy.
+     * @return 
+     */
+    
+    double getNullSimilarityValue();
     
     /**
      * This function returns the best similarity value for the Cartesian

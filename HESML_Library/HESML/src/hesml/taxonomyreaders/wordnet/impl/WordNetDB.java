@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -160,15 +160,9 @@ class WordNetDB implements IWordNetDB
 
     void sortSynsets() throws InterruptedException
     {
-        LinkedList<IWordNetSynset>    pending;    // Processing queue
-        
-        IWordNetSynset   pendingSynset;  // Synset to read
-        
-        boolean allParentsVisited; // Flag
-        
         // We cretae the pending queue
         
-        pending = new LinkedList<>();
+        LinkedList<IWordNetSynset> pending = new LinkedList<>();
         
         for (IWordNetSynset synset: m_Synsets)
         {
@@ -186,11 +180,11 @@ class WordNetDB implements IWordNetDB
         {
             // We get the next synset to load
             
-            pendingSynset = pending.remove();
+            IWordNetSynset pendingSynset = pending.remove();
             
             // We check if all its parents have been visited
             
-            allParentsVisited = true;
+            boolean allParentsVisited = true;
             
             for (Long parentId: pendingSynset.getParentsId())
             {
@@ -321,7 +315,59 @@ class WordNetDB implements IWordNetDB
     public boolean contains(
             String  strWord)
     {
-        return (m_IndexedByWord.containsKey(strWord));
+        // We check the existence of the word in its input format
+        
+        boolean containsWord = m_IndexedByWord.containsKey(strWord);
+        
+        // We check if the word is a proper name or acronym
+        
+        if (!containsWord)
+        {
+            String strProperName = strWord.substring(0, 1).toUpperCase()
+                                + strWord.substring(1);
+            
+            String strAcronym = strWord.toUpperCase();
+            
+            containsWord = m_IndexedByWord.containsKey(strProperName)
+                            || m_IndexedByWord.containsKey(strAcronym);
+        }
+        
+        // We return the result
+        
+        return (containsWord);
+    }
+    
+    /**
+     * This function returns the normalized version of a word contained in WordNet
+     * @param strWord
+     * @return 
+     */
+    
+    private String getNormalizedWord(
+        String  strWord)
+    {
+        // We initialize the normalized word
+        
+        String strNormalizedWord = strWord;
+                
+        // We check if the word is a proper name or acronym
+        
+        if (!m_IndexedByWord.containsKey(strWord))
+        {
+            // We test the input word as a proper name
+            
+            strNormalizedWord = strWord.substring(0, 1).toUpperCase()
+                                + strWord.substring(1);
+            
+            if (!m_IndexedByWord.containsKey(strNormalizedWord))
+            {
+                strNormalizedWord = strWord.toUpperCase();
+            }
+        }
+        
+        // We return the result
+        
+        return (strNormalizedWord);
     }
     
     /**
@@ -333,29 +379,28 @@ class WordNetDB implements IWordNetDB
     @Override
     public IWordNetSynset[] getWordSynsets(String strWord) throws Exception
     {
-        Exception   error;  // Thrown exception
+        IWordNetSynset[] synsets;    // Returned value
         
-        IWordNetSynset[]    synsets;    // Returned value
+        // We check that the input word is contained in WordNet
         
-        ArrayList<IWordNetSynset>   wordSynsets;    // Synsets for the word
-        
-        // We get the synsets for the word
-        
-        wordSynsets = m_IndexedByWord.get(strWord);
-        
-        if (wordSynsets == null)
+        if (contains(strWord))
         {
-            error = new Exception("The word is not in WordNet " + strWord);
-            throw (error);
+            // We get the synsets for the word
+            
+            ArrayList<IWordNetSynset> wordSynsets = m_IndexedByWord.get(getNormalizedWord(strWord));
+
+            // We create the array to copy the synsets
+
+            synsets = new IWordNetSynset[wordSynsets.size()];
+
+            // We copy the synsets
+
+            wordSynsets.toArray(synsets);
         }
-        
-        // We create the arrya to copy the synsets
-        
-        synsets = new IWordNetSynset[wordSynsets.size()];
-        
-        // We copy the synsets
-        
-        wordSynsets.toArray(synsets);
+        else
+        {
+            synsets = new IWordNetSynset[0];
+        }
         
         // We return the result
         
@@ -366,40 +411,39 @@ class WordNetDB implements IWordNetDB
      * This function returns a vector with the synset ID values of the
      * concepts evoked by the input word.
      * @param strWord Input word
-     * @return A sequence of synset ID evoctaed by the input word
+     * @return A sequence of synset ID evoked by the input word
      * @throws Exception Unexpected error
      */
     
     @Override
     public Long[] getWordSynsetsID(String strWord) throws Exception
     {
-        Exception   error;  // Thrown exception
+        Long[] synsets;    // Returned value
         
-        Long[]    synsets;    // Returned value
+        // We check that the input word is contained in WordNet
         
-        ArrayList<IWordNetSynset>   wordSynsets;    // Synsets for the word
-        
-        int i = 0;  // Counter
-        
-        // We get the synsets for the word
-        
-        wordSynsets = m_IndexedByWord.get(strWord);
-        
-        if (wordSynsets == null)
+        if (contains(strWord))
         {
-            error = new Exception("The word is not in WordNet " + strWord);
-            throw (error);
+            // We get the synsets for the word
+
+            ArrayList<IWordNetSynset> wordSynsets = m_IndexedByWord.get(getNormalizedWord(strWord));
+
+            // We create the arrya to copy the synsets
+
+            synsets = new Long[wordSynsets.size()];
+
+            // We copy the synset ID values
+
+            int i = 0;
+
+            for (IWordNetSynset synset: wordSynsets)
+            {
+                synsets[i++] = synset.getID();
+            }
         }
-        
-        // We create the arrya to copy the synsets
-        
-        synsets = new Long[wordSynsets.size()];
-        
-        // We copy the synset ID values
-        
-        for (IWordNetSynset synset: wordSynsets)
+        else
         {
-            synsets[i++] = synset.getID();
+            synsets = new Long[0];
         }
         
         // We return the result

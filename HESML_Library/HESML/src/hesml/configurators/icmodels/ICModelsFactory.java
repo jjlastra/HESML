@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -267,6 +267,16 @@ public class ICModelsFactory
             case CondProbRefSubsumedLeavesRatio:
                 
                 icModel = new CondProbRefinedSubsumedLeavesRatio();
+                
+                break;
+                
+            case Cai:
+                
+                // We set the best value reported for the free parameter
+                // called 'lambda' in formula (3) of the paper introducing
+                // the Cai et al. (2017) IC model
+                
+                icModel = new CaiICmodel(0.4);
                 
                 break;
                 

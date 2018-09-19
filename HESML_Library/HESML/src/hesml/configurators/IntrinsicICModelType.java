@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -39,6 +39,17 @@ public enum IntrinsicICModelType
      */
     
     Seco,
+    
+     /**
+     * It asks for the creation of a Cai et al. (2017) IC model introduced in
+     * the paper below.
+     * Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017).
+     * A hybrid approach for measuring semantic similarity based on
+     * IC-weighted path distance in WordNet.
+     * Journal of Intelligent Information Systems, 1–25.
+     */
+    
+    Cai,
     
     /**
      * It asks for the creation of a Blanchard et al. (2008) ICg model

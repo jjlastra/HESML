@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -23,10 +23,14 @@ package hesml.measures.impl;
 
 // HESML references
 
+import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.text.ParseException;
+import java.util.HashSet;
 
 /**
  * The aim of this class is to instantiate all the similarity measures in
@@ -109,6 +113,12 @@ public class MeasureFactory
             case WuPalmer:
                 
                 measure = new MeasureWuPalmer(taxonomy);
+                
+                break;
+
+            case WuPalmerFast:
+                
+                measure = new MeasureWuPalmerFast(taxonomy);
                 
                 break;
                 
@@ -274,6 +284,18 @@ public class MeasureFactory
                 
                 break;
                 
+            case CaiStrategy1:
+                
+                measure = new MeasureCaiStrategy1(taxonomy, 0.5, 0.1);
+                
+                break;
+
+            case CaiStrategy2:
+                
+                measure = new MeasureCaiStrategy2(taxonomy, 0.5, 0.1);
+                
+                break;
+                
             case Taieb2014sim2:
                 
                 throw (new InvalidParameterException("Use the other getMeasure() function with a WordNetDB"));
@@ -329,5 +351,104 @@ public class MeasureFactory
         // We return the result
         
         return (measure);
+    }   
+    
+    /**
+     * This function creates a new similarity measure based on WordNet.
+     * @param wordnetDB WordNet database
+     * @param wordnetTaxonomy Base taxonomy. It will be updated by the IC model
+     * @param measureType Type of measure to be created
+     * @param icModel ICmodel used which can be null for non IC_based measures
+     * @return The new measure
+     * @throws Exception 
+     */
+    
+    public static IWordSimilarityMeasure getWordNetWordSimilarityMeasure(
+            IWordNetDB                  wordnetDB,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       measureType,
+            ITaxonomyInfoConfigurator   icModel) throws Exception
+    {
+        return (new WordNetWordSimilarityMeasure(wordnetDB, wordnetTaxonomy, measureType, icModel));
+    }
+    
+    /**
+     * This function loads a EMB word embedding model implementing
+     * a word similarity measure.
+     * @param strRawVectorFile
+     * @param words
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getEMBWordEmbeddingModel(
+            String      strRawVectorFile,
+            String[]    strWords) throws IOException, ParseException
+    {
+        return (new EMBWordEmbeddingModel(strRawVectorFile, strWords));
+    }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strUKBppvVectorFile
+     * @return 
+     */
+    
+    public static IWordSimilarityMeasure getUKBppvEmbeddingModel(
+            String      strUKBppvVectorFile,
+            String[]    strWords) throws IOException, ParseException
+    {
+        return (new UKBppvWordEmbeddingModel(strUKBppvVectorFile, strWords));
+    }
+    
+    /**
+     * This function loads a UKB (ppv) word embedding model implementing
+     * a word similarity measure.
+     * @param strSensesFilename
+     * @param strVectorFilename
+     * @param strWords Words which will be evaluated later
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.text.ParseException 
+     */
+    
+    public static IWordSimilarityMeasure getNasariEmbeddingModel(
+            String      strSensesFilename,
+            String      strVectorFilename,
+            String[]    strWords) throws IOException, ParseException
+    {
+        return (new NasariWordEmbeddingModel(strSensesFilename, strVectorFilename, strWords));
     }    
+
+    /**
+     * This function returns the list of measures which use any path-based feature
+     * into their computation, and thus are slower than the remaining ones.
+     * @return 
+     */
+    
+    public static HashSet<SimilarityMeasureType> getPathBasedMeasureTypes()
+    {
+        HashSet<SimilarityMeasureType>  pathBasedMeasures = new HashSet<>();
+        
+        pathBasedMeasures.add(SimilarityMeasureType.CosineNormWeightedJiangConrath);
+        pathBasedMeasures.add(SimilarityMeasureType.Rada);
+        pathBasedMeasures.add(SimilarityMeasureType.Zhou);
+        pathBasedMeasures.add(SimilarityMeasureType.WuPalmer);
+        pathBasedMeasures.add(SimilarityMeasureType.Mubaid);
+        pathBasedMeasures.add(SimilarityMeasureType.CaiStrategy1);
+        pathBasedMeasures.add(SimilarityMeasureType.Gao2015Strategy3);
+        pathBasedMeasures.add(SimilarityMeasureType.Hao);
+        pathBasedMeasures.add(SimilarityMeasureType.LeacockChodorow);
+        pathBasedMeasures.add(SimilarityMeasureType.Li2003Strategy3);
+        pathBasedMeasures.add(SimilarityMeasureType.LiuStrategy1);
+        pathBasedMeasures.add(SimilarityMeasureType.LiuStrategy2);
+        pathBasedMeasures.add(SimilarityMeasureType.Meng2014);
+        pathBasedMeasures.add(SimilarityMeasureType.PedersenPath);
+        pathBasedMeasures.add(SimilarityMeasureType.PekarStaab);
+        pathBasedMeasures.add(SimilarityMeasureType.WeightedJiangConrath);
+        
+        // We return the result
+        
+        return (pathBasedMeasures);
+    }
 }

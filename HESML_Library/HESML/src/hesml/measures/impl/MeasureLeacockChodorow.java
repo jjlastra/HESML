@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -96,13 +96,11 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
         // We compute the similarity
 
-        similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
-                            + (2.0 * m_largestDepthMin));
-        
+        double similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
+                            / (2.0 * m_largestDepthMin));
+       
         // We return the result
         
         return (similarity);

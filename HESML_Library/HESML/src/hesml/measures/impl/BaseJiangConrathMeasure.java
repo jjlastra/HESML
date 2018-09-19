@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -118,6 +118,8 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     {
         double  distance = 1e10;   // Returned value
 
+        // We compute the MICA vertex
+        
         IVertex micaVertex = left.getTaxonomy().getMICA(left, right);
        
         // We check the existence of the MICA vertex. It only fails when
@@ -146,11 +148,9 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     protected double convertToCosineNormSimilarity(
         double  distance)
     {
-        double  similarity; // retgurned value
-        
         // We normalize the distance
         
-        similarity = distanceToSimilarity(distance);
+        double similarity = distanceToSimilarity(distance);
         
         // Aplicamos la correción coseno
         

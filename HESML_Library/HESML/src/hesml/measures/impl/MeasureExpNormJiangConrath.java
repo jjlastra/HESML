@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -91,17 +91,13 @@ class MeasureExpNormJiangConrath extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        
-        double  distance;   // Standard JC distance
-
         // We compute the distance
         
-        distance = getClassicJiangConrathDist(left, right);
+        double distance = getClassicJiangConrathDist(left, right);
         
         // We normalize the distance
         
-        similarity = getExpNormSimilarity(distance);
+        double similarity = getExpNormSimilarity(distance);
         
         // We return the result
         

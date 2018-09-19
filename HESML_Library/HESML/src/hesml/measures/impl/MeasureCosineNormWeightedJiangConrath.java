@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -99,17 +99,13 @@ class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        
-        double  distance;   // Standard JC distance
-
         // We compute the distance
         
-        distance = left.getShortestPathDistanceTo(right, true);
+        double distance = left.getShortestPathDistanceTo(right, true);
         
         // We normalize the distance
         
-        similarity = convertToCosineNormSimilarity(distance);
+        double similarity = convertToCosineNormSimilarity(distance);
 
         // We return the result
         

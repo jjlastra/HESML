@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -80,7 +80,10 @@ abstract class AbstractBenchmark implements ISimilarityBenchmark
     @Override
     public void clear()
     {
-        m_Taxonomy.clear();
+        if (m_Taxonomy != null)
+        {
+            m_Taxonomy.clear();
+        }
     }
     
     /**

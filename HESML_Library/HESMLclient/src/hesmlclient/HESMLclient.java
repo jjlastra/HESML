@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -23,6 +23,7 @@ package hesmlclient;
 
 // Java references
 
+import hesmlclient.XmlBenchmarkReaders.ReproducibleExperimentsInfo;
 import hesml.HESMLversion;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.benchmarks.CorrelationOutputMetrics;
@@ -109,6 +110,25 @@ public class HESMLclient
     private static final String   SIMLEX665 = "SimLex665_dataset";
     
     /**
+     * Radinsky, K., Agichtein, E., Gabrilovich, E., & Markovitch, S. (2011).
+     * A word at a time: computing word relatedness using temporal semantic analysis.
+     * In Proceedings of the 20th international conference on World wide web (pp. 337–346).
+     * ACM.
+     */    
+    
+    private static final String   MTURK287 = "Radinsky_MTurk287_filtered_dataset";
+    
+    /**
+     * Halawi, G., Dror, G., Gabrilovich, E., & Koren, Y. (2012).
+     * Large-scale Learning of Word Relatedness with Constraints.
+     * In Proceedings of the 18th ACM SIGKDD International
+     * Conference on Knowledge Discovery and Data Mining (pp. 1406–1414).
+     * New York, NY, USA: ACM.
+     */
+    
+    private static final String   MTURK771 = "Halawi_MTURK771_dataset";
+    
+    /**
      * WordNet database path, corpus-based Pedersen IC files, and results
      * directory in the current PC. You should change the base HESML
      * directory according to your code installation.
@@ -141,7 +161,7 @@ public class HESMLclient
         
         // We print the HESML version
         
-        System.out.println("Running HESMLClient V1R3 (1.3.0.1, July 2017) based on "
+        System.out.println("Running HESMLClient V1R4 (1.4.0.0, January 2018) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -180,9 +200,8 @@ public class HESMLclient
                     // We parse the input file in order to recover the
                     // experiments definition.
 
-                    ReproducibleExperimentsInfo reproInfo;
-
-                    reproInfo = new ReproducibleExperimentsInfo(inputFile, m_SchemaFilename);
+                    ReproducibleExperimentsInfo reproInfo = new ReproducibleExperimentsInfo(
+                                                                inputFile, m_SchemaFilename);
 
                     // We execute all the experiments defined in the input file
 
@@ -263,7 +282,7 @@ public class HESMLclient
         // (5) The following test evaluates a single IC-similarity measure
         // with a single intrinsic IC miodel.
         
-        testSingleICSimMeasureSingleICmodel();
+        //testSingleICSimMeasureSingleICmodel();
         
         // (6) The following test shows how to directly compute the
         // similarity between two words using two different similarity measures.
@@ -286,6 +305,11 @@ public class HESMLclient
         // of our papers,
         
         //testBuildWNSimRepFiles();
+        
+        // (10) the following test executes a benchmark between differnt measures
+        // in a single dataset and produces a matrix of raw simialirity values as output.
+        
+        testMultipleMeasureRawSimilarityBenchmark();
     }
     
     /**
@@ -508,6 +532,80 @@ public class HESMLclient
     }
     
     /**
+     * This function runs the tests for a collection of similarity measures
+     * in a same dataset and produces an output file containing a matrix
+     * of raw similarity values. The benchmark evaluates ontology-based measures
+     * based on WordNet and word embeddings.
+     * 
+     * The function loads WordNet and creates a HESML taxonomy to represent it.
+     * The benchmarks loads the dataset files with the word pairs and
+     * creates a experiment matrix to evaluate each selected
+     * similarity measure. In addition, the word embedding files in *.emb
+     * file format are loaded and evaluated.
+     * @throws Exception 
+     */
+    
+    private static void testMultipleMeasureRawSimilarityBenchmark() throws Exception
+    {
+        IWordNetDB  wordnet;            // WordNet DB
+        ITaxonomy   wordnetTaxonomy;    // WordNet taxonomy
+        
+        // We load the WordNet database
+        
+        wordnet = WordNetFactory.loadWordNetDatabase(m_strWordNet3_0_Dir, "data.noun");
+        
+        // We build the taxonomy
+        
+        System.out.println("Building the WordNet taxonomy ...");
+        
+        wordnetTaxonomy = WordNetFactory.buildTaxonomy(wordnet);
+               
+        // We pre-process the taxonomy to compute all the parameters
+        // used by the intrinsic IC-computation methods
+        
+        System.out.println("Pre-processing the WordNet taxonomy");
+        
+        wordnetTaxonomy.computesCachedAttributes();
+
+        // We create the vectors containing the IC models and measure types
+        
+        ITaxonomyInfoConfigurator[] icModels = new ITaxonomyInfoConfigurator[2];
+        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[2];
+        
+        // We set the similarity methods to be evaluated
+        
+        icModels[0] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
+        icModels[1] = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
+        
+        measureTypes[0] = SimilarityMeasureType.Resnik;
+        measureTypes[1] = SimilarityMeasureType.Lin;
+        
+        // We set the word embbedding to be evaluated. Note that we split them into
+        // three lists, one for each emdedding file format (EMB, NASARI, UKB)
+        
+        String[] strEMBWordVectorFiles = {"../WordEmbeddings/cbow.emb"};
+        String[][] strNasariEmbeddingFiles = {};
+        String[] strUKBEmbeddingFiles = {};
+        
+        // We create the benchmark
+        
+        ISimilarityBenchmark benchmark = BenchmarkFactory.getSingleDatasetSimilarityValuesTest(
+                                            wordnetTaxonomy, wordnet,
+                                            m_strWordNetDatasetsDir + RG65 + ".csv",
+                                            icModels, measureTypes, strEMBWordVectorFiles,
+                                            strUKBEmbeddingFiles, strNasariEmbeddingFiles);
+
+        // We run the experiments
+        
+        benchmark.executeTests("rawSimilarityValues.csv", true);
+        
+        // We release the resources
+        
+        wordnet.clear();
+        wordnetTaxonomy.clear();        
+    }
+    
+    /**
      * This function evaluates a single intrinsic IC model with multiple
      * IC-based similarity measures.
      * @throws Exception 
@@ -603,7 +701,7 @@ public class HESMLclient
         
         // We set the similarity measure to be evaluated
         
-        measureToEvaluate = SimilarityMeasureType.Mubaid;
+        measureToEvaluate = SimilarityMeasureType.Rada;
         
         // We load the WordNet database
         
@@ -626,7 +724,7 @@ public class HESMLclient
         
         // We define the dataset to be evaluated
         
-        String[] strDatasetNames = {RG65, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
+        String[] strDatasetNames = {MC28};//, MC28, AGIRRE203, PIRRO_SECO, SIMLEX665};
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
@@ -748,14 +846,13 @@ public class HESMLclient
                     wordnetTaxonomy, wordnet,
                     m_strWordNetDatasetsDir + MC28 + ".csv",
                     CorrelationOutputMetrics.PearsonAndSpearman,
-                    IntrinsicICModelType.Seco,
-                    SimilarityMeasureType.CosineNormWeightedJiangConrath);
+                    IntrinsicICModelType.Cai,
+                    SimilarityMeasureType.CaiStrategy2);
         
         // We compute the benchmark and save the output Pearson correlation
         // value in the output file
         
-        benchmark.executeTests(m_strResultsDir +
-                "CosineNormWeightedJiangConrath_RG65.csv", true);
+        benchmark.executeTests(m_strResultsDir + "JiangConrath.csv", true);
         
         // We release the resources
         
@@ -1213,7 +1310,7 @@ public class HESMLclient
         // We set the measures to be evaluated
         
         evalMeasures[0] = SimilarityMeasureType.Rada;
-        evalMeasures[1] = SimilarityMeasureType.WuPalmer;
+        evalMeasures[1] = SimilarityMeasureType.WuPalmerFast;
         evalMeasures[2] = SimilarityMeasureType.LeacockChodorow;
         evalMeasures[3] = SimilarityMeasureType.Li2003Strategy3;
         evalMeasures[4] = SimilarityMeasureType.Li2003Strategy4;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -49,38 +49,27 @@ class WordNetReader
             String  strWordNetDBFileName,
             boolean loadGloss) throws Exception
     {
-        Exception   error;      // Error lanzado
-        String      strError;   // Mensaje de error
-
-        WordNetDB  wordnet;    // Returned value
-        
-        File    wordnetFile;    // WordNet file
-        Scanner reader;         // Text file reader 
-        
-        WordNetSynset   synset; // Synset readed
-        
         String  strEntityLine = "";  // Line with entity information
         
         // We create the wordnet file
         
-        wordnetFile = new File(strWordnetDir + "/" + strWordNetDBFileName);
+        File wordnetFile = new File(strWordnetDir + "/" + strWordNetDBFileName);
         
         // We chechk the existence of the path
         
         if (!wordnetFile.exists())
         {
-            strError = "The file doesn´t exist";
-            error = new Exception(strError);
-            throw (error);
+            String strError = "The file doesn´t exist";
+            throw (new Exception(strError));
         }
         
         // We cretae the database
         
-        wordnet = new WordNetDB();
+        WordNetDB wordnet = new WordNetDB();
                
         // We open the file for reading
         
-        reader = new Scanner(wordnetFile);
+        Scanner reader = new Scanner(wordnetFile);
         System.out.println("Loading " + wordnetFile);
                 
         // We read the entioty lines
@@ -100,7 +89,7 @@ class WordNetReader
 
             // Get the next entity in the file
             
-            synset = readEntity(wordnet, strEntityLine, loadGloss);
+            WordNetSynset synset = readEntity(wordnet, strEntityLine, loadGloss);
                        
             // We insert the novel entity in the database
             
@@ -132,38 +121,27 @@ class WordNetReader
             String  strWordNetDBFullpath,
             boolean loadGloss) throws Exception
     {
-        Exception   error;      // Error lanzado
-        String      strError;   // Mensaje de error
-
-        WordNetDB  wordnet;    // Returned value
-        
-        File    wordnetFile;    // WordNet file
-        Scanner reader;         // Text file reader 
-        
-        WordNetSynset   synset; // Synset readed
-        
         String  strEntityLine = "";  // Line with entity information
         
         // We create the wordnet file
         
-        wordnetFile = new File(strWordNetDBFullpath);
+        File wordnetFile = new File(strWordNetDBFullpath);
         
         // We chechk the existence of the path
         
         if (!wordnetFile.exists())
         {
-            strError = "The WordNet database file doesn´t exist";
-            error = new Exception(strError);
-            throw (error);
+            String strError = "The WordNet database file doesn´t exist";
+            throw (new Exception(strError));
         }
         
         // We create the database
         
-        wordnet = new WordNetDB();
+        WordNetDB wordnet = new WordNetDB();
                
         // We open the file for reading
         
-        reader = new Scanner(wordnetFile);
+        Scanner reader = new Scanner(wordnetFile);
         System.out.println("Loading " + wordnetFile);
                 
         // We read the entioty lines
@@ -183,7 +161,7 @@ class WordNetReader
 
             // Get the next entity in the file
             
-            synset = readEntity(wordnet, strEntityLine, loadGloss);
+            WordNetSynset synset = readEntity(wordnet, strEntityLine, loadGloss);
                        
             // We insert the novel entity in the database
             
@@ -301,23 +279,14 @@ class WordNetReader
         String      strEntityLine,
         boolean     loadGloss)
     {
-        WordNetSynset   synset; // Returned value
-        
         StringTokenizer tokenizer;  // Tokenizer to get the fields
             
-        String[]    strParts;       // Tokens and gloss
-        String      strGloss = "";  // Gloss describing the synset
-        Long[]      parentsId;      // Id of the parents
+        String strGloss = "";  // Gloss describing the synset
         
         ArrayList<String>   strTokens;      // List of tokens
         ArrayList<Long>     parentsIdtemp;  // Id of the parents
         
-        Long    synsetId;       // Synset id
-        Integer wordCount;      // Number of words
-
         int iWord, iToken;  // Counters
-        
-        String[]    strWords;   // Words associated to the synset
         
         // We parse the entity line with the tokenizer
         
@@ -336,15 +305,15 @@ class WordNetReader
         
         // Obtengo el id sel synset
         
-        synsetId = Long.parseUnsignedLong(strTokens.get(0));
+        Long synsetId = Long.parseUnsignedLong(strTokens.get(0));
         
         // We get the number of words associated to this synset
         
-        wordCount = Integer.parseUnsignedInt(strTokens.get(3), 16);
+        Integer wordCount = Integer.parseUnsignedInt(strTokens.get(3), 16);
         
         // We create the vector of words for the synset
         
-        strWords = new String[wordCount];
+        String[] strWords = new String[wordCount];
         
         // We read the words for the synset
         
@@ -367,7 +336,7 @@ class WordNetReader
         
         // We copy the parents Id and clear the temporary list
         
-        parentsId = new Long[parentsIdtemp.size()];
+        Long[] parentsId = new Long[parentsIdtemp.size()];
         
         parentsIdtemp.toArray(parentsId);
 
@@ -380,7 +349,7 @@ class WordNetReader
         
         // We create the synset
        
-        synset = new WordNetSynset(wordnet, synsetId,
+        WordNetSynset synset = new WordNetSynset(wordnet, synsetId,
                         strTokens.get(2).charAt(0),
                         strWords, parentsId, strGloss);
         
