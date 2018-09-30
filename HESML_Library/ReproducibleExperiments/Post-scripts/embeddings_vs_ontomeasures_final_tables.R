@@ -661,7 +661,7 @@ write.csv(table_pvalues_Paragramws_allembeddings_relatedness, file = paste(outpu
 
 # We create a list with datasets including only word embeddings. First nine datasets
 # are similarity datasets, whilst the rest are relatedness datasets. However,
-# datasets 1-5 and 10-13 contain ontology-absed measures and embeddings, thus
+# datasets 1-5 and 10-13 contain ontology-based measures and embeddings, thus
 # we must extract the columns associated to word embeddings.
 
 rawdata_onlyEmbeddings_datasets <- list()
@@ -673,6 +673,8 @@ for (iDataset in 1:length(rawdataAllDatasets))
 	rawdata <- rawdataAllDatasets[[iDataset]]
 
 	# We extract the human judgements column and all columns with emebddings
+	# For the ifrst block of datasets, word embeddings start at column 24.
+	# whilst the second block only contains word embeddings.
 
 	human_judgements<-rawdata[,1:2]
 	
@@ -711,6 +713,12 @@ for (iDataset in 1:length(rawdata_onlyEmbeddings_datasets))
 
 	rawdata <- rawdata_onlyEmbeddings_datasets[[iDataset]]
 
+	# We extract the human judgements column and all columns with emebddings
+	# For the ifrst block of datasets, word embeddings start at column 24.
+	# whilst the second block only contains word embeddings.
+	
+	human_judgements<-rawdata[,1:2]
+	
 	# We get the number of embeddings
 
 	nEmbeddings <- ncol(rawdata) - 2
@@ -718,18 +726,14 @@ for (iDataset in 1:length(rawdata_onlyEmbeddings_datasets))
 	# We create the matrix containing all raw similarity values for all combinations
 
 	raw_averaged_similarity_matrix <- matrix(nrow = nrow(rawdata),
-	                                         ncol = 2 + ncol(averaged_Pearson_results))
+	                                         ncol = ncol(averaged_Pearson_results))
 	
 	colnames(raw_averaged_similarity_matrix) <- c(1:ncol(raw_averaged_similarity_matrix))
 
 	# We copy the first two columns containing the word pairs and human judgements
 
-	raw_averaged_similarity_matrix[,1] <- rawdata[,1]
-	colnames(raw_averaged_similarity_matrix)[1] <- colnames(rawdata)[1]
+	raw_averaged_similarity_matrix <- cbind(human_judgements, raw_averaged_similarity_matrix)
 	
-	raw_averaged_similarity_matrix[,2] <- rawdata[,2]
-	colnames(raw_averaged_similarity_matrix)[2] <- colnames(rawdata)[2]
-
 	# We compute all averaged similarity values by selecting all combinations
 	# of two different word emebeddings
 
@@ -739,7 +743,7 @@ for (iDataset in 1:length(rawdata_onlyEmbeddings_datasets))
 	{
 		for (j in (i + 1):nEmbeddings)
 		{
-			# We compute the average raw similarity values of the pair
+			# We compute the average raw similarity values for the word embedding pair
  
 			averaged_sim <- 0.5 * (rawdata[, i  + 2] + rawdata[, j  + 2])
 			
