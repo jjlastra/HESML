@@ -26,11 +26,13 @@ rm(list = ls())
 # Unix-like format to be compatible with Windows
 # or Linux-based R distributions.
 
-inputDir = "C:/HESML_GitHub/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/RawOutputFiles/"
-outputDir = "C:/HESML_GitHub/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/MainConsolidatedTables/"
-outputAvgRawFilesDir = "C:/HESML_GitHub/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/AveragedRawTables/"
-outAvgMetricFilesDir = "C:/HESML_GitHub/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/AveragedConsolidatedTables/"
+inputDir = "D:/Versiones_Git_HESML/HESML/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/RawOutputFiles/"
+mainOutputDir = "D:/Versiones_Git_HESML/HESML/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/"
+outputDir = "D:/Versiones_Git_HESML/HESML/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/MainConsolidatedTables/"
+outputAvgRawFilesDir = "D:/Versiones_Git_HESML/HESML/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/AveragedRawTables/"
+outAvgMetricFilesDir = "D:/Versiones_Git_HESML/HESML/HESML_Library/ReproducibleExperiments/Embeddings_vs_OntologyMeasures_paper/ProcessedOutputFiles/AveragedConsolidatedTables/"
 
+dir.create(mainOutputDir)
 dir.create(outputDir)
 dir.create(outputAvgRawFilesDir)
 dir.create(outAvgMetricFilesDir)
