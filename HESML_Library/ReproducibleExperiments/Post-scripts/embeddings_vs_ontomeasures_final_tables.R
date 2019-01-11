@@ -661,14 +661,16 @@ write.csv(table_pvalues_Paragramws_allembeddings_relatedness, file = paste(outpu
 # datasets with each other measure, both WE and OM measures.
 # ---------------------------------------------------------------------
 
-#  We create a table for Spearman metric by removing first two columns
-# which contain the word pairs and human judgements. 
+# EVALUATION OF NOUN SIMILARITY DATASETS
+#
+#  We create two tables for Pearson and Spearman metrics
+# by removing first two columns which contain the word pairs and human judgements. 
 # Measures are arranged in rows whilst datasets are arranged in columns.
-#  This table reproduces the same table reporting the Spearman correlation
-# values of all measure in the five noun similarity datasets but using
-# the averaged measures.
-#  Input data is the vectors of raw similarity values reported by each
-# measure.
+#  These two tables reproduce the same tables reporting the Pearson and
+# Spearman correlation values of all measure in the five noun similarity
+# datasets but using the averaged measures.
+#  Input data is defined by the vectors of raw similarity values returned
+# by each measure.
 
 table_AvgMeasures_Spearman_SimDatasets <- matrix(nrow = ncol(rawdata_MC28) - 2,
                                     ncol = length(rawdataSimNounDatasets),
@@ -682,7 +684,7 @@ table_AvgMeasures_Pearson_SimDatasets <- table_AvgMeasures_Spearman_SimDatasets
 nMeasures <- nrow(table_AvgMeasures_Spearman_SimDatasets)
 nDatasets <- length(rawdataSimNounDatasets)
 
-# We extract the best perfomring measre (Attract-reppel)
+# We extract the best perfomring similarity measure (Attract-reppel)
 
 iBestSimMeasure <- 22
 
@@ -735,4 +737,81 @@ write.csv(table_AvgMeasures_Spearman_SimDatasets_rounded, file = paste(outputAvg
 
 write.csv(table_AvgMeasures_Pearson_SimDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Pearson_SimDatasets.csv"))
 write.csv(table_AvgMeasures_Pearson_SimDatasets_rounded, file = paste(outputAvgMetricFilesDir, sep="","table_AvgMeasures_Pearson_SimDatasets_rounded.csv"))
+
+# EVALUATION OF NOUN RELATEDNESS DATASETS
+#
+#  We create two tables for Pearson and Spearman metrics
+# by removing first two columns which contain the word pairs and human judgements. 
+# Measures are arranged in rows whilst datasets are arranged in columns.
+#  These two tables reproduce the same tables reporting the Pearson and
+# Spearman correlation values of all measure in the five noun similarity
+# datasets but using the averaged measures.
+#  Input data is defined by the vectors of raw similarity values returned
+# by each measure.
+
+table_AvgMeasures_Spearman_RelDatasets <- matrix(nrow = ncol(rawdata_MC28) - 2,
+                                                 ncol = length(rawdataRelNounDatasets),
+                                                 dimnames = list(colnames(rawdata_MC28)[3:ncol(rawdata_MC28)],
+                                                                 c("MTurk771", "MTurk287_235", "WS353Rel", "Rel122")))
+
+table_AvgMeasures_Pearson_RelDatasets <- table_AvgMeasures_Spearman_RelDatasets
+
+# Loop for the computation of the metrics
+
+nMeasures <- nrow(table_AvgMeasures_Spearman_RelDatasets)
+nDatasets <- length(rawdataRelNounDatasets)
+
+# We extract the best perfomring relatedness measure (Paragram-ws)
+
+iBestRelMeasure <- 27
+
+for (iDataset in 1:nDatasets)
+{
+  # We get the raw data of the next dataset
+  
+  rawdata <- rawdataRelNounDatasets[[iDataset]]
+  
+  # We get the human judgement vector and the raw similarity values
+  # of the best performing measure in the current dataset
+  
+  humanJugments <- rawdata[,2]
+  rawbestMeasure <- rawdata[, iBestRelMeasure + 2]
+  
+  # We evaluate the Spearman correlation for each averaged measure in the current dataset
+  
+  for (iMeasure in 1:nMeasures)
+  {
+    # We compute the average similarity values corresponding to
+    # the combination of the best performing measure with iMeasure
+    
+    currentMeasure <- rawdata[, iMeasure + 2]
+    averaged_sim <- 0.5 * (currentMeasure + rawbestMeasure)      
+    
+    # We compute the Spearman correlation of the averaged measure
+    
+    table_AvgMeasures_Spearman_RelDatasets[iMeasure, iDataset] <- cor(humanJugments, averaged_sim, method = "spearman")
+    table_AvgMeasures_Pearson_RelDatasets[iMeasure, iDataset] <- cor(humanJugments, averaged_sim, method = "pearson")
+  }
+}
+
+# We compute the average values per row and sort the rows
+
+table_AvgMeasures_Spearman_RelDatasets <- cbind(table_AvgMeasures_Spearman_RelDatasets, Avg = rowMeans(table_AvgMeasures_Spearman_RelDatasets[1:nrow(table_AvgMeasures_Spearman_RelDatasets),]))
+table_AvgMeasures_Spearman_RelDatasets <- mat.sort(table_AvgMeasures_Spearman_RelDatasets, ncol(table_AvgMeasures_Spearman_RelDatasets), decreasing = TRUE)
+
+table_AvgMeasures_Pearson_RelDatasets <- cbind(table_AvgMeasures_Pearson_RelDatasets, Avg = rowMeans(table_AvgMeasures_Pearson_RelDatasets[1:nrow(table_AvgMeasures_Pearson_RelDatasets),]))
+table_AvgMeasures_Pearson_RelDatasets <- mat.sort(table_AvgMeasures_Pearson_RelDatasets, ncol(table_AvgMeasures_Pearson_RelDatasets), decreasing = TRUE)
+
+# We make a copy of the tables in order to round their values to 3 decimal digits
+
+table_AvgMeasures_Spearman_RelDatasets_rounded <- round(table_AvgMeasures_Spearman_RelDatasets, 3);
+table_AvgMeasures_Pearson_RelDatasets_rounded <- round(table_AvgMeasures_Pearson_RelDatasets, 3);
+
+# We save all final assembled data tables 
+
+write.csv(table_AvgMeasures_Spearman_RelDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Spearman_RelDatasets.csv"))
+write.csv(table_AvgMeasures_Spearman_RelDatasets_rounded, file = paste(outputAvgMetricFilesDir, sep="","table_AvgMeasures_Spearman_RelDatasets_rounded.csv"))
+
+write.csv(table_AvgMeasures_Pearson_RelDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Pearson_RelDatasets.csv"))
+write.csv(table_AvgMeasures_Pearson_RelDatasets_rounded, file = paste(outputAvgMetricFilesDir, sep="","table_AvgMeasures_Pearson_RelDatasets_rounded.csv"))
 
