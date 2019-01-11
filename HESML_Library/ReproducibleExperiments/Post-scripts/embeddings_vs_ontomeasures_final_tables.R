@@ -675,6 +675,8 @@ table_AvgMeasures_Spearman_SimDatasets <- matrix(nrow = ncol(rawdata_MC28) - 2,
                                     dimnames = list(colnames(rawdata_MC28)[3:ncol(rawdata_MC28)],
                                                     c("MC28", "RG65", "PSfull", "Agirre201", "SimLex665")))
 
+table_AvgMeasures_Pearson_SimDatasets <- table_AvgMeasures_Spearman_SimDatasets
+
 # Loop for the computation of the metrics
 
 nMeasures <- nrow(table_AvgMeasures_Spearman_SimDatasets)
@@ -693,7 +695,7 @@ for (iDataset in 1:nDatasets)
   # We get the human judgement vector and the raw similarity values
   # of the best performing measure in the current dataset
   
-  humanJUgments <- rawdata[,2]
+  humanJugments <- rawdata[,2]
   rawbestMeasure <- rawdata[, iBestSimMeasure + 2]
   
   # We evaluate the Spearman correlation for each averaged measure in the current dataset
@@ -708,7 +710,8 @@ for (iDataset in 1:nDatasets)
     
     # We compute the Spearman correlation of the averaged measure
     
-    table_AvgMeasures_Spearman_SimDatasets[iMeasure, iDataset] <- cor(humanJUgments, averaged_sim, method = "spearman")
+    table_AvgMeasures_Spearman_SimDatasets[iMeasure, iDataset] <- cor(humanJugments, averaged_sim, method = "spearman")
+    table_AvgMeasures_Pearson_SimDatasets[iMeasure, iDataset] <- cor(humanJugments, averaged_sim, method = "pearson")
   }
 }
 
@@ -717,13 +720,19 @@ for (iDataset in 1:nDatasets)
 table_AvgMeasures_Spearman_SimDatasets <- cbind(table_AvgMeasures_Spearman_SimDatasets, Avg = rowMeans(table_AvgMeasures_Spearman_SimDatasets[1:nrow(table_AvgMeasures_Spearman_SimDatasets),]))
 table_AvgMeasures_Spearman_SimDatasets <- mat.sort(table_AvgMeasures_Spearman_SimDatasets, ncol(table_AvgMeasures_Spearman_SimDatasets), decreasing = TRUE)
 
+table_AvgMeasures_Pearson_SimDatasets <- cbind(table_AvgMeasures_Pearson_SimDatasets, Avg = rowMeans(table_AvgMeasures_Pearson_SimDatasets[1:nrow(table_AvgMeasures_Pearson_SimDatasets),]))
+table_AvgMeasures_Pearson_SimDatasets <- mat.sort(table_AvgMeasures_Pearson_SimDatasets, ncol(table_AvgMeasures_Pearson_SimDatasets), decreasing = TRUE)
+
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
 table_AvgMeasures_Spearman_SimDatasets_rounded <- round(table_AvgMeasures_Spearman_SimDatasets, 3);
+table_AvgMeasures_Pearson_SimDatasets_rounded <- round(table_AvgMeasures_Pearson_SimDatasets, 3);
 
 # We save all final assembled data tables 
 
 write.csv(table_AvgMeasures_Spearman_SimDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Spearman_SimDatasets.csv"))
 write.csv(table_AvgMeasures_Spearman_SimDatasets_rounded, file = paste(outputAvgMetricFilesDir, sep="","table_AvgMeasures_Spearman_SimDatasets_rounded.csv"))
 
+write.csv(table_AvgMeasures_Pearson_SimDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Pearson_SimDatasets.csv"))
+write.csv(table_AvgMeasures_Pearson_SimDatasets_rounded, file = paste(outputAvgMetricFilesDir, sep="","table_AvgMeasures_Pearson_SimDatasets_rounded.csv"))
 
