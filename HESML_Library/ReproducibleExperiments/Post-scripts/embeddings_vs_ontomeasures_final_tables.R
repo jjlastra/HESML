@@ -140,6 +140,12 @@ for (iDataset in 1:nDatasets)
 	}
 }
 
+# We save a copy of Pearson and Spearman tables before to add further information
+# with the aim of using them in the computtion of p-values for the averages measures below
+
+backup_table_Pearson_SimDatasets <- table_Pearson_SimDatasets
+backup_table_Spearman_SimDatasets <- table_Spearman_SimDatasets
+
 # We compute the average values per row and sort the rows
 
 table_Pearson_SimDatasets <- cbind(table_Pearson_SimDatasets, Avg = rowMeans(table_Pearson_SimDatasets[1:nrow(table_Pearson_SimDatasets),]))
@@ -211,6 +217,12 @@ for (iDataset in 1:nDatasets)
 		table_Harmonic_RelDatasets[iMeasure, iDataset] <- 2.0 * table_Pearson_RelDatasets[iMeasure, iDataset] * table_Spearman_RelDatasets[iMeasure, iDataset] / (table_Pearson_RelDatasets[iMeasure, iDataset] + table_Spearman_RelDatasets[iMeasure, iDataset])
 	}
 }
+
+# We save a copy of Pearson and Spearman tables before to add further information
+# with the aim of using them in the computtion of p-values for the averages measures below
+
+backup_table_Pearson_RelDatasets <- table_Pearson_RelDatasets
+backup_table_Spearman_RelDatasets <- table_Spearman_RelDatasets
 
 # We compute the average values per row and sort the rows
 
