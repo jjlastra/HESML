@@ -722,13 +722,41 @@ for (iDataset in 1:nDatasets)
   }
 }
 
+# We compute the p-values comparing the performance of averaged measures with
+# their base counterpart. The aim is to test the hypothesis that the combination
+# of each measure with the best performing one outperforms the individual measure
+
+avgRelDatasets_Pearson_pvalues <- matrix(nrow = nrow(table_AvgMeasures_Pearson_RelDatasets), ncol = 1)
+colnames(avgRelDatasets_Pearson_pvalues) = "p-value"
+
+avgRelDatasets_Spearman_pvalues <- matrix(nrow = nrow(table_AvgMeasures_Spearman_RelDatasets), ncol = 1)
+colnames(avgRelDatasets_Spearman_pvalues) = "p-value"
+
+for (iMeasure in 1:nMeasures)
+{
+  avgRelDatasets_Pearson_pvalues[iMeasure, 1] <- signif(t.test(table_AvgMeasures_Pearson_RelDatasets[iMeasure, ],
+                                                               backup_table_Pearson_RelDatasets[iMeasure, ],
+                                                               paired = TRUE,alternative="greater")$p.value,
+                                                        digits=2)
+  
+  avgRelDatasets_Spearman_pvalues[iMeasure, 1] <- signif(t.test(table_AvgMeasures_Spearman_RelDatasets[iMeasure, ],
+                                                                backup_table_Spearman_RelDatasets[iMeasure, ],
+                                                                paired = TRUE,alternative="greater")$p.value,
+                                                         digits=2)
+}
 # We compute the average values per row and sort the rows
 
-table_AvgMeasures_Spearman_RelDatasets <- cbind(table_AvgMeasures_Spearman_RelDatasets, Avg = rowMeans(table_AvgMeasures_Spearman_RelDatasets[1:nrow(table_AvgMeasures_Spearman_RelDatasets),]))
-table_AvgMeasures_Spearman_RelDatasets <- mat.sort(table_AvgMeasures_Spearman_RelDatasets, ncol(table_AvgMeasures_Spearman_RelDatasets), decreasing = TRUE)
+table_AvgMeasures_Spearman_RelDatasets <- cbind(table_AvgMeasures_Spearman_RelDatasets,
+                                                Avg = rowMeans(table_AvgMeasures_Spearman_RelDatasets[1:nrow(table_AvgMeasures_Spearman_RelDatasets),]),
+                                                avgRelDatasets_Spearman_pvalues)
 
-table_AvgMeasures_Pearson_RelDatasets <- cbind(table_AvgMeasures_Pearson_RelDatasets, Avg = rowMeans(table_AvgMeasures_Pearson_RelDatasets[1:nrow(table_AvgMeasures_Pearson_RelDatasets),]))
-table_AvgMeasures_Pearson_RelDatasets <- mat.sort(table_AvgMeasures_Pearson_RelDatasets, ncol(table_AvgMeasures_Pearson_RelDatasets), decreasing = TRUE)
+table_AvgMeasures_Spearman_RelDatasets <- mat.sort(table_AvgMeasures_Spearman_RelDatasets, ncol(table_AvgMeasures_Spearman_RelDatasets) - 1, decreasing = TRUE)
+
+table_AvgMeasures_Pearson_RelDatasets <- cbind(table_AvgMeasures_Pearson_RelDatasets,
+                                               Avg = rowMeans(table_AvgMeasures_Pearson_RelDatasets[1:nrow(table_AvgMeasures_Pearson_RelDatasets),]),
+                                               avgRelDatasets_Pearson_pvalues)
+
+table_AvgMeasures_Pearson_RelDatasets <- mat.sort(table_AvgMeasures_Pearson_RelDatasets, ncol(table_AvgMeasures_Pearson_RelDatasets) - 1, decreasing = TRUE)
 
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
