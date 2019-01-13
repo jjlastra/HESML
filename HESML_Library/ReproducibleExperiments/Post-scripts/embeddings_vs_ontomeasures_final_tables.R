@@ -134,19 +134,49 @@ for (iDataset in 1:nDatasets)
 	}
 }
 
+# We compute the p-values testing the hypothesis that the best performing measure, Attract-reppel model,
+# outperforms significantly the rest of methods in noun similarity datsets
+
+pvalues_SimDatasets_Pearson <- matrix(nrow = nrow(table_Pearson_SimDatasets), ncol = 1)
+colnames(pvalues_SimDatasets_Pearson) = "p-value"
+
+pvalues_SimDatasets_Spearman <- matrix(nrow = nrow(table_Spearman_SimDatasets), ncol = 1)
+colnames(pvalues_SimDatasets_Spearman) = "p-value"
+
+iAttractReppel <- 22
+
+for (iMeasure in 1:nMeasures)
+{
+  pvalues_SimDatasets_Pearson[iMeasure, 1] <- signif(t.test(table_Pearson_SimDatasets[iAttractReppel, ],
+                                                            table_Pearson_SimDatasets[iMeasure, ],
+                                                               paired = TRUE,alternative="greater")$p.value,
+                                                        digits=2)
+  
+  pvalues_SimDatasets_Spearman[iMeasure, 1] <- signif(t.test(table_Spearman_SimDatasets[iAttractReppel, ],
+                                                             table_Spearman_SimDatasets[iMeasure, ],
+                                                                paired = TRUE,alternative="greater")$p.value,
+                                                         digits=2)
+}
+
 # We save a copy of Pearson and Spearman tables before to add further information
-# with the aim of using them in the computtion of p-values for the averages measures below
+# with the aim of using them in the computation of p-values for the averages measures below
 
 backup_table_Pearson_SimDatasets <- table_Pearson_SimDatasets
 backup_table_Spearman_SimDatasets <- table_Spearman_SimDatasets
 
 # We compute the average values per row and sort the rows
 
-table_Pearson_SimDatasets <- cbind(table_Pearson_SimDatasets, Avg = rowMeans(table_Pearson_SimDatasets[1:nrow(table_Pearson_SimDatasets),]))
-table_Pearson_SimDatasets <- mat.sort(table_Pearson_SimDatasets, ncol(table_Pearson_SimDatasets), decreasing = TRUE)
+table_Pearson_SimDatasets <- cbind(table_Pearson_SimDatasets,
+                                   Avg = rowMeans(table_Pearson_SimDatasets[1:nrow(table_Pearson_SimDatasets),]),
+                                   pvalues_SimDatasets_Pearson)
 
-table_Spearman_SimDatasets <- cbind(table_Spearman_SimDatasets, Avg = rowMeans(table_Spearman_SimDatasets[1:nrow(table_Spearman_SimDatasets),]))
-table_Spearman_SimDatasets <- mat.sort(table_Spearman_SimDatasets, ncol(table_Spearman_SimDatasets), decreasing = TRUE)
+table_Pearson_SimDatasets <- mat.sort(table_Pearson_SimDatasets, ncol(table_Pearson_SimDatasets) - 1, decreasing = TRUE)
+
+table_Spearman_SimDatasets <- cbind(table_Spearman_SimDatasets,
+                                    Avg = rowMeans(table_Spearman_SimDatasets[1:nrow(table_Spearman_SimDatasets),]),
+                                    pvalues_SimDatasets_Spearman)
+
+table_Spearman_SimDatasets <- mat.sort(table_Spearman_SimDatasets, ncol(table_Spearman_SimDatasets) - 1, decreasing = TRUE)
 
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
@@ -203,6 +233,30 @@ for (iDataset in 1:nDatasets)
 	}
 }
 
+# We compute the p-values testing the hypothesis that the best performing measure, Paragram-ws model,
+# outperforms significantly the rest of methods in noun relatedness datsets
+
+pvalues_RelDatasets_Pearson <- matrix(nrow = nrow(table_Pearson_RelDatasets), ncol = 1)
+colnames(pvalues_RelDatasets_Pearson) = "p-value"
+
+pvalues_RelDatasets_Spearman <- matrix(nrow = nrow(table_Spearman_RelDatasets), ncol = 1)
+colnames(pvalues_RelDatasets_Spearman) = "p-value"
+
+iParagram_ws <- 27
+
+for (iMeasure in 1:nMeasures)
+{
+  pvalues_RelDatasets_Pearson[iMeasure, 1] <- signif(t.test(table_Pearson_RelDatasets[iParagram_ws, ],
+                                                            table_Pearson_RelDatasets[iMeasure, ],
+                                                            paired = TRUE,alternative="greater")$p.value,
+                                                     digits=2)
+  
+  pvalues_RelDatasets_Spearman[iMeasure, 1] <- signif(t.test(table_Spearman_RelDatasets[iParagram_ws, ],
+                                                             table_Spearman_RelDatasets[iMeasure, ],
+                                                             paired = TRUE,alternative="greater")$p.value,
+                                                      digits=2)
+}
+
 # We save a copy of Pearson and Spearman tables before to add further information
 # with the aim of using them in the computtion of p-values for the averages measures below
 
@@ -211,11 +265,17 @@ backup_table_Spearman_RelDatasets <- table_Spearman_RelDatasets
 
 # We compute the average values per row and sort the rows
 
-table_Pearson_RelDatasets <- cbind(table_Pearson_RelDatasets, Avg = rowMeans(table_Pearson_RelDatasets[1:nrow(table_Pearson_RelDatasets),]))
-table_Pearson_RelDatasets <- mat.sort(table_Pearson_RelDatasets, ncol(table_Pearson_RelDatasets), decreasing = TRUE)
+table_Pearson_RelDatasets <- cbind(table_Pearson_RelDatasets,
+                                   Avg = rowMeans(table_Pearson_RelDatasets[1:nrow(table_Pearson_RelDatasets),]),
+                                   pvalues_RelDatasets_Pearson)
 
-table_Spearman_RelDatasets <- cbind(table_Spearman_RelDatasets, Avg = rowMeans(table_Spearman_RelDatasets[1:nrow(table_Spearman_RelDatasets),]))
-table_Spearman_RelDatasets <- mat.sort(table_Spearman_RelDatasets, ncol(table_Spearman_RelDatasets), decreasing = TRUE)
+table_Pearson_RelDatasets <- mat.sort(table_Pearson_RelDatasets, ncol(table_Pearson_RelDatasets) - 1, decreasing = TRUE)
+
+table_Spearman_RelDatasets <- cbind(table_Spearman_RelDatasets,
+                                    Avg = rowMeans(table_Spearman_RelDatasets[1:nrow(table_Spearman_RelDatasets),]),
+                                    pvalues_RelDatasets_Spearman)
+
+table_Spearman_RelDatasets <- mat.sort(table_Spearman_RelDatasets, ncol(table_Spearman_RelDatasets) - 1, decreasing = TRUE)
 
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
