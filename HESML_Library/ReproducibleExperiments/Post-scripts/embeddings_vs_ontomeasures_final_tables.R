@@ -3,8 +3,7 @@
 # This script loads a collection of word similarity benchmarks generated
 # by HESML, ehich contain the raw similarity values for each word pair.
 # Then, the script computes a collection of consolidated tables
-# including the Pearson and Spearman correlation metrics together
-# with the harmonic score of the # former ones.
+# including the Pearson and Spearman correlation metrics.
 #
 # References:
 # ----------
@@ -94,7 +93,7 @@ library(BioPhysConnectoR)
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
-# Tables 1,2 and 3: Pearson, Spearman and Harmonic mean metrics of all measures
+# Tables 1,2 and 3: Pearson and Spearman metrics of all measures
 # and embeddings in the 5 similarity datasets evaluated both by the
 # ontology-based measures based on WordNet as the pre-trained word
 # embedding models.
@@ -114,7 +113,6 @@ table_Pearson_SimDatasets <- matrix(nrow = ncol(rawdata_MC28) - 2,
                                                   c("MC28", "RG65", "PSfull", "Agirre201", "SimLex665")))
 
 table_Spearman_SimDatasets <- table_Pearson_SimDatasets
-table_Harmonic_SimDatasets <- table_Pearson_SimDatasets
 
 # Loop for the computation of the metrics
 
@@ -127,13 +125,12 @@ for (iDataset in 1:nDatasets)
 
 	rawdata <- rawdataSimNounDatasets[[iDataset]]
 
-	# We evaluate the Pearson, Spearman and Harmonic metrics for each measure in the current dataset
+	# We evaluate the Pearson and Spearman metrics for each measure in the current dataset
 
 	for (iMeasure in 1:nMeasures)
 	{
 		table_Pearson_SimDatasets[iMeasure, iDataset] <- cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
 		table_Spearman_SimDatasets[iMeasure, iDataset] <- cor(rawdata[,2], rawdata[, iMeasure + 2], method = "spearman")
-		table_Harmonic_SimDatasets[iMeasure, iDataset] <- 2.0 * table_Pearson_SimDatasets[iMeasure, iDataset] * table_Spearman_SimDatasets[iMeasure, iDataset] / (table_Pearson_SimDatasets[iMeasure, iDataset] + table_Spearman_SimDatasets[iMeasure, iDataset])
 	}
 }
 
@@ -151,14 +148,10 @@ table_Pearson_SimDatasets <- mat.sort(table_Pearson_SimDatasets, ncol(table_Pear
 table_Spearman_SimDatasets <- cbind(table_Spearman_SimDatasets, Avg = rowMeans(table_Spearman_SimDatasets[1:nrow(table_Spearman_SimDatasets),]))
 table_Spearman_SimDatasets <- mat.sort(table_Spearman_SimDatasets, ncol(table_Spearman_SimDatasets), decreasing = TRUE)
 
-table_Harmonic_SimDatasets <- cbind(table_Harmonic_SimDatasets, Avg = rowMeans(table_Harmonic_SimDatasets[1:nrow(table_Harmonic_SimDatasets),]))
-table_Harmonic_SimDatasets <- mat.sort(table_Harmonic_SimDatasets, ncol(table_Harmonic_SimDatasets), decreasing = TRUE)
-
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
 table_Pearson_SimDatasets_rounded <- round(table_Pearson_SimDatasets, 3);
 table_Spearman_SimDatasets_rounded <- round(table_Spearman_SimDatasets, 3);
-table_Harmonic_SimDatasets_rounded <- round(table_Harmonic_SimDatasets, 3);
 
 # We save all final assembled data tables 
 
@@ -167,9 +160,6 @@ write.csv(table_Pearson_SimDatasets_rounded, file = paste(outputDir, sep="","tab
 
 write.csv(table_Spearman_SimDatasets, file = paste(outputDir, sep="","table_Spearman_SimDatasets.csv"))
 write.csv(table_Spearman_SimDatasets_rounded, file = paste(outputDir, sep="","table_Spearman_SimDatasets_rounded.csv"))
-
-write.csv(table_Harmonic_SimDatasets, file = paste(outputDir, sep="","table_Harmonic_SimDatasets.csv"))
-write.csv(table_Harmonic_SimDatasets_rounded, file = paste(outputDir, sep="","table_Harmonic_SimDatasets_rounded.csv"))
 
 # ---------------------------------------------------------------------
 # Table 4,5 and 6: Pearson, Spearman and Harmonic mean metrics of all measures
@@ -192,7 +182,6 @@ table_Pearson_RelDatasets <- matrix(nrow = ncol(rawdata_MC28) - 2,
                                                     c("MTurk771", "MTurk287_235", "WS353Rel", "Rel122")))
 
 table_Spearman_RelDatasets <- table_Pearson_RelDatasets
-table_Harmonic_RelDatasets <- table_Pearson_RelDatasets
 
 # Loop for the computation of all metrics
 
@@ -211,7 +200,6 @@ for (iDataset in 1:nDatasets)
 	{
 		table_Pearson_RelDatasets[iMeasure, iDataset] <- cor(rawdata[,2], rawdata[, iMeasure + 2], method = "pearson")
 		table_Spearman_RelDatasets[iMeasure, iDataset] <- cor(rawdata[,2], rawdata[, iMeasure + 2], method = "spearman")
-		table_Harmonic_RelDatasets[iMeasure, iDataset] <- 2.0 * table_Pearson_RelDatasets[iMeasure, iDataset] * table_Spearman_RelDatasets[iMeasure, iDataset] / (table_Pearson_RelDatasets[iMeasure, iDataset] + table_Spearman_RelDatasets[iMeasure, iDataset])
 	}
 }
 
@@ -229,14 +217,10 @@ table_Pearson_RelDatasets <- mat.sort(table_Pearson_RelDatasets, ncol(table_Pear
 table_Spearman_RelDatasets <- cbind(table_Spearman_RelDatasets, Avg = rowMeans(table_Spearman_RelDatasets[1:nrow(table_Spearman_RelDatasets),]))
 table_Spearman_RelDatasets <- mat.sort(table_Spearman_RelDatasets, ncol(table_Spearman_RelDatasets), decreasing = TRUE)
 
-table_Harmonic_RelDatasets <- cbind(table_Harmonic_RelDatasets, Avg = rowMeans(table_Harmonic_RelDatasets[1:nrow(table_Harmonic_RelDatasets),]))
-table_Harmonic_RelDatasets <- mat.sort(table_Harmonic_RelDatasets, ncol(table_Harmonic_RelDatasets), decreasing = TRUE)
-
 # We make a copy of the tables in order to round their values to 3 decimal digits
 
 table_Pearson_RelDatasets_rounded <- round(table_Pearson_RelDatasets, 3);
 table_Spearman_RelDatasets_rounded <- round(table_Spearman_RelDatasets, 3);
-table_Harmonic_RelDatasets_rounded <- round(table_Harmonic_RelDatasets, 3);
 
 # We save all final assembled data tables 
 
@@ -245,9 +229,6 @@ write.csv(table_Pearson_RelDatasets_rounded, file = paste(outputDir, sep="","tab
 
 write.csv(table_Spearman_RelDatasets, file = paste(outputDir, sep="","table_Spearman_RelDatasets.csv"))
 write.csv(table_Spearman_RelDatasets_rounded, file = paste(outputDir, sep="","table_Spearman_RelDatasets_rounded.csv"))
-
-write.csv(table_Harmonic_RelDatasets, file = paste(outputDir, sep="","table_Harmonic_RelDatasets.csv"))
-write.csv(table_Harmonic_RelDatasets_rounded, file = paste(outputDir, sep="","table_Harmonic_RelDatasets_rounded.csv"))
 
 # ---------------------------------------------------------------------
 # Table 7, 8 and 9: Pearson, Spearman and Harmonic metrics of all
@@ -373,7 +354,6 @@ write.csv(table_joined_allEmbeddings_relatedness_rounded, file = paste(outputDir
 #
 # (1) table_Pearson_SimDatasets.
 # (2) table_Spearman_SimDatasets.
-# (3) table_Harmonic_SimDatasets.
 #
 # This information is used to draw strong conclusions on the performance
 # of Attract-reppel model.
@@ -383,11 +363,9 @@ write.csv(table_joined_allEmbeddings_relatedness_rounded, file = paste(outputDir
 
 pvalues_r <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
 pvalues_rho <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
-pvalues_harmonic <- matrix(ncol = 1, nrow = nrow(table_Pearson_SimDatasets) - 1)
 
 rownames(pvalues_r) <- c(1:nrow(pvalues_r))
 rownames(pvalues_rho) <- c(1:nrow(pvalues_rho))
-rownames(pvalues_harmonic) <- c(1:nrow(pvalues_harmonic))
 
 for (iMeasure in 1:nrow(pvalues_r))
 {
@@ -395,8 +373,7 @@ for (iMeasure in 1:nrow(pvalues_r))
   
 	rownames(pvalues_r)[iMeasure] <- rownames(table_Pearson_SimDatasets)[iMeasure + 1]
 	rownames(pvalues_rho)[iMeasure] <- rownames(table_Spearman_SimDatasets)[iMeasure + 1]
-	rownames(pvalues_harmonic)[iMeasure] <- rownames(table_Harmonic_SimDatasets)[iMeasure + 1]
-	
+
 	# We set the p-values
 	
 	pvalues_r[iMeasure] <- signif(t.test(table_Pearson_SimDatasets[1,1:5],
@@ -409,32 +386,23 @@ for (iMeasure in 1:nrow(pvalues_r))
 	                                          table_Spearman_SimDatasets[iMeasure + 1,1:5],
 	                                          paired = TRUE,alternative="greater")$p.value,
 	                                   digits=2)
-	
-	
-	pvalues_harmonic[iMeasure] <- signif(t.test(table_Harmonic_SimDatasets[1,1:5],
-	                                            table_Harmonic_SimDatasets[iMeasure + 1,1:5],
-	                                            paired = TRUE,alternative="greater")$p.value,
-	                                     digits=2)
 }
 
 # We sort the p-values in descending order
 
 pvalues_r <- mat.sort(pvalues_r, 1, decreasing = TRUE)
 pvalues_rho <- mat.sort(pvalues_rho, ncol(pvalues_rho), decreasing = TRUE)
-pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasing = TRUE)
 
 # We group p-values in a matrix
 
-table_pvalues_AttractReppel_nounSimDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_SimDatasets) - 1)
+table_pvalues_AttractReppel_nounSimDatasets <- matrix(ncol = 4, nrow = nrow(table_Pearson_SimDatasets) - 1)
 
-colnames(table_pvalues_AttractReppel_nounSimDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+colnames(table_pvalues_AttractReppel_nounSimDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)")
 
 table_pvalues_AttractReppel_nounSimDatasets[,1] <- names(pvalues_r)
 table_pvalues_AttractReppel_nounSimDatasets[,2] <- pvalues_r
 table_pvalues_AttractReppel_nounSimDatasets[,3] <- names(pvalues_rho)
 table_pvalues_AttractReppel_nounSimDatasets[,4] <- pvalues_rho
-table_pvalues_AttractReppel_nounSimDatasets[,5] <- names(pvalues_harmonic)
-table_pvalues_AttractReppel_nounSimDatasets[,6] <- pvalues_harmonic
 
 write.csv(table_pvalues_AttractReppel_nounSimDatasets, file = paste(outputDir, sep="","table_pvalues_AttractReppel_nounSimDataset_values.csv"))
 
@@ -444,7 +412,6 @@ write.csv(table_pvalues_AttractReppel_nounSimDatasets, file = paste(outputDir, s
 #
 # (1) table_Pearson_RelatednessDatasets.
 # (2) table_Spearman_RelatednessDatasets.
-# (3) table_Harmonic_RelatednessDatasets.
 #
 # This information is used to draw strong conclusions on the performance
 # of Paragram-ws model.
@@ -454,11 +421,9 @@ write.csv(table_pvalues_AttractReppel_nounSimDatasets, file = paste(outputDir, s
 
 pvalues_r <- matrix(ncol = 1, nrow = nrow(table_Pearson_RelDatasets) - 1)
 pvalues_rho <- matrix(ncol = 1, nrow = nrow(table_Spearman_RelDatasets) - 1)
-pvalues_harmonic <- matrix(ncol = 1, nrow = nrow(table_Harmonic_RelDatasets) - 1)
 
 rownames(pvalues_r) <- c(1:nrow(pvalues_r))
 rownames(pvalues_rho) <- c(1:nrow(pvalues_rho))
-rownames(pvalues_harmonic) <- c(1:nrow(pvalues_harmonic))
 
 # We need to skip second row for Pearson correlation because Paragram-ws
 # obtains the second average Pearson value insted of being the first one.
@@ -475,8 +440,7 @@ for (iMeasure in 1:nrow(pvalues_r))
   
   rownames(pvalues_r)[iMeasure] <- rownames(table_Pearson_RelDatasets)[iPearsonTargetMeasures[iMeasure]]
   rownames(pvalues_rho)[iMeasure] <- rownames(table_Spearman_RelDatasets)[iTargetMeasure]
-  rownames(pvalues_harmonic)[iMeasure] <- rownames(table_Harmonic_RelDatasets)[iTargetMeasure]
-  
+
   # We set the p-values
   
   pvalues_r[iMeasure] <- signif(t.test(table_Pearson_RelDatasets[2,1:4],
@@ -489,32 +453,23 @@ for (iMeasure in 1:nrow(pvalues_r))
                                          table_Spearman_RelDatasets[iTargetMeasure,1:4],
                                          paired = TRUE,alternative="greater")$p.value,
                                   digits=2)
-  
-  
-  pvalues_harmonic[iMeasure] <- signif(t.test(table_Harmonic_RelDatasets[1,1:4],
-                                              table_Harmonic_RelDatasets[iTargetMeasure,1:4],
-                                              paired = TRUE,alternative="greater")$p.value,
-                                       digits=2)
 }
 
 # We sort the p-values in descending order
 
 pvalues_r <- mat.sort(pvalues_r, 1, decreasing = TRUE)
 pvalues_rho <- mat.sort(pvalues_rho, ncol(pvalues_rho), decreasing = TRUE)
-pvalues_harmonic <- mat.sort(pvalues_harmonic, ncol(pvalues_harmonic), decreasing = TRUE)
 
 # We group p-values in a matrix
 
-table_pvalues_Paragramws_nounRelatednessDatasets <- matrix(ncol = 6, nrow = nrow(table_Pearson_RelDatasets) - 1)
+table_pvalues_Paragramws_nounRelatednessDatasets <- matrix(ncol = 4, nrow = nrow(table_Pearson_RelDatasets) - 1)
 
-colnames(table_pvalues_Paragramws_nounRelatednessDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)","Measure","p-value(h)")
+colnames(table_pvalues_Paragramws_nounRelatednessDatasets)<-c("Measure","p-value(r)","Measure","p-value(rho)")
 
 table_pvalues_Paragramws_nounRelatednessDatasets[,1] <- names(pvalues_r)
 table_pvalues_Paragramws_nounRelatednessDatasets[,2] <- pvalues_r
 table_pvalues_Paragramws_nounRelatednessDatasets[,3] <- names(pvalues_rho)
 table_pvalues_Paragramws_nounRelatednessDatasets[,4] <- pvalues_rho
-table_pvalues_Paragramws_nounRelatednessDatasets[,5] <- names(pvalues_harmonic)
-table_pvalues_Paragramws_nounRelatednessDatasets[,6] <- pvalues_harmonic
 
 write.csv(table_pvalues_Paragramws_nounRelatednessDatasets, file = paste(outputDir, sep="","table_pvalues_Paragramws_nounRelatednessDatasets_values.csv"))
 
