@@ -76,10 +76,14 @@ rawdata_RareWords2034 <- read.csv(paste(inputDir, sep = "", raw_RareWords2034_fi
 rawdata_RareWords1401 <- read.csv(paste(inputDir, sep = "", raw_RareWords1401_file),dec = ".", sep = ';')
 rawdata_SCWS1994 <- read.csv(paste(inputDir, sep = "", raw_SCWS1994_file),dec = ".", sep = ';')
 
-# IMPORTANT: you must install the 'BioPhysConnectoR' package before to run the next three lines of code
-# We sort the tables 3,4 and 5 in descending order by using the column-based Average values (last row)
+# mat.sort function is copied from source files of
+# BioPhysConnectoR package which is now unavailable.
+# Source code was retrieved from https://rdrr.io/cran/BioPhysConnectoR/src/R/mat.sort.r
 
-library(BioPhysConnectoR)
+mat.sort<-function(mat,sort,decreasing=FALSE){
+  m<-do.call("order",c(as.data.frame(mat[,sort]),decreasing=decreasing))
+  mat[m,]
+} 
 
 # ---------------------------------------------------------------------
 # Raw output file format:
