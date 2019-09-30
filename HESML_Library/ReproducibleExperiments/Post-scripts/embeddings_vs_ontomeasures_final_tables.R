@@ -775,3 +775,129 @@ write.csv(table_AvgMeasures_Spearman_RelDatasets_rounded, file = paste(outputDir
 write.csv(table_AvgMeasures_Pearson_RelDatasets, file = paste(outputDir, sep="","table_AvgMeasures_Pearson_RelDatasets.csv"))
 write.csv(table_AvgMeasures_Pearson_RelDatasets_rounded, file = paste(outputDir, sep="","table_AvgMeasures_Pearson_RelDatasets_rounded.csv"))
 
+#-------------------------------
+# HTML report generation
+#-------------------------------
+
+library(knitr)
+library(readr)
+
+# We load and browse Table 4 in the EAAI paper
+
+kable_out <- kable(table_Pearson_SimDatasets_rounded,
+                   caption = "Table 4: Pearson correlaton values in similarity datasets",
+                   format = "html",
+                   align = c('c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_4_EAAI_paper.html")
+browseURL("Table_4_EAAI_paper.html")
+
+# We load and browse Table 5 in the EAAI paper
+
+kable_out <- kable(table_Spearman_SimDatasets_rounded,
+                   caption = "Table 5: Spearman correlaton values in similarity datasets",
+                   format = "html",
+                   align = c('c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_5_EAAI_paper.html")
+browseURL("Table_5_EAAI_paper.html")
+
+# We load and browse Table 6 in the EAAI paper
+
+kable_out <- kable(table_Pearson_RelDatasets_rounded,
+                   caption = "Table 6: Pearson correlaton values in relatedness datasets",
+                   format = "html",
+                   align = c('c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_6_EAAI_paper.html")
+browseURL("Table_6_EAAI_paper.html")
+
+# We load and browse Table 7 in the EAAI paper
+
+kable_out <- kable(table_Spearman_RelDatasets_rounded,
+                   caption = "Table 7: Spearman correlaton values in relatedness datasets",
+                   format = "html",
+                   align = c('c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_7_EAAI_paper.html")
+browseURL("Table_7_EAAI_paper.html")
+
+# We load and browse Table 8 in the EAAI paper
+
+kable_out <- kable(table_joined_allEmbeddings_similarity_rounded,
+                   caption = "Table 8: Pearson, Spearman and Harmonic score metrics ontained by WE models in all similarity datasets",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_8_EAAI_paper.html")
+browseURL("Table_8_EAAI_paper.html")
+
+# We load and browse Table 9 in the EAAI paper
+
+kable_out <- kable(table_joined_allEmbeddings_relatedness_rounded,
+                   caption = "Table 9: Pearson, Spearman and Harmonic score metrics ontained by WE models in all relatedness datasets",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_9_EAAI_paper.html")
+browseURL("Table_9_EAAI_paper.html")
+
+# We load and browse Table A.1 in the EAAI paper
+
+kable_out <- kable(table_pvalues_AttractReppel_allembeddings_similarity,
+                   caption = "Table A.1: P-values comparing the Attract-repel model with the rest of WE and OVM models in all similarity datasets",
+                   format = "html",
+                   align = c('l','l','l','l','l','l'))
+
+readr::write_file(kable_out, "Table_A1_EAAI_paper.html")
+browseURL("Table_A1_EAAI_paper.html")
+
+# We load and browse Table A.2 in the EAAI paper
+
+kable_out <- kable(table_pvalues_Paragramws_allembeddings_relatedness,
+                   caption = "Table A.2: P-values comparing the Paragram-ws model with the rest of WE and OVM models in all relatedness datasets",
+                   format = "html",
+                   align = c('l','l','l','l','l','l'))
+
+readr::write_file(kable_out, "Table_A2_EAAI_paper.html")
+browseURL("Table_A2_EAAI_paper.html")
+
+# We load and browse Table A.3 in the EAAI paper
+
+kable_out <- kable(table_AvgMeasures_Pearson_SimDatasets_rounded,
+                   caption = "Table A.3: Pearson correlation (r) values for the combined measures defined by the arithmetic mean of the similarity values returned by the Attract-repel model and each remaining base measure.",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_A3_EAAI_paper.html")
+browseURL("Table_A3_EAAI_paper.html")
+
+# We load and browse Table A.4 in the EAAI paper
+
+kable_out <- kable(table_AvgMeasures_Spearman_SimDatasets_rounded,
+                   caption = "Table A.4: Spearman rank correlation values for the combined measures defined by the arithmetic mean of the similarity values returned by the Attract-repel model and each remaining base measure.",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_A4_EAAI_paper.html")
+browseURL("Table_A4_EAAI_paper.html")
+
+# We load and browse Table A.5 in the EAAI paper
+
+kable_out <- kable(table_AvgMeasures_Pearson_RelDatasets_rounded,
+                   caption = "Table A.5: Pearson correlation values for the combined measures defined by the arithmetic mean of the similarity values returned by the Paragram-ws model and each remaining base measure.",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_A5_EAAI_paper.html")
+browseURL("Table_A5_EAAI_paper.html")
+
+# We load and browse Table A.6 in the EAAI paper
+
+kable_out <- kable(table_AvgMeasures_Spearman_RelDatasets_rounded,
+                   caption = "Table A.6: Spearman rank correlation values for the combined measures defined by the arithmetic mean of the similarity values returned by the Paragram-ws model and each remaining base measure.",
+                   format = "html",
+                   align = c('l','c','c','c','c','c','c'))
+
+readr::write_file(kable_out, "Table_A6_EAAI_paper.html")
+browseURL("Table_A6_EAAI_paper.html")
