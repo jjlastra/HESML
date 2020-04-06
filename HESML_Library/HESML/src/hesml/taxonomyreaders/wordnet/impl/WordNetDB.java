@@ -294,7 +294,7 @@ class WordNetDB implements IWordNetDB
     }
 
     /**
-     * 
+     * This function implements the Iterable interface.
      * @return Iterator
      */
     

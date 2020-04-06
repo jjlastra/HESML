@@ -89,11 +89,9 @@ public class WordNetFactory
     public static ITaxonomy buildTaxonomy(
             IWordNetDB  wordnet) throws InterruptedException, Exception
     {
-        ITaxonomy   taxonomy;   // Returned value
-       
         // We create the graph
         
-        taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
+        ITaxonomy taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
                     wordnet.getSynsetCount());
         
         // We create a vertex into the taxonomy for each synset.
