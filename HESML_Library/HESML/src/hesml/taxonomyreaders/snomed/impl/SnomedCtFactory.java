@@ -39,10 +39,13 @@ public class SnomedCtFactory
     public static ISnomedCtDatabase loadSnomedDatabase(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
-            String  strSnomedDBRelationshipsFileName) throws Exception
+            String  strSnomedDBRelationshipsFileName,
+            String  strSnomedDBdescriptionFileName) throws Exception
     {
         return (SnomedDbReader.loadDatabase(strSnomedDir,
-                strSnomedDBconceptFileName, strSnomedDBRelationshipsFileName));
+                strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName,
+                strSnomedDBdescriptionFileName));
     }
     
     /**

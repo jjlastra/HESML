@@ -43,6 +43,7 @@ class SnomedDbReader
     private static final int PARENT_ID = 5;
     private static final int ACTIVE_ID = 2;
     private static final int RELATIONSHIP_GROUP_ID = 6;
+    private static final int TERM_ID = 7;
     
     /**
      * This fucntion loads a SNOMED-CT taxonomy into memory.
@@ -55,12 +56,14 @@ class SnomedDbReader
     static ISnomedCtDatabase loadDatabase(
             String strSnomedDir,
             String strSnomedDBconceptFileName,
-            String strSnomedDBRelationshipsFileName) throws Exception
+            String strSnomedDBRelationshipsFileName,
+            String strSnomedDBdescriptionFileName) throws Exception
     {
         // We load the SNOMED RF2 file
         
         File snomedConceptFile = new File(strSnomedDir + "/" + strSnomedDBconceptFileName);
         File snomedRelationshipFile = new File(strSnomedDir + "/" + strSnomedDBRelationshipsFileName);
+        File snomedDescriptionFile = new File(strSnomedDir + "/" + strSnomedDBdescriptionFileName);
         
         // We chechk the existence of the path
         
@@ -76,6 +79,12 @@ class SnomedDbReader
             throw (new Exception(strError));
         }
 
+        if (!snomedDescriptionFile.exists())
+        {
+            String strError = "This file doesn´t exist -> " + snomedDescriptionFile.getPath();
+            throw (new Exception(strError));
+        }
+        
         // We read the SNOMED-CT concepts
         
         HashMap<Long, SnomedConcept> concepts = readConcepts(snomedConceptFile);
@@ -83,6 +92,10 @@ class SnomedDbReader
         // We read the child/parent relationships
         
         readParentConcepts(snomedRelationshipFile, concepts);
+        
+        // We read the terms associated to each SNOMED concept
+        
+        readTermsOfConcepts(snomedDescriptionFile, concepts);
         
         // We check the consistency of the data
         
@@ -250,6 +263,55 @@ class SnomedDbReader
     }
     
     /**
+     * This function read the terms associated to every SNOMED concept
+     * @param concepts 
+     */
+    
+    private static void readTermsOfConcepts(
+            File                            snomedDBdescriptionFileName,
+            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
+    {
+        // We open the file for reading
+        
+        Scanner reader = new Scanner(snomedDBdescriptionFileName);
+        System.out.println("Loading " + snomedDBdescriptionFileName);
+                
+        // We skip the header line
+        
+        String strHeaderLine = reader.nextLine();
+        
+        // We read the relationship lines
+        
+        do
+        {
+            // We read the next relationship entry
+            
+            String strLine = reader.nextLine();
+            
+            // We extract the attributes of the relationship
+            
+            String[] strAttributes = strLine.split("\t");
+            
+            boolean active = strAttributes[2].equals("1");
+            Long conceptId = Long.parseLong(strAttributes[CHILD_ID]);
+            String strTerm = strAttributes[TERM_ID];
+            
+            // We retrieve the child concept and link it with its parent.
+            // We check that the previous reading of the parent concept.
+            
+            if (active && concepts.containsKey(conceptId))
+            {
+                concepts.get(conceptId).addTerm(strTerm);
+            }
+            
+        } while (reader.hasNextLine());
+        
+        // We close the database
+        
+        reader.close();
+    }
+    
+    /**
      * This function parses the SNOMED-CT concept database
      * @param fileInfo
      * @return 
@@ -314,3 +376,4 @@ class SnomedDbReader
         return (concepts);
     }
 }
+

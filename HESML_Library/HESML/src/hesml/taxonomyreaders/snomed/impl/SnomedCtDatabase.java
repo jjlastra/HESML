@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package hesml.taxonomyreaders.snomed.impl;
 
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
@@ -39,14 +40,14 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      * SNOMED-CT concepts collection
      */
     
-    private ISnomedConcept[]    m_SnomedConcepts;
+    private SnomedConcept[]    m_SnomedConcepts;
     
     /**
      * SNOMED-CT concepts for each term. This is the inverted map from
      * term to SNOMED-CT concepts.
      */
     
-    private HashMap<String, ArrayList<ISnomedConcept>>  m_ConceptsIndexedByTerm;
+    private HashMap<String, ArrayList<Long>>  m_ConceptsIndexedByTerm;
 
     /**
      * Constructor. The concepts are sortted from the root with a total order
@@ -59,19 +60,36 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We initialize the collections
         
         m_ConceptsIndexedById = new HashMap<>(concepts.size());
-        m_SnomedConcepts = new ISnomedConcept[concepts.size()];
+        m_SnomedConcepts = new SnomedConcept[concepts.size()];
         m_ConceptsIndexedByTerm = new HashMap<>(concepts.size());
         
         // We copy the concepts
         
         concepts.toArray(m_SnomedConcepts);
         
-        // We coonect all the concepts to this instance
+        // We connect all the concepts to this instance
         
         for (SnomedConcept concept : concepts)
         {
             concept.setDatabase(this);
             m_ConceptsIndexedById.put(concept.getSnomedId(), concept);
+            
+            for (String strTerm: concept.getTerms())
+            {
+                // We get the list of concept IDs of the term
+                
+                ArrayList<Long> snomedIds = m_ConceptsIndexedByTerm.containsKey(strTerm) ?
+                                            m_ConceptsIndexedByTerm.get(strTerm) :
+                                            new ArrayList<>();
+                
+                // We insert the id array fir the first time
+                
+                if (snomedIds.size() == 0) m_ConceptsIndexedByTerm.put(strTerm, snomedIds);
+                
+                // We insert the conept ID into the indexd list of the term
+                
+                snomedIds.add(concept.getSnomedId());
+            }
         }
     }
     
@@ -130,7 +148,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         {
             // We get the synsets for the word
             
-            ArrayList<ISnomedConcept> termConcepts = m_ConceptsIndexedByTerm.get(strTerm);
+            ArrayList<Long> termConcepts = m_ConceptsIndexedByTerm.get(strTerm);
 
             // We create the array to copy the synsets
 
@@ -138,7 +156,10 @@ class SnomedCtDatabase implements ISnomedCtDatabase
 
             // We copy the synsets
 
-            termConcepts.toArray(concepts);
+            for (int i = 0; i < termConcepts.size(); i++)
+            {
+                concepts[i] = m_ConceptsIndexedById.get(termConcepts.get(i));
+            }
         }
         else
         {
@@ -163,7 +184,9 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     public Long[] getSnomedConceptIdsEvokedByTerm(
         String  strTerm) throws Exception
     {
-        Long[] cuids;    // Returned value
+        // We initialize the output
+        
+        Long[] snomedIds = new Long[0];
         
         // We check that the input word is contained in WordNet
         
@@ -171,41 +194,29 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         {
             // We get the synsets for the word
 
-            ArrayList<ISnomedConcept> termConcepts = m_ConceptsIndexedByTerm.get(strTerm);
+            ArrayList<Long> termConcepts = m_ConceptsIndexedByTerm.get(strTerm);
 
-            // We create the arrya to copy the synsets
+            // We create the arraya to copy the synsets
 
-            cuids = new Long[termConcepts.size()];
-
-            // We copy the synset ID values
-
-            int i = 0;
-
-            for (ISnomedConcept concept: termConcepts)
-            {
-                cuids[i++] = concept.getSnomedId();
-            }
-        }
-        else
-        {
-            cuids = new Long[0];
+            snomedIds = new Long[termConcepts.size()];
+            termConcepts.toArray(snomedIds);
         }
         
         // We return the result
         
-        return (cuids);
+        return (snomedIds);
     }
        
     /**
      * This function returns the concept associated to the input CUID
-     * @param cuid
+     * @param snomedId
      * @return The concept for this CUID
      */
     
     @Override
-    public ISnomedConcept getConcept(Long cuid)
+    public ISnomedConcept getConcept(Long snomedId)
     {
-        return (m_ConceptsIndexedById.get(cuid));
+        return (m_ConceptsIndexedById.get(snomedId));
     }
     
     /**
@@ -215,11 +226,18 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     @Override
     public void clear()
     {
-        // We clear the ampping of synsets per word
+        // We clear the mapping of synsets per word
         
-        for (ArrayList<ISnomedConcept> concepts: m_ConceptsIndexedByTerm.values())
+        for (ArrayList<Long> concepts: m_ConceptsIndexedByTerm.values())
         {
             concepts.clear();
+        }
+        
+        // We release the resources used by the concepts
+        
+        for (SnomedConcept concept: m_SnomedConcepts)
+        {
+            concept.clear();
         }
         
         // We clear the synset collections
