@@ -285,7 +285,6 @@ class SnomedDbReader
             // We get the needed attributes
 
             Long snomedId = Long.parseLong(strAttributes[CONCEPT_ID]);
-            //String strTerm = strAttributes[7];
             boolean active = strAttributes[ACTIVE_ID].equals("1");
 
             // We create a new concept if it is active
