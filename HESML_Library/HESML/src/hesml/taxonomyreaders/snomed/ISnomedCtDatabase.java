@@ -59,7 +59,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
      * @throws Exception Unexpected error
      */
     
-    Long[] getTermConceptsCUID(
+    Long[] getSnomedConceptIdsEvokedByTerm(
         String  strTerm) throws Exception;
        
     /**

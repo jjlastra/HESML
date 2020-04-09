@@ -33,7 +33,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      * Concepts indexed by their unique CUID
      */
     
-    private HashMap<Long, ISnomedConcept>    m_ConceptsIndexedByCuid;
+    private HashMap<Long, ISnomedConcept>    m_ConceptsIndexedById;
     
     /**
      * SNOMED-CT concepts collection
@@ -58,7 +58,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     {
         // We initialize the collections
         
-        m_ConceptsIndexedByCuid = new HashMap<>(concepts.size());
+        m_ConceptsIndexedById = new HashMap<>(concepts.size());
         m_SnomedConcepts = new ISnomedConcept[concepts.size()];
         m_ConceptsIndexedByTerm = new HashMap<>(concepts.size());
         
@@ -71,7 +71,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         for (SnomedConcept concept : concepts)
         {
             concept.setDatabase(this);
-            m_ConceptsIndexedByCuid.put(concept.getCUID(), concept);
+            m_ConceptsIndexedById.put(concept.getSnomedId(), concept);
         }
     }
     
@@ -105,7 +105,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     @Override
     public int getConceptCount()
     {
-        return (m_ConceptsIndexedByCuid.size());
+        return (m_ConceptsIndexedById.size());
     }
     
     /**
@@ -160,7 +160,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      */
     
     @Override
-    public Long[] getTermConceptsCUID(
+    public Long[] getSnomedConceptIdsEvokedByTerm(
         String  strTerm) throws Exception
     {
         Long[] cuids;    // Returned value
@@ -183,7 +183,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
 
             for (ISnomedConcept concept: termConcepts)
             {
-                cuids[i++] = concept.getCUID();
+                cuids[i++] = concept.getSnomedId();
             }
         }
         else
@@ -205,7 +205,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     @Override
     public ISnomedConcept getConcept(Long cuid)
     {
-        return (m_ConceptsIndexedByCuid.get(cuid));
+        return (m_ConceptsIndexedById.get(cuid));
     }
     
     /**
@@ -225,7 +225,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We clear the synset collections
         
         m_ConceptsIndexedByTerm.clear();
-        m_ConceptsIndexedByCuid.clear();
+        m_ConceptsIndexedById.clear();
     }
 }
 

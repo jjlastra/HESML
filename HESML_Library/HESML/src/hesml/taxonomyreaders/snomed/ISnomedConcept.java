@@ -63,7 +63,7 @@ public interface ISnomedConcept
      * @return Unique Identifier for the concept in SNOMED-CT.
      */
     
-    Long getCUID();
+    Long getSnomedId();
     
     /**
      * This function returns the value of the traversing
@@ -86,5 +86,5 @@ public interface ISnomedConcept
      * @return The parents of the synset.
      */
     
-    Long[] getParentsCuid();
+    Long[] getParentsSnomedId();
 }

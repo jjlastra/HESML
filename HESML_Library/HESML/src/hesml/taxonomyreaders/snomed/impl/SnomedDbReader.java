@@ -124,7 +124,7 @@ class SnomedDbReader
         
         for (SnomedConcept concept: indexedConcepts.values())
         {
-            if (concept.getParentsCuid().length == 0) rootConcepts++;
+            if (concept.getParentsSnomedId().length == 0) rootConcepts++;
         }
         
         // We check that there is only one root concept
@@ -171,7 +171,7 @@ class SnomedDbReader
             
             boolean allParentsVisited = true;
             
-            for (Long parentId: pendingConcept.getParentsCuid())
+            for (Long parentId: pendingConcept.getParentsSnomedId())
             {
                 if (!indexedConcepts.get(parentId).getVisited())
                 {
@@ -298,9 +298,9 @@ class SnomedDbReader
             
                 // We insert the novel entity in the database
             
-                if (!concepts.containsKey(concept.getCUID()))
+                if (!concepts.containsKey(concept.getSnomedId()))
                 {
-                    concepts.put(concept.getCUID(), concept);
+                    concepts.put(concept.getSnomedId(), concept);
                 }
             }
             

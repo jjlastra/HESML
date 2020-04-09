@@ -68,7 +68,7 @@ public class SnomedCtFactory
         
         for (ISnomedConcept concept: snomedDatabase)
         {
-            taxonomy.addVertex(concept.getCUID(), concept.getParentsCuid());
+            taxonomy.addVertex(concept.getSnomedId(), concept.getParentsSnomedId());
         }
         
         // We return the result

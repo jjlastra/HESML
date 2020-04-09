@@ -226,7 +226,7 @@ class SnomedConcept implements ISnomedConcept
      */
     
     @Override
-    public Long getCUID()
+    public Long getSnomedId()
     {
         return (m_ConceptCuid);
     }
@@ -282,7 +282,7 @@ class SnomedConcept implements ISnomedConcept
      */
     
     @Override
-    public Long[] getParentsCuid()
+    public Long[] getParentsSnomedId()
     {
         // We create the cuid array
         
