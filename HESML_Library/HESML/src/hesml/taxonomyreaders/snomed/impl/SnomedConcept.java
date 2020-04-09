@@ -28,7 +28,7 @@ import java.util.Set;
  * @author j.lastra
  */
 
-public class SnomedConcept implements ISnomedConcept
+class SnomedConcept implements ISnomedConcept
 {
     /**
      * Terms associated to this concept
@@ -58,25 +58,43 @@ public class SnomedConcept implements ISnomedConcept
      * Owner SNOMED-CT DB
      */
     
-    private final SnomedCtDB   m_OwnerDB;
+    private SnomedCtDatabase   m_OwnerDB;
     
     /**
      * Constructor
      * @param ownerDB
-     * @param conceptCuid
-     * @param strTerm 
+     * @param snomedId
      */
     
     SnomedConcept(
-            SnomedCtDB  ownerDB,
-            Long        conceptCuid,
-            String      strTerm)
+            SnomedCtDatabase    ownerDB,
+            Long                snomedId)
     {
         m_OwnerDB = ownerDB;
-        m_ConceptCuid = conceptCuid;
+        m_ConceptCuid = snomedId;
         m_TermsOfConcept = new ArrayList<>();
         m_ParentsCuid = new ArrayList<>();
         m_Visited = false;
+    }
+
+    /**
+     * This function sets the owner database.
+     * @param database 
+     */
+    
+    void setDatabase(
+            SnomedCtDatabase database)
+    {
+        m_OwnerDB = database;
+    }
+    
+    /**
+     * This function releases the object
+     */
+    
+    void clear()
+    {
+        m_TermsOfConcept.clear();
     }
     
     /**
@@ -103,6 +121,27 @@ public class SnomedConcept implements ISnomedConcept
         return (parents);
     }
 
+    /**
+     * This function states the equality only based on the vertex ID,
+     * not the attributes.
+     * @param obj
+     * @return 
+     */
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        // We initialize the output
+        
+        boolean result = (obj != null)
+                && (getClass() == obj.getClass())
+                && (this.m_ConceptCuid == ((SnomedConcept)obj).m_ConceptCuid);
+        
+        // We return the result
+        
+        return (result);
+    }
+    
     /**
      * This function checks if the input concept is a parent concept
      * for the current Synset
@@ -205,6 +244,27 @@ public class SnomedConcept implements ISnomedConcept
     }
 
     /**
+     * This function registers a new parent for the current concept
+     * @param parentCuid 
+     */
+    
+    void AddParent(
+           Long    parentCuid)
+    {
+        m_ParentsCuid.add(parentCuid);
+    }
+    
+    /**
+     * This function adds one term to the concept.
+     * @param strTerm 
+     */
+    
+    void addTerm(
+            String  strTerm)
+    {
+        m_TermsOfConcept.add(strTerm);
+    }
+    /**
      * This function sets the values of the traversing flag.
      * @param visited 
      */
@@ -224,6 +284,12 @@ public class SnomedConcept implements ISnomedConcept
     @Override
     public Long[] getParentsCuid()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // We create the cuid array
+        
+        Long[] parentCuids = new Long[m_ParentsCuid.size()];
+        
+        // We return the result
+        
+        return (m_ParentsCuid.toArray(parentCuids));
     }
 }

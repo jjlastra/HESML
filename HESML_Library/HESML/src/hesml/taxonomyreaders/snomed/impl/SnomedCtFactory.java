@@ -16,10 +16,63 @@
  */
 package hesml.taxonomyreaders.snomed.impl;
 
+import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomyreaders.snomed.ISnomedConcept;
+import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+
 /**
- *
+ * This class implements the fucntions to load a SNOMED-CT database
+ * and building its taxonomy.
  * @author j.lastra
  */
-public class SnomedCtFactory {
+public class SnomedCtFactory
+{
+    /**
+     * This function loads a SNOMED-CT database
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBconceptFileName RF2 file containing the SNOMED concepts
+     * @param strSnomedDBRelationshipsFileName Relationships between concepts
+     * @return The loaded WordnNetDB
+     * @throws java.lang.Exception Unexpected error
+     */
     
+    public static ISnomedCtDatabase loadSnomedDatabase(
+            String  strSnomedDir,
+            String  strSnomedDBconceptFileName,
+            String  strSnomedDBRelationshipsFileName) throws Exception
+    {
+        return (SnomedDbReader.loadDatabase(strSnomedDir,
+                strSnomedDBconceptFileName, strSnomedDBRelationshipsFileName));
+    }
+    
+    /**
+     * This function buils the SNOMED-CT taxonomy
+     * @return 
+     */
+    
+    public static ITaxonomy buildTaxonomy(
+            ISnomedCtDatabase snomedDatabase) throws Exception
+    {
+        // Debugging message
+        
+        System.out.println("Building the SNOMED-CT taxonomy ("
+                + snomedDatabase.getConceptCount() + ") nodes");
+        
+        // We create the graph
+        
+        ITaxonomy taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
+                            snomedDatabase.getConceptCount());
+        
+        // We create a vertex into the taxonomy for each comcept.
+        // Each vertex shares the same CUID that its associated concept
+        
+        for (ISnomedConcept concept: snomedDatabase)
+        {
+            taxonomy.addVertex(concept.getCUID(), concept.getParentsCuid());
+        }
+        
+        // We return the result
+        
+        return (taxonomy);
+    }
 }

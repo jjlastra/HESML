@@ -95,7 +95,7 @@ public class WordNetFactory
                     wordnet.getSynsetCount());
         
         // We create a vertex into the taxonomy for each synset.
-        // Each vertex shares the same ID that its synset parent.
+        // Each vertex shares the same ID that its parent synset.
         
         for (IWordNetSynset synset: wordnet)
         {

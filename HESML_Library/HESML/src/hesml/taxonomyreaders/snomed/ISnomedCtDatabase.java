@@ -22,7 +22,7 @@ package hesml.taxonomyreaders.snomed;
  * @author j.lastra
  */
 
-public interface ISnomedCtDb extends Iterable<ISnomedConcept>
+public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
 {
     /**
      * This functions determines if the input term is present in the DB.

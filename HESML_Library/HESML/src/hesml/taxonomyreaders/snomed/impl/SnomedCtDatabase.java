@@ -17,17 +17,17 @@
 package hesml.taxonomyreaders.snomed.impl;
 
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
-import hesml.taxonomyreaders.snomed.ISnomedCtDb;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 
 /**
  * This class implements the SNOMED-CT database.
  * @author j.lastra
  */
 
-public class SnomedCtDB implements ISnomedCtDb
+class SnomedCtDatabase implements ISnomedCtDatabase
 {
     /**
      * Concepts indexed by their unique CUID
@@ -39,7 +39,7 @@ public class SnomedCtDB implements ISnomedCtDb
      * SNOMED-CT concepts collection
      */
     
-    private ArrayList<ISnomedConcept>    m_SnomedConcepts;
+    private ISnomedConcept[]    m_SnomedConcepts;
     
     /**
      * SNOMED-CT concepts for each term. This is the inverted map from
@@ -49,14 +49,30 @@ public class SnomedCtDB implements ISnomedCtDb
     private HashMap<String, ArrayList<ISnomedConcept>>  m_ConceptsIndexedByTerm;
 
     /**
-     * Constructor
+     * Constructor. The concepts are sortted from the root with a total order
+     * relation.
+     * @param concepts Sorted list of concepts
      */
     
-    SnomedCtDB()
+    SnomedCtDatabase(ArrayList<SnomedConcept> concepts)
     {
-        m_ConceptsIndexedByCuid = new HashMap<>(120000);
-        m_SnomedConcepts = new ArrayList<>(120000);
-        m_ConceptsIndexedByTerm = new HashMap<>(120000);
+        // We initialize the collections
+        
+        m_ConceptsIndexedByCuid = new HashMap<>(concepts.size());
+        m_SnomedConcepts = new ISnomedConcept[concepts.size()];
+        m_ConceptsIndexedByTerm = new HashMap<>(concepts.size());
+        
+        // We copy the concepts
+        
+        concepts.toArray(m_SnomedConcepts);
+        
+        // We coonect all the concepts to this instance
+        
+        for (SnomedConcept concept : concepts)
+        {
+            concept.setDatabase(this);
+            m_ConceptsIndexedByCuid.put(concept.getCUID(), concept);
+        }
     }
     
     /**
@@ -66,7 +82,7 @@ public class SnomedCtDB implements ISnomedCtDb
     
     public Iterator<ISnomedConcept> iterator()
     {
-        return (m_SnomedConcepts.iterator());
+        return (new ConceptArrayIterator(m_SnomedConcepts));
     }
     
     /**
@@ -201,15 +217,67 @@ public class SnomedCtDB implements ISnomedCtDb
     {
         // We clear the ampping of synsets per word
         
-        for (ArrayList<ISnomedConcept> synsets: m_ConceptsIndexedByTerm.values())
+        for (ArrayList<ISnomedConcept> concepts: m_ConceptsIndexedByTerm.values())
         {
-            synsets.clear();
+            concepts.clear();
         }
         
         // We clear the synset collections
         
-        m_SnomedConcepts.clear();
         m_ConceptsIndexedByTerm.clear();
         m_ConceptsIndexedByCuid.clear();
+    }
+}
+
+/**
+ * This class implements an iterator on an aeeay of concepts
+ * @author j.lastra
+ */
+
+class ConceptArrayIterator implements Iterator<ISnomedConcept>
+{
+    /**
+     * SNOMED concept array
+     */
+    
+    private final ISnomedConcept[] m_Concepts;
+    
+    /**
+     * Reading cursor
+     */
+    
+    private int m_ReadingPosition;
+    
+    /**
+     * Constructor
+     * @param concepts 
+     */
+    
+    ConceptArrayIterator(ISnomedConcept[] concepts)
+    {
+        m_Concepts = concepts;
+        m_ReadingPosition = 0;
+    }
+    
+    /**
+     * This function checks wheter there is pending concepts for reading.
+     * @return 
+     */
+    
+    @Override
+    public boolean hasNext()
+    {
+        return (m_ReadingPosition < m_Concepts.length);
+    }
+
+    /**
+     * This function returns the next concept in tue collection
+     * @return 
+     */
+    
+    @Override
+    public ISnomedConcept next()
+    {
+        return (m_Concepts[m_ReadingPosition++]);
     }
 }
