@@ -156,7 +156,7 @@ class SnomedDbReader
      */
     
     private static ArrayList<SnomedConcept> sortOntologyConcepts(
-            HashMap<Long, SnomedConcept>    indexedConcepts)
+            HashMap<Long, SnomedConcept>    indexedConcepts) throws Exception
     {
         // We create the sorted list of concepts
         

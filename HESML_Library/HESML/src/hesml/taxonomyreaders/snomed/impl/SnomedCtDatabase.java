@@ -17,6 +17,7 @@
 
 package hesml.taxonomyreaders.snomed.impl;
 
+import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,23 +32,29 @@ import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 class SnomedCtDatabase implements ISnomedCtDatabase
 {
     /**
+     * Taxonomy enconding the SNOMED-CT 'is-a' graph.
+     */
+    
+    private ITaxonomy   m_Taxonomy;
+    
+    /**
      * Concepts indexed by their unique CUID
      */
     
-    private HashMap<Long, ISnomedConcept>    m_ConceptsIndexedById;
+    private final HashMap<Long, ISnomedConcept>    m_ConceptsIndexedById;
     
     /**
      * SNOMED-CT concepts collection
      */
     
-    private SnomedConcept[]    m_SnomedConcepts;
+    private final SnomedConcept[]    m_SnomedConcepts;
     
     /**
      * SNOMED-CT concepts for each term. This is the inverted map from
      * term to SNOMED-CT concepts.
      */
     
-    private HashMap<String, ArrayList<Long>>  m_ConceptsIndexedByTerm;
+    private final HashMap<String, ArrayList<Long>>  m_ConceptsIndexedByTerm;
 
     /**
      * Constructor. The concepts are sortted from the root with a total order
@@ -55,7 +62,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      * @param concepts Sorted list of concepts
      */
     
-    SnomedCtDatabase(ArrayList<SnomedConcept> concepts)
+    SnomedCtDatabase(ArrayList<SnomedConcept> concepts) throws Exception
     {
         // We initialize the collections
         
@@ -68,11 +75,29 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         concepts.toArray(m_SnomedConcepts);
         
         // We connect all the concepts to this instance
+
+        indexingConcepts();
         
-        for (SnomedConcept concept : concepts)
+        // We cretae the taxonomy
+        
+        buildTaxonomy();
+    }
+    
+    /**
+     * This function builds all the indexing maps.
+     */
+    
+    private void indexingConcepts()
+    {
+        // We connect all the concepts to this instance
+        
+        for (SnomedConcept concept : m_SnomedConcepts)
         {
-            concept.setDatabase(this);
+            // Index the concepts by its ID
+            
             m_ConceptsIndexedById.put(concept.getSnomedId(), concept);
+            
+            // We buld the indexed collection of concepts by terms.
             
             for (String strTerm: concept.getTerms())
             {
@@ -91,6 +116,50 @@ class SnomedCtDatabase implements ISnomedCtDatabase
                 snomedIds.add(concept.getSnomedId());
             }
         }
+    }
+    
+    /**
+     * This function buils the SNOMED-CT taxonomy
+     * @return 
+     */
+    
+    private void buildTaxonomy() throws Exception
+    {
+        // Debugging message
+        
+        System.out.println("Building the SNOMED-CT taxonomy ("
+                + getConceptCount() + ") nodes");
+        
+        // We create the graph
+        
+        m_Taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
+                        getConceptCount());
+        
+        // We create a vertex into the taxonomy for each comcept.
+        // Each vertex shares the same CUID that its associated concept
+        
+        for (SnomedConcept concept: m_SnomedConcepts)
+        {
+            m_Taxonomy.addVertex(concept.getSnomedId(), concept.getParentsSnomedId());
+            
+            // We connect the concept to this database. Omce it is done, the
+            // concept clears its collection of parent IDs because this information
+            // can be retrieved from the taxonomy.
+            
+            concept.setDatabase(this);
+        }
+    }
+    
+    /**
+     * This fucntion returns the HESML taxonomy encoding the SNOMED-CT 'is-a'
+     * ontology.
+     * @return In-memory HESML taxonomy encoding the 'is-a' SNOMED-CT graph
+     */
+    
+    @Override
+    public ITaxonomy getTaxonomy()
+    {
+        return (m_Taxonomy);
     }
     
     /**

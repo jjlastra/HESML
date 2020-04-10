@@ -17,6 +17,8 @@
 
 package hesml.taxonomyreaders.snomed;
 
+import hesml.taxonomy.ITaxonomy;
+
 /**
  * This interface encapsulates a SNOMED-CT terminology database.
  * @author j.lastra
@@ -69,6 +71,14 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
      */
     
     ISnomedConcept getConcept(Long cuid);
+    
+    /**
+     * This fucntion returns the HESML taxonomy encoding the SNOMED-CT 'is-a'
+     * ontology.
+     * @return In-memory HESML taxonomy encoding the 'is-a' SNOMED-CT graph
+     */
+    
+    ITaxonomy getTaxonomy();
     
     /**
      * Clear the database

@@ -17,6 +17,8 @@
 
 package hesml.taxonomyreaders.snomed.impl;
 
+import hesml.taxonomy.IVertex;
+import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,7 +42,7 @@ class SnomedConcept implements ISnomedConcept
      * Parents of the current concept
      */
     
-    private final ArrayList<Long>  m_ParentsCuid;
+    private final ArrayList<Long>  m_ParentSnomedIds;
     
     /**
      * Concept unique CUID
@@ -73,7 +75,7 @@ class SnomedConcept implements ISnomedConcept
         m_OwnerDB = ownerDB;
         m_ConceptCuid = snomedId;
         m_TermsOfConcept = new ArrayList<>();
-        m_ParentsCuid = new ArrayList<>();
+        m_ParentSnomedIds = new ArrayList<>();
         m_Visited = false;
     }
 
@@ -85,7 +87,15 @@ class SnomedConcept implements ISnomedConcept
     void setDatabase(
             SnomedCtDatabase database)
     {
+        // We link the object to its owner database
+        
         m_OwnerDB = database;
+        
+        // Omce it is done, the concept clears its collection of parent IDs
+        // because this information can be directly retrieved from the taxonomy.
+        // Thus, we can save a lot of memory in runtime.
+           
+        m_ParentSnomedIds.clear();
     }
     
     /**
@@ -103,7 +113,7 @@ class SnomedConcept implements ISnomedConcept
      */
 
     @Override
-    public Set<ISnomedConcept> getParents()
+    public Set<ISnomedConcept> getParents() throws Exception
     {
         // We create the set of parents
         
@@ -111,9 +121,20 @@ class SnomedConcept implements ISnomedConcept
         
         // We get the parents from the owner DB
         
-        for (Long parentId: m_ParentsCuid)
+        if (m_OwnerDB == null)
         {
-            parents.add(m_OwnerDB.getConcept(parentId));
+            for (Long parentId: m_ParentSnomedIds)
+            {
+                parents.add(m_OwnerDB.getConcept(parentId));
+            }
+        }
+        else
+        {
+            for (IVertex parentNode:
+                    m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptCuid).getParents())
+            {
+                parents.add(m_OwnerDB.getConcept(parentNode.getID()));
+            }
         }
         
         // We return the results
@@ -158,7 +179,7 @@ class SnomedConcept implements ISnomedConcept
         
         // We check if the synset is a prent of the current synset
         
-        for (Long parentCuid: m_ParentsCuid)
+        for (Long parentCuid: m_ParentSnomedIds)
         {
             if (Objects.equals(parentCuid, cuid))
             {
@@ -251,7 +272,7 @@ class SnomedConcept implements ISnomedConcept
     void AddParent(
            Long    parentCuid)
     {
-        m_ParentsCuid.add(parentCuid);
+        m_ParentSnomedIds.add(parentCuid);
     }
     
     /**
@@ -282,14 +303,40 @@ class SnomedConcept implements ISnomedConcept
      */
     
     @Override
-    public Long[] getParentsSnomedId()
+    public Long[] getParentsSnomedId() throws Exception
     {
-        // We create the cuid array
+        // We define the output variable
         
-        Long[] parentCuids = new Long[m_ParentsCuid.size()];
+        Long[] parentSnomedIds;
+                
+        // We chekc whether the concept is already linked to the owner DB
+        
+        if (m_OwnerDB == null)
+        {
+            parentSnomedIds = new Long[m_ParentSnomedIds.size()];
+            m_ParentSnomedIds.toArray(parentSnomedIds);
+        }
+        else
+        {
+            // In this case, we rerieve the parent nodes from the taxonomy
+            
+            IVertex conceptNode = m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptCuid);
+            IVertexList parentNodes = conceptNode.getParents();
+
+            // We copy the parent IDs
+            
+            parentSnomedIds = new Long[parentNodes.getCount()];
+            
+            int i = 0;
+            
+            for (IVertex parent: parentNodes)
+            {
+                parentSnomedIds[i++] = parent.getID();
+            }
+        }
         
         // We return the result
         
-        return (m_ParentsCuid.toArray(parentCuids));
+        return (parentSnomedIds);
     }
 }

@@ -31,7 +31,7 @@ public interface ISnomedConcept
      * @return The set of parent concepts.
      */
     
-    Set<ISnomedConcept> getParents();
+    Set<ISnomedConcept> getParents() throws Exception;
     
     /**
      * This function checks if the input concept is a parent concept
@@ -86,5 +86,5 @@ public interface ISnomedConcept
      * @return The parents of the synset.
      */
     
-    Long[] getParentsSnomedId();
+    Long[] getParentsSnomedId() throws Exception;
 }

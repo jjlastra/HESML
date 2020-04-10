@@ -46,36 +46,5 @@ public class SnomedCtFactory
                 strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName));
-    }
-    
-    /**
-     * This function buils the SNOMED-CT taxonomy
-     * @return 
-     */
-    
-    public static ITaxonomy buildTaxonomy(
-            ISnomedCtDatabase snomedDatabase) throws Exception
-    {
-        // Debugging message
-        
-        System.out.println("Building the SNOMED-CT taxonomy ("
-                + snomedDatabase.getConceptCount() + ") nodes");
-        
-        // We create the graph
-        
-        ITaxonomy taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
-                            snomedDatabase.getConceptCount());
-        
-        // We create a vertex into the taxonomy for each comcept.
-        // Each vertex shares the same CUID that its associated concept
-        
-        for (ISnomedConcept concept: snomedDatabase)
-        {
-            taxonomy.addVertex(concept.getSnomedId(), concept.getParentsSnomedId());
-        }
-        
-        // We return the result
-        
-        return (taxonomy);
-    }
+    }   
 }
