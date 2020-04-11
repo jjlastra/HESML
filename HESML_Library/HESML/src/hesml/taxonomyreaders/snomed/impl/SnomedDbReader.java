@@ -242,7 +242,7 @@ class SnomedDbReader
             
             String[] strAttributes = strLine.split("\t");
             
-            boolean active = strAttributes[2].equals("1");
+            boolean active = strAttributes[ACTIVE_ID].equals("1");
             Long childSnomedId = Long.parseLong(strAttributes[CHILD_ID]);
             Long parentSnomedId = Long.parseLong(strAttributes[PARENT_ID]);
             int relationshipGroup = Integer.parseInt(strAttributes[RELATIONSHIP_GROUP_ID]);
@@ -292,7 +292,7 @@ class SnomedDbReader
             
             String[] strAttributes = strLine.split("\t");
             
-            boolean active = strAttributes[2].equals("1");
+            boolean active = strAttributes[ACTIVE_ID].equals("1");
             Long conceptId = Long.parseLong(strAttributes[CHILD_ID]);
             String strTerm = strAttributes[TERM_ID];
             
