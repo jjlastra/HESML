@@ -112,6 +112,12 @@ class Vertex implements IVertex
     private int m_CachedAncestorsCount;
     
     /**
+     * Cached ancesot set used for the fast computation od MICA vertex
+     */
+    
+    private HashSet<IVertex>    m_CachedAncestorSet;
+    
+    /**
      * Minimal depth of the vertex defined as the length of
      * the shortest path from the vertex to the root.
      */
@@ -157,6 +163,28 @@ class Vertex implements IVertex
         m_minDistance = 0.0;
         m_ICvalue = 0.0;
         m_Probability = 0.0;
+        m_CachedAncestorSet = null;
+    }
+    
+    /**
+     * This function returns the cached ancestor set.
+     * @return 
+     */
+    
+    HashSet<IVertex> getCachedAncestorSet()
+    {
+        return (m_CachedAncestorSet);
+    }
+    
+    /**
+     * This function sets the cached ancestor set.
+     * @param ancestorSet 
+     */
+    
+    void setCachedAncestorSet(
+        HashSet<IVertex>    ancestorSet)
+    {
+        m_CachedAncestorSet = ancestorSet;
     }
     
     /**
@@ -204,6 +232,10 @@ class Vertex implements IVertex
         m_FirstOutArc = null;
         m_Tag = null;
         m_strTag = null;
+        
+        // We relrease the cached ancestor set
+        
+        if (m_CachedAncestorSet != null) m_CachedAncestorSet.clear();
     }
     
     /**

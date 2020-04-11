@@ -70,6 +70,16 @@ public interface ITaxonomy
     void computesCachedAttributes() throws Exception;
     
     /**
+     * This function computes the ancestor set of each vertex. This function
+     * has been included in V1R5 version to speed up the computation of MICA
+     * vertex on the SNOMED-CT taxonomy which contains many nodes with
+     * multiple parents. It is optinal and uneeded on less complex ontologies
+     * as WordNet
+     */
+    
+    void computeAncestorSet() throws InterruptedException;
+    
+    /**
      * This functions returns the collection of ordered vertexes in the
      * taxonomy. The list is totally ordered from the root, what means
      * that each vertex is subsequent to all its parents.

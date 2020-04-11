@@ -243,8 +243,30 @@ class Taxonomy implements ITaxonomy
         
         // We retrieves the inclusive ancestor sets of the input vertexes
         
-        HashSet<IVertex> beginAncestors = getUnorderedAncestorSet(begin);
-        HashSet<IVertex> endAncestors = getUnorderedAncestorSet(end);
+        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
+        
+        HashSet<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
+        
+        if (beginAncestors == null) beginAncestors = getUnorderedAncestorSet(begin);
+        
+        HashSet<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
+        if (endAncestors == null) endAncestors = getUnorderedAncestorSet(end);
+
+        // We search on the smallest set
+        
+        HashSet<IVertex> smallSet;
+        HashSet<IVertex> largeSet;
+        
+        if (beginAncestors.size() < endAncestors.size())
+        {
+            smallSet = beginAncestors;
+            largeSet = endAncestors;
+        }
+        else
+        {
+            smallSet= endAncestors;
+            largeSet = beginAncestors;
+        }
         
         // We traverse all the vertexes looking for the common ancestor
         // which satisfies the MICA criterium.
@@ -252,10 +274,9 @@ class Taxonomy implements ITaxonomy
         // we check first the condition to select the vertex than
         // its membership to the opposite ancestor set.
         
-        for (IVertex vertex: beginAncestors)
+        for (IVertex vertex: smallSet)
         {
-            if ((vertex.getICvalue() > maxIC)
-                    && endAncestors.contains(vertex))
+            if ((vertex.getICvalue() > maxIC) && largeSet.contains(vertex))
             {
                 maxIC = vertex.getICvalue();
                 micaVertex = vertex;
@@ -264,8 +285,11 @@ class Taxonomy implements ITaxonomy
         
         // We release the visiting sets
         
-        beginAncestors.clear();
-        endAncestors.clear();
+        if (!cachedAncestors)
+        {
+            beginAncestors.clear();
+            endAncestors.clear();
+        }
         
         // We check the mica
         
@@ -381,7 +405,26 @@ class Taxonomy implements ITaxonomy
         
         this.computeHyponymCount();
         this.computeAllDepths();
-        this.computeLeavesCount();        
+        this.computeLeavesCount();     
+    }
+    
+    /**
+     * This function computes the ancestor set of each vertex. This function
+     * has been included in V1R5 version to speed up the computation of MICA
+     * vertex on the SNOMED-CT taxonomy which contains many nodes with
+     * multiple parents. It is optinal and uneeded on less complex ontologies
+     * as WordNet
+     */
+
+    @Override
+    public void computeAncestorSet() throws InterruptedException
+    {
+        // We compute and save the ancestor set in the vertexes
+        
+        for (IVertex vertex: m_Vertexes)
+        {
+            ((Vertex)vertex).setCachedAncestorSet(getUnorderedAncestorSet(vertex));
+        }
     }
     
     /**

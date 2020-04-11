@@ -148,6 +148,11 @@ class SnomedCtDatabase implements ISnomedCtDatabase
             
             concept.setDatabase(this);
         }
+        
+        // We compute all cached information
+        
+        m_Taxonomy.computesCachedAttributes();
+        m_Taxonomy.computeAncestorSet();
     }
     
     /**
@@ -313,6 +318,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         
         m_ConceptsIndexedByTerm.clear();
         m_ConceptsIndexedById.clear();
+        m_Taxonomy.clear();
     }
 }
 
