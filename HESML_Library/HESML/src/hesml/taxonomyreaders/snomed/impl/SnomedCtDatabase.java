@@ -152,7 +152,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We compute all cached information
         
         m_Taxonomy.computesCachedAttributes();
-        m_Taxonomy.computeAncestorSet();
+        m_Taxonomy.computeCachedAncestorSet();
     }
     
     /**

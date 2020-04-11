@@ -237,20 +237,107 @@ class Taxonomy implements ITaxonomy
             IVertex begin,
             IVertex end) throws InterruptedException, Exception
     {
+        // We check whether the taxonomy holds the cached ancestor set
+        
+        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
+
+        // We compute the MICA vertex using the cached or direct traversing methods
+        
+        IVertex micaVertex = cachedAncestors ? getCachedMICA(begin, end) : getUncachedMICA(begin, end);
+        
+        // We check the existence of the MICA vertex
+        
+        if (micaVertex == null)
+        {
+            throw (new Exception("A MICA vertex was not found"));
+        }
+        
+        // We return the result
+        
+        return (micaVertex);
+    }
+    
+    /**
+     * This function returns the most informative common ancestor (MICA) vertex.
+     * The method marks all the ancestor vertexes from both input vertexes,
+     * then it looks for the intersection set which is defined as the
+     * marked vertexes in both ancestor sets.
+     * @param begin First input vertex
+     * @param end Second input vertex
+     * @return The most informative common ancestor (MICA) vertex.
+     */
+    
+    private IVertex getCachedMICA(
+            IVertex begin,
+            IVertex end) throws InterruptedException, Exception
+    {
+        IVertex micaVertex = null;    // Returned value
+
+        double  maxIC = Double.NEGATIVE_INFINITY;    // Maximum
+
+        // We retrieves the inclusive ancestor sets of the input vertexes       
+       
+        HashSet<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
+        HashSet<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
+
+        // We search on the smallest set
+        
+        HashSet<IVertex> smallSet;
+        HashSet<IVertex> largeSet;
+        
+        if (beginAncestors.size() < endAncestors.size())
+        {
+            smallSet = beginAncestors;
+            largeSet = endAncestors;
+        }
+        else
+        {
+            smallSet= endAncestors;
+            largeSet = beginAncestors;
+        }
+        
+        // We traverse all the vertexes looking for the common ancestor
+        // which satisfies the MICA criterium.
+        // In order to speed up the intersection of both sets,
+        // we check first the condition to select the vertex than
+        // its membership to the opposite ancestor set.
+        
+        for (IVertex vertex: smallSet)
+        {
+            if ((vertex.getICvalue() > maxIC) && largeSet.contains(vertex))
+            {
+                maxIC = vertex.getICvalue();
+                micaVertex = vertex;
+            }
+        }
+        
+        // We return the result
+        
+        return (micaVertex);
+    }
+    
+    /**
+     * This function returns the most informative common ancestor (MICA) vertex.
+     * The method marks all the ancestor vertexes from both input vertexes,
+     * then it looks for the intersection set which is defined as the
+     * marked vertexes in both ancestor sets.
+     * @param begin First input vertex
+     * @param end Second input vertex
+     * @return The most informative common ancestor (MICA) vertex.
+     */
+
+    private IVertex getUncachedMICA(
+            IVertex begin,
+            IVertex end) throws InterruptedException, Exception
+    {
         IVertex micaVertex = null;    // Returned value
 
         double  maxIC = Double.NEGATIVE_INFINITY;    // Maximum
         
-        // We retrieves the inclusive ancestor sets of the input vertexes
-        
-        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
-        
-        HashSet<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
-        
-        if (beginAncestors == null) beginAncestors = getUnorderedAncestorSet(begin);
-        
-        HashSet<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
-        if (endAncestors == null) endAncestors = getUnorderedAncestorSet(end);
+        // We retrieves the inclusive ancestor sets of the input vertexes       
+       
+        HashSet<IVertex> beginAncestors = getUnorderedAncestorSet(begin);
+        HashSet<IVertex> endAncestors = getUnorderedAncestorSet(end);
 
         // We search on the smallest set
         
@@ -285,18 +372,8 @@ class Taxonomy implements ITaxonomy
         
         // We release the visiting sets
         
-        if (!cachedAncestors)
-        {
-            beginAncestors.clear();
-            endAncestors.clear();
-        }
-        
-        // We check the mica
-        
-        if (micaVertex == null)
-        {
-            throw (new Exception("A MICA vertex was not found"));
-        }
+        beginAncestors.clear();
+        endAncestors.clear();      
                
         // We return the result
         
@@ -417,7 +494,7 @@ class Taxonomy implements ITaxonomy
      */
 
     @Override
-    public void computeAncestorSet() throws InterruptedException
+    public void computeCachedAncestorSet() throws InterruptedException
     {
         // We compute and save the ancestor set in the vertexes
         

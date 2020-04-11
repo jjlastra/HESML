@@ -77,7 +77,7 @@ public interface ITaxonomy
      * as WordNet
      */
     
-    void computeAncestorSet() throws InterruptedException;
+    void computeCachedAncestorSet() throws InterruptedException;
     
     /**
      * This functions returns the collection of ordered vertexes in the
