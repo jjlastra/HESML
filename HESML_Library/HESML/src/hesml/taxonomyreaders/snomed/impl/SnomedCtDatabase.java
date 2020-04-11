@@ -282,6 +282,18 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     }
        
     /**
+     * This function returns an ordered array with all concepts in the
+     * database. Concepts are totally ordered from the root in a BFS mode.
+     * @return 
+     */
+    
+    @Override
+    public ISnomedConcept[] getAllConcepts()
+    {        
+        return (m_SnomedConcepts);
+    }
+    
+    /**
      * This function returns the concept associated to the input CUID
      * @param snomedId
      * @return The concept for this CUID

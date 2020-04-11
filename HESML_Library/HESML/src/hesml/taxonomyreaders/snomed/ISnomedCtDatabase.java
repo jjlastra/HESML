@@ -42,6 +42,14 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
     int getConceptCount();
     
     /**
+     * This function returns an ordered array with all concepts in the
+     * database. Concepts are totally ordered from the root in a BFS mode.
+     * @return 
+     */
+    
+    ISnomedConcept[] getAllConcepts();
+    
+    /**
      * This function returns the unique CUID for all the concepts
      * associated to the input term.
      * @param strTerm The term whose concepts will be retrieved
