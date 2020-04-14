@@ -62,7 +62,9 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      * @param concepts Sorted list of concepts
      */
     
-    SnomedCtDatabase(ArrayList<SnomedConcept> concepts) throws Exception
+    SnomedCtDatabase(
+            ArrayList<SnomedConcept>    concepts,
+            boolean                     useAncestorsCaching) throws Exception
     {
         // We initialize the collections
         
@@ -80,7 +82,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         
         // We cretae the taxonomy
         
-        buildTaxonomy();
+        buildTaxonomy(useAncestorsCaching);
     }
     
     /**
@@ -119,11 +121,12 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     }
     
     /**
-     * This function buils the SNOMED-CT taxonomy
+     * This function buils the SNOMED-CT taxonomy.
+     * @param useAncestorsCaching 
      * @return 
      */
     
-    private void buildTaxonomy() throws Exception
+    private void buildTaxonomy(boolean useAncestorsCaching) throws Exception
     {
         // Debugging message
         
@@ -132,14 +135,15 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         
         // We create the graph
         
-        m_Taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
-                        getConceptCount());
+        m_Taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(getConceptCount());
         
         // We create a vertex into the taxonomy for each comcept.
-        // Each vertex shares the same CUID that its associated concept
         
         for (SnomedConcept concept: m_SnomedConcepts)
         {
+            // We add the vertex to the taxonomy with the same SNOMED-CT ID
+            // than its qasaociated ISnomedConcept
+            
             m_Taxonomy.addVertex(concept.getSnomedId(), concept.getParentsSnomedId());
             
             // We connect the concept to this database. Omce it is done, the
@@ -152,7 +156,13 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We compute all cached information
         
         m_Taxonomy.computesCachedAttributes();
-        m_Taxonomy.computeCachedAncestorSet();
+        
+        // From HESML V1R5, we support the caching of the ancestor sets in
+        // each vertex of the taxonomy with the aim of speeding up the 
+        // computation of MICA vertex in high-complexity ontologies as
+        // SNOMED-CT.
+        
+        if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet();
     }
     
     /**

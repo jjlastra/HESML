@@ -40,11 +40,13 @@ public class SnomedCtFactory
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName) throws Exception
+            String  strSnomedDBdescriptionFileName,
+            boolean useAncestorsCaching) throws Exception
     {
         return (SnomedDbReader.loadDatabase(strSnomedDir,
                 strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName));
+                strSnomedDBdescriptionFileName,
+                useAncestorsCaching));
     }   
 }

@@ -54,10 +54,11 @@ class SnomedDbReader
      */
     
     static ISnomedCtDatabase loadDatabase(
-            String strSnomedDir,
-            String strSnomedDBconceptFileName,
-            String strSnomedDBRelationshipsFileName,
-            String strSnomedDBdescriptionFileName) throws Exception
+            String  strSnomedDir,
+            String  strSnomedDBconceptFileName,
+            String  strSnomedDBRelationshipsFileName,
+            String  strSnomedDBdescriptionFileName,
+            boolean useAncestorsCaching) throws Exception
     {
         // We load the SNOMED RF2 file
         
@@ -107,7 +108,7 @@ class SnomedDbReader
         
         // We insert the sorted concepts into the database
         
-        SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts);
+        SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts, useAncestorsCaching);
 
         // We release the auxiliary collections
         

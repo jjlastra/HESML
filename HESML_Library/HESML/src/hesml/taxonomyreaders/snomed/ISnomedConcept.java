@@ -40,7 +40,7 @@ public interface ISnomedConcept
      * @return 
      */
     
-    boolean isParent(Long cuid);
+    boolean isParent(Long childSnomedId);
     
     /**
      * This function checks if the concept is a direct child of the current one.
@@ -48,7 +48,7 @@ public interface ISnomedConcept
      * @return 
      */
     
-    boolean isChild(Long cuid);
+    boolean isChild(Long parentSnomedId);
     
     /**
      * This function returns the terms evocating the concept

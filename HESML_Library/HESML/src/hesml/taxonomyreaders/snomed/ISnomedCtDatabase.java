@@ -75,10 +75,10 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
     /**
      * This function returns the concept associated to the input CUID
      * @param cuid
-     * @return The concept for this CUID
+     * @return The concept for this snomedId
      */
     
-    ISnomedConcept getConcept(Long cuid);
+    ISnomedConcept getConcept(Long snomedId);
     
     /**
      * This fucntion returns the HESML taxonomy encoding the SNOMED-CT 'is-a'
