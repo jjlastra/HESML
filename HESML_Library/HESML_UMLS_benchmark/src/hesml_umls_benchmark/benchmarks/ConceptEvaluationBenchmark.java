@@ -20,29 +20,13 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
-import hesml.configurators.icmodels.ICModelsFactory;
-import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
-import hesml.measures.impl.MeasureFactory;
-import hesml.taxonomy.ITaxonomy;
-import hesml.taxonomy.IVertexList;
+import hesml_umls_benchmark.ISnomedSimilarityLibrary;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
-import org.openrdf.model.URI;
-import slib.graph.io.conf.GDataConf;
-import slib.graph.io.loader.GraphLoaderGeneric;
-import slib.graph.io.loader.bio.snomedct.GraphLoaderSnomedCT_RF2;
-import slib.graph.io.util.GFormat;
-import slib.graph.model.graph.G;
-import slib.graph.model.impl.graph.memory.GraphMemory;
-import slib.graph.model.impl.repo.URIFactoryMemory;
-import slib.graph.model.repo.URIFactory;
-import slib.sml.sm.core.engine.SM_Engine;
-import slib.sml.sm.core.metrics.ic.utils.IC_Conf_Topo;
-import slib.sml.sm.core.metrics.ic.utils.ICconf;
-import slib.sml.sm.core.utils.SMConstants;
-import slib.sml.sm.core.utils.SMconf;
-import slib.utils.ex.SLIB_Ex_Critic;
-import slib.utils.ex.SLIB_Exception;
+import java.util.Scanner;
 
 /**
  * This class implements a benchmark to comapre the performance
@@ -54,13 +38,12 @@ import slib.utils.ex.SLIB_Exception;
 class ConceptEvaluationBenchmark extends UMLSLibBenchmark
 {
     /**
-     * SNOMED-CT RF2 files
+     * Column offset for the main attributes extratec from concept and
+     * relationsship files.
      */
     
-    private String  m_strSnomedDir;
-    private String  m_strSnomedDBconceptFileName;
-    private String  m_strSnomedDBRelationshipsFileName;
-    private String  m_strSnomedDBdescriptionFileName;
+    private static final int CONCEPT_ID = 0;
+    private static final int ACTIVE_ID = 2;
     
     /**
      * Constructor to build the Snomed HESML database
@@ -77,62 +60,11 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName) throws Exception
     {
-        // Inicializamos la clase base
+        // We initialize the base class
         
         super(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName);
-        
-        // We save the SNOMED filenames
-        
-        m_strSnomedDir = strSnomedDir;
-        m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
-        m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
-        m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
-    }
-    
-    /**
-     * This function generates a vector of random SNOMED-CT concept pairs which
-     * will be used to evaluate the performance of the libraeries.
-     * @param snomedTaxonomy
-     * @param nPairs
-     * @return 
-     */
-    
-    private Long[][] getRandomNodePairs(
-            ITaxonomy   snomedTaxonomy,
-            int         nPairs) 
-    {
-        // We cretae the random paris
-        
-        Long[][] snomedPairs = new Long[nPairs][2];
-        
-        // We create a ranodm number
-        
-        Random rand = new Random(500);
-        
-        // We get the number of nodes in the SNOMED-CT graph
-        
-        long nConcepts = snomedTaxonomy.getVertexes().getCount();
-        
-        // We generate the ranomdon node pairs
-        
-        for (int i = 0; i < nPairs; i++)
-        {
-            // We randomly select two nodex of the SNOMED-CT taxonomy
-            
-            int snomedConceptIndex1 = (int)(rand.nextDouble() * (nConcepts - 1));
-            int snomedConceptIndex2 = (int)(rand.nextDouble() * (nConcepts - 1));
-            
-            // We copy their concept IDs
-            
-            snomedPairs[i][0] = snomedTaxonomy.getVertexes().getAt(snomedConceptIndex1).getID();
-            snomedPairs[i][1] = snomedTaxonomy.getVertexes().getAt(snomedConceptIndex2).getID();
-        }
-        
-        // We return the output
-        
-        return (snomedPairs);
+                strSnomedDBdescriptionFileName);        
     }
     
     /**
@@ -145,11 +77,11 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
         // We set the setup parameters
         
         int nRuns = 10;
-        int nSamples = 10;
+        int nSamples = 1000000;
         
         // set the number of runs
         
-        Long[][] snomedIDpairs = getRandomNodePairs(m_hesmlSnomedDatabase.getTaxonomy(), nSamples);
+        Long[][] snomedIDpairs = getRandomNodePairs(getAllSnomedConceptsId(), nSamples);
         
         // We create the output data matrix and fill the row headers
         
@@ -160,17 +92,32 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
         
         // We evaluate the performance of the HESML library
         
-        CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLinMeasureUsingHESML(snomedIDpairs, nRuns), 0);
-        
-        // We relñease the SNOMED-CT database
-        
-        m_hesmlSnomedDatabase.clear();
-        
-        // Evaluate the SML library
-        
-        CopyRunningTimesToMatrix(strOutputDataMatrix,        
-            EvaluateLinMeasureUsingSML(snomedIDpairs, nRuns), 1);
+        for (int i = 0; i < m_Libraries.length; i++)
+        {
+            // We set the row header
+            
+            strOutputDataMatrix[i][0] = m_Libraries[i].getLibraryType().toString()
+                                        + "-" + SimilarityMeasureType.Lin.toString();
+                                            
+            // We load SNOMED and the resources of the library
+            
+            m_Libraries[i].loadSnomed();
+            
+            // We set the similarity measure to be used
+            
+            m_Libraries[i].setSimilarityMeasure(IntrinsicICModelType.Seco,
+                    SimilarityMeasureType.Lin);
+            
+            // We evaluate the library
+            
+            CopyRunningTimesToMatrix(strOutputDataMatrix,
+                EvaluateLibrary(m_Libraries[i], snomedIDpairs, nRuns), i);
+            
+            // We release the database and resources used by the library
+            
+            m_Libraries[i].unloadSnomed();
+        }
+
         
         // We write the output raw data
         
@@ -179,8 +126,8 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
     
     /**
      * This function sets the Seco et al.(2004)[1] and the Lin similarity
-     * measure [2] using HESML library [3]. Then, the function evaluates the
-     * Lin similairty of the set of random concept pairs.
+     * measure [2] using HESML [3] and SML [4] libraries. Then, the function
+     * evaluates the Lin similarity [2] of the set of random concept pairs.
      * 
      * [1] N. Seco, T. Veale, J. Hayes,
      * An intrinsic information content metric for semantic similarity
@@ -197,28 +144,19 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
      * with a set of reproducible experiments and a replication dataset,
      * Information Systems. 66 (2017) 97–118.
      * 
+     * [4] S. Harispe, S. Ranwez, S. Janaqi, J. Montmain,
+     * The semantic measures library and toolkit: fast computation of semantic
+     * similarity and relatedness using biomedical ontologies,
+     * Bioinformatics. 30 (2014) 740–742.
+     * 
      * @param snomedPairs
      */
     
-    private double[] EvaluateLinMeasureUsingHESML(
-            Long[][]    snomedPairs,
-            int         nRuns) throws Exception
+    private double[] EvaluateLibrary(
+            ISnomedSimilarityLibrary    library,
+            Long[][]                    snomedPairs,
+            int                         nRuns) throws Exception
     {
-        // We get the taxonomy
-        
-        ITaxonomy taxonomy = m_hesmlSnomedDatabase.getTaxonomy();
-        IVertexList vertexes = taxonomy.getVertexes();
-        
-        // We set the Seco IC model in the taxonomy
-        
-        System.out.println("Computing the Seco IC model into the SNOMED-CT  taxonomy");
-        
-        ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco).setTaxonomyData(taxonomy);
-        
-        // We get the Lin similarity measure
-        
-        ISimilarityMeasure measureLin = MeasureFactory.getMeasure(taxonomy, SimilarityMeasureType.Lin);
-        
         // We initialize the output vector
         
         double[] runningTimes = new double[nRuns];
@@ -237,8 +175,7 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
 
             for (int i = 0; i < snomedPairs.length; i++)
             {
-                measureLin.getSimilarity(vertexes.getById(snomedPairs[i][0]),
-                        vertexes.getById(snomedPairs[i][1]));
+                library.getSimilarity(snomedPairs[i][0], snomedPairs[i][1]);
             }
 
             // We compute the elapsed time in seconds
@@ -255,10 +192,10 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
         // We print the average results
         
         System.out.println("# concept pairs evaluated = " + snomedPairs.length);
-        System.out.println("Average time elapsed evaluating Lin measure with HESML (secs) = "
+        System.out.println(library.getLibraryType() + " Average time (secs) = "
                 + averageRuntime);
         
-        System.out.println("Average HESML evaluation speed (#evaluation/second) = "
+        System.out.println(library.getLibraryType() + " Average evaluation speed (#evaluation/second) = "
                 + ((double)snomedPairs.length) / averageRuntime);
         
         // We return the results
@@ -267,116 +204,104 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * This function sets the Seco et al.(2004)[1] and the Lin similarity
-     * measure [2] using SML library [3]. Then, the function evaluates the
-     * Lin similairty of the set of random concept pairs.
-     * 
-     * [1] N. Seco, T. Veale, J. Hayes,
-     * An intrinsic information content metric for semantic similarity
-     * in WordNet, in: R. López de Mántaras, L. Saitta (Eds.), Proceedings
-     * of the 16th European Conference on Artificial Intelligence (ECAI),
-     * IOS Press, Valencia, Spain, 2004: pp. 1089–1094.
-     * 
-     * [2] D. Lin, An information-theoretic definition of similarity,
-     * in: Proceedings of the 15th International Conference on Machine
-     * Learning, Madison, WI, 1998: pp. 296–304.
-     * 
-     * [3] S. Harispe, S. Ranwez, S. Janaqi, J. Montmain,
-     * The semantic measures library and toolkit: fast computation of semantic
-     * similarity and relatedness using biomedical ontologies,
-     * Bioinformatics. 30 (2014) 740–742.
-     * 
-     * @param snomedPairs 
+     * This function retrieves all the SNOMED concepts ID from the SNOMED
+     * concept file.
+     * @return 
      */
     
-    private double[] EvaluateLinMeasureUsingSML(
-            Long[][]    snomedPairs,
-            int         nRuns) throws SLIB_Ex_Critic, SLIB_Exception
+    private Long[] getAllSnomedConceptsId() throws FileNotFoundException
     {
-        // We create an in-memory graph in which we will load Snomed-CT.
-        // Notice that Snomed-CT is quite large (e.g. version 20120731 contains 296433 concepts and872318 relationships ).
-        // You will need to allocate extra memory to the JVM e.g add -Xmx3000m parameter to allocate 3Go.
+        // We initialize the concept ID list
         
-        URIFactory factory = URIFactoryMemory.getSingleton();
-        URI snomedctURI = factory.getURI("http://snomedct/");
-        G g = new GraphMemory(snomedctURI);
-
-        GDataConf conf = new GDataConf(GFormat.SNOMED_CT_RF2);
+        ArrayList<Long> concepts = new ArrayList<>(360000);
         
-        conf.addParameter(GraphLoaderSnomedCT_RF2.ARG_CONCEPT_FILE,
-                m_strSnomedDir + "/" + m_strSnomedDBconceptFileName);
+        // We open the file for reading
         
-        conf.addParameter(GraphLoaderSnomedCT_RF2.ARG_RELATIONSHIP_FILE,
-                m_strSnomedDir + "/" + m_strSnomedDBRelationshipsFileName);
-
-        GraphLoaderGeneric.populate(conf, g);
-
-        System.out.println(g.toString());
-
-        // We compute the similarity between the concepts  
-        // associated to Heart	and Myocardium, i.e. 80891009 and 74281007 respectively
-        // We first build URIs correspondind to those concepts
-
-        // First we configure an intrincic IC 
-
-        ICconf icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
-
-        // Then we configure the pairwise measure to use, we here choose to use Lin formula
-
-        SMconf smConf = new SMconf(SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998, icConf);
+        Scanner reader = new Scanner(new File(m_strSnomedDir + "/" + m_strSnomedDBconceptFileName));
+        System.out.println("Reading SNOMED concept IDs " + m_strSnomedDBconceptFileName);
+                
+        // We skip the first line containing the headers.
+        // We focus only on thereading of concept ID and term, because it
+        // is the only information that we need. Thus, we reject
+        // to read the full record for each concept.
         
-        // We define the engine used to compute the similarity
+        String strHeaderLine = reader.nextLine();
         
-        SM_Engine engine = new SM_Engine(g);
-
-        // We initialize the output vector
+        // We read the concept lines
         
-        double[] runningTimes = new double[nRuns];
-        
-        double accumulatedTime = 0.0;
-        
-        // We exucte multiple times the benchmark to compute a stable running time
-        
-        for (int iRun = 0; iRun < nRuns; iRun++)
+        do
         {
-            // We initializa the stopwatch
+            // We extract the attribites of the concept
 
-            long startTime = System.currentTimeMillis();
+            String[] strAttributes = reader.nextLine().split("\t");
 
-            // We evaluate the random concept pairs
+            // We get the needed attributes
 
-            for (int i = 0; i < snomedPairs.length; i++)
+            Long snomedId = Long.parseLong(strAttributes[CONCEPT_ID]);
+            boolean active = strAttributes[ACTIVE_ID].equals("1");
+
+            // We create a new concept if it is active
+
+            if (active) concepts.add(snomedId);
+            
+        } while (reader.hasNextLine());
+        
+        // We close the database
+        
+        reader.close();
+        
+        // We create the output vector and fill it with the concept IDs
+        
+        Long[] conceptsId = new Long[concepts.size()];
+        
+        concepts.toArray(conceptsId);
+        
+        // Werelease the auxiliary list
+        
+        concepts.clear();
+        
+        // We return the result
+        
+        return (conceptsId);
+    }
+    
+    /**
+     * This function generates a vector of random SNOMED-CT concept pairs which
+     * will be used to evaluate the performance of the libraeries.
+     * @param snomedTaxonomy
+     * @param nPairs
+     * @return 
+     */
+    
+    private Long[][] getRandomNodePairs(
+            Long[]   snomedConceptIDs,
+            int      nPairs) 
+    {
+        // We cretae the random paris
+        
+        Long[][] snomedPairs = new Long[nPairs][2];
+        
+        // We create a ranodm number
+        
+        Random rand = new Random(500);
+        
+        // We get the number of nodes in the SNOMED-CT graph
+        
+        long nConcepts = snomedConceptIDs.length;
+        
+        // We generate the ranomdon node pairs
+        
+        for (int i = 0; i < nPairs; i++)
+        {
+            for (int j = 0; j < 2; j++)
             {
-                // We get the URI for both concepts
-
-                URI concept1 = factory.getURI(snomedctURI.stringValue() + snomedPairs[i][0].toString()); // i.e http://snomedct/230690007
-                URI concept2 = factory.getURI(snomedctURI.stringValue() + snomedPairs[i][1].toString());
-
-                // We evaluate the Lin measure
-
-                engine.compare(smConf, concept1, concept2);
+                int snomedConceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
+                snomedPairs[i][j] = snomedConceptIDs[snomedConceptIndex];
             }
-            
-            // We compute the elapsed time in seconds
-
-            runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
-            
-            accumulatedTime += runningTimes[iRun];
         }
         
-        // We compute the averga running time
+        // We return the output
         
-        double averageRuntime = accumulatedTime / nRuns;
-
-        // We print the average running time
-        
-        System.out.println("# concept pairs evaluated = " + snomedPairs.length);
-        System.out.println("Average time elapsed evaluating Lin measure with SML (secs) = " + averageRuntime);
-        System.out.println("Average SML evaluation speed (#evaluation/second) = "
-                + ((double)snomedPairs.length) / averageRuntime);
-        
-        // We return the results
-        
-        return (runningTimes);
+        return (snomedPairs);
     }
 }

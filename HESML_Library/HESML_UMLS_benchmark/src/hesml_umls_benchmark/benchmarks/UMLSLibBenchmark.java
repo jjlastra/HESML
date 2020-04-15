@@ -20,9 +20,10 @@
 
 package hesml_umls_benchmark.benchmarks;
 
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
-import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.IUMLSBenchmark;
+import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.snomedproviders.SnomedLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,10 +37,19 @@ import java.io.IOException;
 abstract class UMLSLibBenchmark implements IUMLSBenchmark
 {
     /**
-     * SNOMED databse implemented by HESML
+     * Wrappers of the semantic measure libraries being evaluated
      */
     
-    protected ISnomedCtDatabase   m_hesmlSnomedDatabase;
+    protected ISnomedSimilarityLibrary[]    m_Libraries;
+
+    /**
+     * SNOMED-CT RF2 files
+     */
+    
+    protected String  m_strSnomedDir;
+    protected String  m_strSnomedDBconceptFileName;
+    protected String  m_strSnomedDBRelationshipsFileName;
+    protected String  m_strSnomedDBdescriptionFileName;
     
     /**
      * Constructor to build the Snomed HESML database
@@ -56,13 +66,33 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName) throws Exception
     {
-        // We load the SNOMED database and build its HESML taxonomy
+        // We save the SNOMED filenames
         
-        m_hesmlSnomedDatabase = SnomedCtFactory.loadSnomedDatabase(strSnomedDir,
+        m_strSnomedDir = strSnomedDir;
+        m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
+        m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
+        m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
+        
+        // Se set the libraries to be evaluated
+        
+        SnomedBasedLibrary[] libraries = new SnomedBasedLibrary[] {
+                                            SnomedBasedLibrary.HESML,
+                                            SnomedBasedLibrary.SML};
+        
+        // We load the SNOMED database and build its HESML taxonomy
+
+        m_Libraries = new ISnomedSimilarityLibrary[libraries.length];
+        
+        for (int i = 0; i < libraries.length; i++)
+        {
+            m_Libraries[i] = SnomedLibraryFactory.getLibrary(
+                                    libraries[i], strSnomedDir,
                                     strSnomedDBconceptFileName,
                                     strSnomedDBRelationshipsFileName,
-                                    strSnomedDBdescriptionFileName, true);
+                                    strSnomedDBdescriptionFileName);
+        }
     }
+    
     
     /**
      * This fucntion runs the benchmark and writes the results to the
@@ -79,7 +109,12 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     @Override
     public void clear()
     {
-        m_hesmlSnomedDatabase.clear();
+        // We release all libraries
+        
+        for (ISnomedSimilarityLibrary library: m_Libraries)
+        {
+            library.clear();
+        }
     }
     
     /**
