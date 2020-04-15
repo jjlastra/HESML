@@ -23,6 +23,9 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.IUMLSBenchmark;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -77,5 +80,67 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     public void clear()
     {
         m_hesmlSnomedDatabase.clear();
+    }
+    
+    /**
+     * This function fills the data matrix with the running times reported
+     * in the experiments.
+     * @param strOutputDataMatrix
+     * @param runningTimesInSecs
+     * @param iRow 
+     */
+    
+    protected void CopyRunningTimesToMatrix(
+            String[][]  strOutputDataMatrix,
+            double[]    runningTimesInSecs,
+            int         iRow)
+    {
+        // We copy the values
+        
+        for (int i = 0; i < runningTimesInSecs.length; i++)
+        {
+            strOutputDataMatrix[iRow][i + 1] = Double.toString(runningTimesInSecs[i]);
+        }
+    }
+    
+    /**
+     * This function saves an output data matrix int oa CSV file
+     * @param strDataMatrix 
+     * @param strOutputFilename 
+     */
+    
+    protected void WriteCSVfile(
+            String[][]  strDataMatrix,
+            String      strOutputFilename) throws IOException
+    {
+        // We create a writer for the text file
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(strOutputFilename, false));
+        
+        // We write the info for each taxonomy node
+        
+        char sep = ';';  // Separator dield
+        
+        for (int iRow = 0; iRow < strDataMatrix.length; iRow++)
+        {
+            // We initialize the line
+            
+            String strLine = "\n" + strDataMatrix[iRow][0];
+            
+            // We build the row
+            
+            for (int iCol = 1; iCol < strDataMatrix[0].length; iCol++)
+            {
+                strLine += (sep + strDataMatrix[iRow][iCol]);
+            }
+            
+            // We write the line
+            
+            writer.write(strLine);
+        }
+        
+        // We close the file
+        
+        writer.close();
     }
 }

@@ -145,15 +145,23 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
         // We set the setup parameters
         
         int nRuns = 10;
-        int nSamples = 1000000;
+        int nSamples = 10;
         
         // set the number of runs
         
         Long[][] snomedIDpairs = getRandomNodePairs(m_hesmlSnomedDatabase.getTaxonomy(), nSamples);
         
+        // We create the output data matrix and fill the row headers
+        
+        String[][] strOutputDataMatrix = new String[2][nRuns + 1];
+        
+        strOutputDataMatrix[0][0] = "HESML";
+        strOutputDataMatrix[1][0] = "SML";
+        
         // We evaluate the performance of the HESML library
         
-        EvaluateLinMeasureUsingHESML(snomedIDpairs, nRuns);
+        CopyRunningTimesToMatrix(strOutputDataMatrix,
+                EvaluateLinMeasureUsingHESML(snomedIDpairs, nRuns), 0);
         
         // We relñease the SNOMED-CT database
         
@@ -161,7 +169,12 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
         
         // Evaluate the SML library
         
-        EvaluateLinMeasureUsingSML(snomedIDpairs, nRuns);
+        CopyRunningTimesToMatrix(strOutputDataMatrix,        
+            EvaluateLinMeasureUsingSML(snomedIDpairs, nRuns), 1);
+        
+        // We write the output raw data
+        
+        WriteCSVfile(strOutputDataMatrix, strOutputFilename);
     }
     
     /**

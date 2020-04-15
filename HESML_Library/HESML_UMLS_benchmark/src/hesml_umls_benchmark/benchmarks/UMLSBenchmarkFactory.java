@@ -47,5 +47,5 @@ public class UMLSBenchmarkFactory
         return (new ConceptEvaluationBenchmark(strSnomedDir,
                 strSnomedDBconceptFileName, strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName));
-    }
+    }   
 }
