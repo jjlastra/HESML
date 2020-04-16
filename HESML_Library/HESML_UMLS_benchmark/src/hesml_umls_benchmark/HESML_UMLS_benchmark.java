@@ -81,7 +81,7 @@ public class HESML_UMLS_benchmark
     {
         // We set the UMLS directory
         
-        String strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020/Terminology";
+        String strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020";
         String strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20200301.txt";
         String strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
         String strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
