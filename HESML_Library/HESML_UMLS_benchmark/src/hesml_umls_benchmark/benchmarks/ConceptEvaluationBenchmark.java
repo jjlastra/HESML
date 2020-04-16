@@ -22,6 +22,7 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
+import hesml_umls_benchmark.SnomedBasedLibrary;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -46,6 +47,20 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
     private static final int ACTIVE_ID = 2;
     
     /**
+     * Setup parameters of the semantic similarity measure
+     */
+    
+    private SimilarityMeasureType   m_MeasureType;
+    private IntrinsicICModelType    m_icModel;
+
+    /**
+     * Number of random concept pairs and runs for averaging the time
+     */
+    
+    protected int m_nSamples;
+    protected int m_nRuns;
+    
+    /**
      * Constructor to build the Snomed HESML database
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
@@ -55,16 +70,28 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
      */
 
     ConceptEvaluationBenchmark(
-            String  strSnomedDir,
-            String  strSnomedDBconceptFileName,
-            String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName) throws Exception
+            SnomedBasedLibrary[]    libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int                     nRandomSamples,
+            int                     nRuns,
+            String                  strSnomedDir,
+            String                  strSnomedDBconceptFileName,
+            String                  strSnomedDBRelationshipsFileName,
+            String                  strSnomedDBdescriptionFileName) throws Exception
     {
         // We initialize the base class
         
-        super(strSnomedDir, strSnomedDBconceptFileName,
+        super(libraries, strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName);        
+                strSnomedDBdescriptionFileName);    
+        
+        // We initialize the attributes of the object
+        
+        m_MeasureType = similarityMeasure;
+        m_icModel = icModel;
+        m_nSamples = nRandomSamples;
+        m_nRuns = nRuns;
     }
     
     /**
@@ -74,18 +101,13 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
     @Override
     public void run(String strOutputFilename) throws Exception
     {
-        // We set the setup parameters
-        
-        int nRuns = 10;
-        int nSamples = 1000000;
-        
         // set the number of runs
         
-        Long[][] snomedIDpairs = getRandomNodePairs(getAllSnomedConceptsId(), nSamples);
+        Long[][] snomedIDpairs = getRandomNodePairs(getAllSnomedConceptsId(), m_nSamples);
         
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[2][nRuns + 1];
+        String[][] strOutputDataMatrix = new String[2][m_nRuns + 1];
         
         strOutputDataMatrix[0][0] = "HESML";
         strOutputDataMatrix[1][0] = "SML";
@@ -97,7 +119,7 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
             // We set the row header
             
             strOutputDataMatrix[i][0] = m_Libraries[i].getLibraryType().toString()
-                                        + "-" + SimilarityMeasureType.Lin.toString();
+                                        + "-" + m_MeasureType.toString();
                                             
             // We load SNOMED and the resources of the library
             
@@ -105,13 +127,12 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
             
             // We set the similarity measure to be used
             
-            m_Libraries[i].setSimilarityMeasure(IntrinsicICModelType.Seco,
-                    SimilarityMeasureType.Lin);
+            m_Libraries[i].setSimilarityMeasure(m_icModel, m_MeasureType);
             
             // We evaluate the library
             
             CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[i], snomedIDpairs, nRuns), i);
+                EvaluateLibrary(m_Libraries[i], snomedIDpairs, m_nRuns), i);
             
             // We release the database and resources used by the library
             

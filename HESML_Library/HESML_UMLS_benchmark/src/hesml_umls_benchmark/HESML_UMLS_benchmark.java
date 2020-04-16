@@ -30,6 +30,7 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
+import hesml_umls_benchmark.snomedproviders.SnomedSimilarityLibrary;
 import java.util.Random;
 import org.openrdf.model.URI;
 import slib.graph.io.conf.GDataConf;
@@ -85,14 +86,28 @@ public class HESML_UMLS_benchmark
         String strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
         String strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
         
-        // We create and run the Concept-based benchmarks
+        /**
+         * Experiment 1: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity libraries in the evaluation of the IC-based
+         * Lib [1] semantic similarity libray by evaluating the degree of
+         * similarity between one million of random concept pairs.
+         * [1] D. Lin, An information-theoretic definition of similarity,
+         * in: Proceedings of the 15th International Conference on Machine
+         * Learning, Madison, WI, 1998: pp. 296–304.
+         */
         
-        IUMLSBenchmark benchmark = UMLSBenchmarkFactory.createConceptBenchmark(strUMLSdir,
+        SnomedBasedLibrary[] librariesExp1 = new SnomedBasedLibrary[]{
+                                                    SnomedBasedLibrary.HESML,
+                                                    SnomedBasedLibrary.SML};
+        
+        IUMLSBenchmark benchmark1 = UMLSBenchmarkFactory.createConceptBenchmark(
+                                    librariesExp1, SimilarityMeasureType.Lin,
+                                    IntrinsicICModelType.Seco, 1000000, 10, strUMLSdir,
                                     strSNOMED_conceptFilename, strSNOMED_relationshipsFilename,
                                     strSNOMED_descriptionFilename);
         
-        benchmark.run("IC_based_Concept_Similarity_exp.csv");
-        benchmark.clear();
+        benchmark1.run("IC_based_Concept_Similarity_exp.csv");
+        benchmark1.clear();
     }
 }
 

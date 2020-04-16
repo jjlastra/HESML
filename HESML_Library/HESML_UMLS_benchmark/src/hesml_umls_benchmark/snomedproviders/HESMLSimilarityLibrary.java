@@ -146,11 +146,14 @@ class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
         
         loadSnomed();
         
-        // We set the Seco IC model in the taxonomy
+        // We set the IC model in the taxonomy
         
-        System.out.println("Computing the Seco IC model into the SNOMED-CT  taxonomy");
-        
-        ICModelsFactory.getIntrinsicICmodel(icModel).setTaxonomyData(m_hesmlSnomedDatabase.getTaxonomy());
+        if (measureType != SimilarityMeasureType.Rada)
+        {
+            System.out.println("Setting the " + icModel.toString() + " IC model into the SNOMED-CT  taxonomy");
+            
+            ICModelsFactory.getIntrinsicICmodel(icModel).setTaxonomyData(m_hesmlSnomedDatabase.getTaxonomy());
+        }
         
         // We get the Lin similarity measure
         

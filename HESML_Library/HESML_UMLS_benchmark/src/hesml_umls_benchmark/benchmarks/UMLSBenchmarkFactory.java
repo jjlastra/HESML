@@ -20,7 +20,10 @@
 
 package hesml_umls_benchmark.benchmarks;
 
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.IUMLSBenchmark;
+import hesml_umls_benchmark.SnomedBasedLibrary;
 
 /**
  * This function creates all UMLS benchmarks
@@ -30,22 +33,34 @@ import hesml_umls_benchmark.IUMLSBenchmark;
 public class UMLSBenchmarkFactory
 {
     /**
-     * This fucntion creates a Concept-based benchmark.
+     * This function creates a random concept-pair benchmark
+     * @param libraries
+     * @param similarityMeasure
+     * @param icModel
+     * @param nRandomSamples
+     * @param nRuns
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @return
      * @throws Exception 
      */
 
     public static IUMLSBenchmark createConceptBenchmark(
-            String  strSnomedDir,
-            String  strSnomedDBconceptFileName,
-            String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName) throws Exception
+            SnomedBasedLibrary[]    libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int                     nRandomSamples,
+            int                     nRuns,
+            String                  strSnomedDir,
+            String                  strSnomedDBconceptFileName,
+            String                  strSnomedDBRelationshipsFileName,
+            String                  strSnomedDBdescriptionFileName) throws Exception
     {
-        return (new ConceptEvaluationBenchmark(strSnomedDir,
-                strSnomedDBconceptFileName, strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName));
+        return (new ConceptEvaluationBenchmark(libraries,
+                similarityMeasure, icModel, nRandomSamples, nRuns, 
+                strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName));
     }   
 }

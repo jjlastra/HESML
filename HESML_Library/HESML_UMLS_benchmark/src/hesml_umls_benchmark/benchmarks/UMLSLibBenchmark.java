@@ -49,8 +49,8 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     protected String  m_strSnomedDir;
     protected String  m_strSnomedDBconceptFileName;
     protected String  m_strSnomedDBRelationshipsFileName;
-    protected String  m_strSnomedDBdescriptionFileName;
-    
+    protected String  m_strSnomedDBdescriptionFileName;   
+   
     /**
      * Constructor to build the Snomed HESML database
      * @param strSnomedDir
@@ -61,10 +61,11 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
      */
     
     UMLSLibBenchmark(
-            String  strSnomedDir,
-            String  strSnomedDBconceptFileName,
-            String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName) throws Exception
+            SnomedBasedLibrary[]    libraries,
+            String                  strSnomedDir,
+            String                  strSnomedDBconceptFileName,
+            String                  strSnomedDBRelationshipsFileName,
+            String                  strSnomedDBdescriptionFileName) throws Exception
     {
         // We save the SNOMED filenames
         
@@ -72,12 +73,6 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
         m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
         m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
         m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
-        
-        // Se set the libraries to be evaluated
-        
-        SnomedBasedLibrary[] libraries = new SnomedBasedLibrary[] {
-                                            SnomedBasedLibrary.HESML,
-                                            SnomedBasedLibrary.SML};
         
         // We load the SNOMED database and build its HESML taxonomy
 
