@@ -1,53 +1,29 @@
 /*
- * Copyright (C) 2020 Universidad Complutense de Madrid (UCM)
- * 
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
  * Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
  * (CC BY-NC-SA 4.0) as published by the Creative Commons Corporation,
  * either version 4 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * section 5 of the CC BY-NC-SA 4.0 License for more details.
- * 
+ *
  * You should have received a copy of the Creative Commons
  * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  * license along with this program. If not,
  * see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
+ *
  */
 
 package hesml_umls_benchmark;
 
 import hesml.configurators.IntrinsicICModelType;
-import hesml.configurators.icmodels.ICModelsFactory;
-import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
-import hesml.measures.impl.MeasureFactory;
-import hesml.taxonomy.ITaxonomy;
-import hesml.taxonomy.IVertexList;
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
-import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
-import hesml_umls_benchmark.snomedproviders.SnomedSimilarityLibrary;
-import java.util.Random;
-import org.openrdf.model.URI;
-import slib.graph.io.conf.GDataConf;
-import slib.graph.io.loader.GraphLoaderGeneric;
-import slib.graph.io.loader.bio.snomedct.GraphLoaderSnomedCT_RF2;
-import slib.graph.io.util.GFormat;
-import slib.graph.model.graph.G;
-import slib.graph.model.impl.graph.memory.GraphMemory;
-import slib.graph.model.impl.repo.URIFactoryMemory;
-import slib.graph.model.repo.URIFactory;
-import slib.sml.sm.core.engine.SM_Engine;
-import slib.sml.sm.core.metrics.ic.utils.IC_Conf_Topo;
-import slib.sml.sm.core.metrics.ic.utils.ICconf;
-import slib.sml.sm.core.utils.SMConstants;
-import slib.sml.sm.core.utils.SMconf;
-import slib.utils.ex.SLIB_Ex_Critic;
-import slib.utils.ex.SLIB_Exception;
 
 /**
  * This class implements the benchmark application used to compare
@@ -85,6 +61,7 @@ public class HESML_UMLS_benchmark
         String strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20200301.txt";
         String strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
         String strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
+        String strSNOMED_CUI_mappingfilename = "MRCONSO.RRF";
         
         /**
          * Experiment 1: we compare the performance of the HEMSL, SML and
@@ -104,7 +81,7 @@ public class HESML_UMLS_benchmark
                                     librariesExp1, SimilarityMeasureType.Lin,
                                     IntrinsicICModelType.Seco, 1000000, 10, strUMLSdir,
                                     strSNOMED_conceptFilename, strSNOMED_relationshipsFilename,
-                                    strSNOMED_descriptionFilename);
+                                    strSNOMED_descriptionFilename, strSNOMED_CUI_mappingfilename);
         
         benchmark1.run("IC_based_Concept_Similarity_exp.csv");
         benchmark1.clear();
