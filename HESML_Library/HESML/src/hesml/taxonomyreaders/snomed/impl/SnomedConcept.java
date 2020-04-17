@@ -52,7 +52,7 @@ class SnomedConcept implements ISnomedConcept
      * Concept unique CUID
      */
     
-    private final Long m_ConceptCuid;
+    private final Long m_ConceptSnomedCuid;
     
     /**
      * Traversing flag
@@ -77,12 +77,23 @@ class SnomedConcept implements ISnomedConcept
             Long                snomedId)
     {
         m_OwnerDB = ownerDB;
-        m_ConceptCuid = snomedId;
+        m_ConceptSnomedCuid = snomedId;
         m_TermsOfConcept = new ArrayList<>();
         m_ParentSnomedIds = new ArrayList<>();
         m_Visited = false;
     }
 
+    /**
+     * This function  returns a string representing the object
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+        return (m_ConceptSnomedCuid.toString());
+    }
+    
     /**
      * This function sets the owner database.
      * @param database 
@@ -135,7 +146,7 @@ class SnomedConcept implements ISnomedConcept
         else
         {
             for (IVertex parentNode:
-                    m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptCuid).getParents())
+                    m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptSnomedCuid).getParents())
             {
                 parents.add(m_OwnerDB.getConcept(parentNode.getID()));
             }
@@ -160,7 +171,7 @@ class SnomedConcept implements ISnomedConcept
         
         boolean result = (obj != null)
                 && (getClass() == obj.getClass())
-                && (this.m_ConceptCuid == ((SnomedConcept)obj).m_ConceptCuid);
+                && (this.m_ConceptSnomedCuid == ((SnomedConcept)obj).m_ConceptSnomedCuid);
         
         // We return the result
         
@@ -216,7 +227,7 @@ class SnomedConcept implements ISnomedConcept
         
         // We check the query
         
-        if (child != null) isChild = child.isParent(m_ConceptCuid);
+        if (child != null) isChild = child.isParent(m_ConceptSnomedCuid);
         
         // We return the result
         
@@ -253,7 +264,7 @@ class SnomedConcept implements ISnomedConcept
     @Override
     public Long getSnomedId()
     {
-        return (m_ConceptCuid);
+        return (m_ConceptSnomedCuid);
     }
 
     /**
@@ -324,7 +335,7 @@ class SnomedConcept implements ISnomedConcept
         {
             // In this case, we rerieve the parent nodes from the taxonomy
             
-            IVertex conceptNode = m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptCuid);
+            IVertex conceptNode = m_OwnerDB.getTaxonomy().getVertexes().getById(m_ConceptSnomedCuid);
             IVertexList parentNodes = conceptNode.getParents();
 
             // We copy the parent IDs

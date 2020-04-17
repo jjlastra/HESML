@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+import java.util.HashSet;
 
 /**
  * This class implements the SNOMED-CT database.
@@ -42,7 +43,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     private ITaxonomy   m_Taxonomy;
     
     /**
-     * Concepts indexed by their unique CUID
+     * Concepts indexed by their unique SNOMED ID
      */
     
     private final HashMap<Long, ISnomedConcept>    m_ConceptsIndexedById;
@@ -52,6 +53,12 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      */
     
     private final SnomedConcept[]    m_SnomedConcepts;
+    
+    /**
+     * Table wit hte pairs (CUI,SNOMEd_Id)
+     */
+    
+    private final HashMap<String, ArrayList<ISnomedConcept>> m_ConceptsIndexedByCUI;
     
     /**
      * SNOMED-CT concepts for each term. This is the inverted map from
@@ -67,14 +74,16 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      */
     
     SnomedCtDatabase(
-            ArrayList<SnomedConcept>    concepts,
-            boolean                     useAncestorsCaching) throws Exception
+            ArrayList<SnomedConcept>                    concepts,
+            HashMap<String, ArrayList<ISnomedConcept>>  mapCuiToSnomedConcepts,
+            boolean                                     useAncestorsCaching) throws Exception
     {
         // We initialize the collections
         
         m_ConceptsIndexedById = new HashMap<>(concepts.size());
         m_SnomedConcepts = new SnomedConcept[concepts.size()];
         m_ConceptsIndexedByTerm = new HashMap<>(concepts.size());
+        m_ConceptsIndexedByCUI = mapCuiToSnomedConcepts;
         
         // We copy the concepts
         
@@ -87,6 +96,74 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We cretae the taxonomy
         
         buildTaxonomy(useAncestorsCaching);
+    }
+    
+    /**
+     * This function returns the SNOMED concept associated to the CUI
+     * or null if it is not found in the SNOMED database.
+     * @param umlsConcetCUI
+     * @return 
+     */
+    
+    @Override
+    public ISnomedConcept[] getConceptsByUmlsCUI(String umlsConceptCUI)
+    {
+        // We initialize the output
+        
+        ISnomedConcept[] retrievedConcepts = null;
+        
+        // We retrieve the concept
+        
+        if (m_ConceptsIndexedByCUI.containsKey(umlsConceptCUI))
+        {
+            ArrayList<ISnomedConcept> concepts = m_ConceptsIndexedByCUI.get(umlsConceptCUI);
+            retrievedConcepts = new ISnomedConcept[concepts.size()];
+            concepts.toArray(retrievedConcepts);
+        }
+        else
+        {
+            retrievedConcepts = new ISnomedConcept[0];
+        }
+        
+        // We return the result
+        
+        return (retrievedConcepts);
+    }
+    
+    /**
+     * This function returns the SNOMED concepts associated to the CUIs
+     * or null if they are not found in the SNOMED database.
+     * @param umlsConcetCUI
+     * @return 
+     */
+    
+    @Override
+    public ISnomedConcept[] getConceptsByUmlsCUIs(String[] umlsConceptCUIs)
+    {
+        // We create an auxiliary collection
+        
+        HashSet<ISnomedConcept> conceptSet = new HashSet<>();
+        
+        // We retirve all concepts
+        
+        for (int i = 0; i < umlsConceptCUIs.length; i++)
+        {
+            ISnomedConcept[] currentIdConcepts = getConceptsByUmlsCUI(umlsConceptCUIs[i]);
+            
+            for (ISnomedConcept concept: currentIdConcepts)
+            {
+                if (!conceptSet.contains(concept)) conceptSet.add(concept);
+            }
+        }
+        
+        // We copy the concepts into a vector and destroy the axuliary set
+        
+        ISnomedConcept[] concepts = (ISnomedConcept[]) conceptSet.toArray();
+        conceptSet.clear();
+        
+        // We return the result
+        
+        return (concepts);
     }
     
     /**
@@ -345,6 +422,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         m_ConceptsIndexedByTerm.clear();
         m_ConceptsIndexedById.clear();
         m_Taxonomy.clear();
+        m_ConceptsIndexedByCUI.clear();
     }
 }
 

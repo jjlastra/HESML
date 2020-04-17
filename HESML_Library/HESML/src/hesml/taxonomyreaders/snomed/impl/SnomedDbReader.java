@@ -21,6 +21,7 @@
 
 package hesml.taxonomyreaders.snomed.impl;
 
+import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -69,43 +70,46 @@ class SnomedDbReader
             String  strSNOMED_CUI_mappingfilename,
             boolean useAncestorsCaching) throws Exception
     {
+        // User message
+        
+        System.out.println("--------------------------------------");
+        System.out.println("Loading SNOMED-CT RF2 files into HESML");
+        
         // We load the SNOMED RF2 file
         
-        File snomedConceptFile = new File(strSnomedDir + "/" + strSnomedDBconceptFileName);
-        File snomedRelationshipFile = new File(strSnomedDir + "/" + strSnomedDBRelationshipsFileName);
-        File snomedDescriptionFile = new File(strSnomedDir + "/" + strSnomedDBdescriptionFileName);
+        String[] strSnomedFilenames = new String[]{strSnomedDBconceptFileName,
+                                        strSnomedDBRelationshipsFileName,
+                                        strSnomedDBdescriptionFileName,
+                                        strSNOMED_CUI_mappingfilename};
         
-        // We chechk the existence of the path
+        File[] snomedFiles = new File[strSnomedFilenames.length];
         
-        if (!snomedConceptFile.exists())
+        for (int iFile = 0; iFile < snomedFiles.length; iFile++)
         {
-            String strError = "This file doesn´t exist -> " + snomedConceptFile.getPath();
-            throw (new Exception(strError));
-        }
-
-        if (!snomedRelationshipFile.exists())
-        {
-            String strError = "This file doesn´t exist -> " + snomedRelationshipFile.getPath();
-            throw (new Exception(strError));
-        }
-
-        if (!snomedDescriptionFile.exists())
-        {
-            String strError = "This file doesn´t exist -> " + snomedDescriptionFile.getPath();
-            throw (new Exception(strError));
+            // We load the file information
+            
+            snomedFiles[iFile] = new File(strSnomedDir + "/" + strSnomedFilenames[iFile]);
+        
+            // We chechk the existence of the path
+        
+            if (!snomedFiles[iFile].exists())
+            {
+                String strError = "This file doesn´t exist -> " + snomedFiles[iFile];
+                throw (new Exception(strError));
+            }
         }
         
         // We read the SNOMED-CT concepts
         
-        HashMap<Long, SnomedConcept> concepts = readConcepts(snomedConceptFile);
+        HashMap<Long, SnomedConcept> concepts = readConcepts(snomedFiles[0]);
         
         // We read the child/parent relationships
         
-        readParentConcepts(snomedRelationshipFile, concepts);
+        readParentConcepts(snomedFiles[1], concepts);
         
         // We read the terms associated to each SNOMED concept
         
-        readTermsOfConcepts(snomedDescriptionFile, concepts);
+        readTermsOfConcepts(snomedFiles[2], concepts);
         
         // We check the consistency of the data
         
@@ -117,13 +121,17 @@ class SnomedDbReader
         
         // We insert the sorted concepts into the database
         
-        SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts, useAncestorsCaching);
+        SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts,
+                                        readConceptsUmlsCUIs(snomedFiles[3], concepts),
+                                        useAncestorsCaching);
 
         // We release the auxiliary collections
         
         concepts.clear();
         sortedConcepts.clear();
-
+        
+        System.out.println("--------------------------------------");
+        
         // We return the database
         
         return (snomedDatabase);
@@ -223,7 +231,7 @@ class SnomedDbReader
     }
     
     /**
-     * This function read the parents of all conepts.
+     * This function reads the parents of all conepts.
      * @param concepts 
      */
     
@@ -273,7 +281,7 @@ class SnomedDbReader
     }
     
     /**
-     * This function read the terms associated to every SNOMED concept
+     * This function reads the terms associated to every SNOMED concept
      * @param concepts 
      */
     
@@ -320,7 +328,115 @@ class SnomedDbReader
         
         reader.close();
     }
+
+    /**
+     * This function checks if the text is a Long number
+     * @param strText
+     * @return 
+     */
     
+    private static boolean isLongNumber(
+        String  strText)
+    {
+        // We initialize the result
+        
+        boolean result = true;
+        
+        // We try to parse the number
+        
+        try
+        {
+            Long number = Long.parseLong(strText);
+        }
+        
+        catch (Exception error)
+        {
+            result = false;
+        }
+        
+        // We return the result
+        
+        return (result);
+    }
+    
+    /**
+     * This function reads the concept UMLS-CUIs
+     * @param concepts 
+     */
+    
+    private static HashMap<String, ArrayList<ISnomedConcept>> readConceptsUmlsCUIs(
+            File                            snomedCuiFile,
+            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
+    {
+        // We create the output mampit table (CUI, SNOMED_id)
+        
+        HashMap<String, ArrayList<ISnomedConcept>> outputCuiToSnomedConcepts = new HashMap<>(concepts.size());
+        
+        // We open the file for reading
+        
+        Scanner reader = new Scanner(snomedCuiFile);
+        System.out.println("Loading " + snomedCuiFile);
+                
+        // We read the relationship lines
+        
+        do
+        {
+            // We read the next relationship entry
+            
+            String strLine = reader.nextLine();
+            
+            // We extract the attributes of the relationship
+            
+            String[] strColumns = strLine.split("\\|");
+            
+            // We look for the SNOMED tag
+            
+            for (int iCol = 0; iCol < strColumns.length; iCol++)
+            {
+                if (strColumns[iCol].equals("SNOMEDCT_US")
+                        && isLongNumber(strColumns[iCol + 2]))
+                {
+                    // We get the mapping CUI -> SNOMED Id
+                    
+                    Long snomedId = Long.parseLong(strColumns[iCol + 2]);
+                    String strUmlsCUI = strColumns[0];
+                    
+                    // We register the snomed concept associated to a given CUI
+                    
+                    ArrayList<ISnomedConcept> snomedConcepts;
+                    
+                    if (!outputCuiToSnomedConcepts.containsKey(strUmlsCUI))
+                    {
+                        snomedConcepts = new ArrayList<>(1);
+                        outputCuiToSnomedConcepts.put(strUmlsCUI, snomedConcepts);
+                    }
+                    else
+                    {
+                        snomedConcepts = outputCuiToSnomedConcepts.get(strUmlsCUI);
+                    }
+                    
+                    // We only register the new snomed concept association if it
+                    // has not been registered before for the same CUI
+                    
+                    ISnomedConcept concept = concepts.get(snomedId);
+                    
+                    if (!snomedConcepts.contains(concept)) snomedConcepts.add(concept);
+                    
+                    break;
+                }
+            }
+            
+        } while (reader.hasNextLine());
+        
+        // We close the database
+        
+        reader.close();
+        
+        // We return the result
+        
+        return (outputCuiToSnomedConcepts);
+    }
+
     /**
      * This function parses the SNOMED-CT concept database
      * @param fileInfo

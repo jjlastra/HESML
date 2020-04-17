@@ -46,6 +46,24 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
     int getConceptCount();
     
     /**
+     * This function returns the SNOMED concept associated to the CUI
+     * or null if it is not found in the SNOMED database.
+     * @param umlsConcetCUI
+     * @return 
+     */
+    
+    ISnomedConcept[] getConceptsByUmlsCUI(String umlsConceptCUI);
+
+    /**
+     * This function returns the SNOMED concepts associated to the CUIs
+     * or null if they are not found in the SNOMED database.
+     * @param umlsConcetCUI
+     * @return 
+     */
+    
+    ISnomedConcept[] getConceptsByUmlsCUIs(String[] umlsConceptCUIs);
+
+    /**
      * This function returns an ordered array with all concepts in the
      * database. Concepts are totally ordered from the root in a BFS mode.
      * @return 
