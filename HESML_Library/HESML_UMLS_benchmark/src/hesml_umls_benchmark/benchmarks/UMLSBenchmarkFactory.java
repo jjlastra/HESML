@@ -24,7 +24,7 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.IUMLSBenchmark;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 
 /**
  * This function creates all UMLS benchmarks
@@ -49,7 +49,7 @@ public class UMLSBenchmarkFactory
      */
 
     public static IUMLSBenchmark createConceptBenchmark(
-            SnomedBasedLibrary[]    libraries,
+            SnomedBasedLibraryType[]    libraries,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,
             int                     nRandomSamples,
@@ -60,7 +60,7 @@ public class UMLSBenchmarkFactory
             String                  strSnomedDBdescriptionFileName,
             String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
-        return (new ConceptEvaluationBenchmark(libraries,
+        return (new RandomConceptsEvalBenchmark(libraries,
                 similarityMeasure, icModel, nRandomSamples, nRuns, 
                 strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,

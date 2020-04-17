@@ -73,9 +73,9 @@ public class HESML_UMLS_benchmark
          * Learning, Madison, WI, 1998: pp. 296–304.
          */
         
-        SnomedBasedLibrary[] librariesExp1 = new SnomedBasedLibrary[]{
-                                                    SnomedBasedLibrary.HESML,
-                                                    SnomedBasedLibrary.SML};
+        SnomedBasedLibraryType[] librariesExp1 = new SnomedBasedLibraryType[]{
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML};
         
         IUMLSBenchmark benchmark1 = UMLSBenchmarkFactory.createConceptBenchmark(
                                     librariesExp1, SimilarityMeasureType.Lin,

@@ -52,7 +52,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
      * @return 
      */
     
-    ISnomedConcept[] getConceptsByUmlsCUI(String umlsConceptCUI);
+    ISnomedConcept[] getConceptsForUmlsCUI(String umlsConceptCUI);
 
     /**
      * This function returns the SNOMED concepts associated to the CUIs
@@ -61,7 +61,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
      * @return 
      */
     
-    ISnomedConcept[] getConceptsByUmlsCUIs(String[] umlsConceptCUIs);
+    ISnomedConcept[] getConceptsForUmlsCUI(String[] umlsConceptCUIs);
 
     /**
      * This function returns an ordered array with all concepts in the

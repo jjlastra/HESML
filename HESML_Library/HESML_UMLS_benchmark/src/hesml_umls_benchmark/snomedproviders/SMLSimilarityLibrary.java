@@ -24,7 +24,7 @@ package hesml_umls_benchmark.snomedproviders;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 import org.openrdf.model.URI;
 import slib.graph.io.conf.GDataConf;
 import slib.graph.io.loader.GraphLoaderGeneric;
@@ -181,9 +181,9 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     @Override
-    public SnomedBasedLibrary getLibraryType()
+    public SnomedBasedLibraryType getLibraryType()
     {
-        return (SnomedBasedLibrary.SML);
+        return (SnomedBasedLibraryType.SML);
     }
     
     /**

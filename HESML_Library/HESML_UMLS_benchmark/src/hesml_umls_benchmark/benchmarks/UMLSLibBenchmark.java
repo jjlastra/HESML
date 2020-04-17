@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.IUMLSBenchmark;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedproviders.SnomedLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -64,7 +64,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
      */
     
     UMLSLibBenchmark(
-            SnomedBasedLibrary[]    libraries,
+            SnomedBasedLibraryType[]    libraries,
             String                  strSnomedDir,
             String                  strSnomedDBconceptFileName,
             String                  strSnomedDBRelationshipsFileName,

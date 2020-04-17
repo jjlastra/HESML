@@ -26,7 +26,7 @@ package hesml_umls_benchmark;
  * @author j.lastra
  */
 
-public enum SnomedBasedLibrary
+public enum SnomedBasedLibraryType
 {
     HESML,
     SML,

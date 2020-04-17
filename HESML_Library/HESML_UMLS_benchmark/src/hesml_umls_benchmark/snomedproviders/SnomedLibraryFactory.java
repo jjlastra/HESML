@@ -22,7 +22,7 @@
 package hesml_umls_benchmark.snomedproviders;
 
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 
 /**
  * This class implements a factory of SNOMED provider objects which
@@ -44,7 +44,7 @@ public class SnomedLibraryFactory
      */
     
     public static ISnomedSimilarityLibrary getLibrary(
-            SnomedBasedLibrary  libraryType,
+            SnomedBasedLibraryType  libraryType,
             String              strSnomedDir,
             String              strSnomedDBconceptFileName,
             String              strSnomedDBRelationshipsFileName,

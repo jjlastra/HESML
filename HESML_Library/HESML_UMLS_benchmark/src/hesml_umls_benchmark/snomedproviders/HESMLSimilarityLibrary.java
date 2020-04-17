@@ -30,7 +30,7 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 
 /**
  * This class implementes the SNOMED similarity library based on HESML.
@@ -94,9 +94,9 @@ class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     @Override
-    public SnomedBasedLibrary getLibraryType()
+    public SnomedBasedLibraryType getLibraryType()
     {
-        return (SnomedBasedLibrary.HESML);
+        return (SnomedBasedLibraryType.HESML);
     }
     
     /**

@@ -37,7 +37,7 @@ public interface ISnomedSimilarityLibrary
      * @return 
      */
     
-    SnomedBasedLibrary getLibraryType();
+    SnomedBasedLibraryType getLibraryType();
     
     /**
      * Thois function sets the active semantic measure used by the library

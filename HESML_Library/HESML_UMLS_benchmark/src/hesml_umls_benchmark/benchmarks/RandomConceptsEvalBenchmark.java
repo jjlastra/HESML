@@ -24,7 +24,7 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
-import hesml_umls_benchmark.SnomedBasedLibrary;
+import hesml_umls_benchmark.SnomedBasedLibraryType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -32,13 +32,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * This class implements a benchmark to comapre the performance
+ * This class implements a benchmark to compare the performance
  * of the UMLS similarity libraries in the evaluation of the degree
  * of similairty between randdom concept pairs in SNOMED-CT.
  * @author j.lastra
  */
 
-class ConceptEvaluationBenchmark extends UMLSLibBenchmark
+class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
 {
     /**
      * Column offset for the main attributes extratec from concept and
@@ -77,8 +77,8 @@ class ConceptEvaluationBenchmark extends UMLSLibBenchmark
      * @throws Exception 
      */
 
-    ConceptEvaluationBenchmark(
-            SnomedBasedLibrary[]    libraries,
+    RandomConceptsEvalBenchmark(
+            SnomedBasedLibraryType[]    libraries,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,
             int                     nRandomSamples,

@@ -106,7 +106,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      */
     
     @Override
-    public ISnomedConcept[] getConceptsByUmlsCUI(String umlsConceptCUI)
+    public ISnomedConcept[] getConceptsForUmlsCUI(String umlsConceptCUI)
     {
         // We initialize the output
         
@@ -138,7 +138,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
      */
     
     @Override
-    public ISnomedConcept[] getConceptsByUmlsCUIs(String[] umlsConceptCUIs)
+    public ISnomedConcept[] getConceptsForUmlsCUI(String[] umlsConceptCUIs)
     {
         // We create an auxiliary collection
         
@@ -148,7 +148,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         
         for (int i = 0; i < umlsConceptCUIs.length; i++)
         {
-            ISnomedConcept[] currentIdConcepts = getConceptsByUmlsCUI(umlsConceptCUIs[i]);
+            ISnomedConcept[] currentIdConcepts = getConceptsForUmlsCUI(umlsConceptCUIs[i]);
             
             for (ISnomedConcept concept: currentIdConcepts)
             {
@@ -409,7 +409,14 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         {
             concepts.clear();
         }
+
+        // We clear the mapping of CUIs to SNOMED concepts
         
+        for (ArrayList<ISnomedConcept> concepts: m_ConceptsIndexedByCUI.values())
+        {
+            concepts.clear();
+        }
+
         // We release the resources used by the concepts
         
         for (SnomedConcept concept: m_SnomedConcepts)
