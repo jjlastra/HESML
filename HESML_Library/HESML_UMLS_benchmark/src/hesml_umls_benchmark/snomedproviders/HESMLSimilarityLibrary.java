@@ -161,7 +161,8 @@ class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
         
         // We get the Lin similarity measure
         
-        m_hesmlSimilarityMeasure = MeasureFactory.getMeasure(m_hesmlSnomedDatabase.getTaxonomy(), measureType);
+        m_hesmlSimilarityMeasure = MeasureFactory.getMeasure(m_hesmlSnomedDatabase.getTaxonomy(),
+                                    SimilarityMeasureType.FastRada);
     }
     
     /**

@@ -30,6 +30,7 @@ import java.util.PriorityQueue;
 import hesml.taxonomy.*;
 import java.util.HashSet;
 import java.util.LinkedList;
+import javax.naming.ldap.HasControls;
 
 /**
  * This class implements a IVertex object in the half-edge representation
@@ -634,7 +635,94 @@ class Vertex implements IVertex
             } while (loop != firstOutEdge);
         }        
     }
-        
+
+    /**
+     * This function computes the distance field from the current vertex
+     * to all vertexes in the subgraph using the Dijkstra algorithm
+     * and the edge weights assigned to the taxonomy.
+     * If the parameter 'weighted' is false, the
+     * function uses the edge length (weight = 1), otherwise
+     * it computes the weighted shortest path distance.
+     * Once the function is executed, the distance from the vertex
+     * to each vertex in the subgraph can be recovered by calling
+     * the getMinDistance() function on each vertex.
+     * @param weighted Flag indicating if the edge weights will be used
+     */
+    
+    private void computeDistanceFieldOnSubgraph(
+            HashSet<IVertex>    subgraph,
+            boolean             weighted)
+    {
+        // We reset all the minimum distances before to start the method
+
+        for (IVertex vertex: subgraph)
+        {
+            vertex.setMinDistance(Double.POSITIVE_INFINITY);
+        }
+
+        // We set to 0 the distance in the source vertex
+
+        m_minDistance = 0.0;
+
+        // We create the priority queue and insert the current vertex as source
+
+        PriorityQueue<IVertex> pending = new PriorityQueue<>();
+        pending.add(this);
+
+        // We make a BFS traversal of the taxonomy
+
+        while (!pending.isEmpty())
+        {
+            // We get the current vertex to expolore
+
+            IVertex seed = pending.poll();
+            IHalfEdge firstOutEdge = seed.getFirstOutcomingEdge();
+
+            // Visit each edge exiting u
+
+            IHalfEdge loop = firstOutEdge;
+
+            do
+            {
+                // We get the adjacent vertex and the weight
+
+                IVertex adjacent = loop.getTarget();
+
+                if (subgraph.contains(adjacent))
+                {
+                    // We get the edge weight
+                    
+                    double weight = weighted ? loop.getEdge().getWeight() : 1; 
+
+                    // We compute the novel distance
+
+                    double novelDistance = seed.getMinDistance() + weight;
+
+                    // We check if the novel didstance is lower
+
+                    if (novelDistance < adjacent.getMinDistance())
+                    {
+                        // We update the shortest distance until
+                        // the adjacent vertex
+
+                        adjacent.setMinDistance(novelDistance);
+
+                        // We remove the adjacent from the queue and insert
+                        // it at the end
+
+                        pending.remove(adjacent);
+                        pending.add(adjacent);
+                    }
+                }
+
+                // We iterate aroung the vertex
+
+                loop = loop.getOpposite().getNext();
+
+            } while (loop != firstOutEdge);
+        }        
+    }
+    
     /**
      * This function computes the Dijkstra algorithm using the edge weights
      * assigned to the taxonomy, or a uniform weight = 1 when it is invoked
@@ -673,6 +761,285 @@ class Vertex implements IVertex
     }
     
     /**
+     * This function checks if the query vertex is a desdencant node of
+     * the current vertex.
+     * @param queryVertex
+     * @return True when queryVertex is descendant of current vertex
+     */
+    
+    @Override
+    public boolean isMyDescendant(
+            IVertex queryVertex)
+    {
+        // We initialize the output
+        
+        boolean descendant = false;
+        
+        // We filter the equal case
+        
+        if (queryVertex != this)
+        {
+            // We create a visiting set to label the visited vretexes.
+            // It avoids to mark as visited the full set fo vertexes
+            // which is unefficient in the case of large taxonomies.
+
+            HashSet<IVertex> visited = new HashSet<>();
+            LinkedList<IVertex> pending = new LinkedList<>();
+
+            // We enqueue the current vertex
+
+            pending.add(this);
+            visited.add(this);
+
+            // We process the pending nodes
+
+            while (!pending.isEmpty())
+            {
+                // We get the next descendant
+
+                IVertex descendantVertex = pending.remove();
+
+                // We check if the descendant matches the query vrtex
+
+                if (descendantVertex == queryVertex)
+                {
+                    descendant = true;
+                    pending.clear();
+                    break;
+                }
+
+                // EXPANSION OF THE CHILDREN VERTEXES
+                // We enqueue the children of the descendant. In order
+                // to avoid the retrieval and removal of the children
+                // list, with its corresponding overhead,
+                // we explictly implement here the main
+                // iteration loop of our PosetHERep.
+
+                IHalfEdge   descendantFirstOurArc = descendantVertex.getFirstOutcomingEdge();
+                IHalfEdge   loop = descendantFirstOurArc;
+
+                do
+                {
+                    // We obtain the next child vertex
+
+                    if (loop.getEdgeType() == OrientedEdgeType.SuperClassOf)
+                    {
+                        IVertex child = loop.getTarget();
+
+                        if (!visited.contains(child))
+                        {
+                            pending.add(child);
+                            visited.add(child);
+                        }
+                    }
+
+                    // We get the next outcoming arc
+
+                    loop = loop.getOpposite().getNext();
+
+                } while (loop != descendantFirstOurArc);
+            }
+
+            // We release the visited set
+
+            visited.clear();
+        }
+        
+        // We return the result
+        
+        return (descendant);
+    }
+
+    /**
+     * This function checks if the query vertex is an ancestor node of
+     * the current vertex.
+     * @param queryVertex
+     * @return True when queryVertex is descendant of current vertex
+     */
+    
+    @Override
+    public boolean isMyAncestor(
+            IVertex queryVertex)
+    {
+        // We initialize the output
+        
+        boolean ancestor = false;
+        
+        // We filter the equal case
+        
+        if (queryVertex != this)
+        {
+            // We create a visiting set to label the visited vretexes.
+            // It avoids to mark as visited the full set fo vertexes
+            // which is unefficient in the case of large taxonomies.
+
+            HashSet<IVertex> visited = new HashSet<>();
+            LinkedList<IVertex> pending = new LinkedList<>();
+
+            // We enqueue the current vertex
+
+            pending.add(this);
+            visited.add(this);
+
+            // We process the pending nodes
+
+            while (!pending.isEmpty())
+            {
+                // We get the next descendant
+
+                IVertex ancestortVertex = pending.remove();
+
+                // We check if the descendant matches the query vrtex
+
+                if (ancestortVertex == queryVertex)
+                {
+                    ancestor = true;
+                    pending.clear();
+                    break;
+                }
+
+                // EXPANSION OF THE PARENT VERTEXES
+                // We enqueue the parents of the parent vertex. In order
+                // to avoid the retrieval and removal of the parent
+                // list, with its corresponding overhead,
+                // we explictly implement here the main
+                // iteration loop of our PosetHERep.
+
+                IHalfEdge   ancestorFirstOurArc = ancestortVertex.getFirstOutcomingEdge();
+                IHalfEdge   loop = ancestorFirstOurArc;
+
+                do
+                {
+                    // We obtain the next child vertex
+
+                    if (loop.getEdgeType() == OrientedEdgeType.SubClassOf)
+                    {
+                        IVertex parent = loop.getTarget();
+
+                        if (!visited.contains(parent))
+                        {
+                            pending.add(parent);
+                            visited.add(parent);
+                        }
+                    }
+
+                    // We get the next outcoming arc
+
+                    loop = loop.getOpposite().getNext();
+
+                } while (loop != ancestorFirstOurArc);
+            }
+
+            // We release the visited set
+
+            visited.clear();
+        }
+        
+        // We return the result
+        
+        return (ancestor);
+    }
+    
+    /**
+     * This function computes a fast approximation of the Dijkstra algorithm
+     * using the edge weights assigned to the taxonomy, or a uniform weight = 1
+     * when it is invoked to count the edges between the current and target
+     * vertexes. This novel algortihm is especially suited for taxonomies
+     * and it is introduced by Lastra-Díaz et al. (2020)[1].
+     * [1]
+     * @param target
+     * @return 
+     */
+    
+    @Override
+    public double getFastShortestPathDistanceTo(
+            IVertex     target,
+            boolean     weighted)
+    {
+        double  distance;    // Returned value
+        
+        // We check for identical target
+        
+        if (target == this)
+        {
+            distance = 0.0;
+        }
+        else
+        {
+            // We check whether the taxonomy holds the cached ancestor set
+        
+            boolean cachedAncestors = (m_CachedAncestorSet != null);
+            
+            // We compute a subgraoh containing most of paths between
+            // the current vertex and the target
+            
+            HashSet<IVertex> mainSubgraph;
+            HashSet<IVertex> auxSubgraph = null;
+            HashSet<IVertex> mergeSubgraph = null;
+            
+            if (isMyDescendant(target))
+            {
+                // We compute the shortes-path constrained to the ancestor set
+                // of the target vertex, which includes this vertex
+                
+                mainSubgraph = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
+                        : m_Taxonomy.getUnorderedAncestorSet(target);
+                
+                computeDistanceFieldOnSubgraph(mainSubgraph, weighted);
+                
+                if (!cachedAncestors) mainSubgraph.clear();
+            }
+            else if (target.isMyDescendant(this))
+            {
+                // We compute the shortes-path constrained to the ancestor set
+                // of this vertex, which includes the target vertex
+                
+                mainSubgraph = cachedAncestors ? getCachedAncestorSet()
+                        : m_Taxonomy.getUnorderedAncestorSet(this);
+                
+                computeDistanceFieldOnSubgraph(mainSubgraph, weighted);
+                
+                if (!cachedAncestors) mainSubgraph.clear();
+            }
+            else
+            {
+                // We obtain the ancestor set of both vertexes
+                
+                mainSubgraph = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
+                        : m_Taxonomy.getUnorderedAncestorSet(target);
+                
+                auxSubgraph = cachedAncestors ? getCachedAncestorSet()
+                        : m_Taxonomy.getUnorderedAncestorSet(this);
+                
+                // We merge both ancestor sets to buld the subgraph
+                
+                mergeSubgraph = new HashSet<>(mainSubgraph);
+                mergeSubgraph.addAll(auxSubgraph);
+                
+                computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);
+                
+                // We release the auxiliary sets
+                
+                if (!cachedAncestors)
+                {
+                    mainSubgraph.clear();
+                    auxSubgraph.clear();
+                }
+                
+                mergeSubgraph.clear();
+            }
+
+            // We get the shortest distance until the target vertex
+
+            distance = target.getMinDistance();
+        }
+        
+        // We return the result
+        
+        return (distance);
+    }
+    
+    /**
      * This function computes the common subgraph of the input vertexes,
      * which is defined as the union of the ancestor and descendant sets
      * of both input vertexes. The common subgraph is the set of
@@ -687,7 +1054,9 @@ class Vertex implements IVertex
             IVertex source,
             IVertex target)
     {
-        HashSet<IVertex>    subgraph = new HashSet<>(); // Returned value
+        // We initialzie the output
+        
+        HashSet<IVertex> subgraph = new HashSet<>(); // Returned value
         
         // We create the pending queue
         
@@ -1453,7 +1822,7 @@ class Vertex implements IVertex
     }   
     
     /**
-     * This function computes on-the-fly the hyponym set of the vertex
+     * This function computes on-the-fly the hyponym set of the vertex.
      * @return Hyponym count
      * @throws java.lang.Exception
      */
@@ -1995,3 +2364,4 @@ class Vertex implements IVertex
         return (maxDepth);
     }
 }
+

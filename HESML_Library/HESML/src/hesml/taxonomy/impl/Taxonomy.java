@@ -235,7 +235,7 @@ class Taxonomy implements ITaxonomy
     @Override
     public IVertex getMICA(
             IVertex begin,
-            IVertex end) throws InterruptedException, Exception
+            IVertex end) throws Exception
     {
         // We check whether the taxonomy holds the cached ancestor set
         
@@ -269,7 +269,7 @@ class Taxonomy implements ITaxonomy
     
     private IVertex getCachedMICA(
             IVertex begin,
-            IVertex end) throws InterruptedException, Exception
+            IVertex end)
     {
         IVertex micaVertex = null;    // Returned value
 
@@ -328,7 +328,7 @@ class Taxonomy implements ITaxonomy
 
     private IVertex getUncachedMICA(
             IVertex begin,
-            IVertex end) throws InterruptedException, Exception
+            IVertex end)
     {
         IVertex micaVertex = null;    // Returned value
 
@@ -389,16 +389,16 @@ class Taxonomy implements ITaxonomy
      * @throws InterruptedException 
      */
     
-    private HashSet<IVertex>  getUnorderedAncestorSet(
-            IVertex seed) throws InterruptedException
+    public HashSet<IVertex>  getUnorderedAncestorSet(
+            IVertex seed)
     {
         // We create the output ancestor set
         
-        HashSet<IVertex>    ancestorSet = new HashSet<>();
+        HashSet<IVertex> ancestorSet = new HashSet<>();
         
         // We create the traversal queue
         
-        LinkedList<IVertex>  pending = new LinkedList<>();
+        LinkedList<IVertex> pending = new LinkedList<>();
         
         // We enqueue this vertes to mark all the ancestors
         

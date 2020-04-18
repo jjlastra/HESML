@@ -42,14 +42,23 @@ import hesml.taxonomy.*;
 class MeasureRada extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureRada(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
     }
     
     /**
@@ -60,7 +69,9 @@ class MeasureRada extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Rada);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Rada :
+                SimilarityMeasureType.FastRada);
     }
     
     /**
@@ -88,7 +99,9 @@ class MeasureRada extends SimilaritySemanticMeasure
     {
         // We compute the shortest path length
         
-        double distance = left.getShortestPathDistanceTo(right, false);
+        double distance = !m_useFastShortestPathAlgorithm ?
+                left.getShortestPathDistanceTo(right, false) :
+                left.getFastShortestPathDistanceTo(right, false);
         
         // We return the result
         

@@ -41,6 +41,15 @@ public enum SimilarityMeasureType
      */
     
     Rada,
+    
+    /**
+     * It asks for the Rada et al. (1989) similarity measure which uses
+     * a very efficient approximation of the Djikstra algortihm for
+     * taxonomies introduced by Lastra-Díaz et al. (2020) [1].
+     * [1]
+     */
+    
+    FastRada,
 
     /**
      * It asks for the similarity measure introduced in the paper below.

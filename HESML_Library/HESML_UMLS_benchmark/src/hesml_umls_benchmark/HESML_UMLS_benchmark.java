@@ -79,7 +79,7 @@ public class HESML_UMLS_benchmark
         
         IUMLSBenchmark benchmark1 = UMLSBenchmarkFactory.createConceptBenchmark(
                                     librariesExp1, SimilarityMeasureType.Lin,
-                                    IntrinsicICModelType.Seco, 1000000, 10, strUMLSdir,
+                                    IntrinsicICModelType.Seco, 100000, 10, strUMLSdir,
                                     strSNOMED_conceptFilename, strSNOMED_relationshipsFilename,
                                     strSNOMED_descriptionFilename, strSNOMED_CUI_mappingfilename);
         

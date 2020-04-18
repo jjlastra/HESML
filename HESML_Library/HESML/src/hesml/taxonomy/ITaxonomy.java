@@ -107,7 +107,7 @@ public interface ITaxonomy
      */
 
     IVertex getMICA(IVertex begin, IVertex end)
-            throws InterruptedException, Exception;
+            throws Exception;
 
     /**
      * This function computes the lowest common subsumer (ancestor),

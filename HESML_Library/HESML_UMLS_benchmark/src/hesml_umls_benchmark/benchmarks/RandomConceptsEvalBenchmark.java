@@ -126,6 +126,13 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         for (int i = 0; i < m_Libraries.length; i++)
         {
+            // Debugginf message
+            
+            System.out.println("---------------------------------");
+            System.out.println("\t" + m_Libraries[i].toString()
+                    + " library: evaluating the similarity between " + m_nSamples
+                    + " random concept pairs in " + m_nRuns + " runs");
+            
             // We set the row header
             
             strOutputDataMatrix[i][0] = m_Libraries[i].getLibraryType().toString()
@@ -191,7 +198,6 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         // We initialize the output vector
         
         double[] runningTimes = new double[nRuns];
-        
         double accumulatedTime = 0.0;
         
         // We exucte multiple times the benchmark to compute a stable running time

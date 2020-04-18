@@ -42,6 +42,24 @@ public interface IVertex extends Comparable<IVertex>
     boolean isLeaf();
     
     /**
+     - This function checks if the query vertex is a desdencant node of
+     * the current vertex.
+     * @param queryVertex
+     * @return True when queryVertex is descendant of current vertex
+     */
+    
+    boolean isMyDescendant(IVertex queryVertex);
+    
+    /**
+     * This function checks if the query vertex is an ancestor node of
+     * the current vertex.
+     * @param queryVertex
+     * @return True when queryVertex is descendant of current vertex
+     */
+    
+    boolean isMyAncestor(IVertex queryVertex);
+    
+    /**
      * This function returns a vector with the string tag fields of the parent
      * vertexes.
      * @return A vector with the string Tag fields of the parents nodes. 
@@ -192,6 +210,20 @@ public interface IVertex extends Comparable<IVertex>
     double getShortestPathDistanceTo(
             IVertex     target,
             boolean     weighted);
+    
+    /**
+     * This function computes a fast approximation of the Dijkstra algorithm
+     * using the edge weights assigned to the taxonomy, or a uniform weight = 1
+     * when it is invoked to count the edges between the current and target
+     * vertexes. This novel algortihm is especially suited for taxonomies
+     * and it is introduced in a paper submitted for publication [1].
+     * @param target
+     * @return 
+     */
+    
+    double getFastShortestPathDistanceTo(
+            IVertex     target,
+            boolean     weighted);
 
     /**
      * This function computes the distance field from the current vertex
@@ -205,8 +237,7 @@ public interface IVertex extends Comparable<IVertex>
      * @param weighted Flag indicating the value for the weights
      */
     
-    void computeDistanceField(
-            boolean     weighted);
+    void computeDistanceField(boolean weighted);
     
     /**
      * This function computes the length of the shortest path between the

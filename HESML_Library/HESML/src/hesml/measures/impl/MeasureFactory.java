@@ -82,7 +82,13 @@ public class MeasureFactory
         {
             case Rada:
                 
-                measure = new MeasureRada(taxonomy);
+                measure = new MeasureRada(taxonomy, false);
+                
+                break;
+
+            case FastRada:
+                
+                measure = new MeasureRada(taxonomy, true);
                 
                 break;
                 
