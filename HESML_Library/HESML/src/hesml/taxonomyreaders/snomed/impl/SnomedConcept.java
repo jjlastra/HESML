@@ -134,7 +134,12 @@ class SnomedConcept implements ISnomedConcept
         
         HashSet<ISnomedConcept> parents = new HashSet<>();
         
-        // We get the parents from the owner DB
+        // We check whether the concept is already linked to the owner DB
+        // because in this case, the list of parents ID will be empty.
+        // Once the taxonomy is cretaed, we use the relationships in the taxonomy
+        // to hold the child/parent relationships. For this reason, we
+        // release the parents ID lists to remove redundant information
+        // and save memory.
         
         if (m_OwnerDB == null)
         {
@@ -324,7 +329,12 @@ class SnomedConcept implements ISnomedConcept
         
         Long[] parentSnomedIds;
                 
-        // We chekc whether the concept is already linked to the owner DB
+        // We check whether the concept is already linked to the owner DB
+        // because in this case, the list of parents ID will be empty.
+        // Once the taxonomy is cretaed, we use the relationships in the taxonomy
+        // to hold the child/parent relationships. For this reason, we
+        // release the parents ID lists to remove redundant information
+        // and save memory.
         
         if (m_OwnerDB == null)
         {
