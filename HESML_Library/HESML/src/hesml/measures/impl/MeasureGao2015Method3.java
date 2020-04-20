@@ -102,10 +102,8 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
             IVertex right) throws InterruptedException, Exception
     {
         double  similarity = 0.0;   // Returned value
-        
-        double  length; // Shortest path length between concepts
-        double  weight; // Weight    
-        double  icMICAvalue;
+
+        // We obtain the MICA vertex
 
         IVertex micaVertex = m_Taxonomy.getMICA(left, right);
         
@@ -115,22 +113,17 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
         {
             // We get the shortest path length between the concepts
 
-            length = left.getShortestPathDistanceTo(right, false);
+            double length = left.getShortestPathDistanceTo(right, false);
 
             // We get the IC value of the lowest common ancestor
 
-            icMICAvalue = micaVertex.getICvalue();
+            double icMICAvalue = micaVertex.getICvalue();
 
             // We comptue the IC-based weight
 
-            if (icMICAvalue >= 1.0)
-            {
-                weight = Math.pow(1.0 + 1.0 / icMICAvalue, m_Beta);
-            }
-            else
-            {
-                weight = Math.pow(2.0, m_Beta);
-            }
+            double  weight = (icMICAvalue >= 1.0) ?
+                                Math.pow(1.0 + 1.0 / icMICAvalue, m_Beta) :
+                                Math.pow(2.0, m_Beta);
 
             // We comptue the similarity value
 

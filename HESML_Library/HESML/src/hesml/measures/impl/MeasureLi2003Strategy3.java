@@ -116,17 +116,13 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
             IVertex right,
             double  alpha) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        double  length; // Shortest path length
-        
         // We compute the shortest path length between nodes
         
-        length = left.getShortestPathDistanceTo(right, false);
+        double length = left.getShortestPathDistanceTo(right, false);
         
         // We compute the similarity
         
-        similarity = Math.exp(-alpha * length);
+        double similarity = Math.exp(-alpha * length);
         
         // We return the result
         

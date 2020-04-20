@@ -111,33 +111,29 @@ class MeasureLi2003Strategy9 extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
+        // We obtain the MICA vertex
+        
         IVertex micavertex = m_Taxonomy.getMICA(left, right);
         
-        double  f1, f2, f3; // Strategy 3 and 4 terms
-        
-        double  icMica; // IC value of the MICA vertex
-        
-        double  expIC, expNegIC;    // Exponential terms
-
-        // We echeck the existence of the MICA vertex
+        // We check the existence of the MICA vertex
         
         if (micavertex != null)
         {
             // We get the ic vlaue of the mica
 
-            icMica = micavertex.getICvalue();
+            double icMica = micavertex.getICvalue();
 
             // We get the f1 and f2 terms
 
-            f1 = MeasureLi2003Strategy3.simStrategyFun1(left, right, m_Alpha);
-            f2 = MeasureLi2003Strategy4.simStrategyFun2(left, right, m_Beta);
+            double f1 = MeasureLi2003Strategy3.simStrategyFun1(left, right, m_Alpha);
+            double f2 = MeasureLi2003Strategy4.simStrategyFun2(left, right, m_Beta);
 
             // We compute the F3 function
 
-            expIC = Math.exp(m_Gamma * icMica);
-            expNegIC = Math.exp(-m_Gamma * icMica);
+            double expIC = Math.exp(m_Gamma * icMica);
+            double expNegIC = Math.exp(-m_Gamma * icMica);
 
-            f3 = (expIC - expNegIC) / (expIC + expNegIC);
+            double f3 = (expIC - expNegIC) / (expIC + expNegIC);
 
             // We compute the similarity
 

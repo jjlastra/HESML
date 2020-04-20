@@ -62,7 +62,7 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
         m_K = 0.08;
     }
 
-        /**
+    /**
      * This function returns the type of measure.
      * @return The type of semantic measure.
      */
@@ -98,22 +98,21 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
+        // We obtain the MICA vertex
+        
         IVertex micaVertex = m_Taxonomy.getMICA(left, right);
        
-        double  length; // Length based in edge counting
-        double  power;  // Power factor
-        
         // We check the MCIA vertex
         
         if (micaVertex != null)
         {
             // We get the length among concepts
 
-            length = left.getShortestPathDistanceTo(right, false);
+            double length = left.getShortestPathDistanceTo(right, false);
 
             // We measure the power factor
 
-            power = (Math.exp(m_K * length) - 1.0);
+            double power = (Math.exp(m_K * length) - 1.0);
 
             // We compute the distance
 

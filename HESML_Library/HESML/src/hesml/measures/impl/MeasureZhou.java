@@ -96,27 +96,21 @@ class MeasureZhou extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        double  distJC;         // Distancia de Jiang-Conrath
-        double  depthFactor;    // Depth factor
-        double  length;         // Length
-        
         // We get the Jiang-Conrath distance
         
-        distJC = BaseJiangConrathMeasure.getClassicJiangConrathDist(left, right);
+        double distJC = BaseJiangConrathMeasure.getClassicJiangConrathDist(left, right);
         
         // We get the edge length between the nodes
         
-        length = left.getShortestPathDistanceTo(right, false);
+        double length = left.getShortestPathDistanceTo(right, false);
         
         // We compute the depth factor
         
-        depthFactor = Math.log(length + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
+        double depthFactor = Math.log(length + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
         
         // We comptue the overall similarity
         
-        similarity = 1.0 - 0.5 * (depthFactor + 0.5 * distJC);
+        double similarity = 1.0 - 0.5 * (depthFactor + 0.5 * distJC);
         
         // We return the result
         

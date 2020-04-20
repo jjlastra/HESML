@@ -84,13 +84,6 @@ class MeasureSanchez2012 extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  dissimilarity;   // Returned value
-       
-        double    leftDif, rightDif;  // CARDINAL OF THE DIFFERENCE SETS
-        double    intersection;       // cardinal of the intersexction set
-        
-        double  featuresRatio;    // Argfument
-        
         // We get the ancestro sets
         
         IVertexList leftAncestors = left.getAncestors(true);
@@ -98,9 +91,9 @@ class MeasureSanchez2012 extends SimilaritySemanticMeasure
         
         // We measure the difference sets and the intersection
         
-        leftDif = leftAncestors.getDifferenceSetCount(rightAncestors);
-        rightDif = rightAncestors.getDifferenceSetCount(leftAncestors);
-        intersection = leftAncestors.getIntersectionSetCount(rightAncestors);
+        double leftDif = leftAncestors.getDifferenceSetCount(rightAncestors);
+        double rightDif = rightAncestors.getDifferenceSetCount(leftAncestors);
+        double intersection = leftAncestors.getIntersectionSetCount(rightAncestors);
         
         // We clear the sets
         
@@ -109,11 +102,11 @@ class MeasureSanchez2012 extends SimilaritySemanticMeasure
         
         // We compute the dissimilarity ratio
         
-        featuresRatio = (leftDif + rightDif) / (leftDif + rightDif + intersection);
+        double featuresRatio = (leftDif + rightDif) / (leftDif + rightDif + intersection);
         
         // We compute the dissimilarity measure
         
-        dissimilarity = Math.log(1.0 + featuresRatio) / Math.log(2.0);
+        double dissimilarity = Math.log(1.0 + featuresRatio) / Math.log(2.0);
         
         // We return the result
         

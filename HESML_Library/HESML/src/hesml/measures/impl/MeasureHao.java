@@ -110,11 +110,9 @@ class MeasureHao extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex lcsVertex; // Lowest Common Subsummer
-        
         // We get the LCS vertex
 
-        lcsVertex = m_Taxonomy.getLCS(left, right, false);
+        IVertex lcsVertex = m_Taxonomy.getLCS(left, right, false);
 
         // We compute the distance
 

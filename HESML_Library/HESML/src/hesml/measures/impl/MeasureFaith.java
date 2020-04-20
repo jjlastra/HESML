@@ -89,8 +89,6 @@ class MeasureFaith extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex micaVertex; // LCA with the maximum IC value
-        
         // We filter the equal values
         
         if (left == right)
@@ -101,7 +99,7 @@ class MeasureFaith extends SimilaritySemanticMeasure
         {
             // We get the MICA vertex
 
-            micaVertex = m_Taxonomy.getMICA(left, right);
+            IVertex micaVertex = m_Taxonomy.getMICA(left, right);
 
             // We compute the distance
 

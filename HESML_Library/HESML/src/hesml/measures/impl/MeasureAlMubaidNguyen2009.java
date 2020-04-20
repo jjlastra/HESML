@@ -85,17 +85,14 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  distance;   // Returned value
-
-        double  path;       // Length of the shortest path depth
-        double  maxDepth;   // Maximum depth of the taxonomy
-        double  lcsDepth;   // Depth of the LCS vertex
+        double  shortestPathLength; // Length of the shortest path depth
+        double  lcsDepth;           // Depth of the LCS vertex
         
         IVertex lcsVertex = left.getTaxonomy().getLCS(left, right, false);
         
         // We get the maximum depth in the taxonomy
         
-        maxDepth = left.getTaxonomy().getVertexes().getGreatestDepthMin();
+        double maxDepth = left.getTaxonomy().getVertexes().getGreatestDepthMin();
         
         // We obtain the factors of the distance formula for the
         // normal case (LCS exists) and for the potentially pathological
@@ -103,7 +100,7 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
         
         if (lcsVertex != null)
         {
-            path = left.getShortestPathDistanceTo(right, false);
+            shortestPathLength = left.getShortestPathDistanceTo(right, false);
             lcsDepth = lcsVertex.getDepthMin();
         }
         else
@@ -111,7 +108,7 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
             // We consider the maximum distance according to the
             // Mubaid-Nguyen formula
             
-            path = 2.0 * maxDepth;
+            shortestPathLength = 2.0 * maxDepth;
             lcsDepth = 0.0;
         }
 
@@ -124,7 +121,7 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
         // The authors reports a Pearson correlation value of 0.815
         // in the RG65 dataset with these default values.
         
-        distance = Math.log(1 + path * (maxDepth - lcsDepth));
+        double distance = Math.log(1 + shortestPathLength * (maxDepth - lcsDepth));
         
         // We return the result
         

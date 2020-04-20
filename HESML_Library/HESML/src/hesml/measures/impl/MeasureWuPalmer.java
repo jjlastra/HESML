@@ -87,8 +87,6 @@ class MeasureWuPalmer extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex lcsVertex;  // Common lowest ancestor
-       
         // We check the equality case
         
         if (left == right)
@@ -99,7 +97,7 @@ class MeasureWuPalmer extends SimilaritySemanticMeasure
         {
             // We get the LCS vertex
 
-            lcsVertex = m_Taxonomy.getLCS(left, right, false);
+            IVertex lcsVertex = m_Taxonomy.getLCS(left, right, false);
 
             // We compute the distance field from the LCS vertex
             // and finally the similarity value

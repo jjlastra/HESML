@@ -72,8 +72,6 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
         
         double  bestSimilarityValue = getNullSimilarityValue();
         
-        double  similarity; // Similarity value
-        
         // We search for the best similarity value
         
         for (IVertex leftVertex: firstWordVertexes)
@@ -82,7 +80,7 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
             {
                 // We compoute the similarity value between left and right vertexes
                 
-                similarity = getSimilarity(leftVertex, rightVertex);
+                double similarity = getSimilarity(leftVertex, rightVertex);
                 
                 // We save the best value
                 

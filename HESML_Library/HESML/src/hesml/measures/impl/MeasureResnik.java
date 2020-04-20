@@ -85,15 +85,14 @@ class MeasureResnik extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
+        // We obtain the MICA vertex
+        
         IVertex micaVertex = m_Taxonomy.getMICA(right, left);
         
         // We compute the similarity value, but we check before the
         // existence of the MICA vertex.
         
-        if (micaVertex != null)
-        {
-            similarity = micaVertex.getICvalue();
-        }
+        if (micaVertex != null) similarity = micaVertex.getICvalue();
         
         // We return the result
         

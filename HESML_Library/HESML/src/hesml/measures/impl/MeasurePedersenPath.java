@@ -85,11 +85,9 @@ class MeasurePedersenPath extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
         // We compute the shortest path length
         
-        similarity = 1.0 / (1.0 + left.getShortestPathDistanceTo(right, false));
+        double similarity = 1.0 / (1.0 + left.getShortestPathDistanceTo(right, false));
         
         // We return the result
         
