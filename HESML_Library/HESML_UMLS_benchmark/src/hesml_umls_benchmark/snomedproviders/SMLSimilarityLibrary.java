@@ -25,6 +25,8 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import java.util.HashMap;
+import java.util.HashSet;
 import org.openrdf.model.URI;
 import slib.graph.io.conf.GDataConf;
 import slib.graph.io.loader.GraphLoaderGeneric;
@@ -73,12 +75,18 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
     private URI m_snomedctURI;
 
     /**
-     * SML IC model and similairy measure
+     * SML IC model and similarity measure
      */
     
     private ICconf m_icConf;
     private SMconf m_smConf;
 
+    /**
+     * IndexedSNOMED-CT ids by CUI
+     */
+    
+    private HashMap<String, HashSet<Long>>  m_indexedSnomedIDsByCUI;
+    
     /**
      * Constructor to build the Snomed HESML database
      * @param strSnomedDir
@@ -92,42 +100,82 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName) throws Exception
+            String  strSnomedDBdescriptionFileName,
+            String  strCUIconceptsFilename) throws Exception
     {
         // Inicializamos la clase base
         
         super(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName, "");
+                strSnomedDBdescriptionFileName, strCUIconceptsFilename);
         
         // We initialize the object
         
         m_graph = null;
         m_factory = null;
         m_engine = null;
+        m_indexedSnomedIDsByCUI = null;
     }
     
     /**
      * This fucntion returns the degree of similarity between two
-     * SNOMED-CT concepts.
-     * @param firstConceptSnomedID
-     * @param secondConceptSnomedID
+     * UMLS concepts.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
      * @return 
      */
-
+    
     @Override
     public double getSimilarity(
-            long    firstConceptSnomedID,
-            long    secondConceptSnomedID)  throws Exception
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
     {
-        // We get the URI for both concepts
-
-        URI concept1 = m_factory.getURI(m_snomedctURI.stringValue() + firstConceptSnomedID);
-        URI concept2 = m_factory.getURI(m_snomedctURI.stringValue() + secondConceptSnomedID);
-
-        // We evaluate the similarity measure
+        // We initilizae the output
         
-        double similarity = m_engine.compare(m_smConf, concept1, concept2);
+        double similarity = 0.0;
+        
+        // We get the SNOMED concepts evoked by each CUI
+        
+        HashSet<Long> firstSnomedConcepts = m_indexedSnomedIDsByCUI.containsKey(strFirstUmlsCUI) ?
+                                            m_indexedSnomedIDsByCUI.get(strFirstUmlsCUI) : null;
+
+        HashSet<Long> secondSnomedConcepts = m_indexedSnomedIDsByCUI.containsKey(strSecondUmlsCUI) ?
+                                            m_indexedSnomedIDsByCUI.get(strSecondUmlsCUI) : null;
+        
+        // We check the existence oif SNOMED concepts associated to the CUIS
+        
+        if ((firstSnomedConcepts != null)
+                && (secondSnomedConcepts != null))
+        {
+            // We initialize the maximum similarity
+            
+            double maxSimilarity = Double.NEGATIVE_INFINITY;
+            
+            // We compare all pairs of evoked SNOMED concepts
+            
+            for (Long snomedId1: firstSnomedConcepts)
+            {
+                for (long snomedId2: secondSnomedConcepts)
+                {
+                    // We get the URI for both concepts
+
+                    URI concept1 = m_factory.getURI(m_snomedctURI.stringValue() + snomedId1);
+                    URI concept2 = m_factory.getURI(m_snomedctURI.stringValue() + snomedId2);
+
+                    // We evaluate the similarity measure
+        
+                    double snomedSimilarity = m_engine.compare(m_smConf, concept1, concept2);
+                    
+                    // We update the maximum similarity
+                    
+                    if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                }
+            }
+            
+            // We assign the output similarity value
+            
+            similarity = maxSimilarity;
+        }
         
         // We return the result
         
@@ -142,9 +190,9 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
     public void clear()
     {
         unloadSnomed();
-    }
-
-        /**
+    }  
+    
+    /**
      * Load the SNOMED database
      */
     
@@ -173,6 +221,12 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         // We define the engine used to compute the similarity
         
         m_engine = new SM_Engine(m_graph);
+        
+        // We load the mapping from CUI to SNOMED-CT ids
+        
+        m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
+                                    m_strSnomedDBconceptFileName,
+                                    m_strSNOMED_CUI_mappingfilename);
     }
     
     /**
@@ -223,6 +277,16 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
     @Override
     public void unloadSnomed()
     {
+        // Werelease the CUI mapping table
+        
+        if (m_indexedSnomedIDsByCUI != null)
+        {
+            for (HashSet<Long> snomedIDs: m_indexedSnomedIDsByCUI.values())
+            {
+                snomedIDs.clear();
+            }
+        }
+        
         // We only disconnect this objects because SML does not provide
         // functios to clear its objects
         

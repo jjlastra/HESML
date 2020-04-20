@@ -27,10 +27,13 @@ import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import java.util.HashSet;
+import org.openrdf.model.URI;
 
 /**
  * This class implementes the SNOMED similarity library based on HESML.
@@ -119,19 +122,57 @@ class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
 
     @Override
     public double getSimilarity(
-            long    firstConceptSnomedID,
-            long    secondConceptSnomedID)  throws Exception
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
     {
-        // We compute the semantic similarity between concepts
+        // We initilizae the output
         
-        double similarity = m_hesmlSimilarityMeasure.getSimilarity(
-                            m_hesmlVertexes.getById(firstConceptSnomedID),
-                            m_hesmlVertexes.getById(secondConceptSnomedID));
+        double similarity = 0.0;
+        
+        // We get the SNOMED concepts evoked by each CUI
+        
+        ISnomedConcept[] firstSnomedConcepts = m_hesmlSnomedDatabase.getConceptsForUmlsCUI(strFirstUmlsCUI);
+        ISnomedConcept[] secondSnomedConcepts = m_hesmlSnomedDatabase.getConceptsForUmlsCUI(strSecondUmlsCUI);
+        
+        // We check the existence oif SNOMED concepts associated to the CUIS
+        
+        if ((firstSnomedConcepts.length > 0)
+                && (secondSnomedConcepts.length > 0))
+        {
+            // We initialize the maximum similarity
+            
+            double maxSimilarity = Double.NEGATIVE_INFINITY;
+            
+            // We compare all pairs of evoked SNOMED concepts
+            
+            for (int i = 0; i < firstSnomedConcepts.length; i++)
+            {
+                Long snomedId1 = firstSnomedConcepts[i].getSnomedId();
+                
+                for (int j = 0; j < secondSnomedConcepts.length; j++)
+                {
+                    Long snomedId2 = secondSnomedConcepts[j].getSnomedId();
+                    
+                    // We evaluate the similarity measure
+        
+                    double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
+                                            m_hesmlVertexes.getById(snomedId1),
+                                            m_hesmlVertexes.getById(snomedId2));
+                    
+                    // We update the maximum similarity
+                    
+                    if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                }
+            }
+            
+            // We assign the output similarity value
+            
+            similarity = maxSimilarity;
+        }
         
         // We return the result
         
         return (similarity);
-        
     }
     
     /**

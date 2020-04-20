@@ -74,7 +74,8 @@ public class SnomedLibraryFactory
                 library = new SMLSimilarityLibrary(strSnomedDir,
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
-                            strSnomedDBdescriptionFileName);
+                            strSnomedDBdescriptionFileName,
+                            strSNOMED_CUI_mappingfilename);
                 
                 break;
                 

@@ -26,8 +26,13 @@ import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedproviders.SnomedLibraryFactory;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -93,7 +98,6 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
                                     strSNOMED_CUI_mappingfilename);
         }
     }
-    
     
     /**
      * This fucntion runs the benchmark and writes the results to the

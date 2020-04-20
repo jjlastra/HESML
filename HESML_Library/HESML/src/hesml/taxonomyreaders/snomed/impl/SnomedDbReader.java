@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+import java.util.HashSet;
 
 /**
  * This class is mainly esponsible to parse the SNOMED-CT databse files
@@ -122,11 +123,11 @@ class SnomedDbReader
         // We insert the sorted concepts into the database
         
         SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts,
-                                        readConceptsUmlsCUIs(snomedFiles[3], concepts),
-                                        useAncestorsCaching);
+                                            readConceptsUmlsCUIs(snomedFiles[3], concepts),
+                                            useAncestorsCaching);
 
         // We release the auxiliary collections
-        
+
         concepts.clear();
         sortedConcepts.clear();
         
@@ -364,13 +365,13 @@ class SnomedDbReader
      * @param concepts 
      */
     
-    private static HashMap<String, ArrayList<ISnomedConcept>> readConceptsUmlsCUIs(
+    private static HashMap<String, HashSet<ISnomedConcept>> readConceptsUmlsCUIs(
             File                            snomedCuiFile,
             HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
     {
         // We create the output mampit table (CUI, SNOMED_id)
         
-        HashMap<String, ArrayList<ISnomedConcept>> outputCuiToSnomedConcepts = new HashMap<>(concepts.size());
+        HashMap<String, HashSet<ISnomedConcept>> outputCuiToSnomedConcepts = new HashMap<>(concepts.size());
         
         // We open the file for reading
         
@@ -403,11 +404,11 @@ class SnomedDbReader
                     
                     // We register the snomed concept associated to a given CUI
                     
-                    ArrayList<ISnomedConcept> snomedConcepts;
+                    HashSet<ISnomedConcept> snomedConcepts;
                     
                     if (!outputCuiToSnomedConcepts.containsKey(strUmlsCUI))
                     {
-                        snomedConcepts = new ArrayList<>(1);
+                        snomedConcepts = new HashSet<>(1);
                         outputCuiToSnomedConcepts.put(strUmlsCUI, snomedConcepts);
                     }
                     else
@@ -415,12 +416,14 @@ class SnomedDbReader
                         snomedConcepts = outputCuiToSnomedConcepts.get(strUmlsCUI);
                     }
                     
-                    // We only register the new snomed concept association if it
-                    // has not been registered before for the same CUI
+                    // We only register the SNOMED concept if it exists in the
+                    // SNOMED database. There could be some cases in which a
+                    // SNOMED associated to a CUI is not aalready active,
+                    // and thus, it will not be in the database
                     
                     ISnomedConcept concept = concepts.get(snomedId);
                     
-                    if (!snomedConcepts.contains(concept)) snomedConcepts.add(concept);
+                    if (concept != null) snomedConcepts.add(concept);
                     
                     break;
                 }

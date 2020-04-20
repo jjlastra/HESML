@@ -86,14 +86,23 @@ class MeasureLin extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex micaVertex = m_Taxonomy.getMICA(left, right);
-       
-        // We compute the distance
+        // We skip the equal case
         
-        if (micaVertex != null)
+        if (left == right)
         {
-            similarity = 2.0 * micaVertex.getICvalue()
-                    / (left.getICvalue() + right.getICvalue());
+            similarity = 1.0;
+        }
+        else
+        {
+            IVertex micaVertex = m_Taxonomy.getMICA(left, right);
+       
+            // We compute the distance
+
+            if (micaVertex != null)
+            {
+                similarity = 2.0 * micaVertex.getICvalue()
+                        / (left.getICvalue() + right.getICvalue());
+            }
         }
         
         // We return the result

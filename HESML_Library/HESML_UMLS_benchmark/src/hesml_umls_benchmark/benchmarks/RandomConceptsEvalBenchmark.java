@@ -25,9 +25,12 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.snomedproviders.SnomedSimilarityLibrary;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -113,7 +116,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     {
         // set the number of runs
         
-        Long[][] snomedIDpairs = getRandomNodePairs(getAllSnomedConceptsId(), m_nSamples);
+        String[][] snomedIDpairs = getRandomNodePairs(m_nSamples);
         
         // We create the output data matrix and fill the row headers
         
@@ -187,12 +190,14 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      * similarity and relatedness using biomedical ontologies,
      * Bioinformatics. 30 (2014) 740–742.
      * 
-     * @param snomedPairs
+     * @param library
+     * @param umlsCuiPairs
+     * @param nRuns
      */
     
     private double[] EvaluateLibrary(
             ISnomedSimilarityLibrary    library,
-            Long[][]                    snomedPairs,
+            String[][]                  umlsCuiPairs,
             int                         nRuns) throws Exception
     {
         // We initialize the output vector
@@ -210,9 +215,9 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
 
             // We evaluate the random concept pairs
 
-            for (int i = 0; i < snomedPairs.length; i++)
+            for (int i = 0; i < umlsCuiPairs.length; i++)
             {
-                library.getSimilarity(snomedPairs[i][0], snomedPairs[i][1]);
+                double similarity = library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
             }
 
             // We compute the elapsed time in seconds
@@ -228,78 +233,16 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         // We print the average results
         
-        System.out.println("# concept pairs evaluated = " + snomedPairs.length);
+        System.out.println("# UMLS oncept pairs evaluated = " + umlsCuiPairs.length);
         System.out.println(library.getLibraryType() + " Average time (secs) = "
                 + averageRuntime);
         
         System.out.println(library.getLibraryType() + " Average evaluation speed (#evaluation/second) = "
-                + ((double)snomedPairs.length) / averageRuntime);
+                + ((double)umlsCuiPairs.length) / averageRuntime);
         
         // We return the results
         
         return (runningTimes);
-    }
-    
-    /**
-     * This function retrieves all the SNOMED concepts ID from the SNOMED
-     * concept file.
-     * @return 
-     */
-    
-    private Long[] getAllSnomedConceptsId() throws FileNotFoundException
-    {
-        // We initialize the concept ID list
-        
-        ArrayList<Long> concepts = new ArrayList<>(360000);
-        
-        // We open the file for reading
-        
-        Scanner reader = new Scanner(new File(m_strSnomedDir + "/" + m_strSnomedDBconceptFileName));
-        System.out.println("Reading SNOMED concept IDs " + m_strSnomedDBconceptFileName);
-                
-        // We skip the first line containing the headers.
-        // We focus only on thereading of concept ID and term, because it
-        // is the only information that we need. Thus, we reject
-        // to read the full record for each concept.
-        
-        String strHeaderLine = reader.nextLine();
-        
-        // We read the concept lines
-        
-        do
-        {
-            // We extract the attribites of the concept
-
-            String[] strAttributes = reader.nextLine().split("\t");
-
-            // We get the needed attributes
-
-            Long snomedId = Long.parseLong(strAttributes[CONCEPT_ID]);
-            boolean active = strAttributes[ACTIVE_ID].equals("1");
-
-            // We create a new concept if it is active
-
-            if (active) concepts.add(snomedId);
-            
-        } while (reader.hasNextLine());
-        
-        // We close the database
-        
-        reader.close();
-        
-        // We create the output vector and fill it with the concept IDs
-        
-        Long[] conceptsId = new Long[concepts.size()];
-        
-        concepts.toArray(conceptsId);
-        
-        // Werelease the auxiliary list
-        
-        concepts.clear();
-        
-        // We return the result
-        
-        return (conceptsId);
     }
     
     /**
@@ -310,13 +253,25 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      * @return 
      */
     
-    private Long[][] getRandomNodePairs(
-            Long[]   snomedConceptIDs,
-            int      nPairs) 
+    private String[][] getRandomNodePairs(
+            int nPairs) throws FileNotFoundException 
     {
+        // We get the likst of CUIs with SNOMED concepts
+        
+        HashMap<String, HashSet<Long>> cuiToSnomedIds = SnomedSimilarityLibrary.readConceptsUmlsCUIs(
+                                                        m_strSnomedDir, m_strSnomedDBconceptFileName,
+                                                        m_strSNOMED_CUI_mappingfilename);
+        
+        // We copy the CUIS to an array and release the CUI-SNOMED mapping 
+        
+        String[] strAllValidCUIs = new String[cuiToSnomedIds.size()];
+        
+        cuiToSnomedIds.keySet().toArray(strAllValidCUIs);
+        cuiToSnomedIds.clear();
+        
         // We cretae the random paris
         
-        Long[][] snomedPairs = new Long[nPairs][2];
+        String[][] snomedPairs = new String[nPairs][2];
         
         // We create a ranodm number
         
@@ -324,7 +279,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         // We get the number of nodes in the SNOMED-CT graph
         
-        long nConcepts = snomedConceptIDs.length;
+        long nConcepts = strAllValidCUIs.length;
         
         // We generate the ranomdon node pairs
         
@@ -333,7 +288,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             for (int j = 0; j < 2; j++)
             {
                 int snomedConceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
-                snomedPairs[i][j] = snomedConceptIDs[snomedConceptIndex];
+                snomedPairs[i][j] = strAllValidCUIs[snomedConceptIndex];
             }
         }
         

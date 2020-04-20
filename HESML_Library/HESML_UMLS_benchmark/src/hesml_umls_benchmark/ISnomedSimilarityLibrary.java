@@ -64,15 +64,15 @@ public interface ISnomedSimilarityLibrary
     
     /**
      * This fucntion returns the degree of similarity between two
-     * SNOMED-CT concepts.
-     * @param firstConceptSnomedID
-     * @param secondConceptSnomedID
+     * UMLS concepts.
+     * @param strfirstUmlsCUI
+     * @param strSecondUmlsCUI
      * @return 
      */
     
     double getSimilarity(
-            long    firstConceptSnomedID,
-            long    secondConceptSnomedID) throws Exception;
+            String  strfirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception;
     
     /**
      * We release the resources associated to this object

@@ -55,10 +55,10 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     private final SnomedConcept[]    m_SnomedConcepts;
     
     /**
-     * Table wit hte pairs (CUI,SNOMEd_Id)
+     * Table with the pairs (CUI,SNOMEd_Id)
      */
     
-    private final HashMap<String, ArrayList<ISnomedConcept>> m_ConceptsIndexedByCUI;
+    private final HashMap<String, ISnomedConcept[]> m_ConceptsIndexedByCUI;
     
     /**
      * SNOMED-CT concepts for each term. This is the inverted map from
@@ -75,7 +75,7 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     
     SnomedCtDatabase(
             ArrayList<SnomedConcept>                    concepts,
-            HashMap<String, ArrayList<ISnomedConcept>>  mapCuiToSnomedConcepts,
+            HashMap<String, HashSet<ISnomedConcept>>    mapCuiToSnomedConcepts,
             boolean                                     useAncestorsCaching) throws Exception
     {
         // We initialize the collections
@@ -83,11 +83,43 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         m_ConceptsIndexedById = new HashMap<>(concepts.size());
         m_SnomedConcepts = new SnomedConcept[concepts.size()];
         m_ConceptsIndexedByTerm = new HashMap<>(concepts.size());
-        m_ConceptsIndexedByCUI = mapCuiToSnomedConcepts;
+        m_ConceptsIndexedByCUI = new HashMap<>(mapCuiToSnomedConcepts.size());
         
         // We copy the concepts
         
         concepts.toArray(m_SnomedConcepts);
+        
+        // We build the table of CUI->ISnomedConcept[] isntead of keeping
+        // the ArrayList for the concepts which demands more mmeory
+        
+        for (String strCUI: mapCuiToSnomedConcepts.keySet())
+        {
+            // We obtain the SNOMED concepts associated to the UMLS CUI
+            
+            HashSet<ISnomedConcept> conceptsOfCUI = mapCuiToSnomedConcepts.get(strCUI);
+            
+            // We only register CUIs with at least 1 SNOMed CONCEPT.
+            // During the reading of the CUI file could appear CUIs
+            // with inactive SNOMED concepts.
+            
+            if (conceptsOfCUI.size() > 0)
+            {
+                // We copy the concepts and index them
+
+                ISnomedConcept[] cuiConcepts = new ISnomedConcept[conceptsOfCUI.size()];
+
+                conceptsOfCUI.toArray(cuiConcepts);
+                m_ConceptsIndexedByCUI.put(strCUI, cuiConcepts);
+            }
+            
+            // We release the input list
+            
+            conceptsOfCUI.clear();
+        }
+        
+        // We release the input CUI mapping
+        
+        mapCuiToSnomedConcepts.clear();
         
         // We connect all the concepts to this instance
 
@@ -110,24 +142,13 @@ class SnomedCtDatabase implements ISnomedCtDatabase
     {
         // We initialize the output
         
-        ISnomedConcept[] retrievedConcepts = null;
-        
-        // We retrieve the concept
-        
-        if (m_ConceptsIndexedByCUI.containsKey(umlsConceptCUI))
-        {
-            ArrayList<ISnomedConcept> concepts = m_ConceptsIndexedByCUI.get(umlsConceptCUI);
-            retrievedConcepts = new ISnomedConcept[concepts.size()];
-            concepts.toArray(retrievedConcepts);
-        }
-        else
-        {
-            retrievedConcepts = new ISnomedConcept[0];
-        }
+        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.containsKey(umlsConceptCUI) ?
+                                    m_ConceptsIndexedByCUI.get(umlsConceptCUI) :
+                                    new ISnomedConcept[0];
         
         // We return the result
         
-        return (retrievedConcepts);
+        return (concepts);
     }
     
     /**
@@ -406,13 +427,6 @@ class SnomedCtDatabase implements ISnomedCtDatabase
         // We clear the mapping of synsets per word
         
         for (ArrayList<Long> concepts: m_ConceptsIndexedByTerm.values())
-        {
-            concepts.clear();
-        }
-
-        // We clear the mapping of CUIs to SNOMED concepts
-        
-        for (ArrayList<ISnomedConcept> concepts: m_ConceptsIndexedByCUI.values())
         {
             concepts.clear();
         }
