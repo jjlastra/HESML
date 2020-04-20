@@ -199,6 +199,12 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
     @Override
     public void loadSnomed() throws Exception
     {
+        // We load the mapping from CUI to SNOMED-CT ids
+        
+        m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
+                                    m_strSnomedDBconceptFileName,
+                                    m_strSNOMED_CUI_mappingfilename);
+        
         // We create an in-memory graph in which we will load Snomed-CT.
         // Notice that Snomed-CT is quite large (e.g. version 20120731 contains 296433 concepts and872318 relationships ).
         // You will need to allocate extra memory to the JVM e.g add -Xmx3000m parameter to allocate 3Go.
@@ -221,12 +227,6 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         // We define the engine used to compute the similarity
         
         m_engine = new SM_Engine(m_graph);
-        
-        // We load the mapping from CUI to SNOMED-CT ids
-        
-        m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
-                                    m_strSnomedDBconceptFileName,
-                                    m_strSNOMED_CUI_mappingfilename);
     }
     
     /**

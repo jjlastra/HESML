@@ -120,10 +120,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[2][m_nRuns + 1];
-        
-        strOutputDataMatrix[0][0] = "HESML";
-        strOutputDataMatrix[1][0] = "SML";
+        String[][] strOutputDataMatrix = new String[m_Libraries.length][m_nRuns + 1];
         
         // We evaluate the performance of the HESML library
         
