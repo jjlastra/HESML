@@ -55,14 +55,6 @@ class CondProbLeavesICmodel extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double total;  // Total hyponyms for the children
-        
-        IEdge       incidentEdge;   // Incident endge
-        IVertexList children;       // Children nodes
-        
-        double  weight;     // Weight for the edge
-        double  condProb;  // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -76,15 +68,15 @@ class CondProbLeavesICmodel extends AbstractCondProbICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the total of hyponyms for the children
             
-            total = 0.0;
+            double total = 0.0;
                     
             for (IVertex child: children)
             {
-                condProb = child.getNonInclusiveSubsumedLeafSetCount()+ 1.0;
+                double condProb = child.getNonInclusiveSubsumedLeafSetCount()+ 1.0;
                 total += condProb;
             }
             
@@ -94,11 +86,11 @@ class CondProbLeavesICmodel extends AbstractCondProbICmodel
             {
                 // We compute the normalized conditional probability
                 
-                condProb = (child.getNonInclusiveSubsumedLeafSetCount()+ 1.0) / total;
+                double condProb = (child.getNonInclusiveSubsumedLeafSetCount()+ 1.0) / total;
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We set the conditional probability
                 
@@ -107,7 +99,7 @@ class CondProbLeavesICmodel extends AbstractCondProbICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 incidentEdge.setWeight(weight);
             }
             

@@ -51,18 +51,6 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  totalProb;  // Total probability for the children
-        
-        IEdge   incidentEdge;   // Incident endge
-        
-        IVertexList children;   // Children nodes
-        
-        IVertexList parentSubsumedLeaves;   // Subsumed leaves
-        IVertexList childSubsumedLeaves;
-        
-        double  weight;     // Weight for the direct oriented edge
-        double  condProb;   // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -74,17 +62,14 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
         
         for (IVertex parent: taxonomy.getVertexes())
         {
-            // We get the children vertexes
+            // We get the children vertexes and the subsumed leaves of the parent node
             
-            children = parent.getChildren();
-            
-            // We get the subsumed leaves of the parent node
-            
-            parentSubsumedLeaves = parent.getSubsumedLeaves(true);
+            IVertexList children = parent.getChildren();
+            IVertexList parentSubsumedLeaves = parent.getSubsumedLeaves(true);
             
             // We compute the overall probability for the children
             
-            totalProb = 0.0;
+            double totalProb = 0.0;
 
             // We compute the estimation for the probability of the node
             // using the Sánchez et al. (2011) factor.
@@ -93,12 +78,12 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
             {
                 // We get the subsumed leaves of the child
                 
-                childSubsumedLeaves = child.getSubsumedLeaves(true);
+                IVertexList childSubsumedLeaves = child.getSubsumedLeaves(true);
                 
                 // We computes the subsumed leaves ratio between
                 // the child and parent node
                 
-                condProb = childSubsumedLeaves.getIntersectionSetCount(parentSubsumedLeaves);
+                double condProb = childSubsumedLeaves.getIntersectionSetCount(parentSubsumedLeaves);
                 condProb /= (double) parentSubsumedLeaves.getCount();
                 
                 // We accumulate the overall conditional probability
@@ -116,12 +101,12 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
             {
                 // We get the subsumed leaves of the child node
                 
-                childSubsumedLeaves = child.getSubsumedLeaves(true);
+                IVertexList childSubsumedLeaves = child.getSubsumedLeaves(true);
                 
                 // We computes the subsumed leaves ratio between
                 // the child and parent node
                 
-                condProb = childSubsumedLeaves.getIntersectionSetCount(parentSubsumedLeaves);
+                double condProb = childSubsumedLeaves.getIntersectionSetCount(parentSubsumedLeaves);
                 condProb /= (double) parentSubsumedLeaves.getCount();
                 
                 // We release the subsumed leaves of the child node
@@ -134,7 +119,7 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We set the conditional probability for the edge
                 
@@ -143,7 +128,7 @@ public class CondProbRefinedSubsumedLeavesRatio  extends AbstractCondProbICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 
                 // We set the weight for the non-oriented edge
                 

@@ -50,12 +50,6 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        IEdge       incidentEdge;   // Incident endge
-        IVertexList children;       // Children nodes
-        
-        double  weight;     // Weight for the edge
-        double  condProb;  // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // Resultados muy buenos para Leaves, 9.0, sin normalizar des
@@ -76,7 +70,7 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the edge weight for each edge
             
@@ -84,8 +78,8 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
             {
                 // We get the conditional probability
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
-                condProb = incidentEdge.getCondProbability();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
+                double condProb = incidentEdge.getCondProbability();
                 
                 // We compute the cognitive transformation
                 
@@ -99,7 +93,7 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
                 // negative of its binary logarithm. This value defines
                 // the weights for all the weighted measures.
                 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 incidentEdge.setWeight(weight);
             }
             
@@ -135,14 +129,6 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
     
     private void computeCondProbabilities(ITaxonomy taxonomy) throws Exception
     {
-        int leavesTotal;  // Total hyponyms for the children
-        
-        IEdge       incidentEdge;   // Incident endge
-        IVertexList children;       // Children nodes
-        
-        double  weight;     // Weight for the edge
-        double  condProb;  // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -156,11 +142,11 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the total of hyponyms for the children
             
-            leavesTotal = 0;
+            int leavesTotal = 0;
                     
             for (IVertex child: children)
             {
@@ -173,11 +159,11 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
             {
                 // We compute the normalized conditional probability
                 
-                condProb = (1.0 + child.getNonInclusiveSubsumedLeafSetCount()) / (double)leavesTotal;
+                double condProb = (1.0 + child.getNonInclusiveSubsumedLeafSetCount()) / (double)leavesTotal;
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We assign the weight
                 
@@ -186,7 +172,7 @@ class CondProbRefinedCosineLeavesICmodel extends AbstractCondProbICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 incidentEdge.setWeight(weight);                
             }
             

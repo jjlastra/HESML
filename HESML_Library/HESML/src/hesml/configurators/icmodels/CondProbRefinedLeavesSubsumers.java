@@ -58,15 +58,6 @@ class CondProbRefinedLeavesSubsumers extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  totalProb;  // Total probability for the children
-        
-        IEdge   incidentEdge;   // Incident endge
-        
-        IVertexList children;   // Children nodes
-        
-        double  weight;     // Weight for the direct oriented edge
-        double  condProb;   // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -80,11 +71,11 @@ class CondProbRefinedLeavesSubsumers extends AbstractCondProbICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the overall probability for the children
             
-            totalProb = 0.0;
+            double totalProb = 0.0;
 
             // We compute the estimation for the probability of the node
             // using the Sánchez et al. (2011) factor.
@@ -100,11 +91,11 @@ class CondProbRefinedLeavesSubsumers extends AbstractCondProbICmodel
             {
                 // We compute the normalized conditional probability
                 
-                condProb = getSanchez2011Factor(child) / totalProb;
+                double condProb = getSanchez2011Factor(child) / totalProb;
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We set the conditional probability for the edge
                 
@@ -113,7 +104,7 @@ class CondProbRefinedLeavesSubsumers extends AbstractCondProbICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 
                 // We set the weight for the non-oriented edge
                 
@@ -153,19 +144,14 @@ class CondProbRefinedLeavesSubsumers extends AbstractCondProbICmodel
     private double getSanchez2011Factor(
         IVertex vertex) throws Exception
     {
-        double  sanchezFactor;  // Returned value
-        
-        double  leavesCount;    // Non-inclusive subsumed leaves count
-        double  subsumersCount; // Inclusive subsumerscount
-        
         // We get the leaves and subsumer count of the node
 
-        leavesCount = vertex.getNonInclusiveSubsumedLeafSetCount();
-        subsumersCount = vertex.getNonInclusiveAncestorSetCount() + 1;
+        double leavesCount = vertex.getNonInclusiveSubsumedLeafSetCount();
+        double subsumersCount = vertex.getNonInclusiveAncestorSetCount() + 1;
 
         // We compute the estimation for the probability of the node
 
-        sanchezFactor = 1.0 + (leavesCount / subsumersCount);
+        double sanchezFactor = 1.0 + (leavesCount / subsumersCount);
         
         // We return the result
         

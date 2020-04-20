@@ -62,8 +62,6 @@ public class AICAouichaTaiebHamaduICmodel2016 implements ITaxonomyInfoConfigurat
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        IVertexList ancestorSubgraph;   // It includes the base concept
-        
         // We compute and set the maximum value for the HypoInfo(c) function.
         
         SetMaxHypoInfoValue(taxonomy);
@@ -74,7 +72,7 @@ public class AICAouichaTaiebHamaduICmodel2016 implements ITaxonomyInfoConfigurat
         {
             // We get the ancestor subgraph including the base concept
             
-            ancestorSubgraph = conceptVertex.getAncestors(true);
+            IVertexList ancestorSubgraph = conceptVertex.getAncestors(true);
             
             // We compute the sum of scores according as defined in
             // equation (26) in the Aouicha et al. (2016) paper.
@@ -131,11 +129,9 @@ public class AICAouichaTaiebHamaduICmodel2016 implements ITaxonomyInfoConfigurat
     {
         double  score = 0.0;  // Returned value
         
-        IVertexList parents;    // PArents of the input concept
-        
         // We get the direct parents of the input concept
         
-        parents = conceptVertex.getParents();
+        IVertexList parents = conceptVertex.getParents();
         
         // We compute the score function as defined in equation (27) of
         // Aouicha et al. (2016) paper. In the latter paper, the score
@@ -174,11 +170,9 @@ public class AICAouichaTaiebHamaduICmodel2016 implements ITaxonomyInfoConfigurat
     private double Term(
         IVertex conceptVertex) throws Exception
     {
-        double  term;   // Returned value
-        
         // We compute the term function
         
-        term = 1.0 - Math.log(HypoInfo(conceptVertex) + 1.0) / 
+        double term = 1.0 - Math.log(HypoInfo(conceptVertex) + 1.0) / 
                 Math.log(m_MaxHypoInfo);
         
         // We return the result
@@ -199,13 +193,11 @@ public class AICAouichaTaiebHamaduICmodel2016 implements ITaxonomyInfoConfigurat
     {
         double  hypoInfoValue = 0.0;    // Returned value
         
-        IVertexList descendants;    // Descendants of the vertex
-        
         // We get the non-inclusive descendant set of the base vertex.
         // However, this definition must be chekced with the authors
         // of the IC model becuase it is not detailed in their paper.
         
-        descendants = conceptVertex.getHyponyms(false);
+        IVertexList descendants = conceptVertex.getHyponyms(false);
         
         // We compute the function value using the depth max value
         // which is defined as the length of the longest ascending

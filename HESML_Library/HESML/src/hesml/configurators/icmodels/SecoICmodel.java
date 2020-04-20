@@ -50,13 +50,9 @@ class SecoICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icvalue;    // Computed IC value
+        // We get the log of the number of nodes
         
-        double  logMaxNodes;
-        
-        // We ghet the log of the number of nodes
-        
-        logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
+        double logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
         
         // We set the IC values for the nodes
         
@@ -64,7 +60,7 @@ class SecoICmodel extends AbstractICmodel
         {
             // We compute the value of [Seco, 2004]
             
-            icvalue = 1.0 - Math.log(vertex.getNonInclusiveHyponymSetCount() + 1) /
+            double icvalue = 1.0 - Math.log(vertex.getNonInclusiveHyponymSetCount() + 1) /
                             logMaxNodes;
             
             // We set the IC value

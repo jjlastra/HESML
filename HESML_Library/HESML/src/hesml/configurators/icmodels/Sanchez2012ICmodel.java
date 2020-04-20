@@ -52,15 +52,6 @@ class Sanchez2012ICmodel extends AbstractICmodel
         
         double  log2 = Math.log(2.0);   // Logarithm of 2
         
-        double  subSummers;  // Set of ancestors including the node
-
-        double  commonnessNode; // Node value
-        double  commonnessRoot; // Root value
-        
-        IVertexList leaves; // Non-inclusive subsumed leaf set
-        
-        IVertex root;  // Root concept
-        
         // We compute the IC value for each node in reverse order
         // because the commonness is bottom-up concept
         // (1) We initialize the leaves with its commonness value
@@ -73,8 +64,8 @@ class Sanchez2012ICmodel extends AbstractICmodel
             {
                 // We ompute the leaf value
                 
-                subSummers = 1.0 + vertex.getNonInclusiveAncestorSetCount();
-                commonnessNode = 1.0 / subSummers;
+                double subSummers = 1.0 + vertex.getNonInclusiveAncestorSetCount();
+                double commonnessNode = 1.0 / subSummers;
                 
                 // We save the value in the IC field
                 
@@ -93,11 +84,11 @@ class Sanchez2012ICmodel extends AbstractICmodel
             {
                 // We initializae the value
 
-                commonnessNode = 0.0;
+                double commonnessNode = 0.0;
 
                 // We get the set of non-inclusive subsumed leaves
                 
-                leaves = vertex.getSubsumedLeaves(false);
+                IVertexList leaves = vertex.getSubsumedLeaves(false);
                 
                 // We sum all the Leaves values
 
@@ -118,9 +109,9 @@ class Sanchez2012ICmodel extends AbstractICmodel
         
         // We get hte commonness of the root
         
-        root = taxonomy.getVertexes().getRoots().getAt(0);
+        IVertex root = taxonomy.getVertexes().getRoots().getAt(0);
         
-        commonnessRoot = root.getICvalue();
+        double commonnessRoot = root.getICvalue();
         
         // We set the IC values for all nods
         

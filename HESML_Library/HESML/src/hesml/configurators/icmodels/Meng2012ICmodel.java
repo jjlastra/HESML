@@ -53,16 +53,10 @@ class Meng2012ICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icValue;    // IC value for one node
-        
-        double  logDepthMax;    // Depth max factor
-        double  logMaxNodes;
-        double  sumFactor;  
-        
         // We get the depth max factor
         
-        logDepthMax = Math.log(taxonomy.getVertexes().getGreatestDepthMinBase1());
-        logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
+        double logDepthMax = Math.log(taxonomy.getVertexes().getGreatestDepthMinBase1());
+        double logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
         
         // We compute the IC values for the nodes
         
@@ -70,7 +64,7 @@ class Meng2012ICmodel extends AbstractICmodel
         {
             // We compute the right facrtor over the hyponums
             
-            sumFactor = 1.0;
+            double sumFactor = 1.0;
             
             for (IVertex hyponym: vertex.getHyponyms(false))
             {
@@ -83,7 +77,7 @@ class Meng2012ICmodel extends AbstractICmodel
             
             // We compute the value
             
-            icValue = (Math.log(vertex.getDepthMinBase1()) / logDepthMax) * sumFactor;
+            double icValue = (Math.log(vertex.getDepthMinBase1()) / logDepthMax) * sumFactor;
 
             // We set the ic-value
             

@@ -51,13 +51,9 @@ class BlanchardICmodel extends AbstractICmodel
     {
         double  twoLog = Math.log(2.0);
         
-        double  prob;           // Node probbaility
-        int     subsumedLeaves; // Leaves
-        int     totalLeaves;    // Overall count of leaves
-
         // We get the total number of leaves
         
-        totalLeaves = taxonomy.getVertexes().getLeavesCount();
+        int totalLeaves = taxonomy.getVertexes().getLeavesCount();
         
         // We compute the weights of every edge ion the taxonomy
         
@@ -65,11 +61,11 @@ class BlanchardICmodel extends AbstractICmodel
         {
             // We get the subsumed leaves
             
-            subsumedLeaves = vertex.getInclusiveSubsumedLeafSetCount();
+            int subsumedLeaves = vertex.getInclusiveSubsumedLeafSetCount();
             
             // We computes the probability
             
-            prob = (double) subsumedLeaves / (double)totalLeaves;
+            double prob = (double) subsumedLeaves / (double)totalLeaves;
             
             // We set the probability
             

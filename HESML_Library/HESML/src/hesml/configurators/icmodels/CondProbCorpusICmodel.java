@@ -93,14 +93,6 @@ class CondProbCorpusICmodel extends PedersenFilesICmodel
     private void recoverWellFoundedICmodel(
             ITaxonomy   taxonomy) throws Exception
     {
-        double  hypoTotal;  // Total hyponyms for the children
-        
-        IEdge       incidentEdge;   // Incident endge
-        IVertexList  children;       // Children nodes
-        
-        double  weight;     // Weight for the edge
-        double  condProb;  // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -114,11 +106,11 @@ class CondProbCorpusICmodel extends PedersenFilesICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the total of hyponyms for the children
             
-            hypoTotal = 0.0;
+            double hypoTotal = 0.0;
                     
             // We compute the accumulated probability on the child
             // nodes while we avoid the zero value for the concept
@@ -135,11 +127,11 @@ class CondProbCorpusICmodel extends PedersenFilesICmodel
             {
                 // We compute the normalized conditional probability
                 
-                condProb = Math.max(1.0, child.getProbability()) / hypoTotal;
+                double condProb = Math.max(1.0, child.getProbability()) / hypoTotal;
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We set the conditional probability for the edge
                 
@@ -148,7 +140,7 @@ class CondProbCorpusICmodel extends PedersenFilesICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 incidentEdge.setWeight(weight);
             }
             
@@ -174,7 +166,7 @@ class CondProbCorpusICmodel extends PedersenFilesICmodel
     @Override
     public String toString()
     {
-        File    fileInfo = new File(m_strPedersenFile); // WordNet-based frequency file
+        File fileInfo = new File(m_strPedersenFile); // WordNet-based frequency file
         
         String  strFilename = fileInfo.getName();   // Filename without path
         

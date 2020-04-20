@@ -52,25 +52,13 @@ class HadjTaiebHypoValueICmodel extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        int[]   depthFreqCounters;  // Frequence counters
-        
-        int depth;  // Depth of a vertex
-        
-        double  prob;        // Probability
-        double  nConcepts;   // Maximum depth
-        double  hypoValue;  // Acummulated probability
-        double  hypoMax;
-        double  specHypo;   // Specificityvalue
-        
-        IVertexList hyponyms;   // Hyponyms
-        
         // We get hte maximum depth
         
-        nConcepts = taxonomy.getVertexes().getCount();
+        double nConcepts = taxonomy.getVertexes().getCount();
         
         // We create the vector to count the depths
         
-        depthFreqCounters = new int[taxonomy.getVertexes().getGreatestDepthMax()+ 1];
+        int[] depthFreqCounters = new int[taxonomy.getVertexes().getGreatestDepthMax()+ 1];
         
         // We estimate the depth probability function
         
@@ -86,11 +74,11 @@ class HadjTaiebHypoValueICmodel extends AbstractCondProbICmodel
         {
             // We get the depth of the concept
             
-            depth = vertex.getDepthMax();
+            int depth = vertex.getDepthMax();
             
             // We compute the probability
             
-            prob = ((double)depthFreqCounters[depth] )/ nConcepts;
+            double prob = ((double)depthFreqCounters[depth] )/ nConcepts;
             
             // We set the probability value
             
@@ -103,8 +91,8 @@ class HadjTaiebHypoValueICmodel extends AbstractCondProbICmodel
         {
             // We get the hyponyms of the vertexes
             
-            hyponyms = vertex.getHyponyms(false);
-            hypoValue = vertex.getProbability();
+            IVertexList hyponyms = vertex.getHyponyms(false);
+            double hypoValue = vertex.getProbability();
             
             // We sum the hyponyms probabilities
             
@@ -124,7 +112,7 @@ class HadjTaiebHypoValueICmodel extends AbstractCondProbICmodel
         
         // We get the maximum hypoValue
         
-        hypoMax = taxonomy.getVertexes().getAt(0).getICvalue();
+        double hypoMax = taxonomy.getVertexes().getAt(0).getICvalue();
         
         // We define the final IC value per noce
         
@@ -132,9 +120,9 @@ class HadjTaiebHypoValueICmodel extends AbstractCondProbICmodel
         {
             // We compute the specificity value
             
-            hypoValue = vertex.getICvalue();
+            double hypoValue = vertex.getICvalue();
             
-            specHypo = 1.0 - Math.log(hypoValue) / Math.log(hypoMax);
+            double specHypo = 1.0 - Math.log(hypoValue) / Math.log(hypoMax);
             
             // We save the IC value
             

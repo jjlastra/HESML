@@ -51,23 +51,11 @@ class AdhikariICmodel  extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  depth;      // Depth of each vertex
-        double  leaves;     // Non-inclusive subsumed leaves count
-        double  hypoFactor; // Hyponym factor
-        double  icValue;    // IC value of the vertex
-        double  subsumers;  // Subsumer set count including the vertex
-        
-        double  logDmax;    // Logarithm of (Depth-max + 1)
-        double  leavesMax;  // Leaf vertexes count
-        double  logNodeMax; // Logartihm of the concept count
-        
-        IVertexList hyponymSet;   // Hyponym set
-        
         // We compute the constant terms
         
-        logDmax = Math.log(1.0 + taxonomy.getVertexes().getGreatestDepthMin());
-        leavesMax = taxonomy.getVertexes().getLeavesCount();
-        logNodeMax = Math.log(taxonomy.getVertexes().getCount());
+        double logDmax = Math.log(1.0 + taxonomy.getVertexes().getGreatestDepthMin());
+        double leavesMax = taxonomy.getVertexes().getLeavesCount();
+        double logNodeMax = Math.log(taxonomy.getVertexes().getCount());
         
         // We computes the IC value of the vertexes
         
@@ -75,14 +63,14 @@ class AdhikariICmodel  extends AbstractICmodel
         {
             // We get the vertex depth, leaves count and hyponym set
             
-            depth = vertex.getDepthMin();
-            leaves = vertex.getNonInclusiveSubsumedLeafSetCount();
-            hyponymSet = vertex.getHyponyms(false);
-            subsumers = vertex.getNonInclusiveAncestorSetCount() + 1;
+            double depth = vertex.getDepthMin();
+            double leaves = vertex.getNonInclusiveSubsumedLeafSetCount();
+            IVertexList hyponymSet = vertex.getHyponyms(false);
+            double subsumers = vertex.getNonInclusiveAncestorSetCount() + 1;
             
             // We compute the hypoFactor
             
-            hypoFactor = 0.0;
+            double hypoFactor = 0.0;
             
             for (IVertex hyponym: hyponymSet)
             {
@@ -91,7 +79,7 @@ class AdhikariICmodel  extends AbstractICmodel
             
             // We compute the IC value
             
-            icValue = (Math.log(depth + 1.0) / logDmax)
+            double icValue = (Math.log(depth + 1.0) / logDmax)
                     * (1.0 - Math.log(1.0 + (leaves * vertex.getParentsCount() / leavesMax) / subsumers))
                     * (1.0 - Math.log(1.0 + hypoFactor) / logNodeMax);
             
