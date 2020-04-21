@@ -62,15 +62,15 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      * Number of random concept pairs and runs for averaging the time
      */
     
-    protected int m_nSamples;
-    protected int m_nRuns;
+    protected int[] m_nRandomSamplesPerLibrary;
+    protected int   m_nRuns;
 
     /**
      * Constructor of the random concept pairs benchmark
      * @param libraries
      * @param similarityMeasure
      * @param icModel
-     * @param nRandomSamples
+     * @param nRandomSamplesPerLibrary
      * @param nRuns
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
@@ -82,15 +82,15 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
 
     RandomConceptsEvalBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            SimilarityMeasureType   similarityMeasure,
-            IntrinsicICModelType    icModel,
-            int                     nRandomSamples,
-            int                     nRuns,
-            String                  strSnomedDir,
-            String                  strSnomedDBconceptFileName,
-            String                  strSnomedDBRelationshipsFileName,
-            String                  strSnomedDBdescriptionFileName,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            SimilarityMeasureType       similarityMeasure,
+            IntrinsicICModelType        icModel,
+            int[]                       nRandomSamplesPerLibrary,
+            int                         nRuns,
+            String                      strSnomedDir,
+            String                      strSnomedDBconceptFileName,
+            String                      strSnomedDBRelationshipsFileName,
+            String                      strSnomedDBdescriptionFileName,
+            String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We initialize the base class
         
@@ -103,7 +103,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
-        m_nSamples = nRandomSamples;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
         m_nRuns = nRuns;
     }
     
@@ -114,46 +114,51 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     @Override
     public void run(String strOutputFilename) throws Exception
     {
-        // set the number of runs
-        
-        String[][] snomedIDpairs = getRandomNodePairs(m_nSamples);
-        
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[m_Libraries.length][m_nRuns + 1];
+        String[][] strOutputDataMatrix = new String[m_nRuns + 1][m_Libraries.length + 1];
+        
+        // We fill the first row header
+        
+        strOutputDataMatrix[0][0] = "#run";
         
         // We evaluate the performance of the HESML library
         
-        for (int i = 0; i < m_Libraries.length; i++)
+        for (int iLib = 0; iLib < m_Libraries.length; iLib++)
         {
             // Debugginf message
             
             System.out.println("---------------------------------");
-            System.out.println("\t" + m_Libraries[i].toString()
-                    + " library: evaluating the similarity between " + m_nSamples
+            System.out.println("\t" + m_Libraries[iLib].getLibraryType().toString()
+                    + " library: evaluating the similarity between "
+                    + m_nRandomSamplesPerLibrary[iLib]
                     + " random concept pairs in " + m_nRuns + " runs");
             
             // We set the row header
             
-            strOutputDataMatrix[i][0] = m_Libraries[i].getLibraryType().toString()
+            strOutputDataMatrix[0][iLib + 1] = m_Libraries[iLib].getLibraryType().toString()
                                         + "-" + m_MeasureType.toString();
-                                            
+                      
+            // set the number of runs
+
+            String[][] snomedIDpairs = getRandomNodePairs(m_nRandomSamplesPerLibrary[iLib]);
+            
             // We load SNOMED and the resources of the library
             
-            m_Libraries[i].loadSnomed();
+            m_Libraries[iLib].loadSnomed();
             
             // We set the similarity measure to be used
             
-            m_Libraries[i].setSimilarityMeasure(m_icModel, m_MeasureType);
+            m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType);
             
             // We evaluate the library
             
             CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[i], snomedIDpairs, m_nRuns), i);
+                EvaluateLibrary(m_Libraries[iLib], snomedIDpairs, m_nRuns), iLib + 1);
             
             // We release the database and resources used by the library
             
-            m_Libraries[i].unloadSnomed();
+            m_Libraries[iLib].unloadSnomed();
         }
 
         

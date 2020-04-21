@@ -34,35 +34,36 @@ import hesml_umls_benchmark.SnomedBasedLibraryType;
 public class UMLSBenchmarkFactory
 {
     /**
-     * This function creates a random concept-pair benchmark
+     * This function creates a random concept evaluation.
      * @param libraries
      * @param similarityMeasure
      * @param icModel
-     * @param nRandomSamples
+     * @param nRandomSamplesPerLibrary
      * @param nRuns
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @param strSNOMED_CUI_mappingfilename
      * @return
      * @throws Exception 
      */
 
     public static IUMLSBenchmark createConceptBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            SimilarityMeasureType   similarityMeasure,
-            IntrinsicICModelType    icModel,
-            int                     nRandomSamples,
-            int                     nRuns,
-            String                  strSnomedDir,
-            String                  strSnomedDBconceptFileName,
-            String                  strSnomedDBRelationshipsFileName,
-            String                  strSnomedDBdescriptionFileName,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            SimilarityMeasureType       similarityMeasure,
+            IntrinsicICModelType        icModel,
+            int[]                       nRandomSamplesPerLibrary,
+            int                         nRuns,
+            String                      strSnomedDir,
+            String                      strSnomedDBconceptFileName,
+            String                      strSnomedDBRelationshipsFileName,
+            String                      strSnomedDBdescriptionFileName,
+            String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         return (new RandomConceptsEvalBenchmark(libraries,
-                similarityMeasure, icModel, nRandomSamples, nRuns, 
-                strSnomedDir, strSnomedDBconceptFileName,
+                similarityMeasure, icModel, nRandomSamplesPerLibrary,
+                nRuns, strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
                 strSNOMED_CUI_mappingfilename));

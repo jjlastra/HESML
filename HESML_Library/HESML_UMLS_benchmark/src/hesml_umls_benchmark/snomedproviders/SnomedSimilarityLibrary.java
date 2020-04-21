@@ -218,7 +218,8 @@ public abstract class SnomedSimilarityLibrary
                     String strUmlsCUI = strColumns[0];
                     
                     // We register the snomed concept associated to a given CUI
-                    // only when the SNOMED ID exists
+                    // only when the SNOMED ID exists with the aim of filtering
+                    // those cases in which the SNOMED-CT concept could be inactive.
 
                     if (snomedIdSet.contains(snomedId)) 
                     {

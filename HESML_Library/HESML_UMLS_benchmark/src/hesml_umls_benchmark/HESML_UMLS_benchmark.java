@@ -62,9 +62,27 @@ public class HESML_UMLS_benchmark
         String strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
         String strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
         String strSNOMED_CUI_mappingfilename = "MRCONSO.RRF";
+
+        /**
+         * We set the vector of libraries to be compared in the first experiments
+         */
+        
+        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML};
         
         /**
-         * Experiment 1: we compare the performance of the HEMSL, SML and
+         * We set the number of random concept pairs evaluated by each lirbary
+         * with the aim of computing the average running times. Because of the
+         * running times could span differnt orders of magnitutdem the number
+         * of concept pairs need to be different to provide reasonable
+         * experimentation times.
+         */
+
+        int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000};
+        
+        /**
+         * Experiment 1.1: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity libraries in the evaluation of the IC-based
          * Lib [1] semantic similarity libray by evaluating the degree of
          * similarity between one million of random concept pairs.
@@ -73,18 +91,37 @@ public class HESML_UMLS_benchmark
          * Learning, Madison, WI, 1998: pp. 296–304.
          */
         
-        SnomedBasedLibraryType[] librariesExp1 = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML};
+        IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+                                    libraries, SimilarityMeasureType.Lin,
+                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
+                                    10, strUMLSdir, strSNOMED_conceptFilename,
+                                    strSNOMED_relationshipsFilename,
+                                    strSNOMED_descriptionFilename,
+                                    strSNOMED_CUI_mappingfilename);
         
-        IUMLSBenchmark benchmark1 = UMLSBenchmarkFactory.createConceptBenchmark(
-                                    librariesExp1, SimilarityMeasureType.Lin,
-                                    IntrinsicICModelType.Seco, 1000000, 10, strUMLSdir,
-                                    strSNOMED_conceptFilename, strSNOMED_relationshipsFilename,
-                                    strSNOMED_descriptionFilename, strSNOMED_CUI_mappingfilename);
+        ICbasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
+        ICbasedBenchmark.clear();
         
-        benchmark1.run("IC_based_Concept_Similarity_exp.csv");
-        benchmark1.clear();
+        /**
+         * Experiment 1.1: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity libraries in the evaluation of the IC-based
+         * Lib [1] semantic similarity libray by evaluating the degree of
+         * similarity between one million of random concept pairs.
+         * [1] D. Lin, An information-theoretic definition of similarity,
+         * in: Proceedings of the 15th International Conference on Machine
+         * Learning, Madison, WI, 1998: pp. 296–304.
+         */
+        
+        IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+                                    libraries, SimilarityMeasureType.Lin,
+                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
+                                    10, strUMLSdir, strSNOMED_conceptFilename,
+                                    strSNOMED_relationshipsFilename,
+                                    strSNOMED_descriptionFilename,
+                                    strSNOMED_CUI_mappingfilename);
+        
+        icBasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
+        icBasedBenchmark.clear();
     }
 }
 

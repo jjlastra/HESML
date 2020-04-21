@@ -127,19 +127,20 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
      * in the experiments.
      * @param strOutputDataMatrix
      * @param runningTimesInSecs
-     * @param iRow 
+     * @param iCol 
      */
     
     protected void CopyRunningTimesToMatrix(
             String[][]  strOutputDataMatrix,
             double[]    runningTimesInSecs,
-            int         iRow)
+            int         iCol)
     {
         // We copy the values
         
-        for (int i = 0; i < runningTimesInSecs.length; i++)
+        for (int iRun = 0; iRun < runningTimesInSecs.length; iRun++)
         {
-            strOutputDataMatrix[iRow][i + 1] = Double.toString(runningTimesInSecs[i]);
+            strOutputDataMatrix[iRun + 1][0] = Integer.toString(iRun);
+            strOutputDataMatrix[iRun + 1][iCol] = Double.toString(runningTimesInSecs[iRun]);
         }
     }
     
