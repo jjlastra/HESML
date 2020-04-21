@@ -55,6 +55,10 @@ public class HESML_UMLS_benchmark
     
     public static void main(String[] args) throws Exception
     {
+        // We intialize the stopwatch
+        
+        long startTime = System.currentTimeMillis();
+        
         // We set the UMLS directory
         
         String strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020";
@@ -84,7 +88,7 @@ public class HESML_UMLS_benchmark
         /**
          * Experiment 1.1: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity libraries in the evaluation of the IC-based
-         * Lib [1] semantic similarity libray by evaluating the degree of
+         * Lib [1] semantic similarity measure by evaluating the degree of
          * similarity between one million of random concept pairs.
          * [1] D. Lin, An information-theoretic definition of similarity,
          * in: Proceedings of the 15th International Conference on Machine
@@ -103,25 +107,35 @@ public class HESML_UMLS_benchmark
         ICbasedBenchmark.clear();
         
         /**
-         * Experiment 1.1: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries in the evaluation of the IC-based
-         * Lib [1] semantic similarity libray by evaluating the degree of
+         * Experiment 1.2: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity libraries in the evaluation of the Rada [1]
+         * semantic similarity measure by evaluating the degree of
          * similarity between one million of random concept pairs.
-         * [1] D. Lin, An information-theoretic definition of similarity,
-         * in: Proceedings of the 15th International Conference on Machine
-         * Learning, Madison, WI, 1998: pp. 296–304.
+         * [1] R. Rada, H. Mili, E. Bicknell, M. Blettner,
+         * Development and application of a metric on semantic nets,
+         * IEEE Transactions on Systems, Man, and Cybernetics. 19 (1989) 17–30.
          */
         
-        IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-                                    libraries, SimilarityMeasureType.Lin,
+        nRandomSamplesPerLibrary[0] = 250000;
+        nRandomSamplesPerLibrary[1] = 1;
+        
+        IUMLSBenchmark pathBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+                                    libraries, SimilarityMeasureType.FastRada,
                                     IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                     10, strUMLSdir, strSNOMED_conceptFilename,
                                     strSNOMED_relationshipsFilename,
                                     strSNOMED_descriptionFilename,
                                     strSNOMED_CUI_mappingfilename);
         
-        icBasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
-        icBasedBenchmark.clear();
+        pathBasedBenchmark.run("raw_output_path_measure_experiment.csv");
+        pathBasedBenchmark.clear();
+        
+        // We show the overalll running time
+        
+        long stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (secons) = "
+            + ((stoptime - startTime) / 1000.0));
     }
 }
 

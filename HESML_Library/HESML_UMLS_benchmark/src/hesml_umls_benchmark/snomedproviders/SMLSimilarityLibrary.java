@@ -254,12 +254,27 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
     {
         // We set the measure and IC model types
         
-        String  strIcModel = (icModel == IntrinsicICModelType.Seco) ?
-                SMConstants.FLAG_ICI_SECO_2004 : SMConstants.FLAG_ICI_SANCHEZ_2011;
+        String strIcModel = SMConstants.FLAG_ICI_SECO_2004;
         
-        String strMeasure = (measureType == SimilarityMeasureType.Lin) ?
-                SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998
-                : SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989;
+        // We convert the measure type to the SML measure types
+        
+        String strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998;
+        
+        switch (measureType)
+        {
+            case Lin:
+                
+                strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998;
+            
+                break;
+                
+            case Rada:
+            case FastRada:
+                
+                strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989;
+                
+                break;
+        }
         
         // First we configure an intrincic IC 
 
