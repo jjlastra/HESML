@@ -116,7 +116,7 @@ public class HESML_UMLS_benchmark
          * IEEE Transactions on Systems, Man, and Cybernetics. 19 (1989) 17–30.
          */
         
-        nRandomSamplesPerLibrary[0] = 250000;
+        /*nRandomSamplesPerLibrary[0] = 250000;
         nRandomSamplesPerLibrary[1] = 1;
         
         IUMLSBenchmark pathBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
@@ -128,7 +128,7 @@ public class HESML_UMLS_benchmark
                                     strSNOMED_CUI_mappingfilename);
         
         pathBasedBenchmark.run("raw_output_path_measure_experiment.csv");
-        pathBasedBenchmark.clear();
+        pathBasedBenchmark.clear();*/
         
         // We show the overalll running time
         
