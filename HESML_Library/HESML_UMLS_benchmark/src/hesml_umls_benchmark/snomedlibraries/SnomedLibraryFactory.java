@@ -19,7 +19,7 @@
  *
  */
 
-package hesml_umls_benchmark.snomedproviders;
+package hesml_umls_benchmark.snomedlibraries;
 
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;

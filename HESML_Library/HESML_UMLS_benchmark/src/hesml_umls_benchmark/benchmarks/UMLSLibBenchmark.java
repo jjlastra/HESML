@@ -24,7 +24,7 @@ package hesml_umls_benchmark.benchmarks;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.snomedproviders.SnomedLibraryFactory;
+import hesml_umls_benchmark.snomedlibraries.SnomedLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;

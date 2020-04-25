@@ -19,7 +19,7 @@
  *
  */
 
-package hesml_umls_benchmark.snomedproviders;
+package hesml_umls_benchmark.snomedlibraries;
 
 import java.io.File;
 import java.io.FileNotFoundException;

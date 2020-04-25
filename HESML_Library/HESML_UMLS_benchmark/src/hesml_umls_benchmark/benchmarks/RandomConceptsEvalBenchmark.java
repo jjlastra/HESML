@@ -25,7 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.snomedproviders.SnomedSimilarityLibrary;
+import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

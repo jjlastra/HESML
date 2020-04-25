@@ -19,7 +19,7 @@
  *
  */
 
-package hesml_umls_benchmark.snomedproviders;
+package hesml_umls_benchmark.snomedlibraries;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;

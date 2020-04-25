@@ -25,7 +25,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.snomedproviders.HESMLSimilarityLibrary;
+import hesml_umls_benchmark.snomedlibraries.HESMLSimilarityLibrary;
 import java.io.FileNotFoundException;
 import java.util.Random;
 /**
