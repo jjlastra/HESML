@@ -48,14 +48,23 @@ import hesml.taxonomy.*;
 class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureWeightedJiangConrath(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
     }
 
     /**
@@ -66,7 +75,9 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.WeightedJiangConrath);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.WeightedJiangConrath :
+                SimilarityMeasureType.AncSPLWeightedJiangConrath);
     }
     
     /**
@@ -96,7 +107,9 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
         // IC-based weights used by the wieghted Jiang-Conrath
         // measures like this one.
         
-        return (left.getShortestPathDistanceTo(right, true));
+        return (!m_useFastShortestPathAlgorithm ? 
+                left.getShortestPathDistanceTo(right, true):
+                left.getFastShortestPathDistanceTo(right, true));
     }
     
     /**

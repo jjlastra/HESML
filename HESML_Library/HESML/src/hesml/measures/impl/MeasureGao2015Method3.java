@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureGao2015Method3 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Alpha
      */
     
@@ -57,9 +64,11 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
      */
     
     MeasureGao2015Method3(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
         
         // We set the default values as defined in the paper above
         
@@ -86,7 +95,9 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Gao2015Strategy3);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Gao2015Strategy3 :
+                SimilarityMeasureType.AncSPLGao2015Strategy3);
     }
 
     /**
@@ -113,7 +124,9 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
         {
             // We get the shortest path length between the concepts
 
-            double length = left.getShortestPathDistanceTo(right, false);
+            double length = !m_useFastShortestPathAlgorithm ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
 
             // We get the IC value of the lowest common ancestor
 

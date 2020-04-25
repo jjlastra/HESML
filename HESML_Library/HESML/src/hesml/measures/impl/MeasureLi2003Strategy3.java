@@ -41,6 +41,13 @@ import hesml.taxonomy.*;
 class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Exponential factor initializaed to the best
      * default value for this measure in the paper.
      */
@@ -53,9 +60,11 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
      */
     
     MeasureLi2003Strategy3(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
         
         // We initialize the best default value on the RG65 dataset
         
@@ -70,7 +79,9 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Li2003Strategy3);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Li2003Strategy3 :
+                SimilarityMeasureType.AncSPLLi2003Strategy3);
     }
     
     /**
@@ -96,7 +107,7 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        return (simStrategyFun1(left, right, m_Alpha));
+        return (simStrategyFun1(left, right, m_Alpha, m_useFastShortestPathAlgorithm));
     }
     
     /**
@@ -114,11 +125,14 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
     static double simStrategyFun1(
             IVertex left,
             IVertex right,
-            double  alpha) throws InterruptedException, Exception
+            double  alpha,
+            boolean useFastShortestPathMethod) throws InterruptedException, Exception
     {
         // We compute the shortest path length between nodes
         
-        double length = left.getShortestPathDistanceTo(right, false);
+        double length = !useFastShortestPathMethod ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
         
         // We compute the similarity
         

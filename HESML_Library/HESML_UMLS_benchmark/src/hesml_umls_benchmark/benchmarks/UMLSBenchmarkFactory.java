@@ -85,6 +85,8 @@ public class UMLSBenchmarkFactory
     
     public static IUMLSBenchmark createAncSPLBenchmark(
             IntrinsicICModelType    icModel,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
             int                     nRandomSamples,
             boolean                 useEdgeWeights,
             String                  strSnomedDir,
@@ -95,6 +97,7 @@ public class UMLSBenchmarkFactory
     {
         return (new AncSPLBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename, icModel, nRandomSamples, useEdgeWeights));
+                strSNOMED_CUI_mappingfilename, icModel, 
+                measureType1, measureType2, nRandomSamples, useEdgeWeights));
     }   
 }

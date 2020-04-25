@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureLi2003Strategy9 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Exponential factor initializaed to the best
      * default value for this measure in the paper.
      */
@@ -64,9 +71,11 @@ class MeasureLi2003Strategy9 extends SimilaritySemanticMeasure
      */
     
     MeasureLi2003Strategy9(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // We initialize the best default value on the RG65 dataset
         
@@ -125,7 +134,9 @@ class MeasureLi2003Strategy9 extends SimilaritySemanticMeasure
 
             // We get the f1 and f2 terms
 
-            double f1 = MeasureLi2003Strategy3.simStrategyFun1(left, right, m_Alpha);
+            double f1 = MeasureLi2003Strategy3.simStrategyFun1(left,
+                        right, m_Alpha, m_useFastShortestPathAlgorithm);
+            
             double f2 = MeasureLi2003Strategy4.simStrategyFun2(left, right, m_Beta);
 
             // We compute the F3 function

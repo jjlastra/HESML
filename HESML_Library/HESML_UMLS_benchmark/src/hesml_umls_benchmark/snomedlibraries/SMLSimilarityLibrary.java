@@ -269,7 +269,7 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
                 break;
                 
             case Rada:
-            case FastRada:
+            case AncSPLRada:
                 
                 strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989;
                 

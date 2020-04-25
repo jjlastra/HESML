@@ -39,6 +39,13 @@ import hesml.taxonomy.*;
 class MeasureCaiStrategy1 extends BaseJiangConrathMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Free parameters in formula (7) of the paper cited above
      */
     
@@ -53,9 +60,11 @@ class MeasureCaiStrategy1 extends BaseJiangConrathMeasure
     MeasureCaiStrategy1(
             ITaxonomy   taxonomy,
             double      alpha,
-            double      beta) throws Exception
+            double      beta,
+            boolean     useFastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // We store the free parameters
         
@@ -71,7 +80,9 @@ class MeasureCaiStrategy1 extends BaseJiangConrathMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.CaiStrategy1);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.CaiStrategy1 :
+                SimilarityMeasureType.AncSPLCaiStrategy1);
     }
     
     /**
@@ -107,7 +118,11 @@ class MeasureCaiStrategy1 extends BaseJiangConrathMeasure
         
         // We compute the normalized shortest path (formula 5 in the paper)
         
-        double splN = 0.5 * (double) left.getShortestPathDistanceTo(right, false)
+        double shortestPathLength = !m_useFastShortestPathAlgorithm ? 
+                                    left.getShortestPathDistanceTo(right, false) :
+                                    left.getFastShortestPathDistanceTo(right, false);
+        
+        double splN = 0.5 * (double) shortestPathLength
                         / (double) left.getTaxonomy().getVertexes().getGreatestDepthMax();
         
         // Now we compute the similarity value

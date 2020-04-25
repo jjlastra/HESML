@@ -41,14 +41,23 @@ import hesml.taxonomy.*;
 class MeasurePedersenPath extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasurePedersenPath(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
     }
     
     /**
@@ -59,7 +68,9 @@ class MeasurePedersenPath extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.PedersenPath);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.PedersenPath :
+                SimilarityMeasureType.AncSPLPedersenPath);
     }
     
     /**
@@ -87,7 +98,11 @@ class MeasurePedersenPath extends SimilaritySemanticMeasure
     {
         // We compute the shortest path length
         
-        double similarity = 1.0 / (1.0 + left.getShortestPathDistanceTo(right, false));
+        double shortestPathLength = !m_useFastShortestPathAlgorithm ? 
+                                left.getShortestPathDistanceTo(right, false) :
+                                left.getFastShortestPathDistanceTo(right, false);
+        
+        double similarity = 1.0 / (1.0 + shortestPathLength);
         
         // We return the result
         

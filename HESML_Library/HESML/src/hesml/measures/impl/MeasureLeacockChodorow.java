@@ -41,6 +41,13 @@ import hesml.taxonomy.*;
 class MeasureLeacockChodorow extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Largest depth min value within the taxonomy cached in the
      * constructor.
      */
@@ -53,9 +60,11 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
      */
     
     MeasureLeacockChodorow(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
         
         // We obtain the largest depth min value
         
@@ -70,7 +79,9 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.LeacockChodorow);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.LeacockChodorow :
+                SimilarityMeasureType.AncSPLLeacockChodorow);
     }
     
     /**
@@ -98,7 +109,11 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
     {
         // We compute the similarity
 
-        double similarity = -Math.log((1.0 + left.getShortestPathDistanceTo(right, false))
+        double shortestPathLen = !m_useFastShortestPathAlgorithm ? 
+                                left.getShortestPathDistanceTo(right, false) :
+                                left.getFastShortestPathDistanceTo(right, false);
+        
+        double similarity = -Math.log((1.0 + shortestPathLen)
                             / (2.0 * m_largestDepthMin));
        
         // We return the result

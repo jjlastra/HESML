@@ -41,6 +41,13 @@ import hesml.taxonomy.IVertex;
 class MeasureHao extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Tuning parameters defined in equation (4) of the Hao et al. (2011) paper.
      * The authors say that they obtain the highest correlation with alfa = 0
      * and beta = 1. However, they do not clarify in their paper if the results
@@ -64,9 +71,11 @@ class MeasureHao extends SimilaritySemanticMeasure
     MeasureHao(
             ITaxonomy   taxonomy,
             double      alfa,
-            double      beta)
+            double      beta,
+            boolean     usefastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
         
         // We save the tuning parameters
         
@@ -82,7 +91,9 @@ class MeasureHao extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Hao);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Hao :
+                SimilarityMeasureType.AncSPLHao);
     }
     
     /**
@@ -121,7 +132,9 @@ class MeasureHao extends SimilaritySemanticMeasure
             // We obtain the shortest path distance (edge weight = 1.0)
             // between the input vertexes
             
-            double dist = left.getShortestPathDistanceTo(right, false);
+            double dist = !m_useFastShortestPathAlgorithm ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
             
             // We obtain the depth of the LCS vertex defiend as the the
             // length of shortest path from the vertex to the root

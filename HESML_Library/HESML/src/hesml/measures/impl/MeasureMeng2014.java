@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureMeng2014 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constant in the exponential
      */
     
@@ -51,11 +58,13 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
      */
     
     MeasureMeng2014(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod)
     {
         // We call the base constructor
         
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // Default value in the paper
         
@@ -70,7 +79,9 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Meng2014);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Meng2014 :
+                SimilarityMeasureType.AncSPLMeng2014);
     }
 
     /**
@@ -108,7 +119,9 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
         {
             // We get the length among concepts
 
-            double length = left.getShortestPathDistanceTo(right, false);
+            double length = !m_useFastShortestPathAlgorithm ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
 
             // We measure the power factor
 

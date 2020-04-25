@@ -71,7 +71,7 @@ class MeasureRada extends SimilaritySemanticMeasure
     {
         return (!m_useFastShortestPathAlgorithm ?
                 SimilarityMeasureType.Rada :
-                SimilarityMeasureType.FastRada);
+                SimilarityMeasureType.AncSPLRada);
     }
     
     /**

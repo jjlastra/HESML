@@ -21,7 +21,9 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
+import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
@@ -44,13 +46,20 @@ class AncSPLBenchmark extends UMLSLibBenchmark
      * Number of random concept pairs and runs for averaging the time
      */
     
-    protected int   m_nRandomSamples;
+    private int   m_nRandomSamples;
     
     /**
      * IC model used for the evaluation of the weigthed AcSPL algorithm
      */
     
-    protected IntrinsicICModelType  m_icModelMetric;
+    private IntrinsicICModelType  m_icModelMetric;
+    
+    /**
+     * Measure types whose values will be comapared
+     */
+    
+    private SimilarityMeasureType   m_measureType1;
+    private SimilarityMeasureType   m_measureType2;
     
     /**
      * This flag sets if the benchmark will comapre the edge-counting
@@ -77,6 +86,8 @@ class AncSPLBenchmark extends UMLSLibBenchmark
             String                  strSnomedDBdescriptionFileName,
             String                  strSNOMED_CUI_mappingfilename,
             IntrinsicICModelType    icModelMetric,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
             int                     nRandomSamples,
             boolean                 useEdgeWeights) throws Exception
     {
@@ -92,6 +103,8 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         m_nRandomSamples = nRandomSamples;
         m_icModelMetric = icModelMetric;
         m_useEdgeWeights = useEdgeWeights;
+        m_measureType1 = measureType1;
+        m_measureType2 = measureType2;
     }
     
     /**
@@ -117,7 +130,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         
         if (m_useEdgeWeights)
         {
-            m_Libraries[0].setSimilarityMeasure(m_icModelMetric,SimilarityMeasureType.Lin);
+            m_Libraries[0].setSimilarityMeasure(m_icModelMetric, m_measureType1);
         }
             
         // We get the SNOMED taxonomy instanced by HESML
@@ -128,6 +141,11 @@ class AncSPLBenchmark extends UMLSLibBenchmark
 
         IVertex[][] snomedNodepairs = getRandomSnomedNodePairs(snomedTaxonomy, m_nRandomSamples);
         
+        // We get the two similairty measures
+        
+        ISimilarityMeasure measure1 = MeasureFactory.getMeasure(snomedTaxonomy, m_measureType1);
+        ISimilarityMeasure measure2 = MeasureFactory.getMeasure(snomedTaxonomy, m_measureType2);
+        
         // We create the output data matrix and fill the row headers
         // SNOMED ID1 | SNOMED ID2 | Exact Dijkstra distance | AncSPL distance
         
@@ -137,8 +155,8 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         
         strOutputDataMatrix[0][0] = "SNOMED Id1";
         strOutputDataMatrix[0][1] = "SNOMED Id2";
-        strOutputDataMatrix[0][2] = "Exact Dijkstra distance";
-        strOutputDataMatrix[0][3] = "AncSPL distance";
+        strOutputDataMatrix[0][2] = m_measureType1.toString();
+        strOutputDataMatrix[0][3] = m_measureType2.toString();
         
         // We evaluate the performance of the HESML library
         
@@ -156,11 +174,8 @@ class AncSPLBenchmark extends UMLSLibBenchmark
             
             // We evaluate the Dijsktra distance
             
-            strOutputDataMatrix[iPair + 1][2] =
-                    Double.toString(snomed1.getShortestPathDistanceTo(snomed2, m_useEdgeWeights));
-            
-            strOutputDataMatrix[iPair + 1][3] =
-                    Double.toString(snomed1.getFastShortestPathDistanceTo(snomed2, m_useEdgeWeights));
+            strOutputDataMatrix[iPair + 1][2] = Double.toString(measure1.getSimilarity(snomed1, snomed2));
+            strOutputDataMatrix[iPair + 1][3] = Double.toString(measure2.getSimilarity(snomed1, snomed2));
             
             // We show the progress
             

@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureZhou extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Maxikum depth of the base taxonomy
      */
     
@@ -51,9 +58,11 @@ class MeasureZhou extends SimilaritySemanticMeasure
      */
     
     MeasureZhou(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     useFastMetod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMetod;
         
         // We get the maximum depth of the base taxonomy. We note
         // that Zhou et al. define the depth in base 1, it means that
@@ -70,7 +79,9 @@ class MeasureZhou extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Zhou);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Zhou :
+                SimilarityMeasureType.AncSPLZhou);
     }
     
     /**
@@ -102,7 +113,9 @@ class MeasureZhou extends SimilaritySemanticMeasure
         
         // We get the edge length between the nodes
         
-        double length = left.getShortestPathDistanceTo(right, false);
+        double length = !m_useFastShortestPathAlgorithm ? 
+                        left.getShortestPathDistanceTo(right, false) :
+                        left.getFastShortestPathDistanceTo(right, false);
         
         // We compute the depth factor
         

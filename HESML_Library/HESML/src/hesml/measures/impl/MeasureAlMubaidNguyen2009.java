@@ -41,14 +41,23 @@ import hesml.taxonomy.*;
 class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureAlMubaidNguyen2009(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
     }
     
     /**
@@ -59,7 +68,9 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Mubaid);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Mubaid :
+                SimilarityMeasureType.AncSPLMubaid);
     }
     
     /**
@@ -100,7 +111,10 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
         
         if (lcsVertex != null)
         {
-            shortestPathLength = left.getShortestPathDistanceTo(right, false);
+            shortestPathLength = !m_useFastShortestPathAlgorithm ? 
+                                left.getShortestPathDistanceTo(right, false) :
+                                left.getFastShortestPathDistanceTo(right, false);
+            
             lcsDepth = lcsVertex.getDepthMin();
         }
         else

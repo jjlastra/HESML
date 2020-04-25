@@ -137,7 +137,10 @@ public class HESML_UMLS_benchmark
          */
         
         IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
-                                    IntrinsicICModelType.Sanchez2011, 30, false,
+                                    IntrinsicICModelType.Sanchez2011,
+                                    SimilarityMeasureType.PedersenPath,
+                                    SimilarityMeasureType.AncSPLPedersenPath,
+                                    30, false,
                                     strUMLSdir, strSNOMED_conceptFilename,
                                     strSNOMED_relationshipsFilename,
                                     strSNOMED_descriptionFilename,
