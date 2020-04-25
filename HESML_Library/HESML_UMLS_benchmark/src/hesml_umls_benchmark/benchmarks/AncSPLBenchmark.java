@@ -20,7 +20,9 @@
 
 package hesml_umls_benchmark.benchmarks;
 
+import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
+import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
@@ -125,17 +127,17 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         // We load SNOMED taxonomy
         
         m_Libraries[0].loadSnomed();
+                   
+        // We get the SNOMED taxonomy instanced by HESML
+        
+        ITaxonomy snomedTaxonomy = ((HESMLSimilarityLibrary) m_Libraries[0]).getSnomedTaxonomy();
         
         // We set the intrinsic IC model for the weighted case
         
         if (m_useEdgeWeights)
         {
-            m_Libraries[0].setSimilarityMeasure(m_icModelMetric, m_measureType1);
+            ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(snomedTaxonomy);
         }
-            
-        // We get the SNOMED taxonomy instanced by HESML
-        
-        ITaxonomy snomedTaxonomy = ((HESMLSimilarityLibrary) m_Libraries[0]).getSnomedTaxonomy();
         
         // We get the vector of random concept pairs
 
