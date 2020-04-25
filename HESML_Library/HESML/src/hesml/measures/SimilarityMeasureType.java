@@ -33,20 +33,17 @@ public enum SimilarityMeasureType
      * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
      * Development and application of a metric on semantic nets.
      * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
-     *//**
-     * It asks for the similarity measure introduced in the paper below.
-     * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
-     * Development and application of a metric on semantic nets.
-     * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
      */
     
     Rada,
     
     /**
-     * It asks for the Rada et al. (1989) similarity measure which uses
-     * a very efficient approximation of the Djikstra algortihm for
-     * taxonomies introduced by Lastra-Díaz et al. (2020) [1].
-     * [1]
+     * It asks for a fastest version of the Rada et al. (1989) similarity
+     * measure which uses an efficient approximation of the Djikstra
+     * algortihm for taxonomies introduced by Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     FastRada,

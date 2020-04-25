@@ -95,7 +95,7 @@ public class HESML_UMLS_benchmark
          * Learning, Madison, WI, 1998: pp. 296–304.
          */
         
-        IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+        /*IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
                                     libraries, SimilarityMeasureType.Lin,
                                     IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                     10, strUMLSdir, strSNOMED_conceptFilename,
@@ -104,7 +104,7 @@ public class HESML_UMLS_benchmark
                                     strSNOMED_CUI_mappingfilename);
         
         ICbasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
-        ICbasedBenchmark.clear();
+        ICbasedBenchmark.clear();*/
         
         /**
          * Experiment 1.2: we compare the performance of the HEMSL, SML and
@@ -129,6 +129,22 @@ public class HESML_UMLS_benchmark
         
         pathBasedBenchmark.run("raw_output_path_measure_experiment.csv");
         pathBasedBenchmark.clear();*/
+        
+        /**
+         * Experiment 2.1: we evaluate the approximation quality of the novel
+         * Ancestor-based Shortest Path Length (AncSPL) algortihm by comparing
+         * the distance returned by AncSPL and the exact Dijkstra algorithms.
+         */
+        
+        IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
+                                    IntrinsicICModelType.Sanchez2011, 10, false,
+                                    strUMLSdir, strSNOMED_conceptFilename,
+                                    strSNOMED_relationshipsFilename,
+                                    strSNOMED_descriptionFilename,
+                                    strSNOMED_CUI_mappingfilename);
+        
+        ICbasedBenchmark.run("raw_output_AncSPL_approx_quality_exp.csv");
+        ICbasedBenchmark.clear();
         
         // We show the overalll running time
         

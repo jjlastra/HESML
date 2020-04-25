@@ -26,21 +26,20 @@ import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
+import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import java.util.HashSet;
-import org.openrdf.model.URI;
 
 /**
  * This class implementes the SNOMED similarity library based on HESML.
  * @author j.lastra
  */
 
-class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
+public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
         implements ISnomedSimilarityLibrary
 {
     /**
@@ -91,6 +90,16 @@ class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
         m_hesmlSnomedDatabase = null;
     }
 
+    /**
+     * This function returns the SNOMED taxonomy
+     * @return 
+     */
+    
+    public ITaxonomy getSnomedTaxonomy()
+    {
+        return (m_hesmlSnomedDatabase.getTaxonomy());
+    }
+    
     /**
      * This function returns the library type
      * @return 

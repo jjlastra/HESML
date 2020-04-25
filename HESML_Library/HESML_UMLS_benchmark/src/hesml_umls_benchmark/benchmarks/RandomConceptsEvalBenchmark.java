@@ -108,7 +108,8 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * This function executes the benchmark.
+     * This function executes the benchmark and saves the raw results into
+     * the output file.
      */
     
     @Override
@@ -141,7 +142,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
                       
             // set the number of runs
 
-            String[][] snomedIDpairs = getRandomNodePairs(m_nRandomSamplesPerLibrary[iLib]);
+            String[][] snomedIDpairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
             
             // We load SNOMED and the resources of the library
             
@@ -160,7 +161,6 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             
             m_Libraries[iLib].unloadSnomed();
         }
-
         
         // We write the output raw data
         
@@ -248,14 +248,14 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * This function generates a vector of random SNOMED-CT concept pairs which
+     * This function generates a vector of random UMLS concept pairs which
      * will be used to evaluate the performance of the libraeries.
      * @param snomedTaxonomy
      * @param nPairs
      * @return 
      */
     
-    private String[][] getRandomNodePairs(
+    private String[][] getRandonCUIpairs(
             int nPairs) throws FileNotFoundException 
     {
         // We get the likst of CUIs with SNOMED concepts

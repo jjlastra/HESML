@@ -68,4 +68,33 @@ public class UMLSBenchmarkFactory
                 strSnomedDBdescriptionFileName,
                 strSNOMED_CUI_mappingfilename));
     }   
+    
+    /**
+     * This fucntion creates a benchmark to evaluate the approximation quality
+     * of the AncSPL algorithm.
+     * @param icModel
+     * @param nRandomSamples
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IUMLSBenchmark createAncSPLBenchmark(
+            IntrinsicICModelType    icModel,
+            int                     nRandomSamples,
+            boolean                 useEdgeWeights,
+            String                  strSnomedDir,
+            String                  strSnomedDBconceptFileName,
+            String                  strSnomedDBRelationshipsFileName,
+            String                  strSnomedDBdescriptionFileName,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLBenchmark(strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
+                strSNOMED_CUI_mappingfilename, icModel, nRandomSamples, useEdgeWeights));
+    }   
 }

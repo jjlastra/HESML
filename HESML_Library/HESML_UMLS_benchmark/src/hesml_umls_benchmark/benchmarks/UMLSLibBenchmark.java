@@ -36,7 +36,8 @@ import java.util.Scanner;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
- * implemented by this program.
+ * implemented by this program to compare the HESML, SML nad UMLS::Similarity
+ * UMLS-based semantic measures libraries.
  * @author j.lastra
  */
 
@@ -60,6 +61,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
    
     /**
      * Constructor to build the Snomed HESML database
+     * @param libraries
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -70,11 +72,11 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     
     UMLSLibBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            String                  strSnomedDir,
-            String                  strSnomedDBconceptFileName,
-            String                  strSnomedDBRelationshipsFileName,
-            String                  strSnomedDBdescriptionFileName,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            String                      strSnomedDir,
+            String                      strSnomedDBconceptFileName,
+            String                      strSnomedDBRelationshipsFileName,
+            String                      strSnomedDBdescriptionFileName,
+            String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We save the SNOMED filenames
         
