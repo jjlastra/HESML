@@ -132,11 +132,20 @@ public class HESML_UMLS_benchmark
         
         /**
          * Experiment 2.1: we evaluate the approximation quality of the novel
-         * Ancestor-based Shortest Path Length (AncSPL) algortihm by comparing
-         * the distance returned by AncSPL and the exact Dijkstra algorithms.
+         * Ancestor-based Shortest Path Length (AncSPL) algorithm by comparing
+         * the similarity scores returned by the Pedersen path-based measure [1]
+         * using either exact Dijkstra shortest-path method or the new AncSPL
+         * approximated shortest-path method. The Pedersen et al.[1] measure
+         * is the inverse of the Rada distance which is defined as the length of
+         * shortest path between two concepts in the taxonomy. HESML implementation
+         * of the Pedersen et al. [1] uses an exact Dijkstra algoritm.
+         * 
+         * [1] Pedersen, T., Pakhomov, S. V. S., Patwardhan, S., and Chute, C. G. (2007).
+         * Measures of semantic similarity and relatedness in the biomedical domain.
+         * Journal of Biomedical Informatics, 40(3), 288–299.
          */
         
-        IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
+        /*IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
                                     IntrinsicICModelType.Sanchez2011,
                                     SimilarityMeasureType.PedersenPath,
                                     SimilarityMeasureType.AncSPLPedersenPath,
@@ -146,8 +155,38 @@ public class HESML_UMLS_benchmark
                                     strSNOMED_descriptionFilename,
                                     strSNOMED_CUI_mappingfilename);
         
-        ICbasedBenchmark.run("raw_output_AncSPL_approx_quality_exp.csv");
-        ICbasedBenchmark.clear();
+        icBasedBenchmark.run("raw_output_AncSPL_unweighted_quality_exp.csv");
+        icBasedBenchmark.clear();*/
+        
+        /**
+         * Experiment 2.2: we evaluate the approximation quality of the novel
+         * Ancestor-based Shortest Path Length (AncSPL) algorithm in the
+         * weighted-edge case by comparing the similarity scores returned
+         * by the coswJ&C [1] similarity measure using either exact Dijkstra
+         * shortest-path method ir the new AncSPL approximated shortest-path
+         * method on the edge-weighted SNOMED taxonomy.
+         * The coswJ&C [1] similarity measure requires the computation
+         * of the shortest-path length on an IC-based weigthed taxonomy. Thus,
+         * this measure allows to evaluatethe new AnxSPL method on a weighted
+         * taxonomy.
+         * 
+         * [1] J.J. Lastra-Díaz, A. García-Serrano, A novel family of IC-based
+         * similarity measures with a detailed experimental survey on WordNet,
+         * Engineering Applications of Artificial Intelligence Journal. 46 (2015) 140–153.
+         */
+        
+        IUMLSBenchmark weightedBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
+                                    IntrinsicICModelType.Sanchez2011,
+                                    SimilarityMeasureType.CosineNormWeightedJiangConrath,
+                                    SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                                    30, true,
+                                    strUMLSdir, strSNOMED_conceptFilename,
+                                    strSNOMED_relationshipsFilename,
+                                    strSNOMED_descriptionFilename,
+                                    strSNOMED_CUI_mappingfilename);
+        
+        weightedBasedBenchmark.run("raw_output_AncSPL_weigthed_quality_exp.csv");
+        weightedBasedBenchmark.clear();
         
         // We show the overalll running time
         

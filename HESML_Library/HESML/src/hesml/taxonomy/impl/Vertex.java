@@ -973,57 +973,59 @@ class Vertex implements IVertex
             // We compute a subgraoh containing most of paths between
             // the current vertex and the target
             
-            HashSet<IVertex> mainSubgraph;
-            HashSet<IVertex> auxSubgraph = null;
-            HashSet<IVertex> mergeSubgraph = null;
-            
             if (isMyDescendant(target))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
                 
-                mainSubgraph = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
-                        : m_Taxonomy.getUnorderedAncestorSet(target);
+                HashSet<IVertex> targetAncestors = cachedAncestors ?
+                                        ((Vertex)target).getCachedAncestorSet()
+                                        : m_Taxonomy.getUnorderedAncestorSet(target);
                 
-                computeDistanceFieldOnSubgraph(mainSubgraph, weighted);
+                computeDistanceFieldOnSubgraph(targetAncestors, weighted);
                 
-                if (!cachedAncestors) mainSubgraph.clear();
+                // We destroy the ancestor set if it was obtained on-the-fly
+                
+                if (!cachedAncestors) targetAncestors.clear();
             }
             else if (target.isMyDescendant(this))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
                 
-                mainSubgraph = cachedAncestors ? getCachedAncestorSet()
-                        : m_Taxonomy.getUnorderedAncestorSet(this);
+                HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(this);
                 
-                computeDistanceFieldOnSubgraph(mainSubgraph, weighted);
+                computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
                 
-                if (!cachedAncestors) mainSubgraph.clear();
+                // We destroy the ancestor set if it was obtained on-the-fly
+                
+                if (!cachedAncestors) sourceAncestors.clear();
             }
             else
             {
                 // We obtain the ancestor set of both vertexes
                 
-                mainSubgraph = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
-                        : m_Taxonomy.getUnorderedAncestorSet(target);
+                HashSet<IVertex> targetAncestors = cachedAncestors ?
+                                            ((Vertex)target).getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(target);
                 
-                auxSubgraph = cachedAncestors ? getCachedAncestorSet()
+                HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                         : m_Taxonomy.getUnorderedAncestorSet(this);
                 
                 // We merge both ancestor sets to buld the subgraph
                 
-                mergeSubgraph = new HashSet<>(mainSubgraph);
-                mergeSubgraph.addAll(auxSubgraph);
+                HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
+                mergeSubgraph.addAll(sourceAncestors);
                 
                 computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);
                 
-                // We release the auxiliary sets
+                // // We destroy the ancestor sets if they were obtained on-the-fly
                 
                 if (!cachedAncestors)
                 {
-                    mainSubgraph.clear();
-                    auxSubgraph.clear();
+                    targetAncestors.clear();
+                    sourceAncestors.clear();
                 }
                 
                 mergeSubgraph.clear();
