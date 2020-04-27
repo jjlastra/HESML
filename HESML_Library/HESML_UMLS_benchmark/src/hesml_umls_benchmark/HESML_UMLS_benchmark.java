@@ -176,16 +176,16 @@ public class HESML_UMLS_benchmark
          */
         
         IUMLSBenchmark weightedBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
-                                    IntrinsicICModelType.Sanchez2011,
-                                    SimilarityMeasureType.CosineNormWeightedJiangConrath,
-                                    SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                                    IntrinsicICModelType.Seco,
+                                    SimilarityMeasureType.LeacockChodorow,
+                                    SimilarityMeasureType.AncSPLLeacockChodorow,
                                     30, true,
                                     strUMLSdir, strSNOMED_conceptFilename,
                                     strSNOMED_relationshipsFilename,
                                     strSNOMED_descriptionFilename,
                                     strSNOMED_CUI_mappingfilename);
         
-        weightedBasedBenchmark.run("raw_output_AncSPL_weigthed_quality_exp.csv");
+        weightedBasedBenchmark.run("raw_output_AncSPLLeacockChodorow_quality_exp.csv");
         weightedBasedBenchmark.clear();
         
         // We show the overalll running time
