@@ -170,18 +170,14 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        SimilarityMeasureClass    funClass;   // Function class
-        
         // We compute the distance
         
-        similarity = compare(left, right);
+        double similarity = compare(left, right);
         
         // We get the function class to convert it in a simkmilarity
         // if it was neeeded
         
-        funClass = getMeasureClass();
+        SimilarityMeasureClass funClass = getMeasureClass();
         
         // We convert the distance to similarity when it is necessary
         

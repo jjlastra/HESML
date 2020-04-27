@@ -103,7 +103,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
     ISnomedConcept getConcept(Long snomedId);
     
     /**
-     * This fucntion returns the HESML taxonomy encoding the SNOMED-CT 'is-a'
+     * This function returns the HESML taxonomy encoding the SNOMED-CT 'is-a'
      * ontology.
      * @return In-memory HESML taxonomy encoding the 'is-a' SNOMED-CT graph
      */
