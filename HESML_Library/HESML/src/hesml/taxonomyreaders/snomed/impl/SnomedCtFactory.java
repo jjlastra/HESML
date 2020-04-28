@@ -21,7 +21,7 @@
 
 package hesml.taxonomyreaders.snomed.impl;
 
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 
 /**
  * This class implements the fucntions to load a SNOMED-CT database
@@ -41,7 +41,7 @@ public class SnomedCtFactory
      * @throws java.lang.Exception Unexpected error
      */
     
-    public static ISnomedCtDatabase loadSnomedDatabase(
+    public static ISnomedCtOntology loadSnomedDatabase(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

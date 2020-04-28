@@ -16,7 +16,6 @@
  * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  * license along with this program. If not,
  * see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
- *
  */
 
 package hesml.taxonomyreaders.snomed;
@@ -28,7 +27,7 @@ import hesml.taxonomy.ITaxonomy;
  * @author j.lastra
  */
 
-public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
+public interface ISnomedCtOntology extends Iterable<ISnomedConcept>
 {
     /**
      * This functions determines if the input term is present in the DB.
@@ -48,7 +47,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
     /**
      * This function returns the SNOMED concept associated to the CUI
      * or null if it is not found in the SNOMED database.
-     * @param umlsConcetCUI
+     * @param umlsConceptCUI
      * @return 
      */
     
@@ -75,7 +74,7 @@ public interface ISnomedCtDatabase extends Iterable<ISnomedConcept>
      * This function returns the unique CUID for all the concepts
      * associated to the input term.
      * @param strTerm The term whose concepts will be retrieved
-     * @return A set of concepts CUID
+     * @return A set of SNOMED ids
      * @throws java.lang.Exception Unexpected error
      */
 

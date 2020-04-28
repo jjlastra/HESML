@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import java.util.HashSet;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 
 /**
  * This class is mainly esponsible to parse the SNOMED-CT databse files
@@ -63,7 +63,7 @@ class SnomedDbReader
      * @throws Exception 
      */
     
-    static ISnomedCtDatabase loadDatabase(
+    static ISnomedCtOntology loadDatabase(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

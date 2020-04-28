@@ -26,15 +26,15 @@ import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
 import java.util.HashSet;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 
 /**
  * This class implements the SNOMED-CT database.
  * @author j.lastra
  */
 
-class SnomedCtDatabase implements ISnomedCtDatabase
+class SnomedCtDatabase implements ISnomedCtOntology
 {
     /**
      * Taxonomy enconding the SNOMED-CT 'is-a' graph.

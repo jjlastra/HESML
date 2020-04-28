@@ -29,7 +29,7 @@ import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
@@ -46,7 +46,7 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
      * SNOMED databse implemented by HESML
      */
     
-    private ISnomedCtDatabase   m_hesmlSnomedDatabase;
+    private ISnomedCtOntology   m_hesmlSnomedDatabase;
     
     /**
      * Active semantic similarity measure

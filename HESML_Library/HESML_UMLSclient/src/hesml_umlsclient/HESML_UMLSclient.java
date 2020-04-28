@@ -29,7 +29,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
-import hesml.taxonomyreaders.snomed.ISnomedCtDatabase;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -80,33 +80,37 @@ public class HESML_UMLSclient
         
         // We load the SNOMED-CT taxonomy
         
-        ISnomedCtDatabase snomedDatabase = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSNOMED_conceptFilename,
+        ISnomedCtOntology snomedDatabase = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSNOMED_conceptFilename,
                                             m_strSNOMED_relationshipsFilename,
                                             m_strSNOMED_descriptionFilename,
                                             m_strSNOMED_CUI_mappingfilename, true);
         
         // We set the Sanchez et al. (2011) IC model
         
-        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Sanchez2011);
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
         
         icModel.setTaxonomyData(snomedDatabase.getTaxonomy());
         
         // We obtain our cosJ&C similairty measure
         
         ISimilarityMeasure simMeasure1 = MeasureFactory.getMeasure(snomedDatabase.getTaxonomy(),
-                                            SimilarityMeasureType.CosineNormJiangConrath);
+                                            SimilarityMeasureType.Lin);
 
         ISimilarityMeasure simMeasure2 = MeasureFactory.getMeasure(snomedDatabase.getTaxonomy(),
                                             SimilarityMeasureType.AncSPLPedersenPath);
         
         // We compute the similairty measure between all concept pairs in MayoSRS dataset
-        
-        evaluateMeasureInDatset(snomedDatabase, simMeasure1, mayoSRSdataset,
-                "UMNSRS_cosJC_Sanchez2011.csv");
 
-        evaluateMeasureInDatset(snomedDatabase, simMeasure1, mayoSRSdataset,
-                "UMNSRS_PedersenPath.csv");
+        String[][] data = new String[2][2];
         
+        data[0][0] = "C0002871";
+        data[0][1] = "C0002888";
+        data[1][0] = "C0018670";
+        data[1][1] = "C0016504";
+        
+        evaluateMeasureInDatset(snomedDatabase, simMeasure1, data, "prueba_Lin.csv");
+        evaluateMeasureInDatset(snomedDatabase, simMeasure2, data, "prueba_Rada.csv");
+
         // We unload SNOMED-CT
         
         snomedDatabase.clear();
@@ -122,7 +126,7 @@ public class HESML_UMLSclient
      */
     
     private static void evaluateMeasureInDatset(
-            ISnomedCtDatabase   snomedDB,
+            ISnomedCtOntology   snomedDB,
             ISimilarityMeasure  measure,
             String[][]          strDataset,
             String              strOutputCsvFilename) throws Exception
@@ -165,7 +169,7 @@ public class HESML_UMLSclient
      */
 
     private static double getSnomedSimilarity(
-            ISnomedCtDatabase   snomedDB,
+            ISnomedCtOntology   snomedDB,
             ISimilarityMeasure  measure,
             String              strFirstUmlsCUI,
             String              strSecondUmlsCUI) throws Exception
