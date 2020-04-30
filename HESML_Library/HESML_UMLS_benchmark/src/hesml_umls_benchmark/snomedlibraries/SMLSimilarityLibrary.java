@@ -93,6 +93,8 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strCUIconceptsFilename
      * @throws Exception 
      */
     
@@ -101,13 +103,15 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
+            String  strUmlsDir,
             String  strCUIconceptsFilename) throws Exception
     {
         // Inicializamos la clase base
         
         super(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName, strCUIconceptsFilename);
+                strSnomedDBdescriptionFileName,
+                strUmlsDir, strCUIconceptsFilename);
         
         // We initialize the object
         
@@ -203,7 +207,7 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         
         m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
                                     m_strSnomedDBconceptFileName,
-                                    m_strSNOMED_CUI_mappingfilename);
+                                    m_strUmlsCuiMappingFilename);
         
         // We create an in-memory graph in which we will load Snomed-CT.
         // Notice that Snomed-CT is quite large (e.g. version 20120731 contains 296433 concepts and872318 relationships ).

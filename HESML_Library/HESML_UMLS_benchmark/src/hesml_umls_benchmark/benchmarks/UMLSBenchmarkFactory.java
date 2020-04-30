@@ -59,6 +59,7 @@ public class UMLSBenchmarkFactory
             String                      strSnomedDBconceptFileName,
             String                      strSnomedDBRelationshipsFileName,
             String                      strSnomedDBdescriptionFileName,
+            String                      strUmlsDir,
             String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         return (new RandomConceptsEvalBenchmark(libraries,
@@ -66,7 +67,7 @@ public class UMLSBenchmarkFactory
                 nRuns, strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename));
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
     }   
     
     /**
@@ -93,11 +94,12 @@ public class UMLSBenchmarkFactory
             String                  strSnomedDBconceptFileName,
             String                  strSnomedDBRelationshipsFileName,
             String                  strSnomedDBdescriptionFileName,
+            String                  strUmlsDir,
             String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
         return (new AncSPLBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename, icModel, 
+                strUmlsDir, strSNOMED_CUI_mappingfilename, icModel, 
                 measureType1, measureType2, nRandomSamples, useEdgeWeights));
     }   
 }

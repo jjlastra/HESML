@@ -66,7 +66,7 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
-     * @param strSNOMED_CUI_mappingfilename
+     * @param strUmlsCuiMappingFilename
      * @throws Exception 
      */
     
@@ -75,14 +75,15 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
-            String  strSNOMED_CUI_mappingfilename) throws Exception
+            String  strUmlsDir,
+            String  strUmlsCuiMappingFilename) throws Exception
     {
         // Inicializamos la clase base
         
         super(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename);
+                strUmlsDir, strUmlsCuiMappingFilename);
         
         // We initialize the class
         
@@ -230,7 +231,7 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
                                     m_strSnomedDBconceptFileName,
                                     m_strSnomedDBRelationshipsFileName,
                                     m_strSnomedDBdescriptionFileName,
-                                    m_strSNOMED_CUI_mappingfilename,
+                                    m_strUmlsDir, m_strUmlsCuiMappingFilename,
                                     true);
             
             m_hesmlVertexes = m_hesmlSnomedDatabase.getTaxonomy().getVertexes();

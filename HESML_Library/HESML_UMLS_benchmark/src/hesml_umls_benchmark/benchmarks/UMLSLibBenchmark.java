@@ -26,13 +26,8 @@ import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedLibraryFactory;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -50,10 +45,11 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     protected ISnomedSimilarityLibrary[]    m_Libraries;
 
     /**
-     * SNOMED-CT RF2 files
+     * UMLS and SNOMED-CT RF2 files
      */
     
     protected String    m_strSnomedDir;
+    protected String    m_strUmlsDir;
     protected String    m_strSnomedDBconceptFileName;
     protected String    m_strSnomedDBRelationshipsFileName;
     protected String    m_strSnomedDBdescriptionFileName;   
@@ -76,11 +72,13 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
             String                      strSnomedDBconceptFileName,
             String                      strSnomedDBRelationshipsFileName,
             String                      strSnomedDBdescriptionFileName,
+            String                      strUmlsDir,
             String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We save the SNOMED filenames
         
         m_strSnomedDir = strSnomedDir;
+        m_strUmlsDir = strUmlsDir;
         m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
         m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
         m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
@@ -93,11 +91,11 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
         for (int i = 0; i < libraries.length; i++)
         {
             m_Libraries[i] = SnomedLibraryFactory.getLibrary(
-                                    libraries[i], strSnomedDir,
-                                    strSnomedDBconceptFileName,
-                                    strSnomedDBRelationshipsFileName,
-                                    strSnomedDBdescriptionFileName,
-                                    strSNOMED_CUI_mappingfilename);
+                                    libraries[i], m_strSnomedDir,
+                                    m_strSnomedDBconceptFileName,
+                                    m_strSnomedDBRelationshipsFileName,
+                                    m_strSnomedDBdescriptionFileName,
+                                    m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
         }
     }
     

@@ -39,10 +39,11 @@ public abstract class SnomedSimilarityLibrary
      */
     
     protected String  m_strSnomedDir;
+    protected String  m_strUmlsDir;
     protected String  m_strSnomedDBconceptFileName;
     protected String  m_strSnomedDBRelationshipsFileName;
     protected String  m_strSnomedDBdescriptionFileName;
-    protected String  m_strSNOMED_CUI_mappingfilename;
+    protected String  m_strUmlsCuiMappingFilename;
     
     /**
      * Column offset for the main attributes extratec from concept and
@@ -58,6 +59,8 @@ public abstract class SnomedSimilarityLibrary
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strUmlsCuiMappingFilename
      * @throws Exception 
      */
 
@@ -66,15 +69,17 @@ public abstract class SnomedSimilarityLibrary
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
-            String  strSNOMED_CUI_mappingfilename) throws Exception
+            String  strUmlsDir,
+            String  strUmlsCuiMappingFilename) throws Exception
     {
         // We save the SNOMED filenames
         
         m_strSnomedDir = strSnomedDir;
+        m_strUmlsDir = strUmlsDir;
         m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
         m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
         m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
-        m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
+        m_strUmlsCuiMappingFilename = strUmlsCuiMappingFilename;
     }
     
     /**
@@ -256,3 +261,4 @@ public abstract class SnomedSimilarityLibrary
         return (outputCuiToSnomedConcepts);
     }
 }
+

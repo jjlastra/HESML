@@ -76,6 +76,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
      * @throws Exception 
      */
@@ -90,6 +91,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             String                      strSnomedDBconceptFileName,
             String                      strSnomedDBRelationshipsFileName,
             String                      strSnomedDBdescriptionFileName,
+            String                      strUmlsDir,
             String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We initialize the base class
@@ -97,7 +99,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         super(libraries, strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename);    
+                strUmlsDir, strSNOMED_CUI_mappingfilename);    
         
         // We initialize the attributes of the object
         

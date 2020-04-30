@@ -57,7 +57,7 @@ class SnomedDbReader
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
-     * @param strSNOMED_CUI_mappingfilename
+     * @param strUmlsCuiMappingfilename
      * @param useAncestorsCaching
      * @return
      * @throws Exception 
@@ -68,7 +68,8 @@ class SnomedDbReader
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
-            String  strSNOMED_CUI_mappingfilename,
+            String  strUmlsDir,
+            String  strUmlsCuiMappingfilename,
             boolean useAncestorsCaching) throws Exception
     {
         // User message
@@ -78,10 +79,11 @@ class SnomedDbReader
         
         // We load the SNOMED RF2 file
         
-        String[] strSnomedFilenames = new String[]{strSnomedDBconceptFileName,
-                                        strSnomedDBRelationshipsFileName,
-                                        strSnomedDBdescriptionFileName,
-                                        strSNOMED_CUI_mappingfilename};
+        String[] strSnomedFilenames = new String[]{
+                                        strSnomedDir + "/" + strSnomedDBconceptFileName,
+                                        strSnomedDir + "/" + strSnomedDBRelationshipsFileName,
+                                        strSnomedDir + "/" + strSnomedDBdescriptionFileName,
+                                        strUmlsDir + "/" + strUmlsCuiMappingfilename};
         
         File[] snomedFiles = new File[strSnomedFilenames.length];
         
@@ -89,7 +91,7 @@ class SnomedDbReader
         {
             // We load the file information
             
-            snomedFiles[iFile] = new File(strSnomedDir + "/" + strSnomedFilenames[iFile]);
+            snomedFiles[iFile] = new File(strSnomedFilenames[iFile]);
         
             // We chechk the existence of the path
         

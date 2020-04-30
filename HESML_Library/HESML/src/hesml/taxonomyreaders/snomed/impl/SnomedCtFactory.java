@@ -32,11 +32,12 @@ public class SnomedCtFactory
 {
     /**
      * This function loads a SNOMED-CT database
-     * @param strSnomedDBconceptFileName
+     * @param strSnomedDir Direcory containg the SNOMED files
      * @param strSnomedDBconceptFileName RF2 file containing the SNOMED concepts
      * @param strSnomedDBRelationshipsFileName Relationships between concepts
      * @param strSnomedDBdescriptionFileName Terms of the concepts
-     * @param strSNOMED_CUI_mappingfilename Mapping UMLS-CUI to SNOMED IDs
+     * @param strUmlsDir Direcyory containing the UMLS CUI mapping file
+     * @param strUmlsCuiMappingfilename Mapping UMLS-CUI to SNOMED IDs
      * @return The loaded WordnNetDB
      * @throws java.lang.Exception Unexpected error
      */
@@ -46,14 +47,15 @@ public class SnomedCtFactory
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
-            String  strSNOMED_CUI_mappingfilename,
+            String  strUmlsDir,
+            String  strUmlsCuiMappingfilename,
             boolean useAncestorsCaching) throws Exception
     {
         return (SnomedDbReader.loadDatabase(strSnomedDir,
                 strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename,
+                strUmlsDir, strUmlsCuiMappingfilename,
                 useAncestorsCaching));
     }   
 }

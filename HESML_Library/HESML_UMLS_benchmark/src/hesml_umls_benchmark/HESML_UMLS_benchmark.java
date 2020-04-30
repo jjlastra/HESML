@@ -48,6 +48,17 @@ import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
 public class HESML_UMLS_benchmark
 {
     /**
+     * Filenames and directories of the SNOMD-CT files and UMLS CUI file
+     */
+
+    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
+    private static final String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
+    private static final String m_strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    
+    /**
      * Main function. This fucntion executes all experiments reported in
      * the HEMSL-UMLS introductory paper [1].
      * @param args the command line arguments
@@ -59,14 +70,6 @@ public class HESML_UMLS_benchmark
         
         long startTime = System.currentTimeMillis();
         
-        // We set the UMLS directory
-        
-        String strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020";
-        String strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20200301.txt";
-        String strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
-        String strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
-        String strSNOMED_CUI_mappingfilename = "MRCONSO.RRF";
-
         /**
          * We set the vector of libraries to be compared in the first experiments
          */
@@ -175,15 +178,13 @@ public class HESML_UMLS_benchmark
          * Engineering Applications of Artificial Intelligence Journal. 46 (2015) 140–153.
          */
         
-        IUMLSBenchmark weightedBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
-                                    IntrinsicICModelType.Seco,
-                                    SimilarityMeasureType.LeacockChodorow,
-                                    SimilarityMeasureType.AncSPLLeacockChodorow,
-                                    30, true,
-                                    strUMLSdir, strSNOMED_conceptFilename,
-                                    strSNOMED_relationshipsFilename,
-                                    strSNOMED_descriptionFilename,
-                                    strSNOMED_CUI_mappingfilename);
+        IUMLSBenchmark weightedBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(IntrinsicICModelType.Seco,
+                                                SimilarityMeasureType.LeacockChodorow,
+                                                SimilarityMeasureType.AncSPLLeacockChodorow,
+                                                30, true, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
         weightedBasedBenchmark.run("raw_output_AncSPLLeacockChodorow_quality_exp.csv");
         weightedBasedBenchmark.clear();

@@ -50,14 +50,16 @@ import java.util.ArrayList;
 public class HESML_UMLSclient
 {
     /**
-     * UMLS direcory and files
+     * Filenames and directories of the SNOMD-CT files and UMLS CUI file
      */
 
-    private static String m_strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020";
-    private static String m_strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20200301.txt";
-    private static String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
-    private static String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
-    private static String m_strSNOMED_CUI_mappingfilename = "MRCONSO.RRF";
+    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
+    private static final String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
+    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    
     
     /**
      * Path tof MayoSRS dataset
@@ -80,10 +82,10 @@ public class HESML_UMLSclient
         
         // We load the SNOMED-CT taxonomy
         
-        ISnomedCtOntology snomedDatabase = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSNOMED_conceptFilename,
-                                            m_strSNOMED_relationshipsFilename,
-                                            m_strSNOMED_descriptionFilename,
-                                            m_strSNOMED_CUI_mappingfilename, true);
+        ISnomedCtOntology snomedDatabase = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSnomedConceptFilename,
+                                            m_strSnomedRelationshipsFilename,
+                                            m_strSnomedDescriptionFilename,
+                                            m_strUMLSdir, m_strUmlsCuiMappingFilename, true);
         
         // We set the Sanchez et al. (2011) IC model
         

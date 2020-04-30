@@ -45,11 +45,12 @@ public class SnomedLibraryFactory
     
     public static ISnomedSimilarityLibrary getLibrary(
             SnomedBasedLibraryType  libraryType,
-            String              strSnomedDir,
-            String              strSnomedDBconceptFileName,
-            String              strSnomedDBRelationshipsFileName,
-            String              strSnomedDBdescriptionFileName,
-            String              strSNOMED_CUI_mappingfilename) throws Exception
+            String                  strSnomedDir,
+            String                  strSnomedDBconceptFileName,
+            String                  strSnomedDBRelationshipsFileName,
+            String                  strSnomedDBdescriptionFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We initialize the output
         
@@ -65,7 +66,7 @@ public class SnomedLibraryFactory
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
-                            strSNOMED_CUI_mappingfilename);
+                            strUmlsDir, strSNOMED_CUI_mappingfilename);
                 
                 break;
                 
@@ -75,7 +76,7 @@ public class SnomedLibraryFactory
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
-                            strSNOMED_CUI_mappingfilename);
+                            strUmlsDir, strSNOMED_CUI_mappingfilename);
                 
                 break;
                 

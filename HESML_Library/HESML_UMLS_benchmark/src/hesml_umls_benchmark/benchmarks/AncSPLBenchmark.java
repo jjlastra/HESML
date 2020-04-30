@@ -77,6 +77,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
      * @param strSNOMED_CUI_mappingfilename
+     * @param strUmlsDir
      * @param nRandomSamples
      * @throws Exception 
      */
@@ -86,6 +87,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
             String                  strSnomedDBconceptFileName,
             String                  strSnomedDBRelationshipsFileName,
             String                  strSnomedDBdescriptionFileName,
+            String                  strUmlsDir,
             String                  strSNOMED_CUI_mappingfilename,
             IntrinsicICModelType    icModelMetric,
             SimilarityMeasureType   measureType1,
@@ -98,7 +100,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         super(new SnomedBasedLibraryType[]{SnomedBasedLibraryType.HESML},
                 strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
-                strSNOMED_CUI_mappingfilename);    
+                strUmlsDir, strSNOMED_CUI_mappingfilename);    
         
         // We save the number of random concept pairs to be evaluated
         
