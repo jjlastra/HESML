@@ -28,6 +28,8 @@ import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
@@ -50,16 +52,27 @@ import java.util.ArrayList;
 public class HESML_UMLSclient
 {
     /**
-     * Filenames and directories of the SNOMD-CT files and UMLS CUI file
+     * Filenames and directory for the SNOMED-CT files
      */
 
-    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
     private static final String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
     private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
     private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
-    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+
+    /**
+     * Filename and directory for the UMLS CUI mapping file
+     */
     
+    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";    
+    
+    /**
+     * Filenames and directory for the MeSH ontology
+     */
+    
+    private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
+    private static final String m_strMeSHdescriptorFilename = "desc2020.xml";
     
     /**
      * Path tof MayoSRS dataset
@@ -76,29 +89,46 @@ public class HESML_UMLSclient
     
     public static void main(String[] args) throws Exception
     {
+        // We execute an example on evaluating the similarity between CUI
+        // concepts using MeSh ontology
+
+        exampleMeSHsimilarity();
+        
+        // We execute an example on evaluating the similarity between CUI
+        // concepts using SNOMED-CT ontology
+        
+        //exampleSnomedSimilarity();
+    }
+    
+    /**
+     * This function loads SNOMED-CT ontology in memory and computes the
+     * degree of similarity between a collection of UMLS CUI pairs.
+     * @throws Exception 
+     */
+
+    private static void exampleMeSHsimilarity() throws Exception
+    {
         // We load the MayoSRS dataset
         
         String[][] mayoSRSdataset = loadUMLSconceptSimilairtyCsvDataset(m_UMNSRS_datasetFilename);
         
-        // We load the SNOMED-CT taxonomy
+        // We load the MeSH taxonomy
         
-        ISnomedCtOntology snomedDatabase = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSnomedConceptFilename,
-                                            m_strSnomedRelationshipsFilename,
-                                            m_strSnomedDescriptionFilename,
-                                            m_strUMLSdir, m_strUmlsCuiMappingFilename, true);
+        IMeSHOntology meshOntology = MeSHFactory.loadMeSHOntology(
+                                        m_strMeSHdir + "/" + m_strMeSHdescriptorFilename);
         
         // We set the Sanchez et al. (2011) IC model
         
         ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
         
-        icModel.setTaxonomyData(snomedDatabase.getTaxonomy());
+        icModel.setTaxonomyData(meshOntology.getTaxonomy());
         
         // We obtain our cosJ&C similairty measure
         
-        ISimilarityMeasure simMeasure1 = MeasureFactory.getMeasure(snomedDatabase.getTaxonomy(),
+        ISimilarityMeasure simMeasure1 = MeasureFactory.getMeasure(meshOntology.getTaxonomy(),
                                             SimilarityMeasureType.Lin);
 
-        ISimilarityMeasure simMeasure2 = MeasureFactory.getMeasure(snomedDatabase.getTaxonomy(),
+        ISimilarityMeasure simMeasure2 = MeasureFactory.getMeasure(meshOntology.getTaxonomy(),
                                             SimilarityMeasureType.AncSPLPedersenPath);
         
         // We compute the similairty measure between all concept pairs in MayoSRS dataset
@@ -110,14 +140,64 @@ public class HESML_UMLSclient
         data[1][0] = "C0018670";
         data[1][1] = "C0016504";
         
-        evaluateMeasureInDatset(snomedDatabase, simMeasure1, data, "prueba_Lin.csv");
-        evaluateMeasureInDatset(snomedDatabase, simMeasure2, data, "prueba_Rada.csv");
+        //evaluateMeasureInDatset(snomedDatabase, simMeasure1, data, "prueba_Lin.csv");
+        //evaluateMeasureInDatset(snomedDatabase, simMeasure2, data, "prueba_Rada.csv");
 
         // We unload SNOMED-CT
         
-        snomedDatabase.clear();
+        meshOntology.clear();
     }
+    
+    /**
+     * This function loads SNOMED-CT ontology in memory and computes the
+     * degree of similarity between a collection of UMLS CUI pairs.
+     * @throws Exception 
+     */
 
+    private static void exampleSnomedSimilarity() throws Exception
+    {
+        // We load the MayoSRS dataset
+        
+        String[][] mayoSRSdataset = loadUMLSconceptSimilairtyCsvDataset(m_UMNSRS_datasetFilename);
+        
+        // We load the SNOMED-CT taxonomy
+        
+        ISnomedCtOntology snomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strUMLSdir, m_strSnomedConceptFilename,
+                                            m_strSnomedRelationshipsFilename,
+                                            m_strSnomedDescriptionFilename,
+                                            m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+        // We set the Sanchez et al. (2011) IC model
+        
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
+        
+        icModel.setTaxonomyData(snomedOntology.getTaxonomy());
+        
+        // We obtain our cosJ&C similairty measure
+        
+        ISimilarityMeasure simMeasure1 = MeasureFactory.getMeasure(snomedOntology.getTaxonomy(),
+                                            SimilarityMeasureType.Lin);
+
+        ISimilarityMeasure simMeasure2 = MeasureFactory.getMeasure(snomedOntology.getTaxonomy(),
+                                            SimilarityMeasureType.AncSPLPedersenPath);
+        
+        // We compute the similairty measure between all concept pairs in MayoSRS dataset
+
+        String[][] data = new String[2][2];
+        
+        data[0][0] = "C0002871";
+        data[0][1] = "C0002888";
+        data[1][0] = "C0018670";
+        data[1][1] = "C0016504";
+        
+        evaluateMeasureInDatset(snomedOntology, simMeasure1, data, "prueba_Lin.csv");
+        evaluateMeasureInDatset(snomedOntology, simMeasure2, data, "prueba_Rada.csv");
+
+        // We unload SNOMED-CT
+        
+        snomedOntology.clear();
+    }
+    
     /**
      * This function evaluates an UMLS-based concept similaritu benchmark
      * @param snomedDB

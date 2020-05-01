@@ -231,8 +231,7 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
                                     m_strSnomedDBconceptFileName,
                                     m_strSnomedDBRelationshipsFileName,
                                     m_strSnomedDBdescriptionFileName,
-                                    m_strUmlsDir, m_strUmlsCuiMappingFilename,
-                                    true);
+                                    m_strUmlsDir, m_strUmlsCuiMappingFilename);
             
             m_hesmlVertexes = m_hesmlSnomedDatabase.getTaxonomy().getVertexes();
         }

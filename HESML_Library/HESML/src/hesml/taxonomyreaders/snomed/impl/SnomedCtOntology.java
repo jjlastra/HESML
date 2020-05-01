@@ -34,7 +34,7 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
  * @author j.lastra
  */
 
-class SnomedCtDatabase implements ISnomedCtOntology
+class SnomedCtOntology implements ISnomedCtOntology
 {
     /**
      * Taxonomy enconding the SNOMED-CT 'is-a' graph.
@@ -73,7 +73,7 @@ class SnomedCtDatabase implements ISnomedCtOntology
      * @param concepts Sorted list of concepts
      */
     
-    SnomedCtDatabase(
+    SnomedCtOntology(
             ArrayList<SnomedConcept>                    concepts,
             HashMap<String, HashSet<ISnomedConcept>>    mapCuiToSnomedConcepts,
             boolean                                     useAncestorsCaching) throws Exception
@@ -458,7 +458,7 @@ class ConceptArrayIterator implements Iterator<ISnomedConcept>
      * SNOMED concept array
      */
     
-    private final ISnomedConcept[] m_Concepts;
+    private final ISnomedConcept[] m_SnomedConcepts;
     
     /**
      * Reading cursor
@@ -473,7 +473,7 @@ class ConceptArrayIterator implements Iterator<ISnomedConcept>
     
     ConceptArrayIterator(ISnomedConcept[] concepts)
     {
-        m_Concepts = concepts;
+        m_SnomedConcepts = concepts;
         m_ReadingPosition = 0;
     }
     
@@ -485,7 +485,7 @@ class ConceptArrayIterator implements Iterator<ISnomedConcept>
     @Override
     public boolean hasNext()
     {
-        return (m_ReadingPosition < m_Concepts.length);
+        return (m_ReadingPosition < m_SnomedConcepts.length);
     }
 
     /**
@@ -496,6 +496,6 @@ class ConceptArrayIterator implements Iterator<ISnomedConcept>
     @Override
     public ISnomedConcept next()
     {
-        return (m_Concepts[m_ReadingPosition++]);
+        return (m_SnomedConcepts[m_ReadingPosition++]);
     }
 }

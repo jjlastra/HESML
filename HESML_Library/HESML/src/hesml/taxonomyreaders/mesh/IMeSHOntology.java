@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.mesh;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertexList;
 
 /**
  * This interface represents a MeSH Descriptor Data (MeSH concept).
@@ -30,12 +31,22 @@ import hesml.taxonomy.ITaxonomy;
 public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
 {
     /**
-     * This functions determines if the input term is present in the DB.
-     * @param strTerm
-     * @return True if the word is contained in the DB
+     * This function returns the vertex Ids in the HESML taxonomy corresponding
+     * to the input tree nodes in the MeSH taxonomy.
+     * @param strTreeNodes
+     * @return 
      */
     
-    boolean contains(String strTerm);
+    Long[] getVertexIdsForTreeNodes(
+        String[]    strTreeNodes);
+    
+    /**
+     * This functions determines if there is a descriptor with this keyname.
+     * @param strPreferredName
+     * @return True if thre is a MeSH descriptor with this keyname
+     */
+    
+    boolean containsDescriptorByID(String strDescriptorID);
 
     /**
      * This function returns the number of concepts in the database.
@@ -45,22 +56,22 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
     int getConceptCount();
     
     /**
-     * This function returns the MeSH concept associated to the CUI
-     * or null if it is not found in the MeSH database.
-     * @param meshDescriptorId
+     * This function returns the MeSH concepts associated to the CUI
+     * or an empty array if it is not found in the MeSH database.
+     * @param strUmlsCUI
      * @return 
      */
     
-    IMeSHDescriptor[] getConceptsForUmlsCUI(String meshDescriptorId);
+    IMeSHDescriptor[] getConceptsForUmlsCUI(String strUmlsCUI);
 
     /**
      * This function returns the MeSH concepts associated to the CUIs
-     * or null if they are not found in the MeSH ontology.
-     * @param meshDescriptorId
+     * or an empty array if they are not found in the MeSH ontology.
+     * @param strUmlsCUIs
      * @return 
      */
     
-    IMeSHDescriptor[] getConceptsForUmlsCUI(String[] meshDescriptorId);
+    IMeSHDescriptor[] getConceptsForUmlsCUIs(String[] strUmlsCUIs);
 
     /**
      * This function returns an ordered array with all descriptor in the
@@ -71,16 +82,6 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
     IMeSHDescriptor[] getAllDescriptors();
     
     /**
-     * This function returns all MeSH descriptors associated to the input term.
-     * @param strTerm The term whose concepts will be retrieved
-     * @return An array of MeSH descriptors
-     * @throws java.lang.Exception Unexpected error
-     */
-
-    IMeSHDescriptor[] getTermDescriptor(
-        String  strTerm) throws Exception;
-    
-    /**
      * This function returns a vector with the CUID values of the
      * concepts evoked by the input term.
      * @param strTerm Input term
@@ -89,8 +90,17 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
      * @throws Exception Unexpected error
      */
     
-    String[] getMeSHDescriptoIdsEvokedByTerm(
+    String[] getMeSHConceptsEvokedByTerm(
         String  strTerm) throws Exception;
+    
+    /**
+     * This function 
+     * @param strUmlsCui
+     * @return 
+     */
+    
+    IVertexList getVertexesForUMLSCui(
+            String strUmlsCui)  throws Exception;
        
     /**
      * This function returns the concept associated to the input CUID
@@ -98,7 +108,17 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
      * @return The concept for this meshDescriptorId
      */
     
-    IMeSHDescriptor getDescriptor(String meshDescriptorId);
+    IMeSHDescriptor getConceptById(String meshDescriptorId);
+    
+    /**
+     * This function returns the MeSH descriptor associated to the input term.
+     * @param strPreferredName The term whose concepts will be retrieved
+     * @return An array of MeSH descriptors
+     * @throws java.lang.Exception Unexpected error
+     */
+
+    IMeSHDescriptor getConceptByPreferredName(
+        String  strPreferredName) throws Exception;
     
     /**
      * This function returns the HESML taxonomy encoding the MeSH 'is-a' ontology.

@@ -43,7 +43,7 @@ public interface IMeSHDescriptor
      * @return 
      */
     
-    String[] getTreeNodeDescriptors();
+    String[] getTreeNodeIds();
     
     /**
      * This fucntion returns the preferred name for this concept.

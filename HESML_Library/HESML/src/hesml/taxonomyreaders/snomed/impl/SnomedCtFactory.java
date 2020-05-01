@@ -28,6 +28,7 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
  * and building its taxonomy.
  * @author j.lastra
  */
+
 public class SnomedCtFactory
 {
     /**
@@ -48,14 +49,12 @@ public class SnomedCtFactory
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
             String  strUmlsDir,
-            String  strUmlsCuiMappingfilename,
-            boolean useAncestorsCaching) throws Exception
+            String  strUmlsCuiMappingfilename) throws Exception
     {
-        return (SnomedDbReader.loadDatabase(strSnomedDir,
+        return (SnomedDbReader.loadOntology(strSnomedDir,
                 strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
-                strUmlsDir, strUmlsCuiMappingfilename,
-                useAncestorsCaching));
+                strUmlsDir, strUmlsCuiMappingfilename));
     }   
 }

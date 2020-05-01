@@ -23,21 +23,80 @@ package hesml.taxonomyreaders.mesh.impl;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 
 /**
- * This interface implements a MeSH Descriptor Data (MeSH concept).
+ * This interface implements a MeSH Descriptor Data record (MeSH concept).
+ * A MeSH descriptor (concept) could be present in multiple MeSH trees.
  * @author j.lastra
  */
 
-public class MeSHDescriptor implements IMeSHDescriptor
+class MeSHDescriptor implements IMeSHDescriptor
 {
     /**
-     * This function retunrs the unique descriptor ID
+     * Unique key ID for the MeSH descriptor
+     */
+    
+    private String  m_strDescriptorId;
+    
+    /**
+     * Main name used to refer the MeSh concept
+     */
+    
+    private String  m_strPreferredName;
+    
+    /**
+     * Identitiers of the tree nodes associated to this MeSH concept.
+     * All identifiers use a hierarchical coding.
+     */
+    
+    private String[]    m_strTreeNodeIds;
+
+    /**
+     * Constructor
+     * @param strDescriptorId
+     * @param strPreferredName
+     * @param strTreeNodeIds 
+     */
+    
+    MeSHDescriptor(
+            String      strDescriptorId,
+            String      strPreferredName,
+            String[]    strTreeNodeIds)
+    {
+        m_strDescriptorId = strDescriptorId;
+        m_strPreferredName = strPreferredName;
+        m_strTreeNodeIds = strTreeNodeIds;
+    }
+    
+    
+    /**
+     * This function returns the unique MeSH descriptor ID
      * @return 
      */
     
     @Override
     public String getMeSHDescriptorId()
     {
-        return ("");
+        return (m_strDescriptorId);
+    }
+    
+    /**
+     * This function states the equality only based on the vertex ID,
+     * not the attributes.
+     * @param obj
+     * @return 
+     */
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        // We initialize the output
+        
+        boolean result = (obj != null)
+                && (getClass() == obj.getClass())
+                && (m_strDescriptorId.equals(((MeSHDescriptor)obj).m_strDescriptorId));
+        
+        // We return the result
+        
+        return (result);
     }
     
     /**
@@ -48,9 +107,9 @@ public class MeSHDescriptor implements IMeSHDescriptor
      */
     
     @Override
-    public String[] getTreeNodeDescriptors()
+    public String[] getTreeNodeIds()
     {
-        return (new String[0]);
+        return (m_strTreeNodeIds);
     }
     
     /**
@@ -61,6 +120,6 @@ public class MeSHDescriptor implements IMeSHDescriptor
     @Override
     public String getPreferredName()
     {
-       return (""); 
+       return (m_strPreferredName); 
     }
 }

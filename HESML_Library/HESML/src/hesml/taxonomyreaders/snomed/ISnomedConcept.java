@@ -31,6 +31,13 @@ import java.util.Set;
 public interface ISnomedConcept
 {
     /**
+     * This function returns the owener ontology
+     * @return 
+     */
+    
+    ISnomedCtOntology getOntology();
+    
+    /**
      * This function returns the inmmediate parent concepts.
      * @return The set of parent concepts.
      */

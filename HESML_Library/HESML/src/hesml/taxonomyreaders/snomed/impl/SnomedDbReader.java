@@ -63,14 +63,13 @@ class SnomedDbReader
      * @throws Exception 
      */
     
-    static ISnomedCtOntology loadDatabase(
+    static ISnomedCtOntology loadOntology(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
             String  strSnomedDBdescriptionFileName,
             String  strUmlsDir,
-            String  strUmlsCuiMappingfilename,
-            boolean useAncestorsCaching) throws Exception
+            String  strUmlsCuiMappingfilename) throws Exception
     {
         // User message
         
@@ -124,9 +123,9 @@ class SnomedDbReader
         
         // We insert the sorted concepts into the database
         
-        SnomedCtDatabase snomedDatabase = new SnomedCtDatabase(sortedConcepts,
+        SnomedCtOntology snomedDatabase = new SnomedCtOntology(sortedConcepts,
                                             readConceptsUmlsCUIs(snomedFiles[3], concepts),
-                                            useAncestorsCaching);
+                                            true);
 
         // We release the auxiliary collections
 

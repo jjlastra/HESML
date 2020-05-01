@@ -24,6 +24,7 @@ package hesml.taxonomyreaders.snomed.impl;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -64,7 +65,7 @@ class SnomedConcept implements ISnomedConcept
      * Owner SNOMED-CT DB
      */
     
-    private SnomedCtDatabase   m_OwnerDB;
+    private SnomedCtOntology   m_OwnerDB;
     
     /**
      * Constructor
@@ -73,7 +74,7 @@ class SnomedConcept implements ISnomedConcept
      */
     
     SnomedConcept(
-            SnomedCtDatabase    ownerDB,
+            SnomedCtOntology    ownerDB,
             Long                snomedId)
     {
         m_OwnerDB = ownerDB;
@@ -100,7 +101,7 @@ class SnomedConcept implements ISnomedConcept
      */
     
     void setDatabase(
-            SnomedCtDatabase database)
+            SnomedCtOntology database)
     {
         // We link the object to its owner database
         
@@ -162,6 +163,17 @@ class SnomedConcept implements ISnomedConcept
         return (parents);
     }
 
+    /**
+     * This function returns the owener ontology
+     * @return 
+     */
+    
+    @Override
+    public ISnomedCtOntology getOntology()
+    {
+        return (m_OwnerDB);
+    }
+    
     /**
      * This function states the equality only based on the vertex ID,
      * not the attributes.
