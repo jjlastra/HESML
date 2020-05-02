@@ -105,15 +105,13 @@ class VertexList implements IVertexList
     public boolean remove(
         IVertex vertex)
     {
-        boolean removed;    // Returned value
-        
         // We get the vertex Id
         
         long idVertex = vertex.getID();
         
         // We check for the existence of the vertex in the list
         
-        removed = m_IndexedVertexes.containsKey(idVertex);
+        boolean removed = m_IndexedVertexes.containsKey(idVertex);
         
         // We remove the vertex
         
@@ -139,11 +137,9 @@ class VertexList implements IVertexList
     public IVertexList getDifferenceSet(
             IVertexList others) throws Exception
     {
-        VertexList  dif; // Returned value
-        
         // We create the list of leaves
         
-        dif = new VertexList(false);
+        VertexList dif = new VertexList(false);
         
         // We comptue the number of leaves
         
@@ -199,11 +195,9 @@ class VertexList implements IVertexList
     public IVertexList getIntersectionSet(
             IVertexList others) throws Exception
     {
-        VertexList  dif; // Returned value
-        
         // We create the list of leaves
         
-        dif = new VertexList(false);
+        VertexList dif = new VertexList(false);
         
         // We comptue the number of leaves
         
@@ -324,9 +318,9 @@ class VertexList implements IVertexList
     @Override
     public double getGreatestICValue()
     {
-        double  highestIC = 0.0;    // Returned value
+        // We initialzie the output value
         
-        double  icValue;    // IC vertex value
+        double  highestIC = 0.0;
         
         // We search the highest IC value
         
@@ -334,7 +328,7 @@ class VertexList implements IVertexList
         {
             // We get the IC vlaue of the current vertex
             
-            icValue = vertex.getICvalue();
+            double icValue = vertex.getICvalue();
             
             // We chekc for the maximum
             
@@ -355,13 +349,11 @@ class VertexList implements IVertexList
     @Override
     public double[] getICValues()
     {
-        double[]   icValues; // Returbed value
-        
         int i = 0;  // Counter
         
         // We create the result
         
-        icValues = new double[m_Vertexes.size()];
+        double[] icValues = new double[m_Vertexes.size()];
         
         // We gete the depth values
         
@@ -384,13 +376,11 @@ class VertexList implements IVertexList
     @Override
     public int[] getDepthMinValues() throws Exception
     {
-        int[]   depths; // Returbed value
-        
         int i = 0;  // Counter
         
         // We create the result
         
-        depths = new int[m_Vertexes.size()];
+        int[] depths = new int[m_Vertexes.size()];
         
         // We gete the depth values
         
@@ -502,11 +492,9 @@ class VertexList implements IVertexList
     @Override
     public IVertexList getRoots() throws Exception
     {
-        VertexList  roots;  // Returned result
-        
         // We cretae the list of roots
         
-        roots = new VertexList(false);
+        VertexList roots = new VertexList(false);
         
         // We search for the roots in the list
         
@@ -625,15 +613,12 @@ class VertexList implements IVertexList
     
     void add(IVertex vertex) throws Exception
     {
-        Exception   error;      // Error thrown
-        String      strError;   // Error message
-                
         // We check the new ID
         
         if (m_IndexedVertexes.containsKey(vertex.getID()))
         {
-            strError = "The taxonomy already contains a vertex with this ID";
-            error = new Exception(strError);
+            String strError = "The taxonomy already contains a vertex with this ID";
+            Exception error = new Exception(strError);
             throw (error);
         }
         
@@ -740,11 +725,9 @@ class VertexList implements IVertexList
     public IVertexList getByIds(
             Long[]   vertexIds) throws Exception
     {
-        VertexList  query;  // Returned value
-        
         // We create the output list
         
-        query = new VertexList(false);
+        VertexList query = new VertexList(false);
         
         // We recover all the vertexes required
         
@@ -770,13 +753,11 @@ class VertexList implements IVertexList
     @Override
     public long[] getIDs()
     {
-        long[]   idVertexes; // returned value
-        
         int i = 0;  // Counter
         
         // We cretae the output vector
         
-        idVertexes = new long[m_Vertexes.size()];
+        long[] idVertexes = new long[m_Vertexes.size()];
         
         // We copy the iDs
         
@@ -784,6 +765,7 @@ class VertexList implements IVertexList
         {
             idVertexes[i++] = vertex.getID();
         }
+        
         // We return the result
         
         return (idVertexes);

@@ -27,6 +27,7 @@ import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
@@ -115,7 +116,8 @@ public class HESML_UMLSclient
         // We load the MeSH taxonomy
         
         IMeSHOntology meshOntology = MeSHFactory.loadMeSHOntology(
-                                        m_strMeSHdir + "/" + m_strMeSHdescriptorFilename);
+                                        m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+                                        m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
         
         // We set the Sanchez et al. (2011) IC model
         
@@ -140,13 +142,69 @@ public class HESML_UMLSclient
         data[1][0] = "C0018670";
         data[1][1] = "C0016504";
         
-        //evaluateMeasureInDatset(snomedDatabase, simMeasure1, data, "prueba_Lin.csv");
-        //evaluateMeasureInDatset(snomedDatabase, simMeasure2, data, "prueba_Rada.csv");
+        evaluateSimilarityWithMeSH(meshOntology, simMeasure1, data, "prueba_Lin_MeSH.csv");
+        evaluateSimilarityWithMeSH(meshOntology, simMeasure2, data, "prueba_AncSPLPedersenPath_MeSH.csv");
 
         // We unload SNOMED-CT
         
         meshOntology.clear();
     }
+    
+    /**
+     * This function evaluates an UMLS-based concept similaritu benchmark
+     * using MeSH ontology
+     * @param snomedDB
+     * @param measure
+     * @param strDataset
+     * @param strOutputCsvFilename
+     * @throws Exception 
+     */
+    
+    private static void evaluateSimilarityWithMeSH(
+            IMeSHOntology       meshOntology,
+            ISimilarityMeasure  measure,
+            String[][]          strDataset,
+            String              strOutputCsvFilename) throws Exception
+    {
+        // We create the output matrix
+        
+        String[][]  strOutputMatrix = new String[strDataset.length][3];
+        
+        // We evaluate the similarity between all concept pairs
+        
+        for (int i = 0; i < strDataset.length; i++)
+        {
+            // We get the next pair of CUIs
+
+            String strFirstCui = strDataset[i][0];
+            String strSecondCui = strDataset[i][1];
+            
+            // We copy the concept CUIs
+            
+            strOutputMatrix[i][0] = strFirstCui;
+            strOutputMatrix[i][1] = strSecondCui;
+
+            // We get the SNOMED concept IDs evoked by each CUI, which sets their
+            // corresponding vertexes in the taxonomy.
+
+            IVertexList cuiVertexes1 = meshOntology.getVertexesForUMLSCui(strFirstCui);
+            IVertexList cuiVertexes2 = meshOntology.getVertexesForUMLSCui(strSecondCui);
+
+            // We get the similarity between both CUIs as the hjighest similarity
+            // score between both sets of taxonomy nodes.
+
+            double similarity = getSimilarityBetweenConceptSets(measure, cuiVertexes1, cuiVertexes2);
+
+            // We register the result
+            
+            strOutputMatrix[i][2] = Double.toString(similarity);
+        }
+        
+        // We writye the results
+        
+        WriteCSVfile(strOutputMatrix, strOutputCsvFilename);
+    }
+    
     
     /**
      * This function loads SNOMED-CT ontology in memory and computes the
@@ -190,8 +248,8 @@ public class HESML_UMLSclient
         data[1][0] = "C0018670";
         data[1][1] = "C0016504";
         
-        evaluateMeasureInDatset(snomedOntology, simMeasure1, data, "prueba_Lin.csv");
-        evaluateMeasureInDatset(snomedOntology, simMeasure2, data, "prueba_Rada.csv");
+        evaluateSimilarityWithSNOMED(snomedOntology, simMeasure1, data, "prueba_Lin.csv");
+        evaluateSimilarityWithSNOMED(snomedOntology, simMeasure2, data, "prueba_Rada.csv");
 
         // We unload SNOMED-CT
         
@@ -200,6 +258,7 @@ public class HESML_UMLSclient
     
     /**
      * This function evaluates an UMLS-based concept similaritu benchmark
+     * * using SNOMED ontology
      * @param snomedDB
      * @param measure
      * @param strDataset
@@ -207,7 +266,7 @@ public class HESML_UMLSclient
      * @throws Exception 
      */
     
-    private static void evaluateMeasureInDatset(
+    private static void evaluateSimilarityWithSNOMED(
             ISnomedCtOntology   snomedDB,
             ISimilarityMeasure  measure,
             String[][]          strDataset,
@@ -221,16 +280,43 @@ public class HESML_UMLSclient
         
         for (int i = 0; i < strDataset.length; i++)
         {
+            // We get the next pair of CUIs
+
+            String strFirstCui = strDataset[i][0];
+            String strSecondCui = strDataset[i][1];
+            
             // We copy the concept CUIs
             
-            strOutputMatrix[i][0] = strDataset[i][0];
-            strOutputMatrix[i][1] = strDataset[i][1];
-            
+            strOutputMatrix[i][0] = strFirstCui;
+            strOutputMatrix[i][1] = strSecondCui;
+
             // We compute the similarity score
 
-            double similarity = getSnomedSimilarity(snomedDB, measure,
-                                strDataset[i][0], strDataset[i][1]);
+            double similarity = 0.0;
             
+            // We get the SNOMED concept IDs evoked by each CUI, which sets their
+            // corresponding vertexes in the taxonomy.
+
+            Long[] snomedIdsCui1 = snomedDB.getConceptIdsForUmlsCUI(strFirstCui);
+            Long[] snomedIdsCui2 = snomedDB.getConceptIdsForUmlsCUI(strSecondCui);
+
+            // We check the existence oif SNOMED concepts associated to the CUIS
+
+            if ((snomedIdsCui1.length > 0)
+                    && (snomedIdsCui2.length > 0))
+            {
+                // We get the vertexes of the SNOMED taxonomy
+
+                IVertexList vertexes = snomedDB.getTaxonomy().getVertexes();
+
+                // We get the similarity between both CUIs as the hjighest similarity
+                // score between both sets of taxonomy nodes.
+
+                similarity = getSimilarityBetweenConceptSets(measure,
+                                vertexes.getByIds(snomedIdsCui1),
+                                vertexes.getByIds(snomedIdsCui2));
+            }
+
             // We register the result
             
             strOutputMatrix[i][2] = Double.toString(similarity);
@@ -242,57 +328,41 @@ public class HESML_UMLSclient
     }
     
     /**
-     * This fucntion returns the degree of similarity between two
-     * SNOMED-CT concepts.
-     * @param snomedDB
-     * @param firstConceptSnomedID
-     * @param secondConceptSnomedID
+     * This function returns the degree of similarity between sets of taxonomy
+     * vertexes representing the collection of evoked conepts (SNOMED or MeSH)
+     * by a pair of UMLS concepts (CUI).
+     * @param measure
+     * @param firstCuiTaxonomyNodes
+     * @param secondCuiTaxonomyNodes
      * @return 
      */
 
-    private static double getSnomedSimilarity(
-            ISnomedCtOntology   snomedDB,
+    private static double getSimilarityBetweenConceptSets(
             ISimilarityMeasure  measure,
-            String              strFirstUmlsCUI,
-            String              strSecondUmlsCUI) throws Exception
+            IVertexList         firstCuiTaxonomyNodes,
+            IVertexList         secondCuiTaxonomyNodes) throws Exception
     {
         // We initilizae the output
         
         double similarity = 0.0;
         
-        // We get the SNOMED concepts evoked by each CUI
-        
-        ISnomedConcept[] firstSnomedConcepts = snomedDB.getConceptsForUmlsCUI(strFirstUmlsCUI);
-        ISnomedConcept[] secondSnomedConcepts = snomedDB.getConceptsForUmlsCUI(strSecondUmlsCUI);
-        
         // We check the existence oif SNOMED concepts associated to the CUIS
         
-        if ((firstSnomedConcepts.length > 0)
-                && (secondSnomedConcepts.length > 0))
+        if ((firstCuiTaxonomyNodes.getCount() > 0)
+                && (secondCuiTaxonomyNodes.getCount() > 0))
         {
-            // We get the vertexes of the SNOMED taxonomy
-            
-            IVertexList vertexes = snomedDB.getTaxonomy().getVertexes();
-            
             // We initialize the maximum similarity
             
             double maxSimilarity = Double.NEGATIVE_INFINITY;
             
-            // We compare all pairs of evoked SNOMED concepts
+            // We compare all pairs of evoked SNOMED concepts to find the
+            // highest similairty score
             
-            for (int i = 0; i < firstSnomedConcepts.length; i++)
+            for (IVertex firstCuiNode: firstCuiTaxonomyNodes)
             {
-                Long snomedId1 = firstSnomedConcepts[i].getSnomedId();
-                
-                for (int j = 0; j < secondSnomedConcepts.length; j++)
+                for (IVertex secondCuiNode: secondCuiTaxonomyNodes)
                 {
-                    Long snomedId2 = secondSnomedConcepts[j].getSnomedId();
-                    
-                    // We evaluate the similarity measure
-        
-                    double snomedSimilarity = measure.getSimilarity(
-                                                vertexes.getById(snomedId1),
-                                                vertexes.getById(snomedId2));
+                    double snomedSimilarity = measure.getSimilarity(firstCuiNode, secondCuiNode);
                     
                     // We update the maximum similarity
                     

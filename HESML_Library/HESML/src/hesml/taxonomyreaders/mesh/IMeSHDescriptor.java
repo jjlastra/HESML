@@ -46,9 +46,23 @@ public interface IMeSHDescriptor
     String[] getTreeNodeIds();
     
     /**
-     * This fucntion returns the preferred name for this concept.
+     * This function returns the preferred name for this concept.
      * @return 
      */
     
     String getPreferredName();
+    
+    /**
+     * This function returns the 
+     * @return 
+     */
+    
+    Long[] getTaxonomyNodesId();
+    
+    /**
+     * This funtion returns the ontology containing this concept.
+     * @return 
+     */
+    
+    IMeSHOntology getOntology();
 }

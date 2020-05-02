@@ -40,12 +40,14 @@ public class MeSHFactory
      */
     
     public static IMeSHOntology loadMeSHOntology(
-        String  strMeSHXmlDescriptorFilename) throws IOException,
+            String  strMeSHXmlDescriptorFilename,
+            String  strUmlsCUImappingFilename) throws IOException,
                                                 SAXException,
                                                 ParserConfigurationException,
                                                 XMLStreamException,
                                                 Exception
     {
-        return (MeSHreader.loadMeSHOntology(strMeSHXmlDescriptorFilename));
+        return (MeSHreader.loadMeSHOntology(strMeSHXmlDescriptorFilename,
+                strUmlsCUImappingFilename));
     }
 }

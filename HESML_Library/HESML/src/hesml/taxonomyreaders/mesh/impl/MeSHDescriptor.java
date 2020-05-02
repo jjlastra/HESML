@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.mesh.impl;
 
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
 
 /**
  * This interface implements a MeSH Descriptor Data record (MeSH concept).
@@ -48,24 +49,78 @@ class MeSHDescriptor implements IMeSHDescriptor
      */
     
     private String[]    m_strTreeNodeIds;
+    
+    /**
+     * Ontology which belongs the current conept.
+     */
+    
+    private MeSHOntology    m_ownerOntology;
 
     /**
      * Constructor
+     * @param ownerOntology
      * @param strDescriptorId
      * @param strPreferredName
      * @param strTreeNodeIds 
      */
     
     MeSHDescriptor(
-            String      strDescriptorId,
-            String      strPreferredName,
-            String[]    strTreeNodeIds)
+            MeSHOntology    ownerOntology,
+            String          strDescriptorId,
+            String          strPreferredName,
+            String[]        strTreeNodeIds)
     {
+        m_ownerOntology = ownerOntology;
         m_strDescriptorId = strDescriptorId;
         m_strPreferredName = strPreferredName;
         m_strTreeNodeIds = strTreeNodeIds;
     }
     
+    /**
+     * This function returns a representative string of the object
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+        return (m_strDescriptorId);
+    }
+    
+    /**
+     * This funtion returns the ontology containing this concept.
+     * @return 
+     */
+    
+    @Override
+    public IMeSHOntology getOntology()
+    {
+        return (m_ownerOntology);
+    }
+    
+    /**
+     * This function returns the 
+     * @return 
+     */
+    
+    @Override
+    public Long[] getTaxonomyNodesId()
+    {
+        // We create the output vector with vertexes ID
+        
+        Long[] vertexesId = new Long[m_strTreeNodeIds.length];
+        
+        // We retrieve all vertexes ID
+        
+        for (int i = 0; i < m_strTreeNodeIds.length; i++)
+        {
+            vertexesId[i] = m_ownerOntology.getVertexIdForTreeNodeId(m_strTreeNodeIds[i]);
+        }
+        
+        // We return the result
+        
+        return (vertexesId);
+    }
     
     /**
      * This function returns the unique MeSH descriptor ID

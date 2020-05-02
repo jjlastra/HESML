@@ -20,22 +20,14 @@
 
 package hesml.taxonomyreaders.mesh.impl;
 
-import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -52,7 +44,8 @@ class MeSHreader
      */
     
     public static IMeSHOntology loadMeSHOntology(
-        String  strMeSHXmlDescriptorFilename) throws IOException,
+            String  strMeSHXmlDescriptorFilename,
+            String  strUmlsCUImappingFilename) throws IOException,
                                                 SAXException,
                                                 ParserConfigurationException,    
                                                 XMLStreamException,    
@@ -99,6 +92,10 @@ class MeSHreader
         // We close the document
         
         xmlStreamReader.close();
+        
+        // We load the CUI mapping
+        
+        meshOntology.readConceptsUmlsCUIs(strUmlsCUImappingFilename);
         
         // We build the taxonomy
         
@@ -265,5 +262,5 @@ class MeSHreader
         // We return the result
         
         return (strChildNodeValue);
-    }
+    }   
 }

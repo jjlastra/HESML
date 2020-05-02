@@ -46,13 +46,22 @@ public interface ISnomedCtOntology extends Iterable<ISnomedConcept>
     
     /**
      * This function returns the SNOMED concept associated to the CUI
-     * or null if it is not found in the SNOMED database.
+     * or an empty array if it is not found in the SNOMED database.
      * @param umlsConceptCUI
      * @return 
      */
     
     ISnomedConcept[] getConceptsForUmlsCUI(String umlsConceptCUI);
 
+    /**
+     * This function returns the SNOMED concept IDs associated to the CUI
+     * or an empty array if it is not found in the SNOMED database.
+     * @param umlsConceptCUI
+     * @return 
+     */
+    
+    Long[] getConceptIdsForUmlsCUI(String umlsConceptCUI);
+    
     /**
      * This function returns the SNOMED concepts associated to the CUIs
      * or null if they are not found in the SNOMED database.

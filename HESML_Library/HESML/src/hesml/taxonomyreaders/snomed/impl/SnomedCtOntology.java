@@ -152,6 +152,36 @@ class SnomedCtOntology implements ISnomedCtOntology
     }
     
     /**
+     * This function returns the SNOMED concept IDs associated to the CUI
+     * or an empty array if it is not found in the SNOMED database.
+     * @param umlsConceptCUI
+     * @return 
+     */
+    
+    @Override
+    public Long[] getConceptIdsForUmlsCUI(String umlsConceptCUI)
+    {
+        // We initialize the output
+        
+        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.containsKey(umlsConceptCUI) ?
+                                    m_ConceptsIndexedByCUI.get(umlsConceptCUI) :
+                                    new ISnomedConcept[0];
+        
+        // We get all SNOMED ids of the first set
+
+        Long[] snomedIds = new Long[concepts.length];
+
+        for (int i = 0; i < concepts.length; i++)
+        {
+            snomedIds[i] = concepts[i].getSnomedId();
+        }
+        
+        // We return the result
+        
+        return (snomedIds);
+    }
+    
+    /**
      * This function returns the SNOMED concepts associated to the CUIs
      * or null if they are not found in the SNOMED database.
      * @param umlsConcetCUI

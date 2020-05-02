@@ -25,10 +25,13 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomy.impl.TaxonomyFactory;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.snomed.ISnomedConcept;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StringNode;
+import java.util.Scanner;
 
 /**
  * This class implements an in-memory representation of the whole MeSH taxonomy
@@ -53,7 +56,7 @@ class MeSHOntology implements IMeSHOntology
      * MeSH concepts indexed by UMLS CUI.
      */
     
-    private HashMap<String, IMeSHDescriptor[]>  m_conceptsByUmlsCUI;
+    private HashMap<String, HashSet<IMeSHDescriptor>>  m_conceptsByUmlsCUI;
     
     /**
      * Array with a BFS ordereing of the all MeSH concepts (descriptrs)
@@ -98,10 +101,18 @@ class MeSHOntology implements IMeSHOntology
             String      strPreferredName,
             String[]    strTreeNodeIds)
     {
+        // We create the new concept
+        
+        MeSHDescriptor newConcept = new MeSHDescriptor(this, strDescriptorId,
+                                        strPreferredName, strTreeNodeIds);
+        
         // We insert a new concept in the ontology
         
-        m_conceptsByKeyname.put(strDescriptorId,
-                new MeSHDescriptor(strDescriptorId, strPreferredName, strTreeNodeIds));
+        m_conceptsByKeyname.put(strDescriptorId, newConcept);
+        
+        // We index the concept by its preferred name
+        
+        m_conceptsByPreferredName.put(strPreferredName, newConcept);
     }
     
     /**
@@ -181,6 +192,8 @@ class MeSHOntology implements IMeSHOntology
         
         if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet();
         
+        // We read the CUI mapping
+        
         // Debugging message
         
         System.out.println("MeSH ontology has been loaded ("
@@ -240,14 +253,25 @@ class MeSHOntology implements IMeSHOntology
     }
     
     /**
-     * This function 
+     * This function returns the vertex Id for a tree node ID.
+     * @return 
+     */
+    
+    public Long getVertexIdForTreeNodeId(
+        String  strTreeNodeId)
+    {
+        return (m_TreeNodeToTaxonomyVertexMap.get(strTreeNodeId));
+    }
+    
+    /**
+     * This function returns all the taxonomy nodes (vertexes) ID evoked by
+     * the inpuit UMLS concept (CUI).
      * @param strUmlsCui
      * @return 
      */
     
     @Override
-    public IVertexList getVertexesForUMLSCui(
-            String strUmlsCui) throws Exception
+    public Long[] getTaxonomyNodeIdsForUmlsCUI(String strUmlsCui)
     {
         // We ghet the MeSH concepts evoked by the UMLS CUI
         
@@ -271,10 +295,27 @@ class MeSHOntology implements IMeSHOntology
         
         auxVertexesId.toArray(vertexesId);
         auxVertexesId.clear();
+
+        // We return the result
         
+        return (vertexesId);
+    }
+    
+    /**
+     * This function reuurns the collection of taxonomy nondes /vertexes) evoked
+     * by the input UMLLS concept (CUI).
+     * @param strUmlsCui
+     * @return 
+     */
+    
+    @Override
+    public IVertexList getVertexesForUMLSCui(
+            String strUmlsCui) throws Exception
+    {
         // We get the output vector
         
-        IVertexList cuiVertexesInTaxonomy = m_Taxonomy.getVertexes().getByIds(vertexesId);
+        IVertexList cuiVertexesInTaxonomy = m_Taxonomy.getVertexes().getByIds(
+                                                getTaxonomyNodeIdsForUmlsCUI(strUmlsCui));
         
         // We return the result
         
@@ -295,6 +336,78 @@ class MeSHOntology implements IMeSHOntology
     }
 
     /**
+     * This function reads the concept UMLS-CUIs
+     * @param concepts 
+     */
+    
+    public void readConceptsUmlsCUIs(
+            String  masterCuiFile) throws FileNotFoundException
+    {
+        // We open the file for reading
+        
+        Scanner reader = new Scanner(new File(masterCuiFile));
+        System.out.println("Loading " + masterCuiFile);
+                
+        // We read the relationship lines
+        
+        do
+        {
+            // We read the next relationship entry
+            
+            String strLine = reader.nextLine();
+            
+            // We extract the attributes of the relationship
+            
+            String[] strColumns = strLine.split("\\|");
+            
+            // We look for the MeSH tag
+            
+            for (int iCol = 0; iCol < strColumns.length; iCol++)
+            {
+                if (strColumns[iCol].equals("MSH"))
+                {
+                    // We define the MeSh concept set
+                    
+                    HashSet<IMeSHDescriptor> meshConcepts = null;
+                    
+                    // We get the mapping CUI -> SNOMED Id
+                    
+                    String strUmlsCui = strColumns[0];
+                    String meshDescriptorId = strColumns[iCol - 1];
+                    
+                    // We register the snomed concept associated to a given CUI
+                    
+                    if (!m_conceptsByUmlsCUI.containsKey(strUmlsCui))
+                    {
+                        meshConcepts = new HashSet<>(1);
+                        m_conceptsByUmlsCUI.put(strUmlsCui, meshConcepts);
+                    }
+                    else
+                    {
+                        meshConcepts = m_conceptsByUmlsCUI.get(strUmlsCui);
+                    }
+                    
+                    // We only register the SNOMED concept if it exists in the
+                    // MeSH ontology. There could be some cases in which a
+                    // MeSH concept associated to a CUI is not aalready active,
+                    // and thus, it will not be in the database
+                    
+                    IMeSHDescriptor concept = m_conceptsByKeyname.get(meshDescriptorId);
+                    
+                    if (concept != null) meshConcepts.add(concept);
+                    
+                    break;
+                }
+            }
+            
+        } while (reader.hasNextLine());
+        
+        // We close the database
+        
+        reader.close();
+    }    
+    
+    /**
      * This function implements the Iterable interface.
      * @return Iterator
      */
@@ -306,7 +419,7 @@ class MeSHOntology implements IMeSHOntology
     }
     
     /**
-     * This function returns the number of concepts in the ontology.
+     * This function returns the number of MeSH concepts in the ontology.
      * @return 
      */
     
@@ -329,10 +442,19 @@ class MeSHOntology implements IMeSHOntology
     {
         // We retrieve the MeSH concepts associated to the input UMLS CUI
         
-        IMeSHDescriptor[] evokedConcepts = m_conceptsByUmlsCUI.containsKey(strUmlsCUI) ?
-                (IMeSHDescriptor[]) m_conceptsByUmlsCUI.get(strUmlsCUI).clone() :
-                new IMeSHDescriptor[0];
+        HashSet<IMeSHDescriptor> tempConcepts = m_conceptsByUmlsCUI.containsKey(strUmlsCUI) ?
+                                                m_conceptsByUmlsCUI.get(strUmlsCUI) : null;
         
+        // We cretae the output vector
+        
+        IMeSHDescriptor[] evokedConcepts = (tempConcepts != null) ?
+                                            new IMeSHDescriptor[tempConcepts.size()] :
+                                            new IMeSHDescriptor[0];
+        
+        // We copy the concepts
+        
+        if (tempConcepts.size() > 0) tempConcepts.toArray(evokedConcepts);
+                 
         // We return the result
         
         return (evokedConcepts);
@@ -510,5 +632,5 @@ class MeSHconceptArrayIterator implements Iterator<IMeSHDescriptor>
     public IMeSHDescriptor next()
     {
         return (m_Concepts[m_ReadingPosition++]);
-    }
+    }    
 }

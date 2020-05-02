@@ -49,7 +49,7 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
     boolean containsDescriptorByID(String strDescriptorID);
 
     /**
-     * This function returns the number of concepts in the database.
+     * This function returns the number of MeSH concepts in the ontology.
      * @return 
      */
     
@@ -64,6 +64,15 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
     
     IMeSHDescriptor[] getConceptsForUmlsCUI(String strUmlsCUI);
 
+    /**
+     * This function returns all the taxonomy nodes (vertexes) ID evoked by
+     * the inpuit UMLS concept (CUI).
+     * @param strUmlsCui
+     * @return 
+     */
+    
+    Long[] getTaxonomyNodeIdsForUmlsCUI(String strUmlsCui);
+    
     /**
      * This function returns the MeSH concepts associated to the CUIs
      * or an empty array if they are not found in the MeSH ontology.
@@ -94,7 +103,8 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
         String  strTerm) throws Exception;
     
     /**
-     * This function 
+     * This function reuurns the collection of taxonomy nondes /vertexes) evoked
+     * by the input UMLLS concept (CUI).
      * @param strUmlsCui
      * @return 
      */
