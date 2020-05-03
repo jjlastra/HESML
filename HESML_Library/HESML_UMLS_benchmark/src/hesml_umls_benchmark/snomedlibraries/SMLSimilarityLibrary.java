@@ -207,7 +207,7 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         
         m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
                                     m_strSnomedDBconceptFileName,
-                                    m_strUmlsCuiMappingFilename);
+                                    m_strUmlsDir, m_strUmlsCuiMappingFilename);
         
         // We create an in-memory graph in which we will load Snomed-CT.
         // Notice that Snomed-CT is quite large (e.g. version 20120731 contains 296433 concepts and872318 relationships ).
@@ -256,39 +256,68 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
-        // We set the measure and IC model types
-        
-        String strIcModel = SMConstants.FLAG_ICI_SECO_2004;
-        
         // We convert the measure type to the SML measure types
         
-        String strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998;
-        
-        switch (measureType)
-        {
-            case Lin:
-                
-                strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998;
-            
-                break;
-                
-            case Rada:
-            case AncSPLRada:
-                
-                strMeasure = SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989;
-                
-                break;
-        }
-        
-        // First we configure an intrincic IC 
+        String strMeasure = convertHesmlMeasureTypeToSML(measureType);
+       
+        // We force the Seco IC model
 
-        m_icConf = new IC_Conf_Topo(strIcModel);
+        m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
 
         // Then we configure the pairwise measure to use, we here choose to use Lin formula
 
         m_smConf = new SMconf(strMeasure, m_icConf);
     }
     
+    /**
+     * This function converts a HESML similarity measure type to the
+     * closest measure type in UMLS::Similarity.
+     * @param hesmlMeasureType
+     * @return
+     * @throws Exception 
+     */
+    
+    private String convertHesmlMeasureTypeToSML(
+            SimilarityMeasureType   hesmlMeasureType) throws Exception
+    {
+        // We fill a hasmMap with the conversion
+        
+        HashMap<SimilarityMeasureType, String> conversionMap = new HashMap<>();
+        
+        // We fill the conversion map
+        
+        conversionMap.put(SimilarityMeasureType.Lin, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_LIN_1998);
+        conversionMap.put(SimilarityMeasureType.Resnik, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_RESNIK_1995);
+        conversionMap.put(SimilarityMeasureType.JiangConrath, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_JIANG_CONRATH_1997_NORM);
+        conversionMap.put(SimilarityMeasureType.CosineNormJiangConrath, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_JIANG_CONRATH_1997_NORM);
+        conversionMap.put(SimilarityMeasureType.CosineNormWeightedJiangConrath, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_JIANG_CONRATH_1997_NORM);
+        conversionMap.put(SimilarityMeasureType.WeightedJiangConrath, SMConstants.FLAG_SIM_PAIRWISE_DAG_NODE_JIANG_CONRATH_1997_NORM);
+        conversionMap.put(SimilarityMeasureType.Rada, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989);
+        conversionMap.put(SimilarityMeasureType.LeacockChodorow, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_LEACOCK_CHODOROW_1998);
+        conversionMap.put(SimilarityMeasureType.PedersenPath, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989);
+        conversionMap.put(SimilarityMeasureType.PekarStaab, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_PEKAR_STAAB_2002);
+
+        // We check that the measure is implemented by thius library
+        
+        if (!conversionMap.containsKey(hesmlMeasureType))
+        {
+            throw (new Exception(hesmlMeasureType.toString() +
+                    " is not implemented by UMLS::Similarity"));
+        }
+        
+        // We get the output measure tyoe
+        
+        String strUMLSimMeasureType = conversionMap.get(hesmlMeasureType);
+        
+        // We release the conversion table
+        
+        conversionMap.clear();
+        
+        // We return the result
+        
+        return (strUMLSimMeasureType);
+    }
+   
     /**
      * Unload the SNOMED databse
      */
@@ -314,6 +343,7 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         m_engine = null;
         
         // We force the release of memory
+        
         System.gc();
     }
 }

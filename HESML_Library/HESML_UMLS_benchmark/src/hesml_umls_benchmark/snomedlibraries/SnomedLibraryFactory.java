@@ -82,7 +82,13 @@ public class SnomedLibraryFactory
                 
             case UMLS_SIMILARITY:
                 
-                throw (new Exception("Nor impleented"));
+                library = new UMLSSimilarityLibrary(strSnomedDir,
+                            strSnomedDBconceptFileName,
+                            strSnomedDBRelationshipsFileName,
+                            strSnomedDBdescriptionFileName,
+                            strUmlsDir, strSNOMED_CUI_mappingfilename);
+                
+                break;
         }
         
         // We return the result

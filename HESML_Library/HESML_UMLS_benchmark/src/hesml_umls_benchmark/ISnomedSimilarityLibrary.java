@@ -52,18 +52,19 @@ public interface ISnomedSimilarityLibrary
     
     /**
      * Load the SNOMED database
+     * @throws java.lang.Exception
      */
     
     void loadSnomed() throws Exception;
     
     /**
-     * Unload the SNOMED databse
+     * Unload the SNOMED database
      */
     
     void unloadSnomed();
     
     /**
-     * This fucntion returns the degree of similarity between two
+     * This function returns the degree of similarity between two
      * UMLS concepts.
      * @param strfirstUmlsCUI
      * @param strSecondUmlsCUI

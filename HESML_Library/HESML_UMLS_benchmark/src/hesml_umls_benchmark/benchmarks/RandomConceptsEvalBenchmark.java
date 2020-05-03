@@ -26,13 +26,11 @@ import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
-import java.io.File;
+import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -209,26 +207,51 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         double[] runningTimes = new double[nRuns];
         double accumulatedTime = 0.0;
         
-        // We exucte multiple times the benchmark to compute a stable running time
+        // UMLS_SIMILARITY library gets all the iterations at one time
+        // The rest of the libraries execute the benchmark n times
         
-        for (int iRun = 0; iRun < nRuns; iRun++)
+        if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
         {
-            // We initializa the stopwatch
-
-            long startTime = System.currentTimeMillis();
-
-            // We evaluate the random concept pairs
-
-            for (int i = 0; i < umlsCuiPairs.length; i++)
-            {
-                double similarity = library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
-            }
-
-            // We compute the elapsed time in seconds
-
-            runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
+            // We make a casting to the UMLS::Similarity library
             
-            accumulatedTime += runningTimes[iRun];
+            UMLSSimilarityLibrary pedersenLib = (UMLSSimilarityLibrary) library;
+            
+            // We evaluate the similarity of a list of pairs of concepts at once.
+            // The function also returns the running times for each run
+            // similarityWithRunningTimes[similarity_i][runningTime_ị]
+            
+            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(umlsCuiPairs);
+            
+            // Calculate the accumulated time for each iteration
+
+            for (int i = 0; i < similarityWithRunningTimes.length; i++)
+            {
+                accumulatedTime += similarityWithRunningTimes[i][1];
+            }
+        }
+        else
+        {
+            // We exucte multiple times the benchmark to compute a stable running time
+
+            for (int iRun = 0; iRun < nRuns; iRun++)
+            {
+                // We initializa the stopwatch
+
+                long startTime = System.currentTimeMillis();
+
+                // We evaluate the random concept pairs
+
+                for (int i = 0; i < umlsCuiPairs.length; i++)
+                {
+                    double similarity = library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
+                }
+
+                // We compute the elapsed time in seconds
+
+                runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
+
+                accumulatedTime += runningTimes[iRun];
+            }
         }
         
         // We compute the averga running time
@@ -264,7 +287,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         HashMap<String, HashSet<Long>> cuiToSnomedIds = SnomedSimilarityLibrary.readConceptsUmlsCUIs(
                                                         m_strSnomedDir, m_strSnomedDBconceptFileName,
-                                                        m_strSNOMED_CUI_mappingfilename);
+                                                        m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
         
         // We copy the CUIS to an array and release the CUI-SNOMED mapping 
         

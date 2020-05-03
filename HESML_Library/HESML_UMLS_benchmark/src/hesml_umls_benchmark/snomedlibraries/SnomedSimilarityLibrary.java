@@ -46,13 +46,14 @@ public abstract class SnomedSimilarityLibrary
     protected String  m_strUmlsCuiMappingFilename;
     
     /**
-     * Column offset for the main attributes extratec from concept and
-     * relationsship files.
+     * Column offset for the main attributes EXTRACTED
+     * from concept and
+     * relationship files.
      */
     
     private static final int CONCEPT_ID = 0;
     private static final int ACTIVE_ID = 2;
-    
+       
     /**
      * Constructor to build the Snomed HESML database
      * @param strSnomedDir
@@ -172,6 +173,7 @@ public abstract class SnomedSimilarityLibrary
      * to SNOMED IDs
      * @param strSnomedDir
      * @param strConceptIdfile
+     * @param strUmlsDir
      * @param strCUIfile
      * @return
      * @throws FileNotFoundException 
@@ -180,6 +182,7 @@ public abstract class SnomedSimilarityLibrary
     public static HashMap<String, HashSet<Long>> readConceptsUmlsCUIs(
             String  strSnomedDir,
             String  strConceptIdfile,
+            String  strUmlsDir,
             String  strCUIfile) throws FileNotFoundException
     {
         // We create the output mapping table (CUI, SNOMED_id)
@@ -192,7 +195,7 @@ public abstract class SnomedSimilarityLibrary
         
         // We open the file for reading
         
-        File cuiConceptsFile = new File(strSnomedDir + "/" + strCUIfile);
+        File cuiConceptsFile = new File(strUmlsDir + "/" + strCUIfile);
         Scanner reader = new Scanner(cuiConceptsFile);
         System.out.println("Loading " + cuiConceptsFile);
                 
