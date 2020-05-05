@@ -30,7 +30,7 @@ if($measure=~/res|jcn|lin|faith/)
    $umls = UMLS::Interface->new({
 	    #"realtime"      => "1",
 	    #"verbose"       => "1",
-	    "config"        => "../UMLS_Similarity_Perl/icmeasures.config",
+	    "config"        => "./UMLS_Similarity_Perl/icmeasures.config",
 	    #"debugpath"     => "file"
    });
 }
@@ -39,7 +39,7 @@ else
    $umls = UMLS::Interface->new({
 	    #"realtime"      => "1",
 	    #"verbose"       => "1",
-	    "config"        => "../UMLS_Similarity_Perl/measure.config",
+	    "config"        => "./UMLS_Similarity_Perl/measure.config",
 	    #"debugpath"     => "file"
    });
 }
