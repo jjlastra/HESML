@@ -24,6 +24,7 @@ package hesml_umls_benchmark;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
+import java.sql.*;  
 
 /**
  * This class implements the benchmark application used to compare
@@ -66,6 +67,10 @@ public class HESML_UMLS_benchmark
     
     public static void main(String[] args) throws Exception
     {
+        // We check if the UMLS database is correctly installed.
+        
+        testDbConnection();
+        
         // We intialize the stopwatch
         
         long startTime = System.currentTimeMillis();
@@ -76,8 +81,8 @@ public class HESML_UMLS_benchmark
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
                                                     SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML};
-                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    SnomedBasedLibraryType.SML,
+                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
         
         /**
          * We set the number of random concept pairs evaluated by each library
@@ -87,7 +92,7 @@ public class HESML_UMLS_benchmark
          * experimentation times.
          */
 
-         int[] nRandomSamplesPerLibrary = new int[]{3, 3}; // 1000000
+         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10}; // 1000000
         
         /**
          * Experiment 1.1: we compare the performance of the HEMSL, SML and
@@ -99,17 +104,17 @@ public class HESML_UMLS_benchmark
          * Learning, Madison, WI, 1998: pp. 296–304.
          */
         
-        IUMLSBenchmark ICbasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+        IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
                                     libraries, SimilarityMeasureType.Lin,
                                     IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-                                    10, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                    1, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                     m_strSNOMED_relationshipsFilename,
                                     m_strSNOMED_descriptionFilename,
                                     m_strUMLSdir,
                                     m_strUmlsCuiMappingFilename);
         
-        ICbasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
-        ICbasedBenchmark.clear();
+        icBasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
+        icBasedBenchmark.clear();
         
         /**
          * Experiment 1.2: we compare the performance of the HEMSL, SML and
@@ -199,6 +204,48 @@ public class HESML_UMLS_benchmark
         
         System.out.println("Overall running time (secons) = "
             + ((stoptime - startTime) / 1000.0));
+    }
+    
+    /**
+     * Function for testing if the UMLS database is correctly installed.
+     * 
+     * This function check which sources (vocabularies) are indexed in the UMLS database.
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
+     */
+    
+    public static void testDbConnection() throws ClassNotFoundException, SQLException
+    {
+        try{
+            System.out.println("Initializing UMLS database test...");
+            
+            System.out.println("Checking MySQL driver for Java...");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Ok");
+            
+            System.out.println("Checking MySQL connection...");
+            Connection con=DriverManager.getConnection(  
+            "jdbc:mysql://localhost:3306/umls","xrdpuser","root");  
+            System.out.println("Ok");
+            
+            System.out.println("Execute testing query...");
+            Statement stmt=con.createStatement();  
+            ResultSet rs=stmt.executeQuery("select distinct(sab) from MRREL;");  
+            System.out.println("Ok");
+            
+            System.out.println("List of available vocabularies:");
+            while(rs.next())  
+                System.out.println("   " + rs.getString(1));  
+            
+            // Closing connection
+            
+            con.close();  
+        } 
+        catch(ClassNotFoundException | SQLException e)
+        { 
+            System.out.println(e);
+        }  
+        
     }
 }
 
