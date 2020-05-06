@@ -6,6 +6,9 @@ use UMLS::Interface;
 
 my $measure = $ARGV[0] or die "Unable to read the measure input [path|upath|wup|cmatch|batet|sanchez|pks|closeness|zhong|lch|cdist|nam|vector|res|lin|faith|random|jcn|lesk|o1vector]\n";
 
+my $vocab   = $ARGV[1] or die "Unable to read the vocabulary input [snomedct_us|msh]\n";
+
+
 # load the csv file with the list of CUIs codes
 
 my $file = "/tmp/tempFile.csv";
@@ -22,26 +25,55 @@ my %icoptions = ();
 
 my $start_run_loading = time();
 
+# initialize the interface
+
 my $umls;
 
-#  set the information content options if defined
+#  Initialize the interface
+
 if($measure=~/res|jcn|lin|faith/) 
 { 
-   $umls = UMLS::Interface->new({
-	    #"realtime"      => "1",
-	    #"verbose"       => "1",
-	    "config"        => "./UMLS_Similarity_Perl/icmeasures.config",
-	    #"debugpath"     => "file"
-   });
+	if($vocab=~/snomedct_us/) 
+	{
+		$umls = UMLS::Interface->new({
+		    #"realtime"      => "1",
+		    #"verbose"       => "1",
+		    "config"        => "./UMLS_Similarity_Perl/icmeasures.config",
+		    #"debugpath"     => "file"
+   		});
+	}
+	else
+	{
+		$umls = UMLS::Interface->new({
+			#"t"      => "1",
+		    #"realtime"      => "1",
+		    #"verbose"       => "1",
+		    "config"        => "./UMLS_Similarity_Perl/icmeasuresMSH.config",
+		    #"debugpath"     => "file"
+   		});
+	}
+
 }
 else
 {
-   $umls = UMLS::Interface->new({
-	    #"realtime"      => "1",
-	    #"verbose"       => "1",
-	    "config"        => "./UMLS_Similarity_Perl/measure.config",
-	    #"debugpath"     => "file"
-   });
+	if($vocab=~/snomedct_us/) 
+	{
+		$umls = UMLS::Interface->new({
+		    #"realtime"      => "1",
+		    #"verbose"       => "1",
+		    "config"        => "./UMLS_Similarity_Perl/measure.config",
+		    #"debugpath"     => "file"
+   		});
+	}
+	else
+	{
+		$umls = UMLS::Interface->new({
+		    #"realtime"      => "1",
+		    #"verbose"       => "1",
+		    "config"        => "./UMLS_Similarity_Perl/measureMSH.config",
+		    #"debugpath"     => "file"
+   		});
+	}
 }
 
 my %pathoptions = ();
@@ -211,14 +243,13 @@ while (my $line = <$cuis_csv_codes>)
 
 	# print "Calculating the similarity between $cui1 and $cui2 \n";
 
-        # my $start_run = [gettimeofday()];
-	my $start_run = time();
+	my $start_time = Time::HiRes::gettimeofday();
 
         my $pvalue = $meas->getRelatedness($cui1, $cui2);
 	
-	my $end_run = time();
-	my $run_time = $end_run - $start_run;
-        # my $run_time = tv_interval($start_run)*1000;
+	my $stop_time = Time::HiRes::gettimeofday();
+	
+	my $run_time = $stop_time - $start_time;
 
         print "The similarity between $cui1 and $cui2 is <> $pvalue <>, in $run_time segs. \n";
 

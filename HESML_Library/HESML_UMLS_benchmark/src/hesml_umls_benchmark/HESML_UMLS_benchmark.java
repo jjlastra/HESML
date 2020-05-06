@@ -80,9 +80,10 @@ public class HESML_UMLS_benchmark
          */
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML,
-                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
+//                                                    SnomedBasedLibraryType.HESML,
+//                                                    SnomedBasedLibraryType.SML,
+                                                    SnomedBasedLibraryType.UMLS_SIMILARITY
+        };
         
         /**
          * We set the number of random concept pairs evaluated by each library
@@ -131,12 +132,13 @@ public class HESML_UMLS_benchmark
 //        nRandomSamplesPerLibrary[2] = 3;
 //        
 //        IUMLSBenchmark pathBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-//                                    libraries, SimilarityMeasureType.FastRada,
+//                                    libraries, SimilarityMeasureType.AncSPLRada,
 //                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-//                                    10, strUMLSdir, strSNOMED_conceptFilename,
-//                                    strSNOMED_relationshipsFilename,
-//                                    strSNOMED_descriptionFilename,
-//                                    strSNOMED_CUI_mappingfilename);
+//                                    1, m_strSnomedDir, m_strSNOMED_conceptFilename,
+//                                    m_strSNOMED_relationshipsFilename,
+//                                    m_strSNOMED_descriptionFilename,
+//                                    m_strUMLSdir,
+//                                    m_strUmlsCuiMappingFilename);
 //        
 //        pathBasedBenchmark.run("raw_output_path_measure_experiment.csv");
 //        pathBasedBenchmark.clear();

@@ -222,7 +222,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
 
         // We build the command to call the evaluation Perl script
         
-        String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t " + measureType;
+        String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t " + measureType + " snomedct";
         
         System.out.println("Executing the Perl script for calculating UMLS::Similarity");
         System.out.println(cmd);
