@@ -21,9 +21,12 @@
 
 package hesml_umls_benchmark;
 
+import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;  
 
 /**
@@ -62,11 +65,72 @@ public class HESML_UMLS_benchmark
     /**
      * Main function. This fucntion executes all experiments reported in
      * the HEMSL-UMLS introductory paper [1].
+     * 
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient semantic measures library for the biomedical
+     * domain with a reproducible benchmark, Submitted for Publication. (2020).
+     * S
      * @param args the command line arguments
      */
     
     public static void main(String[] args) throws Exception
     {
+        // We print the HESML version
+        
+        System.out.println("Running HESML_UMLS_benchmark, May 2020) based on "
+                + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
+        
+        System.out.println("Java heap size in Mb = "
+            + (Runtime.getRuntime().totalMemory() / (1024 * 1024)));
+        
+        // User message
+        
+        System.out.println("\n---------------------------------------------");
+        System.out.println("This program reproduces the experiments reported in the paperbelow when");
+        System.out.println("it is called with the 'MiniMayoSRS_physicians.csv' file as first argument.\n");
+        System.out.println("\tJ.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
+        System.out.println("\tHESML: an efficient semantic measures library for the");
+        System.out.println("\tbiomedical domain with a reproducible benchmark,");
+        System.out.println("\tSubmitted for Publication. (2020).");
+        
+        // We initialize the input paraemters
+        
+        String strOutputDir = "./";
+        String strConceptBiomedicalDataset = "";
+        
+        // We check the input arguments
+        
+        boolean errorMessage = (args.length < 1) || (args.length > 2);
+
+        if (!errorMessage)
+        {
+            strConceptBiomedicalDataset = args[0];
+            errorMessage = !Files.exists(Paths.get(strConceptBiomedicalDataset));
+            if (errorMessage) System.out.println(strConceptBiomedicalDataset + " file does not exist");
+        }
+        
+        if (!errorMessage && (args.length == 2))
+        {
+            strOutputDir = args[1];
+            errorMessage = !Files.exists(Paths.get(strOutputDir));
+            if (errorMessage) System.out.println(strOutputDir + " directory does not exist");
+        }
+        
+        // We exit showing the error message
+        
+        if (errorMessage)
+        {
+            System.out.println("\nCall this program as detailed below:\n");
+            System.out.println("HESML_UMLS_benchmark <CUI_pairs_file.csv> [outputdir]");
+            System.exit(0);
+        }
+        
+        // We shopw the input arguments
+        
+        System.out.println("\nInput biomedical concept similarity dataset = " + strConceptBiomedicalDataset);
+        System.out.println("Output director for raw experimental data = " + strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        
         // We check if the UMLS database is correctly installed.
         
         testDbConnection();
@@ -229,6 +293,11 @@ public class HESML_UMLS_benchmark
             Connection con=DriverManager.getConnection(  
             "jdbc:mysql://localhost:3306/umls","xrdpuser","root");  
             System.out.println("Ok");
+
+            /*System.out.println("Checking MySQL connection...");
+            Connection con=DriverManager.getConnection(  
+            "jdbc:mysql://localhost:3306/umls","xrdpuser","root");  
+            System.out.println("Ok");*/
             
             System.out.println("Execute testing query...");
             Statement stmt=con.createStatement();  
