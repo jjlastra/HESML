@@ -144,7 +144,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
+        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
