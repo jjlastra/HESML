@@ -217,8 +217,8 @@ public class HESML_UMLS_benchmark
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
                                                     SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML,
-                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    SnomedBasedLibraryType.SML};//,
+                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
@@ -247,19 +247,21 @@ public class HESML_UMLS_benchmark
          * experimentation times.
          */
 
-         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 100};
+         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10};
         
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
          * different similarity measures on a random sequence of concept pairs.
          */
         
+        int nRuns = 1;
+        
         for (int i = 0; i < measureTypes.length; i++)
         {
             IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
                                             libraries, SimilarityMeasureType.Lin,
                                             IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-                                            1, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                            nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                             m_strSNOMED_relationshipsFilename,
                                             m_strSNOMED_descriptionFilename,
                                             m_strUMLSdir, m_strUmlsCuiMappingFilename);
@@ -288,7 +290,7 @@ public class HESML_UMLS_benchmark
             
             System.out.println("Checking MySQL connection...");
             Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/umls","xrdpuser","root");  
+            "jdbc:mysql://localhost:3306/umls","root","");  
             System.out.println("Ok");
 
             /*System.out.println("Checking MySQL connection...");
