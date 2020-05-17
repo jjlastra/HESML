@@ -89,8 +89,7 @@ public class HESML_UMLS_benchmark
         System.out.println("This program reproduces the experiments reported in the paperbelow when");
         System.out.println("it is called with the 'MiniMayoSRS_physicians.csv' file as first argument.\n");
         System.out.println("\tJ.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
-        System.out.println("\tHESML: an efficient semantic measures library for the");
-        System.out.println("\tbiomedical domain with a reproducible benchmark,");
+        System.out.println("\tHESML: an efficient semantic measures library for the biomedical domain,");
         System.out.println("\tSubmitted for Publication. (2020).");
         
         // We initialize the input paraemters
@@ -140,100 +139,28 @@ public class HESML_UMLS_benchmark
         long startTime = System.currentTimeMillis();
         
         /**
-         * We set the vector of libraries to be compared in the first experiments
+         * Experiment 1: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity by evaluating the similarity of a sequence
+         * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-//                                                    SnomedBasedLibraryType.HESML,
-//                                                    SnomedBasedLibraryType.SML,
-                                                    SnomedBasedLibraryType.UMLS_SIMILARITY
-        };
-        
-        /**
-         * We set the number of random concept pairs evaluated by each library
-         * with the aim of computing the average running times. Because of the
-         * running times could span different orders of magnitude the number
-         * of concept pairs need to be different to provide reasonable
-         * experimentation times.
-         */
+        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
 
-         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10}; // 1000000
-        
         /**
-         * Experiment 1.1: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries in the evaluation of the IC-based
-         * Lib [1] semantic similarity measure by evaluating the degree of
-         * similarity between one million of random concept pairs.
-         * [1] D. Lin, An information-theoretic definition of similarity,
-         * in: Proceedings of the 15th International Conference on Machine
-         * Learning, Madison, WI, 1998: pp. 296–304.
+         * Experiment 2: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity by evaluating the similarity of a sequence
+         * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-                                    libraries, SimilarityMeasureType.Lin,
-                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-                                    1, m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                    m_strSNOMED_relationshipsFilename,
-                                    m_strSNOMED_descriptionFilename,
-                                    m_strUMLSdir,
-                                    m_strUmlsCuiMappingFilename);
-        
-        icBasedBenchmark.run("raw_output_Lin_measure_experiment.csv");
-        icBasedBenchmark.clear();
-        
+        //RunExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
+
         /**
-         * Experiment 1.2: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries in the evaluation of the Rada [1]
-         * semantic similarity measure by evaluating the degree of
-         * similarity between one million of random concept pairs.
-         * [1] R. Rada, H. Mili, E. Bicknell, M. Blettner,
-         * Development and application of a metric on semantic nets,
-         * IEEE Transactions on Systems, Man, and Cybernetics. 19 (1989) 17–30.
+         * Experiment 3: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity os a sequence of randomly generated UMLS
+         * concept pairs on MeSH ontology.
          */
         
-//        nRandomSamplesPerLibrary[0] = 250000;
-//        nRandomSamplesPerLibrary[1] = 1;
-//        nRandomSamplesPerLibrary[2] = 3;
-//        
-//        IUMLSBenchmark pathBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-//                                    libraries, SimilarityMeasureType.AncSPLRada,
-//                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-//                                    1, m_strSnomedDir, m_strSNOMED_conceptFilename,
-//                                    m_strSNOMED_relationshipsFilename,
-//                                    m_strSNOMED_descriptionFilename,
-//                                    m_strUMLSdir,
-//                                    m_strUmlsCuiMappingFilename);
-//        
-//        pathBasedBenchmark.run("raw_output_path_measure_experiment.csv");
-//        pathBasedBenchmark.clear();
-        
-        /**
-         * Experiment 2.1: we evaluate the approximation quality of the novel
-         * Ancestor-based Shortest Path Length (AncSPL) algorithm by comparing
-         * the similarity scores returned by the Pedersen path-based measure [1]
-         * using either exact Dijkstra shortest-path method or the new AncSPL
-         * approximated shortest-path method. The Pedersen et al.[1] measure
-         * is the inverse of the Rada distance which is defined as the length of
-         * shortest path between two concepts in the taxonomy. HESML implementation
-         * of the Pedersen et al. [1] uses an exact Dijkstra algoritm.
-         * 
-         * [1] Pedersen, T., Pakhomov, S. V. S., Patwardhan, S., and Chute, C. G. (2007).
-         * Measures of semantic similarity and relatedness in the biomedical domain.
-         * Journal of Biomedical Informatics, 40(3), 288–299.
-         */
-        
-        /*IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
-                                    IntrinsicICModelType.Sanchez2011,
-                                    SimilarityMeasureType.PedersenPath,
-                                    SimilarityMeasureType.AncSPLPedersenPath,
-                                    30, false,
-                                    strUMLSdir, strSNOMED_conceptFilename,
-                                    strSNOMED_relationshipsFilename,
-                                    strSNOMED_descriptionFilename,
-                                    strSNOMED_CUI_mappingfilename);
-        
-        icBasedBenchmark.run("raw_output_AncSPL_unweighted_quality_exp.csv");
-        icBasedBenchmark.clear();*/
+        //RunExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
         
         /**
          * Experiment 2.2: we evaluate the approximation quality of the novel
@@ -270,6 +197,76 @@ public class HESML_UMLS_benchmark
         
         System.out.println("Overall running time (secons) = "
             + ((stoptime - startTime) / 1000.0));
+    }
+    
+    /**
+     * This function executes the benchamrk which evaluates the similarity fo
+     * a random sequence of concept pairs.
+     * @param strRawOutputDir
+     * @param ontologyType
+     * @throws Exception 
+     */
+    
+    private static void RunRandomConceptsExperiment(
+            String                  strRawOutputDir, 
+            BiomedicalOntologyType  ontologyType) throws Exception
+    {
+        /**
+         * We set the vector of libraries to be compared
+         */
+        
+        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML,
+                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
+
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
+                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin,
+                                                    SimilarityMeasureType.LeacockChodorow,
+                                                    SimilarityMeasureType.WuPalmerFast};
+                
+        /**
+         * Output filenames.
+         */
+           
+        String[] strOutputFilenames = new String[]{"raw_output_Rada_SNOMED_exp1.csv",
+                                            "raw_output_AncSPL-Rada_SNOMED_exp1.csv",
+                                            "raw_output_Lin-Seco_SNOMED_exp1.csv",
+                                            "raw_output_Leacock_eSNOMED_xp1.csv",
+                                            "raw_output_Wu-Palmer_SNOMED_exp1.csv"};
+        
+        /**
+         * We set the number of random concept pairs evaluated by each library
+         * with the aim of computing the average running times. Because of the
+         * running times could span different orders of magnitude the number
+         * of concept pairs need to be different to provide reasonable
+         * experimentation times.
+         */
+
+         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 100};
+        
+        /**
+         * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
+         * different similarity measures on a random sequence of concept pairs.
+         */
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
+                                            libraries, SimilarityMeasureType.Lin,
+                                            IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
+                                            1, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                            m_strSNOMED_relationshipsFilename,
+                                            m_strSNOMED_descriptionFilename,
+                                            m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+            icBasedBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
+            icBasedBenchmark.clear();
+        }
     }
     
     /**
@@ -319,5 +316,4 @@ public class HESML_UMLS_benchmark
         
     }
 }
-
 
