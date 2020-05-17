@@ -28,6 +28,7 @@ import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
 import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -281,7 +282,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      */
     
     private String[][] getRandonCUIpairs(
-            int nPairs) throws FileNotFoundException 
+            int nPairs) throws FileNotFoundException, IOException 
     {
         // We get the likst of CUIs with SNOMED concepts
         

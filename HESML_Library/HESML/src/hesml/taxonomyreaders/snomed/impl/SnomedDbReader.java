@@ -30,6 +30,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.HashSet;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * This class is mainly esponsible to parse the SNOMED-CT databse files
@@ -239,25 +242,23 @@ class SnomedDbReader
     
     private static void readParentConcepts(
             File                            snomedRelationshipFile,
-            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
+            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException, IOException
     {
         // We open the file for reading
         
-        Scanner reader = new Scanner(snomedRelationshipFile);
+        BufferedReader reader = new BufferedReader(new FileReader(snomedRelationshipFile));
         System.out.println("Loading " + snomedRelationshipFile);
                 
         // We skip the header line
         
-        String strHeaderLine = reader.nextLine();
+        String strHeaderLine = reader.readLine();
         
         // We read the relationship lines
         
-        do
-        {
-            // We read the next relationship entry
-            
-            String strLine = reader.nextLine();
-            
+        String strLine = "";
+        
+        while((strLine = reader.readLine()) != null)
+        {            
             // We extract the attributes of the relationship
             
             String[] strAttributes = strLine.split("\t");
@@ -274,8 +275,7 @@ class SnomedDbReader
             {
                 concepts.get(childSnomedId).AddParent(parentSnomedId);
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database
         
@@ -288,26 +288,24 @@ class SnomedDbReader
      */
     
     private static void readTermsOfConcepts(
-            File                            snomedDBdescriptionFileName,
-            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
+            File                            snomedDBdescriptionFile,
+            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException, IOException
     {
         // We open the file for reading
         
-        Scanner reader = new Scanner(snomedDBdescriptionFileName);
-        System.out.println("Loading " + snomedDBdescriptionFileName);
+        BufferedReader reader = new BufferedReader(new FileReader(snomedDBdescriptionFile));
+        System.out.println("Loading " + snomedDBdescriptionFile);
                 
         // We skip the header line
         
-        String strHeaderLine = reader.nextLine();
+        String strHeaderLine = reader.readLine();
         
-        // We read the relationship lines
+        // We read the term lines
         
-        do
+        String strLine = "";
+        
+        while((strLine = reader.readLine()) != null)
         {
-            // We read the next relationship entry
-            
-            String strLine = reader.nextLine();
-            
             // We extract the attributes of the relationship
             
             String[] strAttributes = strLine.split("\t");
@@ -323,8 +321,7 @@ class SnomedDbReader
             {
                 concepts.get(conceptId).addTerm(strTerm);
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database
         
@@ -368,7 +365,7 @@ class SnomedDbReader
     
     private static HashMap<String, HashSet<ISnomedConcept>> readConceptsUmlsCUIs(
             File                            snomedCuiFile,
-            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException
+            HashMap<Long, SnomedConcept>    concepts) throws FileNotFoundException, IOException
     {
         // We create the output mampit table (CUI, SNOMED_id)
         
@@ -376,17 +373,16 @@ class SnomedDbReader
         
         // We open the file for reading
         
-        Scanner reader = new Scanner(snomedCuiFile);
+        BufferedReader reader = new BufferedReader(new FileReader(snomedCuiFile));
+
         System.out.println("Loading " + snomedCuiFile);
                 
         // We read the relationship lines
         
-        do
-        {
-            // We read the next relationship entry
-            
-            String strLine = reader.nextLine();
-            
+        String strLine = "";
+        
+        while((strLine = reader.readLine()) != null)
+        {           
             // We extract the attributes of the relationship
             
             String[] strColumns = strLine.split("\\|");
@@ -429,8 +425,7 @@ class SnomedDbReader
                     break;
                 }
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database
         
@@ -448,11 +443,11 @@ class SnomedDbReader
      */
     
     private static HashMap<Long, SnomedConcept> readConcepts(
-            File    snomedFile) throws FileNotFoundException
+            File    snomedFile) throws FileNotFoundException, IOException
     {
         // We open the file for reading
         
-        Scanner reader = new Scanner(snomedFile);
+        BufferedReader reader = new BufferedReader(new FileReader(snomedFile));
         System.out.println("Loading " + snomedFile);
                 
         // We skip the first line containing the headers.
@@ -460,7 +455,7 @@ class SnomedDbReader
         // is the only information that we need. Thus, we reject
         // to read the full record for each concept.
         
-        String strHeaderLine = reader.nextLine();
+        String strHeaderLine = reader.readLine();
         
         // We create the temporary set of concepts
         
@@ -468,11 +463,13 @@ class SnomedDbReader
                 
         // We read the concept lines
         
-        do
+        String strLine = "";
+        
+        while((strLine = reader.readLine()) != null)
         {
             // We extract the attribites of the concept
 
-            String[] strAttributes = reader.nextLine().split("\t");
+            String[] strAttributes = strLine.split("\t");
 
             // We get the needed attributes
 
@@ -494,8 +491,7 @@ class SnomedDbReader
                     concepts.put(concept.getSnomedId(), concept);
                 }
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database
         

@@ -21,8 +21,11 @@
 
 package hesml_umls_benchmark.snomedlibraries;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -183,7 +186,7 @@ public abstract class SnomedSimilarityLibrary
             String  strSnomedDir,
             String  strConceptIdfile,
             String  strUmlsDir,
-            String  strCUIfile) throws FileNotFoundException
+            String  strCUIfile) throws FileNotFoundException, IOException
     {
         // We create the output mapping table (CUI, SNOMED_id)
         
@@ -196,16 +199,16 @@ public abstract class SnomedSimilarityLibrary
         // We open the file for reading
         
         File cuiConceptsFile = new File(strUmlsDir + "/" + strCUIfile);
-        Scanner reader = new Scanner(cuiConceptsFile);
+        BufferedReader reader = new BufferedReader(new FileReader(cuiConceptsFile));
+        
         System.out.println("Loading " + cuiConceptsFile);
                 
         // We read the relationship lines
         
-        do
+        String strLine = "";
+        
+        while((strLine = reader.readLine()) != null)
         {
-            // We read the next relationship entry
-            
-            String strLine = reader.nextLine();
             
             // We extract the attributes of the relationship
             
@@ -251,8 +254,7 @@ public abstract class SnomedSimilarityLibrary
                     break;
                 }
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database an release the axuiliary resoruces
         
