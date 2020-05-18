@@ -146,7 +146,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -226,10 +226,9 @@ public class HESML_UMLS_benchmark
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
-                                                    SimilarityMeasureType.LeacockChodorow,
                                                     SimilarityMeasureType.WuPalmerFast};
                 
         /**
@@ -239,7 +238,6 @@ public class HESML_UMLS_benchmark
         String[] strOutputFilenames = new String[]{"raw_output_Rada_SNOMED_exp1.csv",
                                             "raw_output_AncSPL-Rada_SNOMED_exp1.csv",
                                             "raw_output_Lin-Seco_SNOMED_exp1.csv",
-                                            "raw_output_Leacock_SNOMED_xp1.csv",
                                             "raw_output_Wu-Palmer_SNOMED_exp1.csv"};
         
         /**
@@ -257,12 +255,12 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 1;
+        int nRuns = 5;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
             IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-                                            libraries, SimilarityMeasureType.Lin,
+                                            libraries, measureTypes[i],
                                             IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                             nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                             m_strSNOMED_relationshipsFilename,

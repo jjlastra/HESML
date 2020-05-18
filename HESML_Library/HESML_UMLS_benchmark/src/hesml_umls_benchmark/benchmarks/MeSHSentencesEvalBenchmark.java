@@ -214,7 +214,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
             // We evaluate the library
             
             CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[iLib], 10), iLib + 1);
+                EvaluateLibrary(m_Libraries[iLib], 1), iLib + 1);
             
             // We release the database and resources used by the library
             
@@ -262,7 +262,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     {
         // We initialize the output vector
         
-        double[] runningTimes = new double[m_dataset.length];
+        double[] runningTimes = new double[nRuns];
         
         // Becaause of the large running times of the UMLS_SIMILARITY library,
         // this library is evaluated just one time, whilst the rest of 
