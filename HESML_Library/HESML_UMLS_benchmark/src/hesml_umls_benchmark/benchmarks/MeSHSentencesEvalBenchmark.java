@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -82,7 +83,6 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     
     protected String[][]    m_dataset;
     
-    
     /**
      * Metamap Lite instance
      */
@@ -90,11 +90,16 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     protected MetaMapLite m_metaMapLiteInst;
     
     /**
-     * Precalculated similarities for Pedersen Library
+     * Cached similarity values between concept pairs
      */
     
-    ArrayList<String> m_preCalculatedSimilarities;
-    Iterator<String> m_preCalculatedSimilaritiesIterator;
+    HashMap<String, Double>     m_CachedSimilarityValues;
+    
+    /**
+     * Overall running time to get all cached similarity values
+     */
+    
+    private double m_overallCachingTime;
 
     /**
      * Constructor of the sentence pairs benchmark
@@ -135,8 +140,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
         m_dataset = null;
-        m_preCalculatedSimilarities = new ArrayList<>();
-        m_preCalculatedSimilaritiesIterator = null;
+        m_CachedSimilarityValues = null;
         
         // We load the dataset
         
@@ -152,12 +156,29 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
+     * This function releases the resouurces used by the benchmark.
+     */
+    
+    @Override
+    public void clear()
+    {
+        // We release the resources
+        
+        if (m_CachedSimilarityValues != null) m_CachedSimilarityValues.clear();
+        
+        // We call the base clase clear()
+        
+        super.clear();
+    }
+    
+    /**
      * This function executes the benchmark and saves the raw results into
      * the output file.
      */
     
     @Override
-    public void run(String strOutputFilename) throws Exception
+    public void run(
+            String  strOutputFilename) throws Exception
     {
         // We create the output data matrix and fill the row headers
         
@@ -193,7 +214,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
             // We evaluate the library
             
             CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[iLib]), iLib + 1);
+                EvaluateLibrary(m_Libraries[iLib], 10), iLib + 1);
             
             // We release the database and resources used by the library
             
@@ -236,86 +257,53 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      */
     
     private double[] EvaluateLibrary(
-            ISnomedSimilarityLibrary    library) throws Exception
+            ISnomedSimilarityLibrary    library,
+            int                         nRuns) throws Exception
     {
         // We initialize the output vector
         
         double[] runningTimes = new double[m_dataset.length];
+        
+        // Becaause of the large running times of the UMLS_SIMILARITY library,
+        // this library is evaluated just one time, whilst the rest of 
+        // libraries are evaluated n times
+        // We compute all valus in one unique query
+        
+        boolean pedersenLib = (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY);
+        
+        if (pedersenLib && (m_CachedSimilarityValues == null))
+        {
+            getCachedSimilarityValues((UMLSSimilarityLibrary) library);
+        }
+        
         double accumulatedTime = 0.0;
         
-        // We initialize the calculation time for Perl script
-            
-        double accumulatedTimePerl = 0.0;
-        double totalPerlCalculations = 0.0;
-        
-        // UMLS_SIMILARITY library gets all the iterations at one time
-        // The rest of the libraries execute the benchmark n times
-        
-        if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
+        // We execute multiple times the benchmark to compute a stable running time
+
+        for (int iRun = 0; iRun < nRuns; iRun++)
         {
-            // We make a casting to the UMLS::Similarity library
-            
-            UMLSSimilarityLibrary pedersenLib = (UMLSSimilarityLibrary) library;
-            
-            // We extract the candidates for concept-pair similarity calculations and execute the Perl script
+            // We initialize the stopwatch
 
-            this.precalculateWithPerl(pedersenLib);
-            
-            // We execute multiple times the benchmark to calculate all the sentences
+            long startTime = System.currentTimeMillis();
 
-            for (int iRun = 0; iRun < m_dataset.length; iRun++)
+            // We evaluate the random concept pairs
+
+            for (int i = 0; i < m_dataset.length; i++)
             {
-                // We initializa the stopwatch
-
-                long startTime = System.currentTimeMillis();
-
-                // We evaluate the random concept pairs
-
-                double similarity = getSimilarityValuesWithPedersen(m_dataset[iRun][0], m_dataset[iRun][1]);
-                
-                // We compute the elapsed time in seconds
-
-                runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
-                
-                accumulatedTime += runningTimes[iRun];
-            }
-            
-            // We calculate the average running time for precalculate Pedersen similarities
-            
-            // Calculate the accumulated time for each iteration
-                
-            for(String cuisSimilarityAndRunningTime : m_preCalculatedSimilarities)
-            {
-                String[] cuisSimilarityAndRunningTimeList = cuisSimilarityAndRunningTime.split(",");
-                
-                accumulatedTimePerl += Double.valueOf(cuisSimilarityAndRunningTimeList[3]);
+                double similarity = getUBSMsimilarityValue(m_dataset[i][0], m_dataset[i][1], library);
             }
 
-            totalPerlCalculations = m_preCalculatedSimilarities.size();
-        }
-        else
-        {
-            // We execute multiple times the benchmark to compute a stable running time
+            // We compute the elapsed time in seconds
 
-            for (int iRun = 0; iRun < m_dataset.length; iRun++)
-            {
-                // We initializa the stopwatch
+            runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
 
-                long startTime = System.currentTimeMillis();
-
-                // We evaluate the random concept pairs
-
-                for (int i = 0; i < m_dataset.length; i++)
-                {
-                    double similarity = getSimilarityValue(m_dataset[i][0], m_dataset[i][1], library);
-                }
-
-                // We compute the elapsed time in seconds
-
-                runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
-
-                accumulatedTime += runningTimes[iRun];
-            }
+            // We accumulate the query time for the UMLS::Similarity library
+            
+            if (pedersenLib) runningTimes[iRun] += m_overallCachingTime;
+            
+            // We accumulate the overall
+            
+            accumulatedTime += runningTimes[iRun];
         }
         
         // We compute the averga running time
@@ -326,35 +314,8 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         
         System.out.println("# UMLS sentence pairs evaluated = " + m_dataset.length);
         
-        System.out.println(library.getLibraryType() + " Average time for Java script (secs) = "
-                + averageRuntime);
-        
-        // The UMLS similarity library measure the performance in two steps
-        // (a) the running time in HESML for iterating one time the dataset and getting the results from a preloaded arraylist
-        // (b) the running time in the Perl model for calculating the similarity between each pair of concepts.
-        
-        if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
-        {
-            double averageRuntimePerlPerConceptPair = accumulatedTimePerl / totalPerlCalculations;
-            double averageRuntimePerlPerSentencePair = accumulatedTimePerl / m_dataset.length;
-            
-            System.out.println(library.getLibraryType() + " Total accumulated time for Perl script (secs) = "
-                    + accumulatedTimePerl);
-            
-            System.out.println(library.getLibraryType() + " Average time for Perl script per concept pair (secs) = "
-                    + averageRuntimePerlPerConceptPair);
-            
-            System.out.println(library.getLibraryType() + " Average time for Perl script values per sentence pair (secs) = "
-                    + averageRuntimePerlPerSentencePair);
-
-            System.out.println(library.getLibraryType() + " Average evaluation speed (#evaluation/second) = "
-                + ((double)m_dataset.length) / (averageRuntime + averageRuntimePerlPerSentencePair));
-        }
-        else
-        {
-            System.out.println(library.getLibraryType() + " Average evaluation speed (#evaluation/second) = "
+        System.out.println(library.getLibraryType() + " Average speed (#sentence pairs/second) = "
                 + ((double)m_dataset.length) / averageRuntime);
-        }
         
         // We return the results
         
@@ -362,181 +323,136 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * The method returns the similarity value between two sentences 
-     * using the WBSM measure.
-     * 
-     * @param strRawSentence1
-     * @param strRawSentence2
-     * @return double similarity value
-     * @throws IOException 
+     * This function computes the similarity values among all CUI pairs
+     * appearing in the dataset.
      */
     
-    public double getSimilarityValuesWithPedersen(
-            String                      strRawSentence1, 
-            String                      strRawSentence2) 
-            throws IOException, 
-            InterruptedException, Exception
+    private void getCachedSimilarityValues(
+        UMLSSimilarityLibrary pedersenLib) throws InterruptedException, Exception
     {
-        // We initialize the output score
+        // We create the dictionary for the whole dataset
         
-        double similarity = 0.0;
+       String[] strAllCuiCodesInDataset = getDatasetDictionary();
         
-        // We initialize the semantic vectors
-        
-        double[] semanticVector1 = null;
-        double[] semanticVector2 = null;
-        
-        // We initialize the dictionary vector
-        
-        ArrayList<String> dictionary = null;
-        
-        // Preprocess the sentences and get the tokens for each sentence
-        
-        String[] lstWordsSentence1 = strRawSentence1.replaceAll("\\p{Punct}", "").split(" ");
-        String[] lstWordsSentence2 = strRawSentence2.replaceAll("\\p{Punct}", "").split(" ");
-        
-        // 1. Construct the joint set of distinct words from S1 and S2 (dictionary)
-                
-        dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
-        
-        // 2. Initialize the semantic vectors.
-        
-        semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1);
-        semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2);
-        
-        // 3. Use WordNet to construct the semantic vector
-        
-        semanticVector1 = computeSemanticVectorForPedersen(semanticVector1, dictionary);
-        semanticVector1 = computeSemanticVectorForPedersen(semanticVector2, dictionary);
-        
-        // 4. Compute the cosine similarity between the semantic vectors
-        
-        similarity = computeCosineSimilarity(semanticVector1, semanticVector2);
-
-        // Return the similarity value
-        
-        return (similarity);
-    }
-    
-    
-    /**
-     * This function gets all the future calculations for the Perl script.
-     * 
-     * * The order of the calculations will be the same after executing Perl script.
-     */
-    
-    private void precalculateWithPerl(
-                UMLSSimilarityLibrary pedersenLib) throws Exception
-    {
-        // Initialize the result
-        
-        ArrayList<String> cuiCodePairsCalculations = new ArrayList<>();
-        
-        // We execute iterate the dataset and get all the future similarity calculations in a vector.
-
-        for (int i = 0; i < m_dataset.length; i++)
-        {
-            // We initialize the semantic vectors
-
-            double[] semanticVector1 = null;
-            double[] semanticVector2 = null;
-            
-            // We get the raw sentences
-            
-            String strRawSentence1 = m_dataset[i][0];
-            String strRawSentence2 = m_dataset[i][1];
-
-            // We initialize the dictionary vector
-
-            ArrayList<String> dictionary = null;
-
-            // Preprocess the sentences and get the tokens for each sentence
-
-            String[] lstWordsSentence1 = strRawSentence1.replaceAll("\\p{Punct}", "").split(" ");
-            String[] lstWordsSentence2 = strRawSentence2.replaceAll("\\p{Punct}", "").split(" ");
-
-            // 1. Construct the joint set of distinct words from S1 and S2 (dictionary)
-
-            dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
-
-            // 2. Initialize the semantic vectors.
-
-            semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1);
-            semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2);
-            
-            // 3. Extract all the future calculations and add them to the list.
-            
-            // Merge both lists into the final list
-            
-            cuiCodePairsCalculations.addAll(addCandidatesForCalculateWordSimilarity(semanticVector1, dictionary));
-            cuiCodePairsCalculations.addAll(addCandidatesForCalculateWordSimilarity(semanticVector2, dictionary));                 
-        }
-        
-        // Iterate the arraylist and create the matrix
-        
-        String[][] cuiPairList = new String[cuiCodePairsCalculations.size()][2];
-                
-        for(int i = 0; i < cuiCodePairsCalculations.size(); i++)
-        {
-            String[] cuiPair = cuiCodePairsCalculations.get(i).split(",");
-            
-            cuiPairList[i][0] = cuiPair[0];
-            cuiPairList[i][1] = cuiPair[1];
-        }
-        
-        // Execute the Perl script
-        
-        m_preCalculatedSimilarities = pedersenLib.getCUIsSimilaritiesAndRunningTimes(cuiPairList, UMLSLibraryType.MSH.MSH);
-        
-        // Initialize the iterator with the data
-        
-        m_preCalculatedSimilaritiesIterator = m_preCalculatedSimilarities.iterator();
+       // We obtain the matrxi with all combinations of two CUI concepts
+       
+       String[][] strAllCuiPairsMatrix = getAllCuiPairsMatrix(strAllCuiCodesInDataset);
+       
+       // We get the similarity and running time
+       
+       double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
+                                strAllCuiPairsMatrix, UMLSLibraryType.MSH);
+       
+       // We store all values in the cache
+       
+       m_overallCachingTime = 0.0;
+       
+       for (int i = 0; i < strAllCuiPairsMatrix.length; i++)
+       {
+           m_CachedSimilarityValues.put(
+                   strAllCuiPairsMatrix[i][0] + "/" + strAllCuiPairsMatrix[i][1],
+                   new Double(simValues[i][0]));
+           
+           // We accumulate the overall running time
+           
+           m_overallCachingTime += simValues[i][1];
+       }
     }
     
     /**
-     * This function add all the possible candidates for calculate word similarity 
-     * before execute the Perl script from a semantic vector
-     * 
-     * For each vector position, check if the value is zero.
-     * 
-     * @param semanticVector
+     * This function builds a matrix with all combinations of CUI pairs
+     * contained i nthe dataset dictionary.
+     * @param strAllCuiCodesInDataset
      * @return 
      */
     
-    private ArrayList<String> addCandidatesForCalculateWordSimilarity(
-            double[]                    semanticVector,
-            ArrayList<String>           dictionary) throws Exception
+    private String[][] getAllCuiPairsMatrix(
+        String[]    strAllCuiCodesInDataset)
     {
-        // Initialize the result
+        // We get hte number of distinct CUI codes
         
-        ArrayList<String> listCandidates = new ArrayList<>();
+        int nCodes = strAllCuiCodesInDataset.length;
         
-        // Compute the semantic vector value in each position
+        // We build the output matrix
         
-        for (int i = 0; i < semanticVector.length; i++)
+        String[][] strAllCuiPairsMatrix = new String[nCodes * nCodes][2];
+        
+        // We fill the matrix
+        
+        for (int i = 0, k = 0; i < nCodes; i++)
         {
-            if((semanticVector[i] != 1.0) && (isCuiCode(dictionary.get(i)) == true))
+            for (int j = 0; j < nCodes; j++, k++)
             {
-                for (Iterator<String> it = dictionary.iterator(); it.hasNext();) {
-                    String wordDict = it.next();
-                    // If it is a CUI code, add to the list
-                   
-                    if(isCuiCode(wordDict) == true)
-                    {
-                        listCandidates.add(dictionary.get(i) + "," + wordDict);
-                    }
+                strAllCuiPairsMatrix[k][0] = strAllCuiCodesInDataset[i];
+                strAllCuiPairsMatrix[k][1] = strAllCuiCodesInDataset[j];
+            }
+        }
+        
+        // We return the result
+        
+        return (strAllCuiPairsMatrix);
+    }
+            
+    /**
+     * This function computes the global dictionary for the entire dataset.
+     */
+    
+    private String[] getDatasetDictionary()
+    {
+        // We create the dictionary for the whole dataset
+        
+        HashSet<String> datasetDictionary = new HashSet<>();
+        
+        // We filter the words in all sentences
+        
+        for (int iSentencePair = 0; iSentencePair < m_dataset.length; iSentencePair++)
+        {
+            // We decompose the raw annotated sentences and extract th e CUIS
+            
+            for (int j = 0; j < 2; j++)
+            {
+                String[] strTokens =  getTokenDecomposition(m_dataset[iSentencePair][j]);
+                
+                // We extractt the CUI codes
+                
+                for (int k = 0; k < strTokens.length; k++)
+                {
+                    if (isCuiCode(strTokens[k])) datasetDictionary.add(strTokens[k]);
                 }
             }
         }
-
-        // Return the result
-      
-        return (listCandidates);
+        
+        // We create the output array, copy the CUIs and release the termporary set
+        
+        String[] strAllCuiCodes = new String[datasetDictionary.size()];
+        
+        datasetDictionary.toArray(strAllCuiCodes);
+        datasetDictionary.clear();
+        
+        // We return the result
+        
+        return (strAllCuiCodes);
+    }
+    
+    /**
+     * This function decomposes the sentece into tokens.
+     * @param strRawSentence
+     * @return 
+     */
+    
+    private String[] getTokenDecomposition(
+        String  strRawSentence)
+    {
+        return (strRawSentence.replaceAll("\\p{Punct}", "").split(" "));
     }
     
     /**
      * The method returns the similarity value between two sentences 
-     * using the WBSM measure.
+     * using the UBSM measure [1].
+     * 
+     * [1]G. Sogancioglu, H. Öztürk, A. Özgür,
+     * BIOSSES: a semantic sentence similarity estimation system for
+     * the biomedical domain, Bioinformatics. 33 (2017) i49–i58.
      * 
      * @param strRawSentence1
      * @param strRawSentence2
@@ -544,48 +460,38 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      * @throws IOException 
      */
     
-    public double getSimilarityValue(
+    private double getUBSMsimilarityValue(
             String                      strRawSentence1, 
             String                      strRawSentence2,
-            ISnomedSimilarityLibrary    library) 
-            throws IOException, 
-            InterruptedException, Exception
+            ISnomedSimilarityLibrary    library) throws IOException,
+                                                    InterruptedException, Exception
     {
         // We initialize the output score
         
-        double similarity = 0.0;
-        
-        // We initialize the semantic vectors
-        
-        double[] semanticVector1 = null;
-        double[] semanticVector2 = null;
-        
-        // We initialize the dictionary vector
-        
-        ArrayList<String> dictionary = null;
+        double similarity = Double.NEGATIVE_INFINITY;
         
         // Preprocess the sentences and get the tokens for each sentence
         
         String[] lstWordsSentence1 = strRawSentence1.replaceAll("\\p{Punct}", "").split(" ");
         String[] lstWordsSentence2 = strRawSentence2.replaceAll("\\p{Punct}", "").split(" ");
         
-        // 1. Construct the joint set of distinct words from S1 and S2 (dictionary)
+        // 1. We build the joint set of distinct CUI codes from S1 and S2 (dictionary)
                 
-        dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
+        String[] dictionary = getCuisDictionary(lstWordsSentence1, lstWordsSentence2);
         
-        // 2. Initialize the semantic vectors.
+        // We need to discard thoese sentences without CUIs
         
-        semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1);
-        semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2);
+        if (dictionary.length > 0)
+        {
+            // 2. We get the semantic vectors.
 
-        // 3. Use WordNet to construct the semantic vector
-        
-        semanticVector1 = computeSemanticVector(semanticVector1, dictionary, library);
-        semanticVector2 = computeSemanticVector(semanticVector2, dictionary, library);
-        
-        // 4. Compute the cosine similarity between the semantic vectors
-        
-        similarity = computeCosineSimilarity(semanticVector1, semanticVector2);
+            double[] semanticVector1 = buildSemanticVector(library, dictionary, lstWordsSentence1);
+            double[] semanticVector2 = buildSemanticVector(library, dictionary, lstWordsSentence2);
+
+            // 2. Compute the cosine similarity between the semantic vectors
+
+            similarity = computeCosineSimilarity(semanticVector1, semanticVector2);
+        }
         
         // Return the similarity value
         
@@ -659,41 +565,79 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * This method initializes the semantic vectors.
-     * Each vector has the words from the dictionary vector.
-     * If the word exists in the sentence of the semantic vector, the value is 1.
-     * 
+     * Each entry of the output binary-weighted vector is set to
+     * 1 or zero depending if the input sentence words are included in the
+     * dictionary.
      * @param lstWordsSentence1
      * @param lstWordsSentence2
      * @throws FileNotFoundException 
      */
     
-    private double[] constructSemanticVector(
-            ArrayList<String>   dictionary,
-            String[]            lstWordsSentence) 
+    private double[] buildSemanticVector(
+            ISnomedSimilarityLibrary    similarityLibrary,
+            String[]                    cuiDictionary,
+            String[]                    lstWordsSentence) throws Exception 
     {
         // Initialize the semantic vector
         
-        double[] semanticVector = new double[dictionary.size()];
+        double[] semanticVector = new double[cuiDictionary.length];
         
-        // Convert arrays to set to facilitate the operations 
+        // Flag indicating if the library is UMLS::Similatity
+        
+        boolean isPedersenLibrary = (similarityLibrary.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY);
+        
+        // Convert arrays to set to reduce the number of operations 
         // (this method do not preserve the word order)
         
         Set<String> setWordsSentence1 = new HashSet<>(Arrays.asList(lstWordsSentence));
 
-        // For each list of words of a sentence
-        // If the value is in the sentence, the value of the semantic vector will be 1.
+        // We compute the weight for each CUI position in the dictionary
         
-        int count = 0;
-        for (String word : dictionary)
+        for (int i = 0; i < semanticVector.length; i++)
         {
-            // We check if the first sentence contains the word
+            // We get the i-esim base word
             
-            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 0.0;
+            String  iCuiToken = cuiDictionary[i];
+            
+            // We initialize the similarity to the lowest value.
+            // IMPORTANT NOTE: many similairty values are not nomralized, thus
+            // their extremal values are not 0 and 1.
+            
+            semanticVector[i] = Double.NEGATIVE_INFINITY;
+            
+            // We look for the highest similarity score as regards all
+            // words in the sentence.
+            
+            for (int j = 0; j < lstWordsSentence.length; j++)
+            {
+                // We get the next word in the sentence
 
-            semanticVector[count] = wordVectorComponent;
-            count++;
+                String word = lstWordsSentence[j];
+                
+                // We only consider the Cui words present in the sentence
+                
+                if (isCuiCode(word))
+                {
+                    // We compute the degree of similarity between both CUIs.
+                    // Note that we used the cached values for the case of
+                    // UMLS::Similarity library becasu this library takes
+                    // much time to start.
+                    
+                    double wordSimilarity = !isPedersenLibrary ?
+                                        similarityLibrary.getSimilarity(iCuiToken, word)
+                                        : getCachedSimilarity(iCuiToken, word);
+                    
+                    if (wordSimilarity > semanticVector[i])
+                    {
+                        semanticVector[i] = wordSimilarity;
+                    }
+                }
+            }
         } 
+        
+        // We release the word set
+        
+        setWordsSentence1.clear();
         
         // Return the result
         
@@ -701,169 +645,70 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
-     * Constructs the dictionary set with all the distinct words from the sentences.
-     * 
+     * This fucntion returns the degree of similarity between two CUI concepts
+     * using the pre-calculated values.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
+     * @return 
+     */
+
+    private double getCachedSimilarity(
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
+    {
+        // We create a concept pair to retirve the result
+        
+        String pair = strFirstUmlsCUI + "/" + strSecondUmlsCUI;
+        
+        double similarity = m_CachedSimilarityValues.containsKey(pair) ? 
+                            m_CachedSimilarityValues.get(pair) : 0.0;
+        
+        // We return the result
+        
+        return (similarity);
+    }
+    
+    /**
+     * Constructs the dictionary set with all the distinct words from both
+     * input sentences.
      * @param lstWordsSentence1
      * @param lstWordsSentence2
      * @throws FileNotFoundException 
      */
     
-    private ArrayList<String> constructDictionaryList(
+    private String[] getCuisDictionary(
             String[] lstWordsSentence1, 
             String[] lstWordsSentence2) 
     {
-        // Initialize the set
-        
-        ArrayList<String> dictionary = null;
-        
         // Create a linked set with the ordered union of the two sentences
         
-        Set<String> setOrderedWords = new LinkedHashSet<>();
-        setOrderedWords.addAll(Arrays.asList(lstWordsSentence1));
-        setOrderedWords.addAll(Arrays.asList(lstWordsSentence2));
+        HashSet<String> cuiDictionary = new HashSet<>();
         
-        // Copy the linked set to the arraylist
+        // We filter all CUI codes
         
-        dictionary = new ArrayList<>(setOrderedWords);
-        
-        // Return the result
-        
-        return (dictionary);
-    }
-    
-    /**
-     * Compute the values from the semantic vector in the positions with zeros.
-     * 
-     * For each vector position, check if the value is zero.
-     * If the value is zero, compute the word similarity with the dictionary
-     * using word similarity measures and get the maximum value.
-     * 
-     * @param semanticVector
-     * @return 
-     */
-    
-    private double[] computeSemanticVectorForPedersen(
-            double[]                    semanticVector,
-            ArrayList<String>           dictionary) throws Exception
-    {
-        // Initialize the result m_preCalculatedSimilarities
-        
-        double[] semanticVectorComputed = new double[semanticVector.length];
-        
-        // Compute the semantic vector value in each position
-        
-        for (int i = 0; i < semanticVector.length; i++)
+        for (int i = 0; i < lstWordsSentence1.length; i++)
         {
-            String word = dictionary.get(i);
-            
-            if((semanticVector[i] != 1.0) && (isCuiCode(dictionary.get(i)) == true))
-            {
-                double maxValue = 0.0;
-                
-                for (String wordDict : dictionary)
-                {
-                    // If it is a CUI code, add to the list
-
-                    if(isCuiCode(wordDict) == true)
-                    {   
-                        String data = m_preCalculatedSimilaritiesIterator.next();
-                        
-                        String[] calculationResult = data.split(",");
-                        
-                        // Get the similarity between the words
-                        
-                        double similarityScore = Double.valueOf(calculationResult[2]);
-
-                        // If the returned value is greater, set the new similarity value
-
-                        maxValue = maxValue < similarityScore ? similarityScore : maxValue;
-                    }
-                }
-                
-                semanticVectorComputed[i] = maxValue;
-            }
-            else
-            {
-                semanticVectorComputed[i] = semanticVector[i];
-            }
+            if (isCuiCode(lstWordsSentence1[i])) cuiDictionary.add(lstWordsSentence1[i]);
         }
 
-        // Return the result
-        
-        return (semanticVectorComputed);
-    }
-    
-    /**
-     * Compute the values from the semantic vector in the positions with zeros.
-     * 
-     * For each vector position, check if the value is zero.
-     * If the value is zero, compute the word similarity with the dictionary
-     * using word similarity measures and get the maximum value.
-     * 
-     * @param semanticVector
-     * @return 
-     */
-    
-    private double[] computeSemanticVector(
-            double[]                    semanticVector,
-            ArrayList<String>           dictionary,
-            ISnomedSimilarityLibrary    library) throws Exception
-    {
-        // Initialize the result
-        
-        double[] semanticVectorComputed = new double[semanticVector.length];
-        
-        
-        // Compute the semantic vector value in each position
-        
-        for (int i = 0; i < semanticVector.length; i++)
+        for (int i = 0; i < lstWordsSentence2.length; i++)
         {
-            // If the value is zero, get the word similarity
-            
-            double wordVectorComponent = semanticVector[i] == 1.0 ? 1.0 : 
-                        getWordSimilarityScore(dictionary.get(i), dictionary, library);
-  
-            semanticVectorComputed[i] = wordVectorComponent;
-        }
-
-        // Return the result
-        
-        return (semanticVectorComputed);
-    }
-    
-    /**
-     * Get the maximum similarity value comparing a word with a list of words.
-     * 
-     * @param word
-     * @param dictionary
-     * @return double
-     */
-    
-    private double getWordSimilarityScore(
-            String                      word,
-            ArrayList<String>           dictionary,
-            ISnomedSimilarityLibrary    library) throws Exception
-    {
-        // Initialize the result
-        
-        double maxValue = 0.0;
-        
-        // Iterate the dictionary and compare the similarity 
-        // between the pivot word and the dictionary words to get the maximum value.
-        
-        for (String wordDict : dictionary)
-        {
-            // Get the similarity between the words
-            double similarityScore = library.getSimilarity(word, wordDict);
-            
-            // If the returned value is greater, set the new similarity value
-            
-            maxValue = maxValue < similarityScore ? similarityScore : maxValue;
+            if (isCuiCode(lstWordsSentence2[i])) cuiDictionary.add(lstWordsSentence2[i]);
         }
         
+        // Copy the linked set to the output vector
+        
+        String[] sentencePairDictionary = new String[cuiDictionary.size()];
+        
+        cuiDictionary.toArray(sentencePairDictionary);
+        
+        // We release the auxiliary set
+        
+        cuiDictionary.clear();
+        
         // Return the result
         
-        return (maxValue);
+        return (sentencePairDictionary);
     }
     
     /**
@@ -1016,17 +861,6 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     
     private boolean isCuiCode(String word)
     {
-        //Initialize the result
-        
-        boolean isCui = false;
-        
-        
-        if(word.matches("C\\d\\d\\d\\d\\d\\d\\d"))
-        {
-            isCui = true;
-        }
-        
-        // Return the result
-        return (isCui);
+        return (word.matches("C\\d\\d\\d\\d\\d\\d\\d"));
     }
 }

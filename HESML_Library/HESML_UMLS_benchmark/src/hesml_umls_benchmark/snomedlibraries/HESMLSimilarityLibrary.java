@@ -123,10 +123,9 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
     }
     
     /**
-     * This fucntion returns the degree of similarity between two
-     * SNOMED-CT concepts.
-     * @param firstConceptSnomedID
-     * @param secondConceptSnomedID
+     * This fucntion returns the degree of similarity between two CUI concepts.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
      * @return 
      */
 

@@ -107,14 +107,14 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      * @throws java.lang.InterruptedException 
      */
     
-    public ArrayList<String> getCUIsSimilaritiesAndRunningTimes(
+    public String[] getCuiPairsRawOutput(
             String[][]      umlsCuiPairs,
             UMLSLibraryType libraryType) throws FileNotFoundException, IOException,
                                         InterruptedException, Exception 
     {
         // Initialize the result
         
-        ArrayList<String> result = new ArrayList<>();
+        String[] rawOutputCuiPairs = new String[umlsCuiPairs.length];
         
         // We write the temporal file with all the CUI pairs
         
@@ -122,7 +122,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         
         // We write the input file for the Perl script
         
-        writeCSVfile(umlsCuiPairs, tempFile);
+        writeCuiPairsCsvFile(umlsCuiPairs, tempFile);
         
         // Get the measure as Perl script input format
 
@@ -139,17 +139,16 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         
         for (int i = 0; i < umlsCuiPairs.length; i++)
         {
-            // We read the next output line and retrieve
-            
-            String data = csvReader.readLine();
-            result.add(data);
+            rawOutputCuiPairs[i] = csvReader.readLine();
         }
+        
+        // We close the output script file
         
         csvReader.close();
         
         // Return the result
         
-        return (result);
+        return (rawOutputCuiPairs);
     }
     
     /**
@@ -178,7 +177,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         
         // We write the input file for the Perl script
         
-        writeCSVfile(umlsCuiPairs, tempFile);
+        writeCuiPairsCsvFile(umlsCuiPairs, tempFile);
         
         // Get the measure as Perl script input format
 
@@ -206,6 +205,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
             similarity[i][0] = Double.valueOf(data[2]);
             similarity[i][1] = Double.valueOf(data[3]);
         }
+        
+        // We close the output script file
         
         csvReader.close();
         
@@ -332,9 +333,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     @Override
     public void clear()
     {
-        unloadSnomed();
-        
-        // Remove temporal files
+        // Remove temporary files
         
         this.removeFile(m_PerlTempDir + "/tempFile.csv");
         this.removeFile(m_PerlTempDir + "/tempFileOutput.csv");
@@ -393,7 +392,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      * @param strOutputFilename 
      */
     
-    private void writeCSVfile(
+    private void writeCuiPairsCsvFile(
             String[][]  strDataMatrix,
             String      strOutputFilename) throws IOException
     {
@@ -456,6 +455,6 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
             String  strfirstUmlsCUI,
             String  strSecondUmlsCUI) throws Exception
     {
-        throw new UnsupportedOperationException("This function is not supported.");
+        throw new UnsupportedOperationException("getSimilarity");
     }
 }

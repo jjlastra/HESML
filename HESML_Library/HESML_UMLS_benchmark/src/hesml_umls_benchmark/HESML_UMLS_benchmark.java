@@ -291,8 +291,8 @@ public class HESML_UMLS_benchmark
          */
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML};//,
+                                                    SnomedBasedLibraryType.HESML};
+                                                    //SnomedBasedLibraryType.SML};//,
                                                     //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
@@ -327,16 +327,16 @@ public class HESML_UMLS_benchmark
         {
             String m_strDatasetPath = "";
         
-            IUMLSBenchmark ubsmICbasedBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
-                                        libraries, SimilarityMeasureType.Lin,
+            IUMLSBenchmark sentenceBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
+                                        libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strMedSTSfilename, 
                                         m_strSnomedDir, m_strSNOMED_conceptFilename,
                                         m_strSNOMED_relationshipsFilename,
                                         m_strSNOMED_descriptionFilename,
                                         m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
-            ubsmICbasedBenchmark.run("raw_output_UBSM_Lin_measure_experiment.csv");
-            ubsmICbasedBenchmark.clear();
+            sentenceBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
+            sentenceBenchmark.clear();
         }
     }
     

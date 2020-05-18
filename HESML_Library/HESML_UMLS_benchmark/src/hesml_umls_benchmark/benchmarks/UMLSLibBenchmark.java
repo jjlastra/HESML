@@ -108,7 +108,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     public abstract void run(String strOutputFilename) throws Exception;
     
     /**
-     * This fucntion releases the resouurces used by the benchmark.
+     * This function releases the resouurces used by the benchmark.
      */
     
     @Override
