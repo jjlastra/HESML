@@ -25,6 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.LibraryType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,6 +35,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -94,6 +96,63 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     }
     
     /**
+     * This function calculates the degree of similairity for each concept pairs.
+     * In addition, this function returns the running time in seconds for each
+     * independent evaluation.
+     * @param umlsCuiPairs
+     * @param libraryType
+     * @return
+     * @throws java.io.FileNotFoundException
+     * @throws Exception 
+     * @throws java.lang.InterruptedException 
+     */
+    
+    public ArrayList<String> getCUIsSimilaritiesAndRunningTimes(
+            String[][]  umlsCuiPairs,
+            LibraryType libraryType) throws FileNotFoundException, IOException,
+                                        InterruptedException, Exception 
+    {
+        // Initialize the result
+        
+        ArrayList<String> result = new ArrayList<>();
+        
+        // We write the temporal file with all the CUI pairs
+        
+        String tempFile = m_PerlTempDir + "/tempFile.csv";
+        
+        // We write the input file for the Perl script
+        
+        writeCSVfile(umlsCuiPairs, tempFile);
+        
+        // Get the measure as Perl script input format
+
+        String measure = convertHesmlMeasureTypeToUMLS_Sim(m_measureType);
+
+        // We execute the Perl script
+        
+        executePerlScript(measure, libraryType);
+        
+        // We read the output from the Perl script.
+        // Each row has the following format: CUI1 | CUI2 | similarity | time
+        
+        BufferedReader csvReader = new BufferedReader(new FileReader(m_PerlTempDir + "/tempFileOutput.csv"));
+        
+        for (int i = 0; i < umlsCuiPairs.length; i++)
+        {
+            // We read the next output line and retrieve
+            
+            String data = csvReader.readLine();
+            result.add(data);
+        }
+        
+        csvReader.close();
+        
+        // Return the result
+        
+        return (result);
+    }
+    
+    /**
      * This function calculates the degre of similairity for each concept pairs.
      * In addition, this function returns the running time in seconds for each
      * independent evaluation.
@@ -105,7 +164,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     public double[][] getSimilaritiesAndRunningTimes(
-            String[][]  umlsCuiPairs) throws FileNotFoundException, IOException,
+            String[][]  umlsCuiPairs,
+            LibraryType libraryType) throws FileNotFoundException, IOException,
                                         InterruptedException, Exception 
     {
         // Initialize the result
@@ -126,7 +186,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
 
         // We execute the Perl script
         
-        executePerlScript(measure);
+        executePerlScript(measure, libraryType);
         
         // We read the output from the Perl script.
         // Each row has the following format: CUI1 | CUI2 | similarity | time
@@ -214,7 +274,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     private void executePerlScript(
-            String measureType) throws InterruptedException, IOException
+            String measureType,
+            LibraryType libraryType) throws InterruptedException, IOException
     {
         // Create the command line for Perl
         
@@ -222,7 +283,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
 
         // We build the command to call the evaluation Perl script
         
-        String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t " + measureType + " snomedct";
+        String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t " + measureType + " " + libraryType.toString().toLowerCase();
         
         System.out.println("Executing the Perl script for calculating UMLS::Similarity");
         System.out.println(cmd);
@@ -246,7 +307,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         
         InputStream stdin2 = process.getInputStream();
         InputStreamReader isr2 = new InputStreamReader(stdin2);
-        BufferedReader br2 = new BufferedReader(isr);
+        BufferedReader br2 = new BufferedReader(isr2);
         String line2 = null;
         System.out.println("<OUTPUT>");
         while ( (line2 = br2.readLine()) != null)
@@ -311,6 +372,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     @Override
     public void loadSnomed() throws Exception
     {
+
     }
     
     /**
@@ -320,6 +382,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     @Override
     public void unloadSnomed()
     {
+
     }
     
     /**

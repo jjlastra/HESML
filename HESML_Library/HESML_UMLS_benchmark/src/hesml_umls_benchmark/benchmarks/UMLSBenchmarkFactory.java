@@ -25,6 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.LibraryType;
 
 /**
  * This function creates all UMLS benchmarks
@@ -44,6 +45,7 @@ public class UMLSBenchmarkFactory
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
      * @return
      * @throws Exception 
@@ -74,12 +76,16 @@ public class UMLSBenchmarkFactory
      * This fucntion creates a benchmark to evaluate the approximation quality
      * of the AncSPL algorithm.
      * @param icModel
+     * @param measureType1
+     * @param measureType2
      * @param nRandomSamples
+     * @param useEdgeWeights
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
      * @param strSNOMED_CUI_mappingfilename
+     * @param strUmlsDir
      * @return
      * @throws Exception 
      */
@@ -102,4 +108,43 @@ public class UMLSBenchmarkFactory
                 strUmlsDir, strSNOMED_CUI_mappingfilename, icModel, 
                 measureType1, measureType2, nRandomSamples, useEdgeWeights));
     }   
+    
+    
+        /**
+     * This function creates a random concept evaluation.
+     * @param libraries
+     * @param vocabulary
+     * @param similarityMeasure
+     * @param icModel
+     * @param strDatasetPath
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+
+    public static IUMLSBenchmark createSentenceBenchmark(
+            SnomedBasedLibraryType[]    libraries,
+            LibraryType                  vocabulary,
+            SimilarityMeasureType       similarityMeasure,
+            IntrinsicICModelType        icModel,
+            String                      strDatasetPath,
+            String                      strSnomedDir,
+            String                      strSnomedDBconceptFileName,
+            String                      strSnomedDBRelationshipsFileName,
+            String                      strSnomedDBdescriptionFileName,
+            String                      strUmlsDir,
+            String                      strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new SentencesEvalBenchmark(libraries, vocabulary,
+                similarityMeasure, icModel, strDatasetPath, 
+                strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName,
+                strSnomedDBdescriptionFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
 }

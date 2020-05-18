@@ -244,14 +244,14 @@ while (my $line = <$cuis_csv_codes>)
 	# print "Calculating the similarity between $cui1 and $cui2 \n";
 
 	my $start_time = Time::HiRes::gettimeofday();
-
-        my $pvalue = $meas->getRelatedness($cui1, $cui2);
+	
+	my $pvalue = $meas->getRelatedness($cui1, $cui2);
 	
 	my $stop_time = Time::HiRes::gettimeofday();
 	
 	my $run_time = $stop_time - $start_time;
 
-        print "The similarity between $cui1 and $cui2 is <> $pvalue <>, in $run_time segs. \n";
+        # print "The similarity between $cui1 and $cui2 is <> $pvalue <>, in $run_time segs. \n";
 
 	$csv_write->print($fh, [ $cui1, $cui2, $pvalue, $run_time ]);
 

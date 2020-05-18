@@ -61,6 +61,7 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    private static final String m_strDatasetPath = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized_20pairs.tsv";
     
     /**
      * Main function. This fucntion executes all experiments reported in
@@ -71,6 +72,7 @@ public class HESML_UMLS_benchmark
      * domain with a reproducible benchmark, Submitted for Publication. (2020).
      * S
      * @param args the command line arguments
+     * @throws java.lang.Exception
      */
     
     public static void main(String[] args) throws Exception
@@ -152,18 +154,18 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        //RunExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
+        //RunExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity os a sequence of randomly generated UMLS
-         * concept pairs on MeSH ontology.
+         * UMLS::Similarity by evaluating the MedSTS sentence similarity
+         * dataset.
          */
         
-        //RunExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
+        //RunSentenceSimilarityExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
         
         /**
-         * Experiment 2.2: we evaluate the approximation quality of the novel
+         * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm in the
          * weighted-edge case by comparing the similarity scores returned
          * by the coswJ&C [1] similarity measure using either exact Dijkstra
@@ -190,6 +192,7 @@ public class HESML_UMLS_benchmark
         
         weightedBasedBenchmark.run("raw_output_AncSPLLeacockChodorow_quality_exp.csv");
         weightedBasedBenchmark.clear();*/
+        
         
         // We show the overalll running time
         
@@ -236,7 +239,7 @@ public class HESML_UMLS_benchmark
         String[] strOutputFilenames = new String[]{"raw_output_Rada_SNOMED_exp1.csv",
                                             "raw_output_AncSPL-Rada_SNOMED_exp1.csv",
                                             "raw_output_Lin-Seco_SNOMED_exp1.csv",
-                                            "raw_output_Leacock_eSNOMED_xp1.csv",
+                                            "raw_output_Leacock_SNOMED_xp1.csv",
                                             "raw_output_Wu-Palmer_SNOMED_exp1.csv"};
         
         /**
@@ -268,6 +271,72 @@ public class HESML_UMLS_benchmark
         
             icBasedBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
             icBasedBenchmark.clear();
+        }
+    }
+    
+    /**
+     * This function executes the benchamrk which evaluates the similarity of
+     * the sentence pairs in the MedSTS dataset.
+     * @param strRawOutputDir
+     * @param ontologyType
+     * @throws Exception 
+     */
+    
+    private static void RunSentenceSimilarityExperiment(
+            String  strRawOutputDir,
+            String  strMedSTSfilename) throws Exception
+    {
+        /**
+         * We set the vector of libraries to be compared
+         */
+        
+        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML};//,
+                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
+
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
+                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin,
+                                                    SimilarityMeasureType.LeacockChodorow,
+                                                    SimilarityMeasureType.WuPalmerFast};
+                
+        /**
+         * Output filenames.
+         */
+           
+        String[] strOutputFilenames = new String[]{"raw_output_Rada_MedSTS_exp3.csv",
+                                            "raw_output_AncSPL-Rada_MedSTS_exp3.csv",
+                                            "raw_output_Lin-Seco_MedSTS_exp3.csv",
+                                            "raw_output_Leacock_MedSTS_exp3.csv",
+                                            "raw_output_Wu-Palmer_MedSTS_exp3.csv"};
+        
+        /**
+         * Experiment 3: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity libraries by evaluating the MedSTS dataset.
+         * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
+         * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
+         * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
+         * Language Resources and Evaluation, October. https://doi.org/10.1007/s10579-018-9431-1.
+         */
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            String m_strDatasetPath = "";
+        
+            IUMLSBenchmark UBSM_ICbasedBenchmark = UMLSBenchmarkFactory.createSentenceBenchmark(
+                                        libraries, LibraryType.MSH, SimilarityMeasureType.Lin,
+                                        IntrinsicICModelType.Seco, strMedSTSfilename, 
+                                        m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                        m_strSNOMED_relationshipsFilename,
+                                        m_strSNOMED_descriptionFilename,
+                                        m_strUMLSdir, m_strUmlsCuiMappingFilename);
+
+            UBSM_ICbasedBenchmark.run("raw_output_UBSM_Lin_measure_experiment.csv");
+            UBSM_ICbasedBenchmark.clear();
         }
     }
     

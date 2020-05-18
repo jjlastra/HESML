@@ -24,6 +24,7 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
+import hesml_umls_benchmark.LibraryType;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
 import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
@@ -221,7 +222,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             // The function also returns the running times for each run
             // similarityWithRunningTimes[similarity_i][runningTime_ị]
             
-            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(umlsCuiPairs);
+            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(umlsCuiPairs, LibraryType.SNOMEDCT_US);
             
             // Calculate the accumulated time for each iteration
 
