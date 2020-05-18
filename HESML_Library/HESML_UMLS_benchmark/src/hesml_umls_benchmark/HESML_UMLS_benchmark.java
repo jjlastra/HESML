@@ -61,7 +61,7 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strDatasetPath = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized_20pairs.tsv";
+    private static final String m_strMedSTSfilename = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized_20pairs.tsv";
     
     /**
      * Main function. This fucntion executes all experiments reported in
@@ -146,7 +146,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
+        //RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -162,7 +162,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir, BiomedicalOntologyType.SNOMED_CT);
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
@@ -327,16 +327,16 @@ public class HESML_UMLS_benchmark
         {
             String m_strDatasetPath = "";
         
-            IUMLSBenchmark UBSM_ICbasedBenchmark = UMLSBenchmarkFactory.createSentenceBenchmark(
-                                        libraries, UMLSLibraryType.MSH, SimilarityMeasureType.Lin,
+            IUMLSBenchmark ubsmICbasedBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
+                                        libraries, SimilarityMeasureType.Lin,
                                         IntrinsicICModelType.Seco, strMedSTSfilename, 
                                         m_strSnomedDir, m_strSNOMED_conceptFilename,
                                         m_strSNOMED_relationshipsFilename,
                                         m_strSNOMED_descriptionFilename,
                                         m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
-            UBSM_ICbasedBenchmark.run("raw_output_UBSM_Lin_measure_experiment.csv");
-            UBSM_ICbasedBenchmark.clear();
+            ubsmICbasedBenchmark.run("raw_output_UBSM_Lin_measure_experiment.csv");
+            ubsmICbasedBenchmark.clear();
         }
     }
     

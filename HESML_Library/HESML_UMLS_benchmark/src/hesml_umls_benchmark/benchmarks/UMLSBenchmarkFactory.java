@@ -127,9 +127,8 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
 
-    public static IUMLSBenchmark createSentenceBenchmark(
+    public static IUMLSBenchmark createMeSHSentenceBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            UMLSLibraryType                  vocabulary,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,
@@ -140,7 +139,7 @@ public class UMLSBenchmarkFactory
             String                      strUmlsDir,
             String                      strSNOMED_CUI_mappingfilename) throws Exception
     {
-        return (new SentencesEvalBenchmark(libraries, vocabulary,
+        return (new MeSHSentencesEvalBenchmark(libraries,
                 similarityMeasure, icModel, strDatasetPath, 
                 strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,

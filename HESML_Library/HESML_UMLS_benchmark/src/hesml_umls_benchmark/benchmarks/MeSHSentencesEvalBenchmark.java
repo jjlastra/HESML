@@ -34,6 +34,7 @@ import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -58,7 +59,7 @@ import java.util.Set;
  * @author alicia
  */
 
-class SentencesEvalBenchmark extends UMLSLibBenchmark
+class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
 {
     /**
      * Column offset for the main attributes extracted from concept and
@@ -74,14 +75,12 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
     
     private SimilarityMeasureType           m_MeasureType;
     private final IntrinsicICModelType      m_icModel;
-    private final UMLSLibraryType           m_vocabulary;
 
     /**
      * Path to the input dataset for evaluating sentences
      */
     
-    protected String m_strDatasetPath;
-    protected String[][] m_dataset;
+    protected String[][]    m_dataset;
     
     
     /**
@@ -98,7 +97,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
     Iterator<String> m_preCalculatedSimilaritiesIterator;
 
     /**
-     * Constructor of the random concept pairs benchmark
+     * Constructor of the sentence pairs benchmark
      * @param libraries
      * @param similarityMeasure
      * @param icModel
@@ -112,9 +111,8 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
      * @throws Exception 
      */
 
-    SentencesEvalBenchmark(
+    MeSHSentencesEvalBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            UMLSLibraryType             vocabulary,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,
@@ -136,20 +134,21 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
-        m_vocabulary = vocabulary;
-        m_strDatasetPath = strDatasetPath;
         m_dataset = null;
         m_preCalculatedSimilarities = new ArrayList<>();
         m_preCalculatedSimilaritiesIterator = null;
         
-        System.out.println("Loading the sentence similarity dataset from path: " + m_strDatasetPath);
-        this.loadDatasetBenchmark();
+        // We load the dataset
         
-        System.out.println("Loading the Metamap Lite Instance...");
-        this.loadMetamapLite();
+        loadDatasetBenchmark(strDatasetPath);
         
-        System.out.println("Annotating the dataset with Metamap Lite...");
-        this.annotateDataset();
+        // We load METAMAP Lite
+        
+        loadMetamapLite();
+        
+        // We annotate all CUI ceoncept mentions in all sentences of the dataste
+        
+        annotateDataset();
     }
     
     /**
@@ -477,7 +476,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         String[][] cuiPairList = new String[cuiCodePairsCalculations.size()][2];
                 
-        for(int i=0; i<cuiCodePairsCalculations.size(); i++)
+        for(int i = 0; i < cuiCodePairsCalculations.size(); i++)
         {
             String[] cuiPair = cuiCodePairsCalculations.get(i).split(",");
             
@@ -869,24 +868,15 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
     
     /**
      * This function loads the dataset matrix with the sentence pairs for the evaluation.
-     * 
+     * @param strDatasetFilename 
      * @throws Exception 
      */
     
-    private void loadDatasetBenchmark() throws Exception
+    private void loadDatasetBenchmark(
+        String  strDatasetFilename) throws Exception
     {
-        // Chech if file exists
-        
-        File csvFile = new File(m_strDatasetPath);
-        if (!csvFile.isFile()) {
-            throw new Exception("Error: Semantic sentence similarity dataset not found at path: " 
-                    + m_strDatasetPath);
-        }
-        
-        // Read the file and fills the matrix with the sentences
-        
-        String row;
-        
+        System.out.println("Loading the sentence similarity dataset from path: " + strDatasetFilename);
+               
         // Initialize the sentences
         
         ArrayList<String> first_sentences = new ArrayList<>();
@@ -894,18 +884,24 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         // Read the benchmark CSV 
         
-        BufferedReader csvReader = new BufferedReader(new FileReader(m_strDatasetPath));
-        while ((row = csvReader.readLine()) != null) 
+        BufferedReader csvReader = new BufferedReader(new FileReader(strDatasetFilename));
+        
+        String strRowLine;
+        
+        while ((strRowLine = csvReader.readLine()) != null) 
         {
             // Split the line by tab
             
-            String[] sentencePairs = row.split("\t");
+            String[] sentencePairs = strRowLine.split("\t");
             
             // Fill the matrix with the sentences
             
             first_sentences.add(sentencePairs[0]);
             second_sentences.add(sentencePairs[1]);
         }
+        
+        // We close the file
+        
         csvReader.close();
         
         // Fill the dataset data
@@ -917,48 +913,35 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
             m_dataset[i][0] = first_sentences.get(i);
             m_dataset[i][1] = second_sentences.get(i);
         }
+        
+        // We release the auxiliary lists
+        
+        first_sentences.clear();
+        second_sentences.clear();
     }
     
     /**
-     * This function iterates the dataset and annotates all the sentences.
+     * This function annotates all the sentences with CUI instances.
      */
     
     private void annotateDataset() throws IOException, Exception
     {
-        //Initialize the auxiliar dataset
+        // Warning message
         
-        String[][] dataset = m_dataset;
+        System.out.println("Annotating the dataset with Metamap Lite...");
         
-        // Iterate the dataset
+        // We annotate ecach sentence of the dataset
         
         for (int i = 0; i < m_dataset.length; i++)
         {
-            // Select the sentences
-            
-            String first_sentence = m_dataset[i][0];
-            String second_sentence = m_dataset[i][1];
-            
-            // Annotate the sentences
-            
-            String annotated_first_sentence = this.annotateSentence(first_sentence);
-            String annotated_second_sentence = this.annotateSentence(second_sentence);
-            
-            // And assign the annotated sentences to the auxiliary matrix
-            
-            dataset[i][0] = annotated_first_sentence;
-            dataset[i][1] = annotated_second_sentence;
+            m_dataset[i][0] = annotateSentence(m_dataset[i][0]);
+            m_dataset[i][1] = annotateSentence(m_dataset[i][1]);
         }
-        
-        // Replace the auxiliar dataset
-        
-        m_dataset = dataset;
     }
     
     /**
      * This function annotates a sentence with CUI codes replacing 
      * keywords with codes in the same sentence.
-     * 
-     * 
      * @return 
      */
     
@@ -993,7 +976,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         // Return the result
         
-        return annotatedSentence;
+        return (annotatedSentence);
     }
     
     /**
@@ -1004,6 +987,10 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
                                     InstantiationException, NoSuchMethodException, 
                                     IllegalAccessException, IOException
     {
+        // Warning message
+        
+        System.out.println("Loading the Metamap Lite Instance...");
+
         // Initialization Section
         
         Properties myProperties = new Properties();
@@ -1018,6 +1005,8 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         myProperties.setProperty("metamaplite.sourceset", "MSH");
 
+        // We create the METAMAP maname
+        
         m_metaMapLiteInst = new MetaMapLite(myProperties);
     }
     
