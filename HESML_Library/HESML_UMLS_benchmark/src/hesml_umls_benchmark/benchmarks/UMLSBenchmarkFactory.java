@@ -25,7 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.LibraryType;
+import hesml_umls_benchmark.UMLSLibraryType;
 
 /**
  * This function creates all UMLS benchmarks
@@ -129,7 +129,7 @@ public class UMLSBenchmarkFactory
 
     public static IUMLSBenchmark createSentenceBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            LibraryType                  vocabulary,
+            UMLSLibraryType                  vocabulary,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,

@@ -30,7 +30,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.LibraryType;
+import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
 import java.io.BufferedReader;
 import java.io.File;
@@ -74,7 +74,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
     
     private SimilarityMeasureType           m_MeasureType;
     private final IntrinsicICModelType      m_icModel;
-    private final LibraryType               m_vocabulary;
+    private final UMLSLibraryType           m_vocabulary;
 
     /**
      * Path to the input dataset for evaluating sentences
@@ -114,7 +114,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
 
     SentencesEvalBenchmark(
             SnomedBasedLibraryType[]    libraries,
-            LibraryType                 vocabulary,
+            UMLSLibraryType             vocabulary,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,
@@ -487,7 +487,7 @@ class SentencesEvalBenchmark extends UMLSLibBenchmark
         
         // Execute the Perl script
         
-        m_preCalculatedSimilarities = pedersenLib.getCUIsSimilaritiesAndRunningTimes(cuiPairList, LibraryType.MSH);
+        m_preCalculatedSimilarities = pedersenLib.getCUIsSimilaritiesAndRunningTimes(cuiPairList, UMLSLibraryType.MSH.MSH);
         
         // Initialize the iterator with the data
         

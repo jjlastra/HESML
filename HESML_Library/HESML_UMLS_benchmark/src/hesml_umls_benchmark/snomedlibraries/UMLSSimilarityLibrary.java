@@ -25,7 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.LibraryType;
+import hesml_umls_benchmark.UMLSLibraryType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -96,7 +96,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     }
     
     /**
-     * This function calculates the degree of similairity for each concept pairs.
+     * This function calculates the degree of similarity for each CUI concept pair.
      * In addition, this function returns the running time in seconds for each
      * independent evaluation.
      * @param umlsCuiPairs
@@ -108,8 +108,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     public ArrayList<String> getCUIsSimilaritiesAndRunningTimes(
-            String[][]  umlsCuiPairs,
-            LibraryType libraryType) throws FileNotFoundException, IOException,
+            String[][]      umlsCuiPairs,
+            UMLSLibraryType libraryType) throws FileNotFoundException, IOException,
                                         InterruptedException, Exception 
     {
         // Initialize the result
@@ -164,8 +164,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      */
     
     public double[][] getSimilaritiesAndRunningTimes(
-            String[][]  umlsCuiPairs,
-            LibraryType libraryType) throws FileNotFoundException, IOException,
+            String[][]      umlsCuiPairs,
+            UMLSLibraryType libraryType) throws FileNotFoundException, IOException,
                                         InterruptedException, Exception 
     {
         // Initialize the result
@@ -192,6 +192,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         // Each row has the following format: CUI1 | CUI2 | similarity | time
         
         BufferedReader csvReader = new BufferedReader(new FileReader(m_PerlTempDir + "/tempFileOutput.csv"));
+        
+        // We retrieve the similarity score and running time per concept pair
         
         for (int i = 0; i < umlsCuiPairs.length; i++)
         {
@@ -275,7 +277,7 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
     
     private void executePerlScript(
             String measureType,
-            LibraryType libraryType) throws InterruptedException, IOException
+            UMLSLibraryType libraryType) throws InterruptedException, IOException
     {
         // Create the command line for Perl
         
