@@ -187,10 +187,16 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
         
         executePerlScript(measure, libraryType);
         
+        // Warning message
+        
+        String strTempOutputFilename = m_PerlTempDir + "/tempFileOutput.csv";
+        
+        System.out.println("Reading UMLS__Similarity output file -> " + strTempOutputFilename);
+        
         // We read the output from the Perl script.
         // Each row has the following format: CUI1 | CUI2 | similarity | time
         
-        BufferedReader csvReader = new BufferedReader(new FileReader(m_PerlTempDir + "/tempFileOutput.csv"));
+        BufferedReader csvReader = new BufferedReader(new FileReader(strTempOutputFilename));
         
         // We retrieve the similarity score and running time per concept pair
         
@@ -434,7 +440,8 @@ public class UMLSSimilarityLibrary extends SnomedSimilarityLibrary
      * 
      * @param filePath 
      */
-    protected void removeFile(
+    
+    private void removeFile(
             String filePath)
     {
         File file = new File(filePath); 
