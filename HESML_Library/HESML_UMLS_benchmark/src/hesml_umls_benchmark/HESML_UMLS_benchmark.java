@@ -96,7 +96,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input paraemters
         
-        String strOutputDir = "./";
+        String strOutputDir = ".";
         String strConceptBiomedicalDataset = "";
         
         // We check the input arguments
@@ -289,9 +289,9 @@ public class HESML_UMLS_benchmark
          */
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML};
-                                                    //SnomedBasedLibraryType.SML,
-                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML,
+                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
