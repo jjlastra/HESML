@@ -317,7 +317,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         
         System.out.println(library.getLibraryType()
                 + " Average speed (#sentence pairs/second) = "
-                + averageRuntime);
+                + ((double)m_dataset.length / averageRuntime));
         
         // We return the results
         
@@ -379,7 +379,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     
     /**
      * This function builds a matrix with all combinations of CUI pairs
-     * contained i nthe dataset dictionary.
+     * contained in the dataset dictionary.
      * @param strAllCuiCodesInDataset
      * @return 
      */

@@ -296,8 +296,8 @@ public class HESML_UMLS_benchmark
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.Lin,
-                                                    SimilarityMeasureType.JiangConrath};
+                                                    SimilarityMeasureType.Lin};//,
+                                                    //SimilarityMeasureType.JiangConrath};
                 
         /**
          * Output filenames.
