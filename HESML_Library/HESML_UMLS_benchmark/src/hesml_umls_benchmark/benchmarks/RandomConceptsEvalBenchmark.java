@@ -222,7 +222,8 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             // The function also returns the running times for each run
             // similarityWithRunningTimes[similarity_i][runningTime_ị]
             
-            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(umlsCuiPairs, UMLSLibraryType.SNOMEDCT_US);
+            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
+                                                        umlsCuiPairs, UMLSLibraryType.SNOMEDCT_US);
             
             // Calculate the accumulated time for each iteration
 

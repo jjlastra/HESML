@@ -140,7 +140,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
         m_dataset = null;
-        m_CachedSimilarityValues = null;
+        m_CachedSimilarityValues = new HashMap<>();
         
         // We load the dataset
         
@@ -164,7 +164,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     {
         // We release the resources
         
-        if (m_CachedSimilarityValues != null) m_CachedSimilarityValues.clear();
+        m_CachedSimilarityValues.clear();
         
         // We call the base clase clear()
         
@@ -182,7 +182,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     {
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[m_dataset.length + 1][m_Libraries.length + 1];
+        String[][] strOutputDataMatrix = new String[2][m_Libraries.length + 1];
         
         // We fill the first row header
         
@@ -271,15 +271,15 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         
         boolean pedersenLib = (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY);
         
-        if (pedersenLib && (m_CachedSimilarityValues == null))
+        if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
         {
-            getCachedSimilarityValues((UMLSSimilarityLibrary) library);
+            buildCachedSimilarityValues((UMLSSimilarityLibrary) library);
         }
-        
-        double accumulatedTime = 0.0;
         
         // We execute multiple times the benchmark to compute a stable running time
 
+        double accumulatedEvalTime = 0.0;
+        
         for (int iRun = 0; iRun < nRuns; iRun++)
         {
             // We initialize the stopwatch
@@ -298,24 +298,26 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
             runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
 
             // We accumulate the query time for the UMLS::Similarity library
+            // becuase it has bnen pre-calculated before
             
             if (pedersenLib) runningTimes[iRun] += m_overallCachingTime;
             
-            // We accumulate the overall
+            // We accumulate the overall time
             
-            accumulatedTime += runningTimes[iRun];
+            accumulatedEvalTime += runningTimes[iRun];
         }
         
         // We compute the averga running time
         
-        double averageRuntime = accumulatedTime / m_dataset.length;
+        double averageRuntime = accumulatedEvalTime / nRuns;
         
         // We print the average results
         
         System.out.println("# UMLS sentence pairs evaluated = " + m_dataset.length);
         
-        System.out.println(library.getLibraryType() + " Average speed (#sentence pairs/second) = "
-                + ((double)m_dataset.length) / averageRuntime);
+        System.out.println(library.getLibraryType()
+                + " Average speed (#sentence pairs/second) = "
+                + averageRuntime);
         
         // We return the results
         
@@ -327,9 +329,13 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      * appearing in the dataset.
      */
     
-    private void getCachedSimilarityValues(
+    private void buildCachedSimilarityValues(
         UMLSSimilarityLibrary pedersenLib) throws InterruptedException, Exception
     {
+        // We reset the cache
+        
+        m_CachedSimilarityValues.clear();
+        
         // We create the dictionary for the whole dataset
         
        String[] strAllCuiCodesInDataset = getDatasetDictionary();
@@ -338,7 +344,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
        
        String[][] strAllCuiPairsMatrix = getAllCuiPairsMatrix(strAllCuiCodesInDataset);
        
-       // We get the similarity and running time
+       // We get the similarity and running time per concept pair
        
        double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
                                 strAllCuiPairsMatrix, UMLSLibraryType.MSH);
@@ -349,14 +355,26 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
        
        for (int i = 0; i < strAllCuiPairsMatrix.length; i++)
        {
-           m_CachedSimilarityValues.put(
-                   strAllCuiPairsMatrix[i][0] + "/" + strAllCuiPairsMatrix[i][1],
-                   new Double(simValues[i][0]));
+           // We build the kwy for the concept pair
+           
+           String strPairKey = strAllCuiPairsMatrix[i][0] + "/" + strAllCuiPairsMatrix[i][1];
+           
+           // We check if the concept pair has been already registered
+           
+           if (!m_CachedSimilarityValues.containsKey(strPairKey))
+           {
+               m_CachedSimilarityValues.put(strPairKey, new Double(simValues[i][0]));
+           }
            
            // We accumulate the overall running time
            
            m_overallCachingTime += simValues[i][1];
        }
+       
+       // Warning message
+       
+       System.out.println("Pre-calculation of UMLS::Similarity value (seconds) = "
+            + m_overallCachingTime);
     }
     
     /**

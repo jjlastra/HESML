@@ -146,7 +146,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
+//        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -154,7 +154,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        //RunExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
+//        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -219,9 +219,9 @@ public class HESML_UMLS_benchmark
          */
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML};//,
-                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    //SnomedBasedLibraryType.HESML,
+                                                    //SnomedBasedLibraryType.SML};//,
+                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
@@ -248,14 +248,14 @@ public class HESML_UMLS_benchmark
          * experimentation times.
          */
 
-         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10};
+         int[] nRandomSamplesPerLibrary = new int[]{/*1000000, 1000000,*/ 10};
         
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 5;
+        int nRuns = 2;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
@@ -290,27 +290,22 @@ public class HESML_UMLS_benchmark
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
                                                     SnomedBasedLibraryType.HESML};
-                                                    //SnomedBasedLibraryType.SML};//,
+                                                    //SnomedBasedLibraryType.SML,
                                                     //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.Rada,
-                                                    SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
-                                                    SimilarityMeasureType.LeacockChodorow,
-                                                    SimilarityMeasureType.WuPalmerFast};
+                                                    SimilarityMeasureType.JiangConrath};
                 
         /**
          * Output filenames.
          */
            
-        String[] strOutputFilenames = new String[]{"raw_output_Rada_MedSTS_exp3.csv",
-                                            "raw_output_AncSPL-Rada_MedSTS_exp3.csv",
+        String[] strOutputFilenames = new String[]{
                                             "raw_output_Lin-Seco_MedSTS_exp3.csv",
-                                            "raw_output_Leacock_MedSTS_exp3.csv",
-                                            "raw_output_Wu-Palmer_MedSTS_exp3.csv"};
+                                            "raw_output_JiangConrath_MedSTS_exp3.csv"};
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
