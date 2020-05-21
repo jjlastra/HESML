@@ -21,8 +21,8 @@
 
 package hesml_umls_benchmark.snomedlibraries;
 
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * This class implements a factory of SNOMED provider objects which
@@ -43,7 +43,7 @@ public class SnomedLibraryFactory
      * @throws Exception 
      */
     
-    public static ISnomedSimilarityLibrary getLibrary(
+    public static ISemanticLibrary getLibrary(
             SnomedBasedLibraryType  libraryType,
             String                  strSnomedDir,
             String                  strSnomedDBconceptFileName,
@@ -54,7 +54,7 @@ public class SnomedLibraryFactory
     {
         // We initialize the output
         
-        ISnomedSimilarityLibrary library = null;
+        ISemanticLibrary library = null;
         
         // We cretae the warpper for each library being evaliated
         
@@ -62,7 +62,7 @@ public class SnomedLibraryFactory
         {
             case HESML:
                 
-                library = new HESMLSimilarityLibrary(strSnomedDir,
+                library = new HESMLSemanticLibraryWrapper(strSnomedDir,
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
@@ -72,7 +72,7 @@ public class SnomedLibraryFactory
                 
             case SML:
                 
-                library = new SMLSimilarityLibrary(strSnomedDir,
+                library = new SMLSemanticLibraryWrapper(strSnomedDir,
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
@@ -82,7 +82,7 @@ public class SnomedLibraryFactory
                 
             case UMLS_SIMILARITY:
                 
-                library = new UMLSSimilarityLibrary(strSnomedDir,
+                library = new UMLSSemanticLibraryWrapper(strSnomedDir,
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,

@@ -29,7 +29,7 @@ import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
-import hesml_umls_benchmark.snomedlibraries.HESMLSimilarityLibrary;
+import hesml_umls_benchmark.snomedlibraries.HESMLSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
 import java.util.Random;
 /**
@@ -132,7 +132,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
                    
         // We get the SNOMED taxonomy instanced by HESML
         
-        ITaxonomy snomedTaxonomy = ((HESMLSimilarityLibrary) m_Libraries[0]).getSnomedTaxonomy();
+        ITaxonomy snomedTaxonomy = ((HESMLSemanticLibraryWrapper) m_Libraries[0]).getSnomedTaxonomy();
         
         // We set the intrinsic IC model for the weighted case
         

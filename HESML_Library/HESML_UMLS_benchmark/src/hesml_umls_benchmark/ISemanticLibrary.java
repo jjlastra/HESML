@@ -30,7 +30,7 @@ import hesml.measures.SimilarityMeasureType;
  * @author j.lastra
  */
 
-public interface ISnomedSimilarityLibrary
+public interface ISemanticLibrary
 {
     /**
      * This function returns the library type

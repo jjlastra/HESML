@@ -28,10 +28,9 @@ import gov.nih.nlm.nls.metamap.lite.types.Ev;
 import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.UMLSLibraryType;
-import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
+import hesml_umls_benchmark.snomedlibraries.UMLSSemanticLibraryWrapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +46,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -279,7 +279,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      */
     
     private double[] EvaluateLibrary(
-            ISnomedSimilarityLibrary    library,
+            ISemanticLibrary    library,
             int                         nRuns) throws Exception
     {
         // We initialize the output vector
@@ -295,7 +295,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         
         if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
         {
-            buildCachedSimilarityValues((UMLSSimilarityLibrary) library);
+            buildCachedSimilarityValues((UMLSSemanticLibraryWrapper) library);
         }
         
         // We execute multiple times the benchmark to compute a stable running time
@@ -352,7 +352,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      */
     
     private void buildCachedSimilarityValues(
-        UMLSSimilarityLibrary pedersenLib) throws InterruptedException, Exception
+        UMLSSemanticLibraryWrapper pedersenLib) throws InterruptedException, Exception
     {
         // We reset the cache
         
@@ -503,7 +503,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     private double getUBSMsimilarityValue(
             String                      strRawSentence1, 
             String                      strRawSentence2,
-            ISnomedSimilarityLibrary    library) throws IOException,
+            ISemanticLibrary    library) throws IOException,
                                                     InterruptedException, Exception
     {
         // We initialize the output score
@@ -614,7 +614,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      */
     
     private double[] buildSemanticVector(
-            ISnomedSimilarityLibrary    similarityLibrary,
+            ISemanticLibrary    similarityLibrary,
             String[]                    cuiDictionary,
             String[]                    lstWordsSentence) throws Exception 
     {

@@ -23,7 +23,6 @@ package hesml_umls_benchmark.snomedlibraries;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,14 +40,15 @@ import slib.sml.sm.core.metrics.ic.utils.IC_Conf_Topo;
 import slib.sml.sm.core.metrics.ic.utils.ICconf;
 import slib.sml.sm.core.utils.SMConstants;
 import slib.sml.sm.core.utils.SMconf;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * * This class implementes the SNOMED similarity library based on SML.
  * @author j.lastra
  */
 
-class SMLSimilarityLibrary extends SnomedSimilarityLibrary
-        implements ISnomedSimilarityLibrary
+class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
+        implements ISemanticLibrary
 {
     /**
      * SML factory object
@@ -98,7 +98,7 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
      * @throws Exception 
      */
     
-    SMLSimilarityLibrary(
+    SMLSemanticLibraryWrapper(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

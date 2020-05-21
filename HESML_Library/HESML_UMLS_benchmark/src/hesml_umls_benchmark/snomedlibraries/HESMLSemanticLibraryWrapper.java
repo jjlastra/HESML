@@ -31,16 +31,16 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
- * This class implementes the SNOMED similarity library based on HESML.
+ * This class implements the SNOMED similarity library based on HESML.
  * @author j.lastra
  */
 
-public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
-        implements ISnomedSimilarityLibrary
+public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
+        implements ISemanticLibrary
 {
     /**
      * SNOMED databse implemented by HESML
@@ -70,7 +70,7 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
      * @throws Exception 
      */
     
-    HESMLSimilarityLibrary(
+    HESMLSemanticLibraryWrapper(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

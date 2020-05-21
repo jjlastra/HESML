@@ -21,13 +21,13 @@
 
 package hesml_umls_benchmark.benchmarks;
 
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -42,7 +42,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
      * Wrappers of the semantic measure libraries being evaluated
      */
     
-    protected ISnomedSimilarityLibrary[]    m_Libraries;
+    protected ISemanticLibrary[]    m_Libraries;
 
     /**
      * UMLS and SNOMED-CT RF2 files
@@ -86,7 +86,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
         
         // We load the SNOMED database and build its HESML taxonomy
 
-        m_Libraries = new ISnomedSimilarityLibrary[libraries.length];
+        m_Libraries = new ISemanticLibrary[libraries.length];
         
         for (int i = 0; i < libraries.length; i++)
         {
@@ -116,7 +116,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
     {
         // We release all libraries
         
-        for (ISnomedSimilarityLibrary library: m_Libraries)
+        for (ISemanticLibrary library: m_Libraries)
         {
             library.clear();
         }

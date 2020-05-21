@@ -24,16 +24,16 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.BiomedicalOntologyType;
-import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
-import hesml_umls_benchmark.snomedlibraries.UMLSSimilarityLibrary;
+import hesml_umls_benchmark.snomedlibraries.UMLSSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -231,7 +231,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      */
     
     private double[] EvaluateLibrary(
-            ISnomedSimilarityLibrary    library,
+            ISemanticLibrary    library,
             String[][]                  umlsCuiPairs,
             int                         nRuns) throws Exception
     {
@@ -265,7 +265,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             {
                 // We make a casting to the UMLS::Similarity library
 
-                UMLSSimilarityLibrary pedersenLib = (UMLSSimilarityLibrary) library;
+                UMLSSemanticLibraryWrapper pedersenLib = (UMLSSemanticLibraryWrapper) library;
 
                 // We evaluate the similarity of a list of pairs of concepts at once.
                 // The function also returns the running times for each run
