@@ -227,6 +227,28 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
     }
     
     /**
+     * This function fills the data matrix with the running times reported
+     * in the experiments.
+     * @param strOutputDataMatrix
+     * @param runningTimesInSecs
+     * @param iCol 
+     */
+    
+    private void CopyRunningTimesToMatrix(
+            String[][]  strOutputDataMatrix,
+            double[]    runningTimesInSecs,
+            int         iCol)
+    {
+        // We copy the values
+        
+        for (int iRun = 0; iRun < runningTimesInSecs.length; iRun++)
+        {
+            strOutputDataMatrix[iRun + 1][0] = Integer.toString(iRun);
+            strOutputDataMatrix[iRun + 1][iCol] = Double.toString(runningTimesInSecs[iRun]);
+        }
+    }
+    
+    /**
      * This function sets the Seco et al.(2004)[1] and the Lin similarity
      * measure [2] using HESML [3] and SML [4] libraries. Then, the function
      * evaluates the Lin similarity [2] of the set of random concept pairs.

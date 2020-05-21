@@ -121,29 +121,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
             library.clear();
         }
     }
-    
-    /**
-     * This function fills the data matrix with the running times reported
-     * in the experiments.
-     * @param strOutputDataMatrix
-     * @param runningTimesInSecs
-     * @param iCol 
-     */
-    
-    protected void CopyRunningTimesToMatrix(
-            String[][]  strOutputDataMatrix,
-            double[]    runningTimesInSecs,
-            int         iCol)
-    {
-        // We copy the values
-        
-        for (int iRun = 0; iRun < runningTimesInSecs.length; iRun++)
-        {
-            strOutputDataMatrix[iRun + 1][0] = Integer.toString(iRun);
-            strOutputDataMatrix[iRun + 1][iCol] = Double.toString(runningTimesInSecs[iRun]);
-        }
-    }
-    
+       
     /**
      * This function saves an output data matrix int oa CSV file
      * @param strDataMatrix 

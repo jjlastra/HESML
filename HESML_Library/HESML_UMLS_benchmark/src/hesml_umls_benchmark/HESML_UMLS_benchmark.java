@@ -141,12 +141,12 @@ public class HESML_UMLS_benchmark
         long startTime = System.currentTimeMillis();
         
         /**
-         * Experiment 1: we compare the performance of the HEMSL, SML and
+         * Experiment 1: we compare the performance of the `HESML, SML and
          * UMLS::Similarity by evaluating the similarity of a sequence
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-//        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -162,14 +162,14 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm in the
          * weighted-edge case by comparing the similarity scores returned
          * by the coswJ&C [1] similarity measure using either exact Dijkstra
-         * shortest-path method ir the new AncSPL approximated shortest-path
+         * shortest-path method or the new AncSPL approximated shortest-path
          * method on the edge-weighted SNOMED taxonomy.
          * The coswJ&C [1] similarity measure requires the computation
          * of the shortest-path length on an IC-based weigthed taxonomy. Thus,
@@ -219,26 +219,26 @@ public class HESML_UMLS_benchmark
          */
         
         SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    //SnomedBasedLibraryType.HESML,
-                                                    //SnomedBasedLibraryType.SML};//,
-                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    SnomedBasedLibraryType.HESML,
+                                                    SnomedBasedLibraryType.SML};
+                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.AncSPLRada,
-                                                    SimilarityMeasureType.AncSPLRada,
+                                                    //SimilarityMeasureType.Rada,
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
                 
-        /**
-         * Output filenames.
-         */
-           
-        String[] strOutputFilenames = new String[]{"raw_output_Rada_SNOMED_exp1.csv",
-                                            "raw_output_AncSPL-Rada_SNOMED_exp1.csv",
-                                            "raw_output_Lin-Seco_SNOMED_exp1.csv",
-                                            "raw_output_Wu-Palmer_SNOMED_exp1.csv"};
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i]
+                                    + ontologyType + ".csv";
+        }
         
         /**
          * We set the number of random concept pairs evaluated by each library
@@ -248,7 +248,7 @@ public class HESML_UMLS_benchmark
          * experimentation times.
          */
 
-         int[] nRandomSamplesPerLibrary = new int[]{/*1000000, 1000000,*/ 10};
+         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10};
         
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
@@ -260,7 +260,7 @@ public class HESML_UMLS_benchmark
         for (int i = 0; i < measureTypes.length; i++)
         {
             IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-                                            libraries, measureTypes[i],
+                                            libraries,ontologyType, measureTypes[i],
                                             IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                             nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                             m_strSNOMED_relationshipsFilename,
@@ -296,30 +296,32 @@ public class HESML_UMLS_benchmark
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.Lin};//,
-                                                    //SimilarityMeasureType.JiangConrath};
+                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin,
+                                                    SimilarityMeasureType.WuPalmer};
                 
-        /**
-         * Output filenames.
-         */
-           
-        String[] strOutputFilenames = new String[]{
-                                            "raw_output_Lin-Seco_MedSTS_exp3.csv",
-                                            "raw_output_JiangConrath_MedSTS_exp3.csv"};
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i]
+                                    + "MedSTS.csv";
+        }
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries by evaluating the MedSTS dataset.
+         * UMLS::Similarity libraries by evaluating the MedSTS dataset [|].
          * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
          * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
          * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
-         * Language Resources and Evaluation, October. https://doi.org/10.1007/s10579-018-9431-1.
+         * Language Resources and Evaluation, October.
          */
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            String m_strDatasetPath = "";
-        
             IUMLSBenchmark sentenceBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strMedSTSfilename, 

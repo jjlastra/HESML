@@ -249,24 +249,42 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
      * to compute the semantic similarity between concepts.
      * @param icModel
      * @param measureType 
+     * * @return true if the measure is allowed
      */
     
     @Override
-    public void setSimilarityMeasure(
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
-        // We convert the measure type to the SML measure types
+        // SML library is unable to run any path-based measure in a reasonable time,
+        // it takes hours on a moderated-size ontology because its shortest-path
+        // algortihm is very inneficcient. For this reason,
+        // we skip the evaluation of the measures below
         
-        String strMeasure = convertHesmlMeasureTypeToSML(measureType);
-       
-        // We force the Seco IC model
+        boolean isAccepted = (measureType != SimilarityMeasureType.AncSPLRada)
+                            && (measureType != SimilarityMeasureType.Rada)
+                            && (measureType != SimilarityMeasureType.WuPalmer)
+                            && (measureType != SimilarityMeasureType.WuPalmerFast);
+        
+        if (isAccepted)
+        {
+            // We convert the measure type to the SML measure types
 
-        m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
+            String strMeasure = convertHesmlMeasureTypeToSML(measureType);
 
-        // Then we configure the pairwise measure to use, we here choose to use Lin formula
+            // We force the Seco IC model
 
-        m_smConf = new SMconf(strMeasure, m_icConf);
+            m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
+
+            // Then we configure the pairwise measure to use, we here choose to use Lin formula
+
+            m_smConf = new SMconf(strMeasure, m_icConf);
+        }
+        
+        // We reutnr the result
+        
+        return (isAccepted);
     }
     
     /**
@@ -296,6 +314,8 @@ class SMLSimilarityLibrary extends SnomedSimilarityLibrary
         conversionMap.put(SimilarityMeasureType.LeacockChodorow, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_LEACOCK_CHODOROW_1998);
         conversionMap.put(SimilarityMeasureType.PedersenPath, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989);
         conversionMap.put(SimilarityMeasureType.PekarStaab, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_PEKAR_STAAB_2002);
+        conversionMap.put(SimilarityMeasureType.WuPalmerFast, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_WU_PALMER_1994);
+        conversionMap.put(SimilarityMeasureType.WuPalmer, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_WU_PALMER_1994);
 
         // We check that the measure is implemented by thius library
         

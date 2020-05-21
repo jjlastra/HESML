@@ -189,10 +189,11 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
      * to compute the semantic similarity between concepts.
      * @param icModel
      * @param measureType 
+     * @return true if the measure is allowed
      */
     
     @Override
-    public void setSimilarityMeasure(
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
@@ -213,6 +214,10 @@ public class HESMLSimilarityLibrary extends SnomedSimilarityLibrary
         
         m_hesmlSimilarityMeasure = MeasureFactory.getMeasure(m_hesmlSnomedDatabase.getTaxonomy(),
                                     measureType);
+        
+        // We return the result
+        
+        return (true);
     }
     
     /**

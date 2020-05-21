@@ -44,9 +44,10 @@ public interface ISnomedSimilarityLibrary
      * to compute the semantic similarity between concepts.
      * @param icModel
      * @param measureType 
+     * @return true if the measure is allowed
      */
     
-    void setSimilarityMeasure(
+    boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception;
     

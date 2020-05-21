@@ -23,6 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml_umls_benchmark.BiomedicalOntologyType;
 import hesml_umls_benchmark.ISnomedSimilarityLibrary;
 import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.SnomedBasedLibraryType;
@@ -64,10 +65,17 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     
     protected int[] m_nRandomSamplesPerLibrary;
     protected int   m_nRuns;
+    
+    /**
+     * Ontology type being evaluated
+     */
+    
+    private BiomedicalOntologyType  m_ontologyType;
 
     /**
      * Constructor of the random concept pairs benchmark
      * @param libraries
+     * @param ontology
      * @param similarityMeasure
      * @param icModel
      * @param nRandomSamplesPerLibrary
@@ -83,6 +91,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
 
     RandomConceptsEvalBenchmark(
             SnomedBasedLibraryType[]    libraries,
+            BiomedicalOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             int[]                       nRandomSamplesPerLibrary,
@@ -105,6 +114,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
+        m_ontologyType = ontology;
         m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
         m_nRuns = nRuns;
     }
@@ -119,15 +129,11 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
     {
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[m_nRuns + 1][m_Libraries.length + 1];
-        
-        // We fill the first row header
-        
-        strOutputDataMatrix[0][0] = "#run";
+        String[][] strOutputDataMatrix = buildOutputDataMatrix();
         
         // We evaluate the performance of the HESML library
         
-        for (int iLib = 0; iLib < m_Libraries.length; iLib++)
+        for (int iLib = 0, j = 1; iLib < m_Libraries.length; iLib++, j += 2)
         {
             // Debugginf message
             
@@ -137,11 +143,6 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
                     + m_nRandomSamplesPerLibrary[iLib]
                     + " random concept pairs in " + m_nRuns + " runs");
             
-            // We set the row header
-            
-            strOutputDataMatrix[0][iLib + 1] = m_Libraries[iLib].getLibraryType().toString()
-                                        + "-" + m_MeasureType.toString();
-                      
             // set the number of runs
 
             String[][] snomedIDpairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
@@ -150,14 +151,18 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             
             m_Libraries[iLib].loadSnomed();
             
-            // We set the similarity measure to be used
-            
-            m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType);
-            
             // We evaluate the library
             
-            CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[iLib], snomedIDpairs, m_nRuns), iLib + 1);
+            double[] runningTimes = EvaluateLibrary(m_Libraries[iLib], snomedIDpairs, m_nRuns);
+            
+            // We copy the results to the raw output matrix
+            
+            for (int iRun = 0; iRun < runningTimes.length; iRun++)
+            {
+                strOutputDataMatrix[iRun + 1][0] = Integer.toString(iRun + 1);
+                strOutputDataMatrix[iRun + 1][j] = Integer.toString(m_nRandomSamplesPerLibrary[iLib]);
+                strOutputDataMatrix[iRun + 1][j + 1] = Double.toString(runningTimes[iRun]);
+            }
             
             // We release the database and resources used by the library
             
@@ -167,6 +172,32 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         // We write the output raw data
         
         WriteCSVfile(strOutputDataMatrix, strOutputFilename);
+    }
+    
+    /**
+     * This function builds the raw output matrix and fills the row headers.
+     * @return 
+     */
+    
+    private String[][] buildOutputDataMatrix()
+    {
+        // We create the output data matrix and fill the row headers
+        
+        String[][] strOutputDataMatrix = new String[m_nRuns + 1][2 * m_Libraries.length + 1];
+        
+        // We fill the row headers
+        
+        strOutputDataMatrix[0][0] = "#run";
+        
+        for (int i = 0, j = 1; i < m_Libraries.length; i++, j += 2)
+        {
+            strOutputDataMatrix[0][j] = "#pairs";
+            strOutputDataMatrix[0][j + 1] = m_Libraries[i].getLibraryType().toString()
+                                            + "-" + m_MeasureType.toString();
+        }
+        // We reurn the result
+        
+        return (strOutputDataMatrix);
     }
     
     /**
@@ -207,68 +238,88 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
         // We initialize the output vector
         
         double[] runningTimes = new double[nRuns];
-        double accumulatedTime = 0.0;
         
-        // UMLS_SIMILARITY library gets all the iterations at one time
-        // The rest of the libraries execute the benchmark n times
-        
-        if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
-        {
-            // We make a casting to the UMLS::Similarity library
-            
-            UMLSSimilarityLibrary pedersenLib = (UMLSSimilarityLibrary) library;
-            
-            // We evaluate the similarity of a list of pairs of concepts at once.
-            // The function also returns the running times for each run
-            // similarityWithRunningTimes[similarity_i][runningTime_ị]
-            
-            double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
-                                                        umlsCuiPairs, UMLSLibraryType.SNOMEDCT_US);
-            
-            // Calculate the accumulated time for each iteration
+        // We set the similarity measure to be used. SML library does not provide
+        // practical running times for te Rada measure, thus we detect this case
+        // and skip its evaluation.
 
-            for (int i = 0; i < similarityWithRunningTimes.length; i++)
+        boolean isAccepted = library.setSimilarityMeasure(m_icModel, m_MeasureType);
+        
+        if (!isAccepted)
+        {
+            for (int i = 0; i < runningTimes.length; i++)
             {
-                accumulatedTime += similarityWithRunningTimes[i][1];
+                runningTimes[i] = Double.NaN;
             }
         }
         else
         {
-            // We exucte multiple times the benchmark to compute a stable running time
+            // We initializa the time counter
+            
+            double accumulatedTime = 0.0;
+            
+            // UMLS_SIMILARITY library gets all the iterations at one time
+            // The rest of the libraries execute the benchmark n times
 
-            for (int iRun = 0; iRun < nRuns; iRun++)
+            if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
             {
-                // We initializa the stopwatch
+                // We make a casting to the UMLS::Similarity library
 
-                long startTime = System.currentTimeMillis();
+                UMLSSimilarityLibrary pedersenLib = (UMLSSimilarityLibrary) library;
 
-                // We evaluate the random concept pairs
+                // We evaluate the similarity of a list of pairs of concepts at once.
+                // The function also returns the running times for each run
+                // similarityWithRunningTimes[similarity_i][runningTime_ị]
 
-                for (int i = 0; i < umlsCuiPairs.length; i++)
+                double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
+                                                            umlsCuiPairs, UMLSLibraryType.SNOMEDCT_US);
+
+                // Calculate the accumulated time for each iteration
+
+                for (int i = 0; i < similarityWithRunningTimes.length; i++)
                 {
-                    double similarity = library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
+                    accumulatedTime += similarityWithRunningTimes[i][1];
                 }
-
-                // We compute the elapsed time in seconds
-
-                runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
-
-                accumulatedTime += runningTimes[iRun];
             }
+            else
+            {
+                // We exucte multiple times the benchmark to compute a stable running time
+
+                for (int iRun = 0; iRun < nRuns; iRun++)
+                {
+                    // We initializa the stopwatch
+
+                    long startTime = System.currentTimeMillis();
+
+                    // We evaluate the random concept pairs
+
+                    for (int i = 0; i < umlsCuiPairs.length; i++)
+                    {
+                        library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
+                    }
+
+                    // We compute the elapsed time in seconds
+
+                    runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
+
+                    accumulatedTime += runningTimes[iRun];
+                }
+            }
+        
+            // We compute the averga running time
+
+            double averageRuntime = accumulatedTime / nRuns;
+
+            // We print the average results
+
+            System.out.println("# UMLS oncept pairs evaluated = " + umlsCuiPairs.length);
+            System.out.println(library.getLibraryType() + " Average time (secs) = "
+                    + averageRuntime);
+
+            System.out.println(library.getLibraryType()
+                    + " Average evaluation speed (#evaluation/second) = "
+                    + ((double)umlsCuiPairs.length) / averageRuntime);
         }
-        
-        // We compute the averga running time
-        
-        double averageRuntime = accumulatedTime / nRuns;
-        
-        // We print the average results
-        
-        System.out.println("# UMLS oncept pairs evaluated = " + umlsCuiPairs.length);
-        System.out.println(library.getLibraryType() + " Average time (secs) = "
-                + averageRuntime);
-        
-        System.out.println(library.getLibraryType() + " Average evaluation speed (#evaluation/second) = "
-                + ((double)umlsCuiPairs.length) / averageRuntime);
         
         // We return the results
         
