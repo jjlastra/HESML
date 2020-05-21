@@ -60,7 +60,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
  * @author alicia
  */
 
-class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
+class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
 {
     /**
      * Column offset for the main attributes extracted from concept and

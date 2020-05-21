@@ -31,12 +31,12 @@ import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
- * implemented by this program to compare the HESML, SML nad UMLS::Similarity
- * UMLS-based semantic measures libraries.
+ * implemented by this program to compare the HESML, SML and UMLS::Similarity
+ * semantic measures libraries.
  * @author j.lastra
  */
 
-abstract class UMLSLibBenchmark implements IUMLSBenchmark
+abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
 {
     /**
      * Wrappers of the semantic measure libraries being evaluated
@@ -66,7 +66,7 @@ abstract class UMLSLibBenchmark implements IUMLSBenchmark
      * @throws Exception 
      */
     
-    UMLSLibBenchmark(
+    SemanticLibraryBenchmark(
             SemanticLibraryType[]    libraries,
             String                      strSnomedDir,
             String                      strSnomedDBconceptFileName,

@@ -42,7 +42,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
  * @author j.lastra
  */
 
-class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
+class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 {
     /**
      * Column offset for the main attributes extratec from concept and

@@ -42,7 +42,7 @@ import java.util.Random;
  * @author j.lastra
  */
 
-class AncSPLBenchmark extends UMLSLibBenchmark
+class AncSPLBenchmark extends SemanticLibraryBenchmark
 {
     /**
      * Number of random concept pairs and runs for averaging the time
