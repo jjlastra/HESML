@@ -29,7 +29,7 @@ import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.snomedlibraries.HESMLSemanticLibraryWrapper;
+import hesml_umls_benchmark.semantclibrarywrappers.HESMLSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
 import java.util.Random;
 /**

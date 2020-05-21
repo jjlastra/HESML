@@ -19,7 +19,7 @@
  *
  */
 
-package hesml_umls_benchmark.snomedlibraries;
+package hesml_umls_benchmark.semantclibrarywrappers;
 
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;

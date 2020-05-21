@@ -30,7 +30,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.UMLSLibraryType;
-import hesml_umls_benchmark.snomedlibraries.UMLSSemanticLibraryWrapper;
+import hesml_umls_benchmark.semantclibrarywrappers.UMLSSemanticLibraryWrapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

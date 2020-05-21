@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.snomedlibraries.SnomedLibraryFactory;
+import hesml_umls_benchmark.semantclibrarywrappers.SnomedLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
