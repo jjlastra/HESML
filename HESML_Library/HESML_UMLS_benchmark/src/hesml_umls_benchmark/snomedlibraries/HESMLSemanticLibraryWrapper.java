@@ -31,7 +31,7 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
@@ -107,9 +107,9 @@ public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
      */
     
     @Override
-    public SnomedBasedLibraryType getLibraryType()
+    public SemanticLibraryType getLibraryType()
     {
-        return (SnomedBasedLibraryType.HESML);
+        return (SemanticLibraryType.HESML);
     }
     
     /**
@@ -119,7 +119,7 @@ public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     @Override
     public void clear()
     {
-        unloadSnomed();
+        unloadOntology();
     }
     
     /**
@@ -199,7 +199,7 @@ public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     {
         // We force the loading of the SNOMED database
         
-        loadSnomed();
+        loadOntology();
         
         // We set the IC model in the taxonomy
         
@@ -221,11 +221,11 @@ public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     }
     
     /**
-     * Load the SNOMED database
+     * Load the ontology
      */
     
     @Override
-    public void loadSnomed() throws Exception
+    public void loadOntology() throws Exception
     {
         // We load the SNOMED database and get the vertex list of its taxonomy
      
@@ -242,11 +242,11 @@ public class HESMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     }
     
     /**
-     * Unload the SNOMED databse
+     * Unload the ontology
      */
     
     @Override
-    public void unloadSnomed()
+    public void unloadOntology()
     {
         if (m_hesmlSnomedDatabase != null) m_hesmlSnomedDatabase.clear();
     }

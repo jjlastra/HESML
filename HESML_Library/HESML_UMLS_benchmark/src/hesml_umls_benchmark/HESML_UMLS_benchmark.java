@@ -218,9 +218,9 @@ public class HESML_UMLS_benchmark
          * We set the vector of libraries to be compared
          */
         
-        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML};
+        SemanticLibraryType[] libraries = new SemanticLibraryType[]{
+                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.SML};
                                                     //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
@@ -288,10 +288,10 @@ public class HESML_UMLS_benchmark
          * We set the vector of libraries to be compared
          */
         
-        SnomedBasedLibraryType[] libraries = new SnomedBasedLibraryType[]{
-                                                    SnomedBasedLibraryType.HESML,
-                                                    SnomedBasedLibraryType.SML,
-                                                    SnomedBasedLibraryType.UMLS_SIMILARITY};
+        SemanticLibraryType[] libraries = new SemanticLibraryType[]{
+                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.SML,
+                                                    SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     

@@ -25,7 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.BiomedicalOntologyType;
 import hesml_umls_benchmark.UMLSLibraryType;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.snomedlibraries.SnomedSimilarityLibrary;
 import hesml_umls_benchmark.snomedlibraries.UMLSSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
@@ -90,7 +90,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
      */
 
     RandomConceptsEvalBenchmark(
-            SnomedBasedLibraryType[]    libraries,
+            SemanticLibraryType[]    libraries,
             BiomedicalOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
@@ -149,7 +149,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             
             // We load SNOMED and the resources of the library
             
-            m_Libraries[iLib].loadSnomed();
+            m_Libraries[iLib].loadOntology();
             
             // We evaluate the library
             
@@ -166,7 +166,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             
             // We release the database and resources used by the library
             
-            m_Libraries[iLib].unloadSnomed();
+            m_Libraries[iLib].unloadOntology();
         }
         
         // We write the output raw data
@@ -261,7 +261,7 @@ class RandomConceptsEvalBenchmark extends UMLSLibBenchmark
             // UMLS_SIMILARITY library gets all the iterations at one time
             // The rest of the libraries execute the benchmark n times
 
-            if (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY)
+            if (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY)
             {
                 // We make a casting to the UMLS::Similarity library
 

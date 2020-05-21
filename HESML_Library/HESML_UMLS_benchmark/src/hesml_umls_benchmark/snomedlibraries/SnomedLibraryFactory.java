@@ -21,7 +21,7 @@
 
 package hesml_umls_benchmark.snomedlibraries;
 
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
@@ -44,7 +44,7 @@ public class SnomedLibraryFactory
      */
     
     public static ISemanticLibrary getLibrary(
-            SnomedBasedLibraryType  libraryType,
+            SemanticLibraryType  libraryType,
             String                  strSnomedDir,
             String                  strSnomedDBconceptFileName,
             String                  strSnomedDBRelationshipsFileName,

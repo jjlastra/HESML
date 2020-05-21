@@ -37,7 +37,7 @@ public interface ISemanticLibrary
      * @return 
      */
     
-    SnomedBasedLibraryType getLibraryType();
+    SemanticLibraryType getLibraryType();
     
     /**
      * Thois function sets the active semantic measure used by the library
@@ -52,17 +52,17 @@ public interface ISemanticLibrary
             SimilarityMeasureType   measureType) throws Exception;
     
     /**
-     * Load the SNOMED database
+     * Load the ontology
      * @throws java.lang.Exception
      */
     
-    void loadSnomed() throws Exception;
+    void loadOntology() throws Exception;
     
     /**
-     * Unload the SNOMED database
+     * Unload the ontology
      */
     
-    void unloadSnomed();
+    void unloadOntology();
     
     /**
      * This function returns the degree of similarity between two

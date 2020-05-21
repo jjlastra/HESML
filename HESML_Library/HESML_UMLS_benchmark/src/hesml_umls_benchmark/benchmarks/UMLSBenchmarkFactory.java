@@ -25,7 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.BiomedicalOntologyType;
 import hesml_umls_benchmark.IUMLSBenchmark;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 
 /**
  * This function creates all UMLS benchmarks
@@ -52,7 +52,7 @@ public class UMLSBenchmarkFactory
      */
 
     public static IUMLSBenchmark createConceptBenchmark(
-            SnomedBasedLibraryType[]    libraries,
+            SemanticLibraryType[]    libraries,
             BiomedicalOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
@@ -129,7 +129,7 @@ public class UMLSBenchmarkFactory
      */
 
     public static IUMLSBenchmark createMeSHSentenceBenchmark(
-            SnomedBasedLibraryType[]    libraries,
+            SemanticLibraryType[]    libraries,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,

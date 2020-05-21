@@ -28,7 +28,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.snomedlibraries.HESMLSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
 import java.util.Random;
@@ -97,7 +97,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
     {
         // We initialize the base class to load the HESML library
         
-        super(new SnomedBasedLibraryType[]{SnomedBasedLibraryType.HESML},
+        super(new SemanticLibraryType[]{SemanticLibraryType.HESML},
                 strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename);    
@@ -128,7 +128,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         
         // We load SNOMED taxonomy
         
-        m_Libraries[0].loadSnomed();
+        m_Libraries[0].loadOntology();
                    
         // We get the SNOMED taxonomy instanced by HESML
         
@@ -192,7 +192,7 @@ class AncSPLBenchmark extends UMLSLibBenchmark
         
         // We unload SNOMED taxonomy
         
-        m_Libraries[0].unloadSnomed();
+        m_Libraries[0].unloadOntology();
         
         // We write the output raw data
         

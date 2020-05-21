@@ -28,7 +28,7 @@ import gov.nih.nlm.nls.metamap.lite.types.Ev;
 import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.snomedlibraries.UMLSSemanticLibraryWrapper;
 import java.io.BufferedReader;
@@ -117,7 +117,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
      */
 
     MeSHSentencesEvalBenchmark(
-            SnomedBasedLibraryType[]    libraries,
+            SemanticLibraryType[]    libraries,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             String                      strDatasetPath,
@@ -205,7 +205,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
             
             // We load SNOMED and the resources of the library
             
-            m_Libraries[iLib].loadSnomed();
+            m_Libraries[iLib].loadOntology();
             
             // We set the similarity measure to be used
             
@@ -218,7 +218,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
             
             // We release the database and resources used by the library
             
-            m_Libraries[iLib].unloadSnomed();
+            m_Libraries[iLib].unloadOntology();
         }
         
         // We write the output raw data
@@ -291,7 +291,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         // libraries are evaluated n times
         // We compute all valus in one unique query
         
-        boolean pedersenLib = (library.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY);
+        boolean pedersenLib = (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
         
         if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
         {
@@ -624,7 +624,7 @@ class MeSHSentencesEvalBenchmark extends UMLSLibBenchmark
         
         // Flag indicating if the library is UMLS::Similatity
         
-        boolean isPedersenLibrary = (similarityLibrary.getLibraryType() == SnomedBasedLibraryType.UMLS_SIMILARITY);
+        boolean isPedersenLibrary = (similarityLibrary.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
         
         // Convert arrays to set to reduce the number of operations 
         // (this method do not preserve the word order)

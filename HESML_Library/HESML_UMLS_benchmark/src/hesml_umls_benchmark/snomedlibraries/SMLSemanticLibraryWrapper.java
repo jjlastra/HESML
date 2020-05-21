@@ -23,7 +23,7 @@ package hesml_umls_benchmark.snomedlibraries;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import java.util.HashMap;
 import java.util.HashSet;
 import org.openrdf.model.URI;
@@ -193,15 +193,15 @@ class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     @Override
     public void clear()
     {
-        unloadSnomed();
+        unloadOntology();
     }  
     
     /**
-     * Load the SNOMED database
+     * Load the ontology
      */
     
     @Override
-    public void loadSnomed() throws Exception
+    public void loadOntology() throws Exception
     {
         // We load the mapping from CUI to SNOMED-CT ids
         
@@ -239,9 +239,9 @@ class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
      */
     
     @Override
-    public SnomedBasedLibraryType getLibraryType()
+    public SemanticLibraryType getLibraryType()
     {
-        return (SnomedBasedLibraryType.SML);
+        return (SemanticLibraryType.SML);
     }
     
     /**
@@ -339,11 +339,11 @@ class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     }
    
     /**
-     * Unload the SNOMED databse
+     * Unload the ontology
      */
     
     @Override
-    public void unloadSnomed()
+    public void unloadOntology()
     {
         // Werelease the CUI mapping table
         

@@ -23,7 +23,7 @@ package hesml_umls_benchmark.snomedlibraries;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.SnomedBasedLibraryType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.UMLSLibraryType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -352,9 +352,9 @@ public class UMLSSemanticLibraryWrapper extends SnomedSimilarityLibrary
      */
     
     @Override
-    public SnomedBasedLibraryType getLibraryType()
+    public SemanticLibraryType getLibraryType()
     {
-        return (SnomedBasedLibraryType.UMLS_SIMILARITY);
+        return (SemanticLibraryType.UMLS_SIMILARITY);
     }
     
     /**
@@ -381,21 +381,22 @@ public class UMLSSemanticLibraryWrapper extends SnomedSimilarityLibrary
     }
     
     /**
-     * Load the SNOMED database
+     * Load the ontology. This functions does nothing because UMLS::Similarity
+     * is invoked through a Perl script.
      */
     
     @Override
-    public void loadSnomed() throws Exception
+    public void loadOntology() throws Exception
     {
 
     }
     
     /**
-     * Unload the SNOMED databse
+     * Unload the ontology
      */
     
     @Override
-    public void unloadSnomed()
+    public void unloadOntology()
     {
 
     }
