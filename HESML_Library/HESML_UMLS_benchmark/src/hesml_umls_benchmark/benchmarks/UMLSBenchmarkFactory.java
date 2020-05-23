@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.BiomedicalOntologyType;
+import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SemanticLibraryType;
 
@@ -53,7 +53,7 @@ public class UMLSBenchmarkFactory
 
     public static IUMLSBenchmark createSnomedConceptBenchmark(
             SemanticLibraryType[]    libraries,
-            BiomedicalOntologyType      ontology,
+            UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             int[]                       nRandomSamplesPerLibrary,
@@ -92,7 +92,7 @@ public class UMLSBenchmarkFactory
 
     public static IUMLSBenchmark createMeSHConceptBenchmark(
             SemanticLibraryType[]    libraries,
-            BiomedicalOntologyType      ontology,
+            UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             int[]                       nRandomSamplesPerLibrary,

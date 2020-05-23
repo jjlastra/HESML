@@ -11,9 +11,8 @@ package hesml_umls_benchmark;
  * @author juan
  */
 
-public enum BiomedicalOntologyType
+public enum UMLSOntologyType
 {
     SNOMEDCT_US,
-    MeSH,
-    GO
+    MeSH
 }

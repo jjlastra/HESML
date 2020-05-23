@@ -148,7 +148,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -156,7 +156,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -215,12 +215,14 @@ public class HESML_UMLS_benchmark
      * @return 
      */
     
-    /*private static int getRandonSamplesCountPerLibrary(
+    private static int getRandonSamplesCountPerLibrary(
             SemanticLibraryType     library,
             SimilarityMeasureType   measureType,
-            BiomedicalOntologyType  ontology)
+            UMLSOntologyType        ontology)
     {
-        int randomSamples;
+        // We initialize the output
+        
+        int randomSamples = 100;
         
         // We set the value according to the library
         
@@ -228,7 +230,23 @@ public class HESML_UMLS_benchmark
         {
             case HESML:
                 
-                randomSamples = (ontology == Biomedi)
+                randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
+                                && (measureType == SimilarityMeasureType.Rada)) ?
+                                5 : 1000000;
+                
+                break;
+                
+            case SML:
+                
+                randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
+                                && (measureType == SimilarityMeasureType.Rada)) ?
+                                5 : 1000000;
+                
+                break;
+                
+            case UMLS_SIMILARITY:
+                
+                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 1000 : 10;
                 
                 break;
         }
@@ -236,7 +254,8 @@ public class HESML_UMLS_benchmark
         // We return the result
         
         return (randomSamples);
-    }*/
+    }
+    
     /**
      * This function executes the benchamrk which evaluates the similarity fo
      * a random sequence of concept pairs.
@@ -246,8 +265,8 @@ public class HESML_UMLS_benchmark
      */
     
     private static void RunRandomConceptsExperiment(
-            String                  strRawOutputDir, 
-            BiomedicalOntologyType  ontologyType) throws Exception
+            String            strRawOutputDir, 
+            UMLSOntologyType  ontologyType) throws Exception
     {
         /**
          * We set the vector of libraries to be compared
@@ -274,17 +293,10 @@ public class HESML_UMLS_benchmark
             strOutputFilenames[i] = "raw_output_" + measureTypes[i]
                                     + ontologyType + ".csv";
         }
-        
-        /**
-         * We set the number of random concept pairs evaluated by each library
-         * with the aim of computing the average running times. Because of the
-         * running times could span different orders of magnitude the number
-         * of concept pairs need to be different to provide reasonable
-         * experimentation times.
-         */
 
-        int[] nRandomSamplesPerLibrary = 
-                                        new int[]{1000000, 1000000, 10};
+        // We create the running-time vector
+
+        int[] nRandomSamplesPerLibrary = new int[libraries.length];
         
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
@@ -295,6 +307,22 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
+            /**
+             * We set the number of random concept pairs evaluated by each library
+             * with the aim of computing the average running times. Because of the
+             * running times could span different orders of magnitude the number
+             * of concept pairs need to be different to provide reasonable
+             * experimentation times.
+             */
+
+            for (int j = 0; j < libraries.length; j++)
+            {
+                nRandomSamplesPerLibrary[j] = getRandonSamplesCountPerLibrary(libraries[j],
+                                                measureTypes[i], ontologyType);
+            }
+        
+            // We set the benchmark
+            
             IUMLSBenchmark benchmark = null;
             
             // We build the benchmark according tor the underlying ontology

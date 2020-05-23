@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.BiomedicalOntologyType;
+import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryWrapper;
@@ -71,7 +71,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
      * Ontology type being evaluated
      */
     
-    private BiomedicalOntologyType  m_ontologyType;
+    private UMLSOntologyType  m_ontologyType;
 
     /**
      * Constructor of the random concept pairs benchmark
@@ -92,7 +92,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
     RandomConceptsEvalBenchmark(
             SemanticLibraryType[]    libraries,
-            BiomedicalOntologyType      ontology,
+            UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
             IntrinsicICModelType        icModel,
             int[]                       nRandomSamplesPerLibrary,
@@ -137,7 +137,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
     RandomConceptsEvalBenchmark(
             SemanticLibraryType[]   libraries,
-            BiomedicalOntologyType  ontology,
+            UMLSOntologyType  ontology,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,
             int[]                   nRandomSamplesPerLibrary,
@@ -388,7 +388,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         
         // We get the list of CUIs mapping to SNOMED or MeSH concepts
         
-        if (m_ontologyType == BiomedicalOntologyType.SNOMEDCT_US)
+        if (m_ontologyType == UMLSOntologyType.SNOMEDCT_US)
         {
             HashMap<String, HashSet<Long>> cuiToUmlsOntologyId = 
                     SimilarityLibraryWrapper.readMappingCuiToSnomedIds(

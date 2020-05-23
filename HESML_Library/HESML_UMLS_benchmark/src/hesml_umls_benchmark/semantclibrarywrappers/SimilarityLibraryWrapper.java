@@ -22,7 +22,7 @@
 package hesml_umls_benchmark.semantclibrarywrappers;
 
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
-import hesml_umls_benchmark.BiomedicalOntologyType;
+import hesml_umls_benchmark.UMLSOntologyType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,7 +74,7 @@ public abstract class SimilarityLibraryWrapper
      * Ontology type. Same wrapper is sued to load all ontologies
      */
     
-    private final BiomedicalOntologyType  m_ontologyType;
+    private final UMLSOntologyType  m_ontologyType;
        
     /**
      * Constructor to load SNOMED
@@ -97,7 +97,7 @@ public abstract class SimilarityLibraryWrapper
     {
         // We save the SNOMED filenames
         
-        m_ontologyType = BiomedicalOntologyType.SNOMEDCT_US;
+        m_ontologyType = UMLSOntologyType.SNOMEDCT_US;
         m_strSnomedDir = strSnomedDir;
         m_strUmlsDir = strUmlsDir;
         m_strSnomedDBconceptFileName = strSnomedDBconceptFileName;
@@ -128,7 +128,7 @@ public abstract class SimilarityLibraryWrapper
     {
         // We save the MeSH related filenames
         
-        m_ontologyType = BiomedicalOntologyType.MeSH;
+        m_ontologyType = UMLSOntologyType.MeSH;
         m_strMeSHDir = strMeSHDir;
         m_strMeSHXmlFilename = strMeSHXmlFileName;
         m_strUmlsDir = strUmlsDir;
