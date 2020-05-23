@@ -224,6 +224,7 @@ abstract class XmlBenchmarkReader
             System.out.println("Pre-processing the WordNet taxonomy");
 
             taxonomy.computesCachedAttributes();
+            taxonomy.computeCachedAncestorSet();
             
             // We store the taxonomy
             
@@ -284,6 +285,7 @@ abstract class XmlBenchmarkReader
             System.out.println("Pre-processing the WordNet taxonomy");
 
             taxonomy.computesCachedAttributes();
+            taxonomy.computeCachedAncestorSet();
             
             // We store the taxonomy
             
