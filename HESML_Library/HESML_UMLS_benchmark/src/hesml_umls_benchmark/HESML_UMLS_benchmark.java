@@ -55,6 +55,8 @@ public class HESML_UMLS_benchmark
      * Filenames and directories of the SNOMD-CT files and UMLS CUI file
      */
 
+    private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
+    private static final String m_strMeSHXmlFilename = "desc2019.xml";
     private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
     private static final String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
     private static final String m_strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
@@ -154,7 +156,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-//        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, BiomedicalOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -201,7 +203,40 @@ public class HESML_UMLS_benchmark
         System.out.println("Overall running time (secons) = "
             + ((stoptime - startTime) / 1000.0));
     }
+
+    /**
+     * This funtion returns the number of random samples used to evaluate
+     * a library on a specific ontology a similairty measure wit the aim
+     * of setting reasonable running times. It is needed becasue the large
+     * difference in performance of the libraries being evañuated.
+     * @param library
+     * @param measureType
+     * @param ontology
+     * @return 
+     */
     
+    /*private static int getRandonSamplesCountPerLibrary(
+            SemanticLibraryType     library,
+            SimilarityMeasureType   measureType,
+            BiomedicalOntologyType  ontology)
+    {
+        int randomSamples;
+        
+        // We set the value according to the library
+        
+        switch (library)
+        {
+            case HESML:
+                
+                randomSamples = (ontology == Biomedi)
+                
+                break;
+        }
+        
+        // We return the result
+        
+        return (randomSamples);
+    }*/
     /**
      * This function executes the benchamrk which evaluates the similarity fo
      * a random sequence of concept pairs.
@@ -219,14 +254,14 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML,
-                                                    SemanticLibraryType.SML};
+                                                    SemanticLibraryType.HESML};//,
+                                                    //SemanticLibraryType.SML};
                                                     //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    //SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.Rada,
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
                 
@@ -248,7 +283,8 @@ public class HESML_UMLS_benchmark
          * experimentation times.
          */
 
-         int[] nRandomSamplesPerLibrary = new int[]{1000000, 1000000, 10};
+        int[] nRandomSamplesPerLibrary = 
+                                        new int[]{1000000, 1000000, 10};
         
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
@@ -259,16 +295,39 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            IUMLSBenchmark icBasedBenchmark = UMLSBenchmarkFactory.createConceptBenchmark(
-                                            libraries,ontologyType, measureTypes[i],
-                                            IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
-                                            nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                            m_strSNOMED_relationshipsFilename,
-                                            m_strSNOMED_descriptionFilename,
-                                            m_strUMLSdir, m_strUmlsCuiMappingFilename);
+            IUMLSBenchmark benchmark = null;
+            
+            // We build the benchmark according tor the underlying ontology
+            
+            switch (ontologyType)
+            {
+                case SNOMEDCT_US:
+                
+                    benchmark = UMLSBenchmarkFactory.createSnomedConceptBenchmark(
+                                    libraries, ontologyType, measureTypes[i],
+                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
+                                    nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                    m_strSNOMED_relationshipsFilename,
+                                    m_strSNOMED_descriptionFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+                    
+                    break;
+                    
+                case MeSH:
+                    
+                    benchmark = UMLSBenchmarkFactory.createMeSHConceptBenchmark(
+                                    libraries, ontologyType, measureTypes[i],
+                                    IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
+                                    nRuns, m_strMeSHdir, m_strMeSHXmlFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+                    
+                    break;
+            }
         
-            icBasedBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
-            icBasedBenchmark.clear();
+            // We run and destroy the benchmark
+            
+            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
+            benchmark.clear();
         }
     }
     
@@ -382,4 +441,5 @@ public class HESML_UMLS_benchmark
         
     }
 }
+
 

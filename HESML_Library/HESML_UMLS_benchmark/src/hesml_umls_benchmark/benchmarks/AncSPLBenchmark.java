@@ -132,7 +132,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
                    
         // We get the SNOMED taxonomy instanced by HESML
         
-        ITaxonomy snomedTaxonomy = ((HESMLSemanticLibraryWrapper) m_Libraries[0]).getSnomedTaxonomy();
+        ITaxonomy snomedTaxonomy = ((HESMLSemanticLibraryWrapper) m_Libraries[0]).getTaxonomy();
         
         // We set the intrinsic IC model for the weighted case
         

@@ -26,7 +26,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.BiomedicalOntologyType;
 import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.semantclibrarywrappers.SnomedSimilarityLibrary;
+import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryWrapper;
 import hesml_umls_benchmark.semantclibrarywrappers.UMLSSemanticLibraryWrapper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import hesml_umls_benchmark.ISemanticLibrary;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -120,6 +121,47 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
     }
     
     /**
+     * Constructor of the random concept pairs benchmark
+     * @param libraries
+     * @param ontology
+     * @param similarityMeasure
+     * @param icModel
+     * @param nRandomSamplesPerLibrary
+     * @param nRuns
+     * @param strMeSHDir
+     * @param strMeSHXmlFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @throws Exception 
+     */
+
+    RandomConceptsEvalBenchmark(
+            SemanticLibraryType[]   libraries,
+            BiomedicalOntologyType  ontology,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int[]                   nRandomSamplesPerLibrary,
+            int                     nRuns,
+            String                  strMeSHDir,
+            String                  strMeSHXmlFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        // We initialize the base class
+        
+        super(libraries, strMeSHDir, strMeSHXmlFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename);    
+        
+        // We initialize the attributes of the object
+        
+        m_MeasureType = similarityMeasure;
+        m_icModel = icModel;
+        m_ontologyType = ontology;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
+        m_nRuns = nRuns;
+    }
+    
+    /**
      * This function executes the benchmark and saves the raw results into
      * the output file.
      */
@@ -143,7 +185,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
                     + m_nRandomSamplesPerLibrary[iLib]
                     + " random concept pairs in " + m_nRuns + " runs");
             
-            // set the number of runs
+            // We get the collection of random UMLS CUI pairs
 
             String[][] snomedIDpairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
             
@@ -312,13 +354,15 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
             // We print the average results
 
-            System.out.println("# UMLS oncept pairs evaluated = " + umlsCuiPairs.length);
+            System.out.println("# UMLS concept pairs evaluated = " + umlsCuiPairs.length);
             System.out.println(library.getLibraryType() + " Average time (secs) = "
                     + averageRuntime);
 
             System.out.println(library.getLibraryType()
                     + " Average evaluation speed (#evaluation/second) = "
                     + ((double)umlsCuiPairs.length) / averageRuntime);
+            
+            System.out.println("Similarity measure evaluated = " + m_MeasureType.toString());
         }
         
         // We return the results
@@ -328,37 +372,60 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
     
     /**
      * This function generates a vector of random UMLS concept pairs which
-     * will be used to evaluate the performance of the libraeries.
+     * will be used to evaluate the performance of the libraries. The CUI pairs
+     * always exist in the underlying ontology being evaluated.
      * @param snomedTaxonomy
      * @param nPairs
      * @return 
      */
     
     private String[][] getRandonCUIpairs(
-            int nPairs) throws FileNotFoundException, IOException 
+            int nPairs) throws FileNotFoundException, IOException, XMLStreamException 
     {
-        // We get the likst of CUIs with SNOMED concepts
+        // We define the CUI keys vector
         
-        HashMap<String, HashSet<Long>> cuiToSnomedIds = SnomedSimilarityLibrary.readConceptsUmlsCUIs(
-                                                        m_strSnomedDir, m_strSnomedDBconceptFileName,
-                                                        m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
+        String[] strAllValidCUIs;
         
-        // We copy the CUIS to an array and release the CUI-SNOMED mapping 
+        // We get the list of CUIs mapping to SNOMED or MeSH concepts
         
-        String[] strAllValidCUIs = new String[cuiToSnomedIds.size()];
+        if (m_ontologyType == BiomedicalOntologyType.SNOMEDCT_US)
+        {
+            HashMap<String, HashSet<Long>> cuiToUmlsOntologyId = 
+                    SimilarityLibraryWrapper.readMappingCuiToSnomedIds(
+                        m_strSnomedDir, m_strSnomedDBconceptFileName,
+                        m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
+            
+            // We copy the CUI codes with valkid SNOMED concepts
+            
+            strAllValidCUIs = new String[cuiToUmlsOntologyId.size()];
+            
+            cuiToUmlsOntologyId.keySet().toArray(strAllValidCUIs);
+            cuiToUmlsOntologyId.clear();
+        }
+        else
+        {
+            HashMap<String, HashSet<String>> cuiToMeshOntology =
+                    SimilarityLibraryWrapper.readMappingCuiToMeSHIds(
+                        m_strMeShDir, m_strMeSHdescriptionFileName,
+                        m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
+                 
+            // We copy the CUI codes with valid MeSH concepts
+            
+            strAllValidCUIs = new String[cuiToMeshOntology.size()];
+            
+            cuiToMeshOntology.keySet().toArray(strAllValidCUIs);
+            cuiToMeshOntology.clear();
+        }
         
-        cuiToSnomedIds.keySet().toArray(strAllValidCUIs);
-        cuiToSnomedIds.clear();
+        // We create a vector of random CUI pairs which are contained in SNOMED
         
-        // We cretae the random paris
+        String[][] umlsCuiPairs = new String[nPairs][2];
         
-        String[][] snomedPairs = new String[nPairs][2];
-        
-        // We create a ranodm number
+        // We create a random number
         
         Random rand = new Random(500);
         
-        // We get the number of nodes in the SNOMED-CT graph
+        // We get the number of CUI nodes mapped to the ontology
         
         long nConcepts = strAllValidCUIs.length;
         
@@ -369,12 +436,13 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             for (int j = 0; j < 2; j++)
             {
                 int snomedConceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
-                snomedPairs[i][j] = strAllValidCUIs[snomedConceptIndex];
+                
+                umlsCuiPairs[i][j] = strAllValidCUIs[snomedConceptIndex];
             }
         }
         
         // We return the output
         
-        return (snomedPairs);
+        return (umlsCuiPairs);
     }
 }

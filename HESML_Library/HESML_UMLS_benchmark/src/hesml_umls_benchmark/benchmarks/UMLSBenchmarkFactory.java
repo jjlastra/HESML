@@ -51,7 +51,7 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
 
-    public static IUMLSBenchmark createConceptBenchmark(
+    public static IUMLSBenchmark createSnomedConceptBenchmark(
             SemanticLibraryType[]    libraries,
             BiomedicalOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
@@ -70,6 +70,41 @@ public class UMLSBenchmarkFactory
                 nRuns, strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }   
+    
+    /**
+     * This function creates a random concept evaluation.
+     * @param libraries
+     * @param similarityMeasure
+     * @param icModel
+     * @param nRandomSamplesPerLibrary
+     * @param nRuns
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+
+    public static IUMLSBenchmark createMeSHConceptBenchmark(
+            SemanticLibraryType[]    libraries,
+            BiomedicalOntologyType      ontology,
+            SimilarityMeasureType       similarityMeasure,
+            IntrinsicICModelType        icModel,
+            int[]                       nRandomSamplesPerLibrary,
+            int                         nRuns,
+            String                      strMeShDir,
+            String                      strMeSHXmlDescriptionFileName,
+            String                      strUmlsDir,
+            String                      strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new RandomConceptsEvalBenchmark(libraries, ontology,
+                similarityMeasure, icModel, nRandomSamplesPerLibrary,
+                nRuns, strMeShDir, strMeSHXmlDescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
     }   
     

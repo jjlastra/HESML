@@ -47,7 +47,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
  * @author j.lastra
  */
 
-class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
+class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         implements ISemanticLibrary
 {
     /**
@@ -119,6 +119,27 @@ class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
         m_factory = null;
         m_engine = null;
         m_indexedSnomedIDsByCUI = null;
+    }
+    
+    /**
+     * Constructor to build the Snomed HESML database
+     * @param strMeSHDir
+     * @param strMeSHXmlFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strUmlsCuiFilename
+     * @throws Exception 
+     */
+    
+    SMLSemanticLibraryWrapper(
+            String  strMeSHDir,
+            String  strMeSHXmlFileName,
+            String  strUmlsDir,
+            String  strUmlsCuiFilename) throws Exception
+    {
+        // Inicializamos la clase base
+        
+        super(strMeSHDir, strMeSHXmlFileName,
+                strUmlsDir, strUmlsCuiFilename);
     }
     
     /**
@@ -205,7 +226,7 @@ class SMLSemanticLibraryWrapper extends SnomedSimilarityLibrary
     {
         // We load the mapping from CUI to SNOMED-CT ids
         
-        m_indexedSnomedIDsByCUI = readConceptsUmlsCUIs(m_strSnomedDir,
+        m_indexedSnomedIDsByCUI = readMappingCuiToSnomedIds(m_strSnomedDir,
                                     m_strSnomedDBconceptFileName,
                                     m_strUmlsDir, m_strUmlsCuiMappingFilename);
         

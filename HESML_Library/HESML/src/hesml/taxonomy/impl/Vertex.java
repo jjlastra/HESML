@@ -734,7 +734,7 @@ class Vertex implements IVertex
     @Override
     public double getShortestPathDistanceTo(
             IVertex     target,
-            boolean     weighted)
+            boolean     weighted)  throws Exception
     {
         double  distance;    // Returned value
         
@@ -743,6 +743,10 @@ class Vertex implements IVertex
         if (target == this)
         {
             distance = 0.0;
+        }
+        else if (!weighted && m_Taxonomy.isTreeLike())
+        {
+            distance = getShortestEdgePathOnTrees(target);
         }
         else
         {
@@ -941,12 +945,40 @@ class Vertex implements IVertex
     }
     
     /**
+     * This function uses a fast cmputtion fo the distance between
+     * two nodes when the underlying taxopnomy is tree-like.
+     * @param target
+     * @return 
+     */
+    
+    private double getShortestEdgePathOnTrees(
+            IVertex target) throws Exception
+    {
+        // We get  the LCS vertex
+        
+        IVertex lcsvertex = m_Taxonomy.getLCS(this, target, false);
+        
+        // We compute the edge-based distance
+        
+        double distance = this.getDepthMin() + target.getDepthMin()
+                            - 2.0 * lcsvertex.getDepthMin();
+        
+        // We return the result
+        
+        return (distance);
+    }
+    
+    /**
      * This function computes a fast approximation of the Dijkstra algorithm
      * using the edge weights assigned to the taxonomy, or a uniform weight = 1
      * when it is invoked to count the edges between the current and target
-     * vertexes. This novel algortihm is especially suited for taxonomies
-     * and it is introduced by Lastra-Díaz et al. (2020)[1].
-     * [1]
+     * vertexes. This novel algortihm is called Ancestor-based Shortest-Path
+     * Length (AnsSPL) and it is introduced by Lastra-Díaz et al. (2020) [1].
+     *
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient semantic measures library for the biomedical domain,
+     * Submitted for Publication. (2020).
+     * 
      * @param target
      * @return 
      */
@@ -954,7 +986,7 @@ class Vertex implements IVertex
     @Override
     public double getFastShortestPathDistanceTo(
             IVertex     target,
-            boolean     weighted)
+            boolean     weighted) throws Exception
     {
         double  distance;    // Returned value
         
@@ -964,70 +996,74 @@ class Vertex implements IVertex
         {
             distance = 0.0;
         }
+        else if (!weighted && m_Taxonomy.isTreeLike())
+        {
+            distance = getShortestEdgePathOnTrees(target);
+        }
         else
         {
             // We check whether the taxonomy holds the cached ancestor set
-        
+
             boolean cachedAncestors = (m_CachedAncestorSet != null);
-            
+
             // We compute a subgraoh containing most of paths between
             // the current vertex and the target
-            
+
             if (isMyDescendant(target))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
-                
+
                 HashSet<IVertex> targetAncestors = cachedAncestors ?
                                         ((Vertex)target).getCachedAncestorSet()
                                         : m_Taxonomy.getUnorderedAncestorSet(target);
-                
+
                 computeDistanceFieldOnSubgraph(targetAncestors, weighted);
-                
+
                 // We destroy the ancestor set if it was obtained on-the-fly
-                
+
                 if (!cachedAncestors) targetAncestors.clear();
             }
             else if (target.isMyDescendant(this))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
-                
+
                 HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                                             : m_Taxonomy.getUnorderedAncestorSet(this);
-                
+
                 computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
-                
+
                 // We destroy the ancestor set if it was obtained on-the-fly
-                
+
                 if (!cachedAncestors) sourceAncestors.clear();
             }
             else
             {
                 // We obtain the ancestor set of both vertexes
-                
+
                 HashSet<IVertex> targetAncestors = cachedAncestors ?
                                             ((Vertex)target).getCachedAncestorSet()
                                             : m_Taxonomy.getUnorderedAncestorSet(target);
-                
+
                 HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                         : m_Taxonomy.getUnorderedAncestorSet(this);
-                
+
                 // We merge both ancestor sets to buld the subgraph
-                
+
                 HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
                 mergeSubgraph.addAll(sourceAncestors);
-                
+
                 computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);
-                
+
                 // // We destroy the ancestor sets if they were obtained on-the-fly
-                
+
                 if (!cachedAncestors)
                 {
                     targetAncestors.clear();
                     sourceAncestors.clear();
                 }
-                
+
                 mergeSubgraph.clear();
             }
 

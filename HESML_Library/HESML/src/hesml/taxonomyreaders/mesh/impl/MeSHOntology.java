@@ -370,7 +370,7 @@ class MeSHOntology implements IMeSHOntology
                     
                     HashSet<IMeSHDescriptor> meshConcepts = null;
                     
-                    // We get the mapping CUI -> SNOMED Id
+                    // We get the mapping CUI -> MeSH Id
                     
                     String strUmlsCui = strColumns[0];
                     String meshDescriptorId = strColumns[iCol - 1];

@@ -53,7 +53,7 @@ class MeSHreader
     {
         // Debugging message
         
-        System.out.println("Loading the MeSh ontology file = " + strMeSHXmlDescriptorFilename);
+        System.out.println("Loading the MeSH ontology file = " + strMeSHXmlDescriptorFilename);
         
         // We create a blank MeSH ontology
         

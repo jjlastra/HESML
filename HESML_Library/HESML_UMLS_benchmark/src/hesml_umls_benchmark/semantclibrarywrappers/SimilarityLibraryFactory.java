@@ -25,15 +25,14 @@ import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
 
 /**
- * This class implements a factory of SNOMED provider objects which
- * encapsulates a SNOMED-based semantic similarity measure.
+ * This class implements a factory of similarity library wrappers.
  * @author j.lastra
  */
 
-public class SnomedLibraryFactory
+public class SimilarityLibraryFactory
 {
     /**
-     * This fucntion creates a specific library wrapper.
+     * This fucntion creates a specific library wrapper to load SNOMED-CT ontology
      * @param library
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
@@ -43,14 +42,14 @@ public class SnomedLibraryFactory
      * @throws Exception 
      */
     
-    public static ISemanticLibrary getLibrary(
-            SemanticLibraryType  libraryType,
-            String                  strSnomedDir,
-            String                  strSnomedDBconceptFileName,
-            String                  strSnomedDBRelationshipsFileName,
-            String                  strSnomedDBdescriptionFileName,
-            String                  strUmlsDir,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+    public static ISemanticLibrary getLibraryForSNOMED(
+            SemanticLibraryType libraryType,
+            String              strSnomedDir,
+            String              strSnomedDBconceptFileName,
+            String              strSnomedDBRelationshipsFileName,
+            String              strSnomedDBdescriptionFileName,
+            String              strUmlsDir,
+            String              strUmlsCuiFilename) throws Exception
     {
         // We initialize the output
         
@@ -66,7 +65,7 @@ public class SnomedLibraryFactory
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
-                            strUmlsDir, strSNOMED_CUI_mappingfilename);
+                            strUmlsDir, strUmlsCuiFilename);
                 
                 break;
                 
@@ -76,7 +75,7 @@ public class SnomedLibraryFactory
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
-                            strUmlsDir, strSNOMED_CUI_mappingfilename);
+                            strUmlsDir, strUmlsCuiFilename);
                 
                 break;
                 
@@ -86,7 +85,63 @@ public class SnomedLibraryFactory
                             strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName,
                             strSnomedDBdescriptionFileName,
-                            strUmlsDir, strSNOMED_CUI_mappingfilename);
+                            strUmlsDir, strUmlsCuiFilename);
+                
+                break;
+        }
+        
+        // We return the result
+        
+        return (library);
+    }
+    
+    /**
+     * This fucntion creates a specific library wrapper to load MeSH ontology
+     * @param library
+     * @param strMeSHDir
+     * @param strMeSHXmlFileName
+     * @param strUmlsDir
+     * @param strUmlsCuiFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static ISemanticLibrary getLibraryForMeSH(
+            SemanticLibraryType libraryType,
+            String              strMeSHDir,
+            String              strMeSHXmlFileName,
+            String              strUmlsDir,
+            String              strUmlsCuiFilename) throws Exception
+    {
+        // We initialize the output
+        
+        ISemanticLibrary library = null;
+        
+        // We cretae the warpper for each library being evaliated
+        
+        switch (libraryType)
+        {
+            case HESML:
+                
+                library = new HESMLSemanticLibraryWrapper(strMeSHDir,
+                                strMeSHXmlFileName, strUmlsDir,
+                                strUmlsCuiFilename);
+                
+                break;
+                
+            case SML:
+                
+                library = new SMLSemanticLibraryWrapper(strMeSHDir,
+                                strMeSHXmlFileName, strUmlsDir,
+                                strUmlsCuiFilename);
+                
+                break;
+                
+            case UMLS_SIMILARITY:
+                
+                library = new UMLSSemanticLibraryWrapper(strMeSHDir,
+                                strMeSHXmlFileName, strUmlsDir,
+                                strUmlsCuiFilename);
                 
                 break;
         }

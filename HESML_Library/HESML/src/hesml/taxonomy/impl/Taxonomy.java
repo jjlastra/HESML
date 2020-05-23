@@ -58,6 +58,12 @@ class Taxonomy implements ITaxonomy
     private final VertexList  m_Vertexes;
     
     /**
+     * This attribute is true when the taxoniomy is tree-like
+     */
+    
+    private boolean m_isTreeLike;
+    
+    /**
      * Constructor
      */
     
@@ -124,9 +130,6 @@ class Taxonomy implements ITaxonomy
             IVertex end,
             boolean useLongestDepth) throws Exception
     {
-        Exception   error;      // Error thrown
-        String      strError;   // Error message
-        
         IVertex lcaVertex = null;    // Returned value
 
         int  maxDepth = -1;    // Maximum
@@ -170,8 +173,8 @@ class Taxonomy implements ITaxonomy
         
         if (lcaVertex == null)
         {
-            strError = "The vertexes do not share a common ancestor";
-            error = new Exception(strError);
+            String strError = "The vertexes do not share a common ancestor";
+            Exception error = new Exception(strError);
             throw (error);
         }
                
@@ -482,7 +485,31 @@ class Taxonomy implements ITaxonomy
         
         this.computeHyponymCount();
         this.computeAllDepths();
-        this.computeLeavesCount();     
+        this.computeLeavesCount();  
+        
+        // We check if the taxonomy is a tree
+        
+        m_isTreeLike = true;
+        
+        for (IVertex vertex: m_Vertexes)
+        {
+            if (vertex.getParentsCount() > 1)
+            {
+                m_isTreeLike = false;
+                break;
+            }
+        }
+    }
+    
+    /**
+     * This function notifies if the taxonomy is a TREE
+     * @return 
+     */
+    
+    @Override
+    public boolean isTreeLike()
+    {
+        return (m_isTreeLike);
     }
     
     /**

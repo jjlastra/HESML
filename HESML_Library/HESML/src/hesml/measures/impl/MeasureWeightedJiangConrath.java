@@ -99,7 +99,7 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
      */
     
     @Override
-    public double compare(IVertex left, IVertex right)
+    public double compare(IVertex left, IVertex right) throws Exception
     {
         // We compute the weighted distance between the nodes.
         // Before to evaluate this measure is necessary to

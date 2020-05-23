@@ -40,6 +40,13 @@ public interface ITaxonomy
     void clear();
     
     /**
+     * This function notifies if the taxonomy is a TREE
+     * @return 
+     */
+    
+    boolean isTreeLike();
+    
+    /**
      * This function returns the sum of the probability for
      * the leaf nodes.
      * @return The overall probability for the leaf nodes.

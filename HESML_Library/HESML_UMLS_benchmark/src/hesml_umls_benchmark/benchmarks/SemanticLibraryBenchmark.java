@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.semantclibrarywrappers.SnomedLibraryFactory;
+import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,10 +49,12 @@ abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
      */
     
     protected String    m_strSnomedDir;
+    protected String    m_strMeShDir;
     protected String    m_strUmlsDir;
     protected String    m_strSnomedDBconceptFileName;
     protected String    m_strSnomedDBRelationshipsFileName;
     protected String    m_strSnomedDBdescriptionFileName;   
+    protected String    m_strMeSHdescriptionFileName;   
     protected String    m_strSNOMED_CUI_mappingfilename;
    
     /**
@@ -90,11 +92,48 @@ abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
         
         for (int i = 0; i < libraries.length; i++)
         {
-            m_Libraries[i] = SnomedLibraryFactory.getLibrary(
+            m_Libraries[i] = SimilarityLibraryFactory.getLibraryForSNOMED(
                                     libraries[i], m_strSnomedDir,
                                     m_strSnomedDBconceptFileName,
                                     m_strSnomedDBRelationshipsFileName,
                                     m_strSnomedDBdescriptionFileName,
+                                    m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
+        }
+    }
+    
+    /**
+     * Constructor to build the Snomed HESML database
+     * @param libraries
+     * @param strMeSHDir
+     * @param strMeSHXmlFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @throws Exception 
+     */
+    
+    SemanticLibraryBenchmark(
+            SemanticLibraryType[]   libraries,
+            String                  strMeSHDir,
+            String                  strMeSHXmlFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        // We save the SNOMED filenames
+        
+        m_strMeShDir = strMeSHDir;
+        m_strUmlsDir = strUmlsDir;
+        m_strMeSHdescriptionFileName = strMeSHXmlFileName;
+        m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
+        
+        // We load the SNOMED database and build its HESML taxonomy
+
+        m_Libraries = new ISemanticLibrary[libraries.length];
+        
+        for (int i = 0; i < libraries.length; i++)
+        {
+            m_Libraries[i] = SimilarityLibraryFactory.getLibraryForMeSH(
+                                    libraries[i], m_strMeShDir,
+                                    m_strMeSHdescriptionFileName,
                                     m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
         }
     }

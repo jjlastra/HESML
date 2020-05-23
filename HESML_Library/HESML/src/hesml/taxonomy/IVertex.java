@@ -209,7 +209,7 @@ public interface IVertex extends Comparable<IVertex>
     
     double getShortestPathDistanceTo(
             IVertex     target,
-            boolean     weighted);
+            boolean     weighted) throws Exception;
     
     /**
      * This function computes a fast approximation of the Dijkstra algorithm
@@ -223,7 +223,7 @@ public interface IVertex extends Comparable<IVertex>
     
     double getFastShortestPathDistanceTo(
             IVertex     target,
-            boolean     weighted);
+            boolean     weighted) throws Exception;
 
     /**
      * This function computes the distance field from the current vertex

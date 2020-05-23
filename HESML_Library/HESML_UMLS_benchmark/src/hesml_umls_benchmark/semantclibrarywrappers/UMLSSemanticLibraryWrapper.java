@@ -43,7 +43,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
  * @author alicia
  */
 
-public class UMLSSemanticLibraryWrapper extends SnomedSimilarityLibrary
+public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         implements ISemanticLibrary
 {
     /**
@@ -85,6 +85,35 @@ public class UMLSSemanticLibraryWrapper extends SnomedSimilarityLibrary
                 strSnomedDBRelationshipsFileName,
                 strSnomedDBdescriptionFileName,
                 strUmlsDir, strUmlsCuiMappingFilename);
+        
+        // We obtain the temporary directory used for the evaluation script
+        
+        m_PerlScriptDir = new File("./UMLS_Similarity_Perl").getCanonicalPath();
+        
+        // We obtain the directory for temporary files
+        
+        m_PerlTempDir = System.getProperty("java.io.tmpdir");
+    }
+    
+    /**
+     * Constructor to build the Snomed HESML database
+     * @param strMeSHDir
+     * @param strMeSHXmlFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strUmlsCuiFilename
+     * @throws Exception 
+     */
+    
+    UMLSSemanticLibraryWrapper(
+            String  strMeSHDir,
+            String  strMeSHXmlFileName,
+            String  strUmlsDir,
+            String  strUmlsCuiFilename) throws Exception
+    {
+        // Inicializamos la clase base
+        
+        super(strMeSHDir, strMeSHXmlFileName,
+                strUmlsDir, strUmlsCuiFilename);
         
         // We obtain the temporary directory used for the evaluation script
         
