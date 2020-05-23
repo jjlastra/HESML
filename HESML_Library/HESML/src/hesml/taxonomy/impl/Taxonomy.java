@@ -134,11 +134,18 @@ class Taxonomy implements ITaxonomy
 
         int  maxDepth = -1;    // Maximum
         
+        // We check whether the taxonomy holds the cached ancestor set
+        
+        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
+        
         // We retrieve the inclusive and unordered ancestor sets
         // of the input vertexes
         
-        HashSet<IVertex> beginAncestors = getUnorderedAncestorSet(begin);
-        HashSet<IVertex> endAncestors = getUnorderedAncestorSet(end);
+        HashSet<IVertex> beginAncestors = cachedAncestors ? ((Vertex)begin).getCachedAncestorSet()
+                                        : getUnorderedAncestorSet(begin);
+        
+        HashSet<IVertex> endAncestors = cachedAncestors ? ((Vertex)end).getCachedAncestorSet()
+                                        : getUnorderedAncestorSet(end);
         
         // We traverse all the vertexes looking for the common ancestor
         // which satisfies the LCS criterium.
@@ -166,8 +173,11 @@ class Taxonomy implements ITaxonomy
         
         // We reset the visited sets
         
-        beginAncestors.clear();
-        endAncestors.clear();
+        if (!cachedAncestors)
+        {
+            beginAncestors.clear();
+            endAncestors.clear();
+        }
         
         // We check the mica
         
