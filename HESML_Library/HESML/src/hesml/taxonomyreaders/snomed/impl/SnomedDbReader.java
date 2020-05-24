@@ -400,27 +400,21 @@ class SnomedDbReader
                     String strUmlsCUI = strColumns[0];
                     
                     // We register the snomed concept associated to a given CUI
+                    // only when the SNOMED concept exists
                     
-                    HashSet<ISnomedConcept> snomedConcepts;
-                    
-                    if (!outputCuiToSnomedConcepts.containsKey(strUmlsCUI))
+                    if (concepts.containsKey(snomedId))
                     {
-                        snomedConcepts = new HashSet<>(1);
-                        outputCuiToSnomedConcepts.put(strUmlsCUI, snomedConcepts);
+                        // We register the CUI mapping
+                        
+                        if (!outputCuiToSnomedConcepts.containsKey(strUmlsCUI))
+                        {
+                            outputCuiToSnomedConcepts.put(strUmlsCUI, new HashSet<ISnomedConcept>(1));
+                        }
+
+                        // We associate the SNOMED concept to the CUI
+
+                        outputCuiToSnomedConcepts.get(strUmlsCUI).add(concepts.get(snomedId));
                     }
-                    else
-                    {
-                        snomedConcepts = outputCuiToSnomedConcepts.get(strUmlsCUI);
-                    }
-                    
-                    // We only register the SNOMED concept if it exists in the
-                    // SNOMED database. There could be some cases in which a
-                    // SNOMED associated to a CUI is not aalready active,
-                    // and thus, it will not be in the database
-                    
-                    ISnomedConcept concept = concepts.get(snomedId);
-                    
-                    if (concept != null) snomedConcepts.add(concept);
                     
                     break;
                 }

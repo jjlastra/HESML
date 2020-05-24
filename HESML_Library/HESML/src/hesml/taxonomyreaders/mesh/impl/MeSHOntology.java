@@ -366,35 +366,27 @@ class MeSHOntology implements IMeSHOntology
             {
                 if (strColumns[iCol].equals("MSH"))
                 {
-                    // We define the MeSh concept set
-                    
-                    HashSet<IMeSHDescriptor> meshConcepts = null;
-                    
                     // We get the mapping CUI -> MeSH Id
                     
                     String strUmlsCui = strColumns[0];
                     String meshDescriptorId = strColumns[iCol - 1];
                     
-                    // We register the snomed concept associated to a given CUI
+                    // We register the UMLS concept associated to a given CUI
+                    // only if the descriptor is contained in MeSH ontology
                     
-                    if (!m_conceptsByUmlsCUI.containsKey(strUmlsCui))
+                    if (m_conceptsByKeyname.containsKey(meshDescriptorId))
                     {
-                        meshConcepts = new HashSet<>(1);
-                        m_conceptsByUmlsCUI.put(strUmlsCui, meshConcepts);
+                        // We check if the CUI has been already registered
+                        
+                        if (!m_conceptsByUmlsCUI.containsKey(strUmlsCui))
+                        {
+                            m_conceptsByUmlsCUI.put(strUmlsCui, new HashSet<IMeSHDescriptor>(1));
+                        }
+                    
+                        // We register the MeSH descriptor asscopaited to the CUI
+                        
+                        m_conceptsByUmlsCUI.get(strUmlsCui).add(m_conceptsByKeyname.get(meshDescriptorId));
                     }
-                    else
-                    {
-                        meshConcepts = m_conceptsByUmlsCUI.get(strUmlsCui);
-                    }
-                    
-                    // We only register the SNOMED concept if it exists in the
-                    // MeSH ontology. There could be some cases in which a
-                    // MeSH concept associated to a CUI is not aalready active,
-                    // and thus, it will not be in the database
-                    
-                    IMeSHDescriptor concept = m_conceptsByKeyname.get(meshDescriptorId);
-                    
-                    if (concept != null) meshConcepts.add(concept);
                     
                     break;
                 }
