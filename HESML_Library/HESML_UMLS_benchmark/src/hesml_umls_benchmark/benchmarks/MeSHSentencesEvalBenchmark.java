@@ -29,7 +29,6 @@ import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.UMLSSemanticLibraryWrapper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,6 +46,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import hesml_umls_benchmark.ISemanticLibrary;
+import hesml_umls_benchmark.UMLSOntologyType;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -369,7 +369,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
        // We get the similarity and running time per concept pair
        
        double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
-                                strAllCuiPairsMatrix, UMLSLibraryType.MSH);
+                                strAllCuiPairsMatrix, UMLSOntologyType.MeSH);
        
        // We store all values in the cache
        

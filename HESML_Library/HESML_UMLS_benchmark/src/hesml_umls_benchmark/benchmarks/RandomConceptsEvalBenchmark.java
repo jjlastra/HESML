@@ -24,7 +24,6 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.UMLSOntologyType;
-import hesml_umls_benchmark.UMLSLibraryType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryWrapper;
 import hesml_umls_benchmark.semantclibrarywrappers.UMLSSemanticLibraryWrapper;
@@ -314,7 +313,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
                 // similarityWithRunningTimes[similarity_i][runningTime_ị]
 
                 double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
-                                                            umlsCuiPairs, UMLSLibraryType.SNOMEDCT_US);
+                                                            umlsCuiPairs, m_ontologyType);
 
                 // Calculate the accumulated time for each iteration
 

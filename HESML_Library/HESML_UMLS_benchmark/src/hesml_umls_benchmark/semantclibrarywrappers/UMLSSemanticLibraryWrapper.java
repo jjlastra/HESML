@@ -24,7 +24,6 @@ package hesml_umls_benchmark.semantclibrarywrappers;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.UMLSLibraryType;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +36,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import hesml_umls_benchmark.ISemanticLibrary;
+import hesml_umls_benchmark.UMLSOntologyType;
 
 /**
  * * This class implements the SNOMED similarity library based on UMLS::Similarity.
@@ -136,8 +136,8 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     public double[][] getSimilaritiesAndRunningTimes(
-            String[][]      umlsCuiPairs,
-            UMLSLibraryType libraryType) throws FileNotFoundException, IOException,
+            String[][]          umlsCuiPairs,
+            UMLSOntologyType    ontology) throws FileNotFoundException, IOException,
                                         InterruptedException, Exception 
     {
         // Initialize the result
@@ -158,7 +158,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
 
         // We execute the Perl script
         
-        executePerlScript(measure, libraryType);
+        executePerlScript(measure, ontology);
         
         // Warning message
         
@@ -256,19 +256,23 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     private void executePerlScript(
-            String          measureType,
-            UMLSLibraryType libraryType) throws InterruptedException, IOException
+            String              measureType,
+            UMLSOntologyType    ontology) throws InterruptedException, IOException
     {
         // Create the command line for Perl
         
         String perl_path = "perl "; // default to linux
 
+        // We set the ontology used by UMLS::Similarity library
+        
+        String strOntology = (ontology == UMLSOntologyType.MeSH) ? "msh" : "snomedct_us";
+        
         // We build the command to call the evaluation Perl script
         
         String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t "
-                    + measureType + " " + libraryType.toString().toLowerCase();
+                    + measureType + " " + strOntology;
         
-        System.out.println("Executing the Perl script for calculating UMLS::Similarity with " + libraryType);
+        System.out.println("Executing the Perl script for calculating UMLS::Similarity with " + ontology);
         System.out.println(cmd);
         
         // Execute the script
