@@ -190,7 +190,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             
             System.out.println("---------------------------------");
             System.out.println("\t" + m_Libraries[iLib].getLibraryType().toString()
-                    + " library: evaluating the similarity from sentence pairs.");
+                    + " library: evaluating the similarity between sentence pairs.");
             
             // We set the row header
             

@@ -92,10 +92,9 @@ public class HESML_UMLS_benchmark
         // User message
         
         System.out.println("\n---------------------------------------------");
-        System.out.println("This program reproduces the experiments reported in the paperbelow when");
-        System.out.println("it is called with the 'MiniMayoSRS_physicians.csv' file as first argument.\n");
+        System.out.println("This program reproduces the experiments reported in the paper below:");
         System.out.println("\tJ.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
-        System.out.println("\tHESML: aewal-time semantic measures library for the biomedical domain eith a reproducible survey,");
+        System.out.println("\tHESML: a real-time semantic measures library for the biomedical domain with a reproducible survey,");
         System.out.println("\tSubmitted for Publication. (2020).");
         
         // We initialize the input parameters
@@ -296,8 +295,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < strOutputFilenames.length; i++)
         {
-            strOutputFilenames[i] = "raw_output_" + measureTypes[i]
-                                    + ontologyType + ".csv";
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_" + ontologyType + ".csv";
         }
 
         // We create the running-time vector
@@ -382,8 +380,8 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML,
-                                                    SemanticLibraryType.SML};//,
+                                                    SemanticLibraryType.HESML};//,
+                                                    //SemanticLibraryType.SML};
                                                     //SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
@@ -399,8 +397,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < strOutputFilenames.length; i++)
         {
-            strOutputFilenames[i] = "raw_output_" + measureTypes[i]
-                                    + "MedSTS.csv";
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_MedSTS.csv";
         }
         
         /**
