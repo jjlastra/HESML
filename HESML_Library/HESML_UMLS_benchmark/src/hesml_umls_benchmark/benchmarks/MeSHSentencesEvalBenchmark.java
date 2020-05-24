@@ -107,32 +107,26 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      * @param similarityMeasure
      * @param icModel
      * @param strDatasetPath
-     * @param strSnomedDir
-     * @param strSnomedDBconceptFileName
-     * @param strSnomedDBRelationshipsFileName
-     * @param strSnomedDBdescriptionFileName
+     * @param strMeSHdir
+     * @param strMeSHXmlConceptFileName
      * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
      * @throws Exception 
      */
 
     MeSHSentencesEvalBenchmark(
-            SemanticLibraryType[]    libraries,
-            SimilarityMeasureType       similarityMeasure,
-            IntrinsicICModelType        icModel,
-            String                      strDatasetPath,
-            String                      strSnomedDir,
-            String                      strSnomedDBconceptFileName,
-            String                      strSnomedDBRelationshipsFileName,
-            String                      strSnomedDBdescriptionFileName,
-            String                      strUmlsDir,
-            String                      strSNOMED_CUI_mappingfilename) throws Exception
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            String                  strDatasetPath,
+            String                  strMeSHdir,
+            String                  strMeSHXmlConceptFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We initialize the base class
         
-        super(libraries, strSnomedDir, strSnomedDBconceptFileName,
-                strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName,
+        super(libraries, strMeSHdir, strMeSHXmlConceptFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename);    
         
         // We initialize the attributes of the object
@@ -188,7 +182,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         strOutputDataMatrix[0][0] = "#run";
         
-        // We evaluate the performance of the HESML library
+        // We evaluate the performance of libraries
         
         for (int iLib = 0; iLib < m_Libraries.length; iLib++)
         {

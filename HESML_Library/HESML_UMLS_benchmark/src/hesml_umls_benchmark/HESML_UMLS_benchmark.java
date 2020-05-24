@@ -64,7 +64,7 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strMedSTSfilename = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized.tsv";
+    private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";
     private static final String m_strUMNSRSfilename = "../UMLS_Datasets/UMNSRS_similarity.csv";
     
     /**
@@ -98,7 +98,7 @@ public class HESML_UMLS_benchmark
         System.out.println("\tHESML: aewal-time semantic measures library for the biomedical domain eith a reproducible survey,");
         System.out.println("\tSubmitted for Publication. (2020).");
         
-        // We initialize the input paraemters
+        // We initialize the input parameters
         
         String strOutputDir = ".";
         
@@ -122,7 +122,7 @@ public class HESML_UMLS_benchmark
             System.exit(0);
         }
         
-        // We shopw the input arguments
+        // We show the input arguments
         
         System.out.println("\nOutput directory for raw experimental data = \"" + strOutputDir + "\"");
         System.out.println("---------------------------------------------\n");
@@ -149,7 +149,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -309,7 +309,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 2;
+        int nRuns = 5;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
@@ -383,8 +383,8 @@ public class HESML_UMLS_benchmark
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
                                                     SemanticLibraryType.HESML,
-                                                    SemanticLibraryType.SML,
-                                                    SemanticLibraryType.UMLS_SIMILARITY};
+                                                    SemanticLibraryType.SML};//,
+                                                    //SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
@@ -417,9 +417,7 @@ public class HESML_UMLS_benchmark
             IUMLSBenchmark sentenceBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strMedSTSfilename, 
-                                        m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                        m_strSNOMED_relationshipsFilename,
-                                        m_strSNOMED_descriptionFilename,
+                                        m_strMeSHdir, m_strMeSHXmlFilename,
                                         m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
             sentenceBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);

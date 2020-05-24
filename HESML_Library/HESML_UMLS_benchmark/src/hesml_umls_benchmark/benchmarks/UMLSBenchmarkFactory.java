@@ -164,22 +164,18 @@ public class UMLSBenchmarkFactory
      */
 
     public static IUMLSBenchmark createMeSHSentenceBenchmark(
-            SemanticLibraryType[]    libraries,
-            SimilarityMeasureType       similarityMeasure,
-            IntrinsicICModelType        icModel,
-            String                      strDatasetPath,
-            String                      strSnomedDir,
-            String                      strSnomedDBconceptFileName,
-            String                      strSnomedDBRelationshipsFileName,
-            String                      strSnomedDBdescriptionFileName,
-            String                      strUmlsDir,
-            String                      strSNOMED_CUI_mappingfilename) throws Exception
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            String                  strDatasetPath,
+            String                  strMeSHdir,
+            String                  strMeSHXmlConceptFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
         return (new MeSHSentencesEvalBenchmark(libraries,
                 similarityMeasure, icModel, strDatasetPath, 
-                strSnomedDir, strSnomedDBconceptFileName,
-                strSnomedDBRelationshipsFileName,
-                strSnomedDBdescriptionFileName,
+                strMeSHdir, strMeSHXmlConceptFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
 }
