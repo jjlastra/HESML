@@ -156,37 +156,16 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
-         * Ancestor-based Shortest Path Length (AncSPL) algorithm in the
-         * weighted-edge case by comparing the similarity scores returned
-         * by the coswJ&C [1] similarity measure using either exact Dijkstra
-         * shortest-path method or the new AncSPL approximated shortest-path
-         * method on the edge-weighted SNOMED taxonomy.
-         * The coswJ&C [1] similarity measure requires the computation
-         * of the shortest-path length on an IC-based weigthed taxonomy. Thus,
-         * this measure allows to evaluatethe new AnxSPL method on a weighted
-         * taxonomy.
-         * 
-         * [1] J.J. Lastra-Díaz, A. García-Serrano, A novel family of IC-based
-         * similarity measures with a detailed experimental survey on WordNet,
-         * Engineering Applications of Artificial Intelligence Journal. 46 (2015) 140–153.
+         * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
         
-        /*IUMLSBenchmark weightedBasedBenchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
-                                                IntrinsicICModelType.Seco,
-                                                SimilarityMeasureType.LeacockChodorow,
-                                                SimilarityMeasureType.AncSPLLeacockChodorow,
-                                                30, true, m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                                m_strSNOMED_relationshipsFilename,
-                                                m_strSNOMED_descriptionFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
-        
+        /*
         weightedBasedBenchmark.run("raw_output_AncSPLLeacockChodorow_quality_exp.csv");
         weightedBasedBenchmark.clear();*/
-        
         
         // We show the overalll running time
         
@@ -216,9 +195,15 @@ public class HESML_UMLS_benchmark
         
         int randomSamples = 100;
         
+        // We set some methods to be skipped by SML
+        
         HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
+        HashSet<SimilarityMeasureType> smlNonImplementedMeasures = new HashSet<>();
         
         pathMeasures.add(SimilarityMeasureType.Rada);
+        
+        smlNonImplementedMeasures.add(SimilarityMeasureType.AncSPLRada);
+        smlNonImplementedMeasures.add(SimilarityMeasureType.WuPalmerFast);
                         
         // We set the value according to the library
         
@@ -234,7 +219,7 @@ public class HESML_UMLS_benchmark
                 
             case SML:
                 
-                if (measureType == SimilarityMeasureType.WuPalmerFast)
+                if (smlNonImplementedMeasures.contains(measureType))
                 {
                     randomSamples = 0;
                 }
@@ -251,7 +236,7 @@ public class HESML_UMLS_benchmark
                 
             case UMLS_SIMILARITY:
                 
-                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 100 : 10;
+                randomSamples = !pathMeasures.contains(measureType) ? 1000 : 10;
                 
                 break;
         }
@@ -286,6 +271,7 @@ public class HESML_UMLS_benchmark
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
                                                     SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
                 
@@ -380,14 +366,15 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML};//,
-                                                    //SemanticLibraryType.SML};
+                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.SML};
                                                     //SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
                                                     SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
                 
@@ -402,7 +389,8 @@ public class HESML_UMLS_benchmark
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries by evaluating the MedSTS dataset [|].
+         * UMLS::Similarity libraries by evaluating the MedSTS dataset [1].
+         * 
          * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
          * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
          * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
@@ -419,6 +407,62 @@ public class HESML_UMLS_benchmark
 
             sentenceBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
             sentenceBenchmark.clear();
+        }
+    }
+    
+    /**
+     * Experiment 4: we evaluate the approximation quality of the novel
+     * Ancestor-based Shortest Path Length (AncSPL) algorithm.
+     * @param strRawOutputDir
+     * @param strMedSTSfilename
+     */
+    
+    private static void RunAnsSPLExperiment(
+            String  strRawOutputDir,
+            String  strMedSTSfilename) throws Exception
+    {
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[4][2];
+        
+        measureTypes[0][0] = SimilarityMeasureType.Rada;
+        measureTypes[0][1] = SimilarityMeasureType.AncSPLRada;
+        measureTypes[1][0] = SimilarityMeasureType.LeacockChodorow;
+        measureTypes[1][1] = SimilarityMeasureType.AncSPLLeacockChodorow;
+        measureTypes[2][0] = SimilarityMeasureType.CosineNormWeightedJiangConrath;
+        measureTypes[2][1] = SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath;
+        measureTypes[3][0] = SimilarityMeasureType.CaiStrategy1;
+        measureTypes[4][1] = SimilarityMeasureType.AncSPLCaiStrategy1;
+        
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_MedSTS.csv";
+        }
+        
+        /**
+         * Experiment 3: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity libraries by evaluating the MedSTS dataset [1].
+         * 
+         * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
+         * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
+         * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
+         * Language Resources and Evaluation, October.
+         */
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            IUMLSBenchmark benchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
+                                                IntrinsicICModelType.Seco,
+                                                SimilarityMeasureType.LeacockChodorow,
+                                                SimilarityMeasureType.AncSPLLeacockChodorow,
+                                                30, true, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
         }
     }
     
