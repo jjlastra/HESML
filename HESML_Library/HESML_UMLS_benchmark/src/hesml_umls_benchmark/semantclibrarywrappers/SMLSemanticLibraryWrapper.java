@@ -396,38 +396,21 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public boolean setSimilarityMeasure(
+    public void setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
-        // SML library is unable to run any path-based measure in a reasonable time,
-        // it takes hours on a moderated-size ontology because its shortest-path
-        // algortihm is very inneficcient. For this reason,
-        // we skip the evaluation of the measures below
-        
-        boolean isAccepted = (measureType != SimilarityMeasureType.AncSPLRada)
-                            && (measureType != SimilarityMeasureType.Rada)
-                            && (measureType != SimilarityMeasureType.WuPalmer)
-                            && (measureType != SimilarityMeasureType.WuPalmerFast);
-        
-        if (isAccepted)
-        {
-            // We convert the measure type to the SML measure types
+        // We convert the measure type to the SML measure types
 
-            String strMeasure = convertHesmlMeasureTypeToSML(measureType);
+        String strMeasure = convertHesmlMeasureTypeToSML(measureType);
 
-            // We force the Seco IC model
+        // We force the Seco IC model
 
-            m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
+        m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
 
-            // Then we configure the pairwise measure to use, we here choose to use Lin formula
+        // Then we configure the pairwise measure to use, we here choose to use Lin formula
 
-            m_smConf = new SMconf(strMeasure, m_icConf);
-        }
-        
-        // We reutnr the result
-        
-        return (isAccepted);
+        m_smConf = new SMconf(strMeasure, m_icConf);
     }
     
     /**

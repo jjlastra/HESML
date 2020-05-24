@@ -25,13 +25,13 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomy.impl.TaxonomyFactory;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
-import hesml.taxonomyreaders.snomed.ISnomedConcept;
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Scanner;
 
 /**
  * This class implements an in-memory representation of the whole MeSH taxonomy
@@ -341,21 +341,19 @@ class MeSHOntology implements IMeSHOntology
      */
     
     public void readConceptsUmlsCUIs(
-            String  masterCuiFile) throws FileNotFoundException
+            String  masterCuiFile) throws FileNotFoundException, IOException
     {
         // We open the file for reading
         
-        Scanner reader = new Scanner(new File(masterCuiFile));
+        BufferedReader reader = new BufferedReader(new FileReader(masterCuiFile));
         System.out.println("Loading " + masterCuiFile);
                 
         // We read the relationship lines
         
-        do
+        String strLine;
+                
+        while ((strLine = reader.readLine()) != null)
         {
-            // We read the next relationship entry
-            
-            String strLine = reader.nextLine();
-            
             // We extract the attributes of the relationship
             
             String[] strColumns = strLine.split("\\|");
@@ -391,8 +389,7 @@ class MeSHOntology implements IMeSHOntology
                     break;
                 }
             }
-            
-        } while (reader.hasNextLine());
+        }
         
         // We close the database
         
@@ -434,8 +431,7 @@ class MeSHOntology implements IMeSHOntology
     {
         // We retrieve the MeSH concepts associated to the input UMLS CUI
         
-        HashSet<IMeSHDescriptor> tempConcepts = m_conceptsByUmlsCUI.containsKey(strUmlsCUI) ?
-                                                m_conceptsByUmlsCUI.get(strUmlsCUI) : null;
+        HashSet<IMeSHDescriptor> tempConcepts = m_conceptsByUmlsCUI.get(strUmlsCUI);
         
         // We cretae the output vector
         
@@ -445,7 +441,7 @@ class MeSHOntology implements IMeSHOntology
         
         // We copy the concepts
         
-        if (tempConcepts.size() > 0) tempConcepts.toArray(evokedConcepts);
+        if (evokedConcepts.length > 0) tempConcepts.toArray(evokedConcepts);
                  
         // We return the result
         

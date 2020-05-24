@@ -47,7 +47,7 @@ public interface ISemanticLibrary
      * @return true if the measure is allowed
      */
     
-    boolean setSimilarityMeasure(
+    void setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception;
     

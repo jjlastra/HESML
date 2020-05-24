@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.HashSet;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import java.io.BufferedReader;

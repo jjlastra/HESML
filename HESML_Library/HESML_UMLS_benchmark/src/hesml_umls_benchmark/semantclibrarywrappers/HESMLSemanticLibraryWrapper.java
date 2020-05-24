@@ -358,7 +358,7 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public boolean setSimilarityMeasure(
+    public void setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
@@ -378,10 +378,6 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         // We get the Lin similarity measure
         
         m_hesmlSimilarityMeasure = MeasureFactory.getMeasure(m_taxonomy, measureType);
-        
-        // We return the result
-        
-        return (true);
     }
     
     /**

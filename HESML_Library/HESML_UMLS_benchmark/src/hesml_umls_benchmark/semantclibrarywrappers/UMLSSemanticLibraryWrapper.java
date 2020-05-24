@@ -343,7 +343,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public boolean setSimilarityMeasure(
+    public void setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
@@ -351,10 +351,6 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         m_icModel = icModel;
         m_measureType = measureType;
-
-        // We return the result
-        
-        return (true);
     }
     
     /**

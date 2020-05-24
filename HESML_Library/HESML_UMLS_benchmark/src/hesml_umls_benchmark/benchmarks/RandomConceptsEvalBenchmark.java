@@ -284,9 +284,9 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         // practical running times for te Rada measure, thus we detect this case
         // and skip its evaluation.
 
-        boolean isAccepted = library.setSimilarityMeasure(m_icModel, m_MeasureType);
+        library.setSimilarityMeasure(m_icModel, m_MeasureType);
         
-        if (!isAccepted)
+        if (nRuns == 0)
         {
             for (int i = 0; i < runningTimes.length; i++)
             {
@@ -410,7 +410,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
                         m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
                  
             // We copy the CUI codes with valid MeSH concepts
-            
+                       
             strAllValidCUIs = new String[cuiToMeshOntology.size()];
             
             cuiToMeshOntology.keySet().toArray(strAllValidCUIs);
@@ -435,9 +435,9 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         {
             for (int j = 0; j < 2; j++)
             {
-                int snomedConceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
+                int conceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
                 
-                umlsCuiPairs[i][j] = strAllValidCUIs[snomedConceptIndex];
+                umlsCuiPairs[i][j] = strAllValidCUIs[conceptIndex];
             }
         }
         

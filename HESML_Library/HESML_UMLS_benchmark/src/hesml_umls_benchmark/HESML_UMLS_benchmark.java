@@ -28,6 +28,7 @@ import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;  
+import java.util.HashSet;
 
 /**
  * This class implements the benchmark application used to compare
@@ -224,6 +225,11 @@ public class HESML_UMLS_benchmark
         
         int randomSamples = 100;
         
+        HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
+        
+        pathMeasures.add(SimilarityMeasureType.Rada);
+        pathMeasures.add(SimilarityMeasureType.WuPalmer);
+                        
         // We set the value according to the library
         
         switch (library)
@@ -231,22 +237,28 @@ public class HESML_UMLS_benchmark
             case HESML:
                 
                 randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
-                                && (measureType == SimilarityMeasureType.Rada)) ?
-                                5 : 1000000;
+                                && pathMeasures.contains(measureType)) ?
+                                10 : 1000000;
                 
                 break;
                 
             case SML:
                 
-                randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
-                                && (measureType == SimilarityMeasureType.Rada)) ?
-                                5 : 1000000;
+                if (!pathMeasures.contains(measureType)
+                        && (measureType != SimilarityMeasureType.WuPalmerFast))
+                {
+                    randomSamples = 1000000;
+                }
+                else
+                {
+                    randomSamples = (ontology == UMLSOntologyType.MeSH) ? 10 : 0;
+                }
                 
                 break;
                 
             case UMLS_SIMILARITY:
                 
-                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 1000 : 10;
+                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 1000 : 100;
                 
                 break;
         }
