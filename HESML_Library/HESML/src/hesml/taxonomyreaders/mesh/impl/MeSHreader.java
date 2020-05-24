@@ -85,10 +85,10 @@ class MeSHreader
                 
                 // We insert the concept into the MeSH ontology
                 
-                meshOntology.addDescriptor(strDescriptorId, strPreferredName, strTreeNodes);
+                if (strTreeNodes.length > 0) meshOntology.addDescriptor(strDescriptorId, strPreferredName, strTreeNodes);
             }
         }
-        
+               
         // We close the document
         
         xmlStreamReader.close();

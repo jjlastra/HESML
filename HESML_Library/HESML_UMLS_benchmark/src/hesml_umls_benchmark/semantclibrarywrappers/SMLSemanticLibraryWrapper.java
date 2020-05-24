@@ -269,7 +269,7 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         if ((firstSnomedConcepts != null)
                 && (secondSnomedConcepts != null))
-        {
+        {               
             // We initialize the maximum similarity
             
             double maxSimilarity = Double.NEGATIVE_INFINITY;
@@ -287,11 +287,20 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
 
                     // We evaluate the similarity measure
         
-                    double snomedSimilarity = m_engine.compare(m_smConf, concept1, concept2);
+                    try
+                    {
+                        double snomedSimilarity = m_engine.compare(m_smConf, concept1, concept2);
                     
-                    // We update the maximum similarity
+                        // We update the maximum similarity
                     
-                    if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                        if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                    }
+                    
+                    // SML fails with MeSH descriptors without nodes
+                    
+                    catch (Exception error)
+                    {
+                    }
                 }
             }
             

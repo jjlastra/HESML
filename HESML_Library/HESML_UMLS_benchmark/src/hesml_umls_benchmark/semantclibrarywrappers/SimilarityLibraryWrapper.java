@@ -359,9 +359,11 @@ public abstract class SimilarityLibraryWrapper
             if((xmlStreamReader.getEventType() == XMLStreamReader.START_ELEMENT)
                     && (xmlStreamReader.getLocalName().equals("DescriptorRecord")))
             {
-                // We extract the three main attributes of the MeSH descriptor
+                // We extract onlu MeSH descriptor with tree nodes
                 
-                meshDescriptors.add(parseChildNode(xmlStreamReader, "DescriptorUI"));
+                String[] strTreeNodes = parseTreeNodes(xmlStreamReader);
+                
+                if (strTreeNodes.length > 0) meshDescriptors.add(parseChildNode(xmlStreamReader, "DescriptorUI"));
             }
         }
         
@@ -372,6 +374,67 @@ public abstract class SimilarityLibraryWrapper
         // We return the result
         
         return (meshDescriptors);
+    }
+    
+    /**
+     * This function retrieves the descriptor keyname.
+     * @param xmlStreamReader
+     * @return 
+     */
+    
+    private static String[] parseTreeNodes(
+        XMLStreamReader xmlStreamReader) throws XMLStreamException
+    {
+        // We create an auxiliary set
+        
+        HashSet<String> parsingTreeNodes = new HashSet<>();
+                
+        // We parse the descriptor record 
+        
+        while(xmlStreamReader.hasNext())
+        {
+            // We read to the next element
+            
+            xmlStreamReader.next();
+            
+            // We detect the staring position of the Tree Number List
+            
+            if((xmlStreamReader.getEventType() == XMLStreamReader.START_ELEMENT)
+                    && (xmlStreamReader.getLocalName().equals("TreeNumberList")))
+            {
+                // We read all tree numbers
+                
+                do
+                {
+                    // We read next element
+                    
+                    xmlStreamReader.next();
+                    
+                    if((xmlStreamReader.getEventType() == XMLStreamReader.START_ELEMENT)
+                        && xmlStreamReader.getLocalName().equals("TreeNumber"))
+                    {
+                        parsingTreeNodes.add(xmlStreamReader.getElementText());
+                    }
+                    
+                } while ((xmlStreamReader.getEventType() != XMLStreamReader.END_ELEMENT)
+                    || !xmlStreamReader.getLocalName().equals("TreeNumberList"));
+                
+                // We exit from the loop once all tree nodes have been parsed
+                
+                break;
+            }
+        }
+        
+        // We create the output vector
+        
+        String[] strTreeNodes = new String[parsingTreeNodes.size()];
+        
+        parsingTreeNodes.toArray(strTreeNodes);
+        parsingTreeNodes.clear();
+        
+        // We return the result
+        
+        return (strTreeNodes);
     }
     
     /**

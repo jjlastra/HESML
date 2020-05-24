@@ -64,7 +64,8 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strMedSTSfilename = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized_20pairs.tsv";
+    private static final String m_strMedSTSfilename = "../UMLS_Datasets/SentenceSimDatasets/MedStsFullNormalized.tsv";
+    private static final String m_strUMNSRSfilename = "../UMLS_Datasets/UMNSRS_similarity.csv";
     
     /**
      * Main function. This fucntion executes all experiments reported in
@@ -94,26 +95,18 @@ public class HESML_UMLS_benchmark
         System.out.println("This program reproduces the experiments reported in the paperbelow when");
         System.out.println("it is called with the 'MiniMayoSRS_physicians.csv' file as first argument.\n");
         System.out.println("\tJ.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
-        System.out.println("\tHESML: an efficient semantic measures library for the biomedical domain,");
+        System.out.println("\tHESML: aewal-time semantic measures library for the biomedical domain eith a reproducible survey,");
         System.out.println("\tSubmitted for Publication. (2020).");
         
         // We initialize the input paraemters
         
         String strOutputDir = ".";
-        String strConceptBiomedicalDataset = "";
         
         // We check the input arguments
         
-        boolean errorMessage = (args.length < 1) || (args.length > 2);
+        boolean errorMessage = (args.length > 1);
 
-        if (!errorMessage)
-        {
-            strConceptBiomedicalDataset = args[0];
-            errorMessage = !Files.exists(Paths.get(strConceptBiomedicalDataset));
-            if (errorMessage) System.out.println(strConceptBiomedicalDataset + " file does not exist");
-        }
-        
-        if (!errorMessage && (args.length == 2))
+        if (!errorMessage && (args.length == 21))
         {
             strOutputDir = args[1];
             errorMessage = !Files.exists(Paths.get(strOutputDir));
@@ -125,14 +118,13 @@ public class HESML_UMLS_benchmark
         if (errorMessage)
         {
             System.out.println("\nCall this program as detailed below:\n");
-            System.out.println("HESML_UMLS_benchmark <CUI_pairs_file.csv> [outputdir]");
+            System.out.println("HESML_UMLS_benchmark [outputdir]");
             System.exit(0);
         }
         
         // We shopw the input arguments
         
-        System.out.println("\nInput biomedical concept similarity dataset = " + strConceptBiomedicalDataset);
-        System.out.println("Output director for raw experimental data = " + strOutputDir);
+        System.out.println("\nOutput directory for raw experimental data = \"" + strOutputDir + "\"");
         System.out.println("---------------------------------------------\n");
         
         // We check if the UMLS database is correctly installed.
@@ -165,7 +157,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
@@ -228,7 +220,6 @@ public class HESML_UMLS_benchmark
         HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
         
         pathMeasures.add(SimilarityMeasureType.Rada);
-        pathMeasures.add(SimilarityMeasureType.WuPalmer);
                         
         // We set the value according to the library
         
@@ -244,8 +235,11 @@ public class HESML_UMLS_benchmark
                 
             case SML:
                 
-                if (!pathMeasures.contains(measureType)
-                        && (measureType != SimilarityMeasureType.WuPalmerFast))
+                if (measureType == SimilarityMeasureType.WuPalmerFast)
+                {
+                    randomSamples = 0;
+                }
+                else if (!pathMeasures.contains(measureType))
                 {
                     randomSamples = 1000000;
                 }
@@ -258,7 +252,7 @@ public class HESML_UMLS_benchmark
                 
             case UMLS_SIMILARITY:
                 
-                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 1000 : 100;
+                randomSamples = (ontology == UMLSOntologyType.MeSH) ? 100 : 10;
                 
                 break;
         }
@@ -396,9 +390,8 @@ public class HESML_UMLS_benchmark
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
                                                     SimilarityMeasureType.Rada,
-                                                    SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
-                                                    SimilarityMeasureType.WuPalmer};
+                                                    SimilarityMeasureType.WuPalmerFast};
                 
         // We build the vector of raw output filenames
         
