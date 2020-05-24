@@ -16,7 +16,6 @@
  * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
  * license along with this program. If not,
  * see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
- *
  */
 
 package hesml_umls_benchmark.semantclibrarywrappers;
@@ -69,10 +68,16 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     private SM_Engine m_engine;
     
     /**
-     * SNOMED URI
+     * SNOMED URI used by SML to set the node references
      */
     
     private URI m_snomedctURI;
+    
+    /**
+     * MeSH URI used by SML to set the node references
+     */
+    
+    private URI m_meshURI;
 
     /**
      * SML IC model and similarity measure
@@ -82,10 +87,16 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     private SMconf m_smConf;
 
     /**
-     * IndexedSNOMED-CT ids by CUI
+     * Indexed SNOMED-CT ids by CUI
      */
     
     private HashMap<String, HashSet<Long>>  m_indexedSnomedIDsByCUI;
+    
+    /**
+     * Mapping from UMLS CUI ids to MeSH descriotors
+     */
+    
+    private HashMap<String, HashSet<String>>    m_indexedMeSHIdsByCUI;
     
     /**
      * Constructor to build the Snomed HESML database
@@ -140,11 +151,17 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         super(strMeSHDir, strMeSHXmlFileName,
                 strUmlsDir, strUmlsCuiFilename);
+        
+        // We initialize the object
+        
+        m_graph = null;
+        m_factory = null;
+        m_engine = null;
+        m_indexedSnomedIDsByCUI = null;
     }
     
     /**
-     * This fucntion returns the degree of similarity between two
-     * UMLS concepts.
+     * This fucntion returns the degree of similarity between two UMLS concepts.
      * @param strFirstUmlsCUI
      * @param strSecondUmlsCUI
      * @return 
@@ -157,15 +174,35 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     {
         // We initilizae the output
         
+        double similarity = (m_strSnomedDBconceptFileName != "") ?
+                            getSimilarityWithSNOMED(strFirstUmlsCUI, strSecondUmlsCUI) :
+                            getSimilarityWithMeSH(strFirstUmlsCUI, strSecondUmlsCUI);
+        
+        // We return the result
+        
+        return (similarity);
+    }
+    
+    /**
+     * This fucntion returns the degree of similarity between two
+     * UMLS concepts using the SNOMED ontology.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
+     * @return 
+     */
+    
+    private double getSimilarityWithSNOMED(
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
+    {
+        // We initilizae the output
+        
         double similarity = 0.0;
         
         // We get the SNOMED concepts evoked by each CUI
         
-        HashSet<Long> firstSnomedConcepts = m_indexedSnomedIDsByCUI.containsKey(strFirstUmlsCUI) ?
-                                            m_indexedSnomedIDsByCUI.get(strFirstUmlsCUI) : null;
-
-        HashSet<Long> secondSnomedConcepts = m_indexedSnomedIDsByCUI.containsKey(strSecondUmlsCUI) ?
-                                            m_indexedSnomedIDsByCUI.get(strSecondUmlsCUI) : null;
+        HashSet<Long> firstSnomedConcepts = m_indexedSnomedIDsByCUI.get(strFirstUmlsCUI);
+        HashSet<Long> secondSnomedConcepts = m_indexedSnomedIDsByCUI.get(strSecondUmlsCUI);
         
         // We check the existence oif SNOMED concepts associated to the CUIS
         
@@ -208,6 +245,67 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     }
     
     /**
+     * This fucntion returns the degree of similarity between two
+     * UMLS concepts using the MeSh ontology.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
+     * @return 
+     */
+    
+    private double getSimilarityWithMeSH(
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
+    {
+        // We initilizae the output
+        
+        double similarity = 0.0;
+        
+        // We get the SNOMED concepts evoked by each CUI
+        
+        HashSet<String> firstSnomedConcepts = m_indexedMeSHIdsByCUI.get(strFirstUmlsCUI);
+        HashSet<String> secondSnomedConcepts = m_indexedMeSHIdsByCUI.get(strSecondUmlsCUI);
+        
+        // We check the existence oif SNOMED concepts associated to the CUIS
+        
+        if ((firstSnomedConcepts != null)
+                && (secondSnomedConcepts != null))
+        {
+            // We initialize the maximum similarity
+            
+            double maxSimilarity = Double.NEGATIVE_INFINITY;
+            
+            // We compare all pairs of evoked SNOMED concepts
+            
+            for (String meshDescriptor1: firstSnomedConcepts)
+            {
+                for (String meshDescriptor2: secondSnomedConcepts)
+                {
+                    // We get the URI for both concepts
+
+                    URI concept1 = m_factory.getURI(m_meshURI.stringValue() + meshDescriptor1);
+                    URI concept2 = m_factory.getURI(m_meshURI.stringValue() + meshDescriptor2);
+
+                    // We evaluate the similarity measure
+        
+                    double snomedSimilarity = m_engine.compare(m_smConf, concept1, concept2);
+                    
+                    // We update the maximum similarity
+                    
+                    if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                }
+            }
+            
+            // We assign the output similarity value
+            
+            similarity = maxSimilarity;
+        }
+        
+        // We return the result
+        
+        return (similarity);
+    }
+    
+    /**
      * We release the resources associated to this object
      */
     
@@ -224,30 +322,54 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     @Override
     public void loadOntology() throws Exception
     {
-        // We load the mapping from CUI to SNOMED-CT ids
-        
-        m_indexedSnomedIDsByCUI = readMappingCuiToSnomedIds(m_strSnomedDir,
-                                    m_strSnomedDBconceptFileName,
-                                    m_strUmlsDir, m_strUmlsCuiMappingFilename);
-        
-        // We create an in-memory graph in which we will load Snomed-CT.
-        // Notice that Snomed-CT is quite large (e.g. version 20120731 contains 296433 concepts and872318 relationships ).
-        // You will need to allocate extra memory to the JVM e.g add -Xmx3000m parameter to allocate 3Go.
+        // We get the URI singleton
         
         m_factory = URIFactoryMemory.getSingleton();
-        m_snomedctURI = m_factory.getURI("http://snomedct/");
-        m_graph = new GraphMemory(m_snomedctURI);
-
-        GDataConf dataConf = new GDataConf(GFormat.SNOMED_CT_RF2);
         
-        dataConf.addParameter(GraphLoaderSnomedCT_RF2.ARG_CONCEPT_FILE,
-                m_strSnomedDir + "/" + m_strSnomedDBconceptFileName);
+        // We check if SNOMED is selected
         
-        dataConf.addParameter(GraphLoaderSnomedCT_RF2.ARG_RELATIONSHIP_FILE,
-                m_strSnomedDir + "/" + m_strSnomedDBRelationshipsFileName);
+        if (m_strSnomedDBconceptFileName != "")
+        {
+            // We load the mapping from CUI to SNOMED-CT ids
 
-        GraphLoaderGeneric.populate(dataConf, m_graph);
-        System.out.println(m_graph.toString());
+            m_indexedSnomedIDsByCUI = readMappingCuiToSnomedIds(m_strSnomedDir,
+                                        m_strSnomedDBconceptFileName,
+                                        m_strUmlsDir, m_strUmlsCuiMappingFilename);
+
+            // We load SNOMED-CT ontology using example provided by SML code
+
+            m_snomedctURI = m_factory.getURI("http://snomedct/");
+            m_graph = new GraphMemory(m_snomedctURI);
+
+            GDataConf dataConf = new GDataConf(GFormat.SNOMED_CT_RF2);
+
+            dataConf.addParameter(GraphLoaderSnomedCT_RF2.ARG_CONCEPT_FILE,
+                    m_strSnomedDir + "/" + m_strSnomedDBconceptFileName);
+
+            dataConf.addParameter(GraphLoaderSnomedCT_RF2.ARG_RELATIONSHIP_FILE,
+                    m_strSnomedDir + "/" + m_strSnomedDBRelationshipsFileName);
+
+            GraphLoaderGeneric.populate(dataConf, m_graph);
+            System.out.println(m_graph.toString());
+        }
+        else
+        {
+            // MeSH has been selected
+            
+            m_indexedMeSHIdsByCUI = readMappingCuiToMeSHIds(m_strMeSHDir,
+                                        m_strMeSHXmlFilename, m_strUmlsDir,
+                                        m_strUmlsCuiMappingFilename);
+
+            // We load MeSH ontology using example provided by SML code
+            
+            m_meshURI = m_factory.getURI("http://mesh/");
+            m_graph = new GraphMemory(m_meshURI);
+
+            GDataConf dataMeshXML = new GDataConf(GFormat.MESH_XML,
+                                    m_strMeSHDir + "/" + m_strMeSHXmlFilename);
+            
+            GraphLoaderGeneric.populate(dataMeshXML, m_graph);
+        }
         
         // We define the engine used to compute the similarity
         
@@ -366,13 +488,23 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     @Override
     public void unloadOntology()
     {
-        // Werelease the CUI mapping table
+        // We release the CUI mapping table
         
         if (m_indexedSnomedIDsByCUI != null)
         {
             for (HashSet<Long> snomedIDs: m_indexedSnomedIDsByCUI.values())
             {
                 snomedIDs.clear();
+            }
+        }
+        
+        // We release the CUI mapping table
+        
+        if (m_indexedMeSHIdsByCUI != null)
+        {
+            for (HashSet<String> meshIds: m_indexedMeSHIdsByCUI.values())
+            {
+                meshIds.clear();
             }
         }
         

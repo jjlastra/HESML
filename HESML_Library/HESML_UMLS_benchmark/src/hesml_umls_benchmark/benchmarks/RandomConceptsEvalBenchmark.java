@@ -186,7 +186,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             
             // We get the collection of random UMLS CUI pairs
 
-            String[][] snomedIDpairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
+            String[][] cuiPairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
             
             // We load SNOMED and the resources of the library
             
@@ -194,7 +194,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             
             // We evaluate the library
             
-            double[] runningTimes = EvaluateLibrary(m_Libraries[iLib], snomedIDpairs, m_nRuns);
+            double[] runningTimes = EvaluateLibrary(m_Libraries[iLib], cuiPairs, m_nRuns);
             
             // We copy the results to the raw output matrix
             
@@ -273,8 +273,8 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
     
     private double[] EvaluateLibrary(
             ISemanticLibrary    library,
-            String[][]                  umlsCuiPairs,
-            int                         nRuns) throws Exception
+            String[][]          umlsCuiPairs,
+            int                 nRuns) throws Exception
     {
         // We initialize the output vector
         
@@ -362,6 +362,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
                     + ((double)umlsCuiPairs.length) / averageRuntime);
             
             System.out.println("Similarity measure evaluated = " + m_MeasureType.toString());
+            System.out.println("Ontology used = " + m_ontologyType.toString());
         }
         
         // We return the results

@@ -290,21 +290,16 @@ public abstract class SimilarityLibraryWrapper
 
                     if (snomedIdSet.contains(snomedId)) 
                     {
-                        HashSet<Long> snomedConcepts;
-
+                        // We regsiter the CUI concept foir the first time
+                        
                         if (!outputCuiToSnomedConcepts.containsKey(strUmlsCUI))
                         {
-                            snomedConcepts = new HashSet<>(1);
-                            outputCuiToSnomedConcepts.put(strUmlsCUI, snomedConcepts);
-                        }
-                        else
-                        {
-                            snomedConcepts = outputCuiToSnomedConcepts.get(strUmlsCUI);
+                            outputCuiToSnomedConcepts.put(strUmlsCUI, new HashSet<Long>(1));
                         }
 
                         // We register the new snomed concept ID associated to the CUI
 
-                        snomedConcepts.add(snomedId);
+                        outputCuiToSnomedConcepts.get(strUmlsCUI).add(snomedId);
                     }
                     
                     break;
@@ -419,8 +414,7 @@ public abstract class SimilarityLibraryWrapper
     }   
     
     /**
-     * This function reads the CUI file and imports the mapping of CUI
-     * to SNOMED IDs
+     * This function reads the CUI file and imports the mapping of CUI to MeSH IDs
      * @param strMeSHDir
      * @param strMeSHConceptIdfile
      * @param strUmlsDir
@@ -437,7 +431,7 @@ public abstract class SimilarityLibraryWrapper
     {
         // We create the output mapping table (CUI, SNOMED_id)
         
-        HashMap<String, HashSet<String>> outputCuiToSnomedConcepts = new HashMap<>();
+        HashMap<String, HashSet<String>> outputCuiToMeSHConcepts = new HashMap<>();
         
         // We get all MeSH concept IDs
         
@@ -466,33 +460,26 @@ public abstract class SimilarityLibraryWrapper
             {
                 if (strColumns[iCol].equals("MSH"))
                 {
-                    // We define the MeSh concept set
-                    
-                    HashSet<String> meshConcepts = null;
-                    
                     // We get the mapping CUI -> MeSH Id
                     
                     String strUmlsCui = strColumns[0];
                     String meshDescriptorId = strColumns[iCol - 1];
                     
-                    // We register the snomed concept associated to a given CUI
+                    // We only register the CUI code if the MeSH descriptor exists
                     
-                    if (!outputCuiToSnomedConcepts.containsKey(strUmlsCui))
+                    if (meshIdSet.contains(meshDescriptorId))
                     {
-                        meshConcepts = new HashSet<>(1);
-                        outputCuiToSnomedConcepts.put(strUmlsCui, meshConcepts);
+                        // We regsiter the CUI concept foir the first time
+
+                        if (!outputCuiToMeSHConcepts.containsKey(strUmlsCui))
+                        {
+                            outputCuiToMeSHConcepts.put(strUmlsCui, new HashSet<String>(1));
+                        }
+
+                        // and thus, it will not be in the database
+
+                        outputCuiToMeSHConcepts.get(strUmlsCui).add(meshDescriptorId);
                     }
-                    else
-                    {
-                        meshConcepts = outputCuiToSnomedConcepts.get(strUmlsCui);
-                    }
-                    
-                    // We only register the SNOMED concept if it exists in the
-                    // MeSH ontology. There could be some cases in which a
-                    // MeSH concept associated to a CUI is not aalready active,
-                    // and thus, it will not be in the database
-                    
-                    if (meshIdSet.contains(meshDescriptorId)) meshConcepts.add(meshDescriptorId);
                     
                     break;
                 }
@@ -506,7 +493,7 @@ public abstract class SimilarityLibraryWrapper
         
         // We return the result
         
-        return (outputCuiToSnomedConcepts);
+        return (outputCuiToMeSHConcepts);
     }
 }
 

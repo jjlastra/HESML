@@ -148,7 +148,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -273,8 +273,8 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML};//,
-                                                    //SemanticLibraryType.SML};
+                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.SML};
                                                     //SnomedBasedLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
