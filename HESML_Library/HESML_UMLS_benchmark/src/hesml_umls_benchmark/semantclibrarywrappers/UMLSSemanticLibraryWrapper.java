@@ -125,62 +125,6 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
     }
     
     /**
-     * This function calculates the degree of similarity for each CUI concept pair.
-     * In addition, this function returns the running time in seconds for each
-     * independent evaluation.
-     * @param umlsCuiPairs
-     * @param libraryType
-     * @return
-     * @throws java.io.FileNotFoundException
-     * @throws Exception 
-     * @throws java.lang.InterruptedException 
-     */
-    
-    public String[] getCuiPairsRawOutput(
-            String[][]      umlsCuiPairs,
-            UMLSLibraryType libraryType) throws FileNotFoundException, IOException,
-                                        InterruptedException, Exception 
-    {
-        // Initialize the result
-        
-        String[] rawOutputCuiPairs = new String[umlsCuiPairs.length];
-        
-        // We write the temporal file with all the CUI pairs
-        
-        String tempFile = m_PerlTempDir + "/tempFile.csv";
-        
-        // We write the input file for the Perl script
-        
-        writeCuiPairsCsvFile(umlsCuiPairs, tempFile);
-        
-        // Get the measure as Perl script input format
-
-        String measure = convertHesmlMeasureTypeToUMLS_Sim(m_measureType);
-
-        // We execute the Perl script
-        
-        executePerlScript(measure, libraryType);
-        
-        // We read the output from the Perl script.
-        // Each row has the following format: CUI1 | CUI2 | similarity | time
-        
-        BufferedReader csvReader = new BufferedReader(new FileReader(m_PerlTempDir + "/tempFileOutput.csv"));
-        
-        for (int i = 0; i < umlsCuiPairs.length; i++)
-        {
-            rawOutputCuiPairs[i] = csvReader.readLine();
-        }
-        
-        // We close the output script file
-        
-        csvReader.close();
-        
-        // Return the result
-        
-        return (rawOutputCuiPairs);
-    }
-    
-    /**
      * This function calculates the degre of similairity for each concept pairs.
      * In addition, this function returns the running time in seconds for each
      * independent evaluation.
@@ -312,7 +256,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     private void executePerlScript(
-            String measureType,
+            String          measureType,
             UMLSLibraryType libraryType) throws InterruptedException, IOException
     {
         // Create the command line for Perl
