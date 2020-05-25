@@ -155,14 +155,14 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-         RunAncSPLExperiment(strOutputDir);
+         //RunAncSPLExperiment(strOutputDir);
         
         // We show the overalll running time
         

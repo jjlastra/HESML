@@ -93,7 +93,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      * Cached similarity values between concept pairs
      */
     
-    HashMap<String, Double>     m_CachedSimilarityValues;
+    HashMap<CuiPair, Double>     m_CachedSimilarityValues;
     
     /**
      * Overall running time to get all cached similarity values
@@ -352,40 +352,64 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         m_CachedSimilarityValues.clear();
         
-        // We create the dictionary for the whole dataset
+        // We build the set of CUI for each sentence pairs
+
+        HashSet<CuiPair> allCuiPairs = new HashSet<>();
         
-       String[] strAllCuiCodesInDataset = getDatasetDictionary();
+        // We analyze all sentences to extract all CUI pairs for each sentences        
         
-       // We obtain the matrxi with all combinations of two CUI concepts
+        for (int i = 0; i < m_dataset.length; i++)
+        {
+            // Preprocess the sentences and get the tokens for each sentence
+
+            String[] lstWordsSentence1 = m_dataset[i][0].replaceAll("\\p{Punct}", "").split(" ");
+            String[] lstWordsSentence2 = m_dataset[i][1].replaceAll("\\p{Punct}", "").split(" ");
+
+            // 1. We build the joint set of distinct CUI codes from S1 and S2 (dictionary)
+
+            String[] dictionary = getCuisDictionary(lstWordsSentence1, lstWordsSentence2);
+
+            // We obtain the matrxi with all combinations of two CUI concepts
        
-       String[][] strAllCuiPairsMatrix = getAllCuiPairsMatrix(strAllCuiCodesInDataset);
+            registerSentencePairs(dictionary, allCuiPairs);
+        }
+        
+        // We copy all CUI pairs into a String matrix
+        
+        String[][] allPairs = new String[allCuiPairs.size()][2];
+        
+        int ipair = 0;
+        
+        for (CuiPair pair: allCuiPairs)
+        {
+            allPairs[ipair][0] = pair.getCuiCode1();
+            allPairs[ipair++][1] = pair.getCuiCode2();
+        }
        
-       // We get the similarity and running time per concept pair
+        // We get the similarity and running time per concept pair
        
-       double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
-                                strAllCuiPairsMatrix, UMLSOntologyType.MeSH);
+        double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
+                                allPairs, UMLSOntologyType.MeSH);
        
        // We store all values in the cache
        
        m_overallCachingTime = 0.0;
        
-       for (int i = 0; i < strAllCuiPairsMatrix.length; i++)
-       {
-           // We build the kwy for the concept pair
+       for (int i = 0; i < allPairs.length; i++)
+       {          
+           // We regiter the CUI pair
            
-           String strPairKey = strAllCuiPairsMatrix[i][0] + "/" + strAllCuiPairsMatrix[i][1];
-           
-           // We check if the concept pair has been already registered
-           
-           if (!m_CachedSimilarityValues.containsKey(strPairKey))
-           {
-               m_CachedSimilarityValues.put(strPairKey, new Double(simValues[i][0]));
-           }
+           m_CachedSimilarityValues.put(new CuiPair(allPairs[i][0], allPairs[i][1]),
+                   new Double(simValues[i][0]));
            
            // We accumulate the overall running time
            
            m_overallCachingTime += simValues[i][1];
        }
+       
+       // We release the auxiliary set
+       
+       allCuiPairs.clear();
        
        // Warning message
        
@@ -394,22 +418,18 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     }
     
     /**
-     * This function builds a matrix with all combinations of CUI pairs
-     * contained in the dataset dictionary.
+     * This function computes all CUI pairs
      * @param strAllCuiCodesInDataset
      * @return 
      */
     
-    private String[][] getAllCuiPairsMatrix(
-        String[]    strAllCuiCodesInDataset)
+    private void registerSentencePairs(
+            String[]            strAllCuiCodesInSentencePair,
+            HashSet<CuiPair>    allCuiPairs)
     {
         // We get hte number of distinct CUI codes
         
-        int nCodes = strAllCuiCodesInDataset.length;
-        
-        // We build the output matrix
-        
-        String[][] strAllCuiPairsMatrix = new String[nCodes * nCodes][2];
+        int nCodes = strAllCuiCodesInSentencePair.length;
         
         // We fill the matrix
         
@@ -417,55 +437,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         {
             for (int j = 0; j < nCodes; j++, k++)
             {
-                strAllCuiPairsMatrix[k][0] = strAllCuiCodesInDataset[i];
-                strAllCuiPairsMatrix[k][1] = strAllCuiCodesInDataset[j];
+                allCuiPairs.add(new CuiPair(strAllCuiCodesInSentencePair[i],
+                        strAllCuiCodesInSentencePair[j]));
             }
         }
-        
-        // We return the result
-        
-        return (strAllCuiPairsMatrix);
-    }
-            
-    /**
-     * This function computes the global dictionary for the entire dataset.
-     */
-    
-    private String[] getDatasetDictionary()
-    {
-        // We create the dictionary for the whole dataset
-        
-        HashSet<String> datasetDictionary = new HashSet<>();
-        
-        // We filter the words in all sentences
-        
-        for (int iSentencePair = 0; iSentencePair < m_dataset.length; iSentencePair++)
-        {
-            // We decompose the raw annotated sentences and extract th e CUIS
-            
-            for (int j = 0; j < 2; j++)
-            {
-                String[] strTokens =  getTokenDecomposition(m_dataset[iSentencePair][j]);
-                
-                // We extractt the CUI codes
-                
-                for (int k = 0; k < strTokens.length; k++)
-                {
-                    if (isCuiCode(strTokens[k])) datasetDictionary.add(strTokens[k]);
-                }
-            }
-        }
-        
-        // We create the output array, copy the CUIs and release the termporary set
-        
-        String[] strAllCuiCodes = new String[datasetDictionary.size()];
-        
-        datasetDictionary.toArray(strAllCuiCodes);
-        datasetDictionary.clear();
-        
-        // We return the result
-        
-        return (strAllCuiCodes);
     }
     
     /**
@@ -692,7 +667,9 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     {
         // We create a concept pair to retirve the result
         
-        String pair = strFirstUmlsCUI + "/" + strSecondUmlsCUI;
+        CuiPair pair = new CuiPair(strFirstUmlsCUI, strSecondUmlsCUI);
+        
+        // We retirve the similarity
         
         double similarity = m_CachedSimilarityValues.containsKey(pair) ? 
                             m_CachedSimilarityValues.get(pair) : 0.0;
