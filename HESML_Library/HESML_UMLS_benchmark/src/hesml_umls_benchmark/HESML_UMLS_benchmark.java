@@ -104,9 +104,9 @@ public class HESML_UMLS_benchmark
         
         boolean errorMessage = (args.length > 1);
 
-        if (!errorMessage && (args.length == 21))
+        if (!errorMessage && (args.length == 1))
         {
-            strOutputDir = args[1];
+            strOutputDir = args[0];
             errorMessage = !Files.exists(Paths.get(strOutputDir));
             if (errorMessage) System.out.println(strOutputDir + " directory does not exist");
         }
@@ -139,7 +139,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -147,7 +147,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -162,7 +162,7 @@ public class HESML_UMLS_benchmark
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-         //RunAncSPLExperiment(strOutputDir);
+        RunAncSPLExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -210,7 +210,7 @@ public class HESML_UMLS_benchmark
                 
                 randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
                                 && pathMeasures.contains(measureType)) ?
-                                10 : 1000000;
+                                15 : 1000000;
                 
                 break;
                 
@@ -226,14 +226,14 @@ public class HESML_UMLS_benchmark
                 }
                 else
                 {
-                    randomSamples = (ontology == UMLSOntologyType.MeSH) ? 10 : 0;
+                    randomSamples = (ontology == UMLSOntologyType.MeSH) ? 15 : 0;
                 }
                 
                 break;
                 
             case UMLS_SIMILARITY:
                 
-                randomSamples = !pathMeasures.contains(measureType) ? 1000 : 10;
+                randomSamples = !pathMeasures.contains(measureType) ? 500 : 15;
                 
                 break;
         }
@@ -261,8 +261,8 @@ public class HESML_UMLS_benchmark
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
                                                     SemanticLibraryType.HESML,
-                                                    SemanticLibraryType.SML};
-                                                    //SnomedBasedLibraryType.UMLS_SIMILARITY};
+                                                    SemanticLibraryType.SML,
+                                                    SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
@@ -290,7 +290,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 5;
+        int nRuns = 1;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
