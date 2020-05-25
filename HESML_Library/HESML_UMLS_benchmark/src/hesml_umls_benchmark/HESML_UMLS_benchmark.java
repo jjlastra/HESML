@@ -197,6 +197,8 @@ public class HESML_UMLS_benchmark
         HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
         HashSet<SimilarityMeasureType> smlNonImplementedMeasures = new HashSet<>();
         
+        // We register some measure types with differences for SML and UMLS::Similarity
+        
         pathMeasures.add(SimilarityMeasureType.Rada);
         
         smlNonImplementedMeasures.add(SimilarityMeasureType.AncSPLRada);
@@ -233,7 +235,14 @@ public class HESML_UMLS_benchmark
                 
             case UMLS_SIMILARITY:
                 
-                randomSamples = !pathMeasures.contains(measureType) ? 500 : 15;
+                if (measureType == SimilarityMeasureType.AncSPLRada)
+                {
+                    randomSamples = 0;
+                }
+                else
+                {
+                    randomSamples = !pathMeasures.contains(measureType) ? 500 : 15;
+                }
                 
                 break;
         }
@@ -260,9 +269,9 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.UMLS_SIMILARITY,
                                                     SemanticLibraryType.SML,
-                                                    SemanticLibraryType.UMLS_SIMILARITY};
+                                                    SemanticLibraryType.HESML};
 
         // We set the measures being evaluated
                                                     
@@ -290,7 +299,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 1;
+        int nRuns = 5;
         
         for (int i = 0; i < measureTypes.length; i++)
         {

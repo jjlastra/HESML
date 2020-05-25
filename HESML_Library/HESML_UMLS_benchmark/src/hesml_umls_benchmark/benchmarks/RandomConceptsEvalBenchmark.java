@@ -286,7 +286,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
         library.setSimilarityMeasure(m_icModel, m_MeasureType);
         
-        if (nRuns == 0)
+        if (umlsCuiPairs.length == 0)
         {
             for (int i = 0; i < runningTimes.length; i++)
             {
@@ -297,7 +297,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         {
             // We initializa the time counter
             
-            double accumulatedTime = 0.0;
+            double overallAccumulatedTime = 0.0;
             
             // UMLS_SIMILARITY library gets all the iterations at one time
             // The rest of the libraries execute the benchmark n times
@@ -308,18 +308,31 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
                 UMLSSemanticLibraryWrapper pedersenLib = (UMLSSemanticLibraryWrapper) library;
 
-                // We evaluate the similarity of a list of pairs of concepts at once.
-                // The function also returns the running times for each run
-                // similarityWithRunningTimes[similarity_i][runningTime_ị]
+                // We exucte multiple times the benchmark to compute a stable running time
 
-                double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
-                                                            umlsCuiPairs, m_ontologyType);
-
-                // Calculate the accumulated time for each iteration
-
-                for (int i = 0; i < similarityWithRunningTimes.length; i++)
+                for (int iRun = 0; iRun < nRuns; iRun++)
                 {
-                    accumulatedTime += similarityWithRunningTimes[i][1];
+                    // We evaluate the similarity of a list of pairs of concepts at once.
+                    // The function also returns the running times for each run
+                    // similarityWithRunningTimes[similarity_i][runningTime_ị]
+
+                    double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
+                                                                umlsCuiPairs, m_ontologyType);
+                    
+                    // We initialize the running time for this run
+                    
+                    runningTimes[iRun] = 0.0;
+                    
+                    // Calculate the accumulated time for each iteration
+
+                    for (int i = 0; i < similarityWithRunningTimes.length; i++)
+                    {
+                        runningTimes[iRun] += similarityWithRunningTimes[i][1];
+                    }
+                    
+                    // We accumulate the overall running time for all runs
+                    
+                    overallAccumulatedTime += runningTimes[iRun];
                 }
             }
             else
@@ -343,13 +356,13 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
                     runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
 
-                    accumulatedTime += runningTimes[iRun];
+                    overallAccumulatedTime += runningTimes[iRun];
                 }
             }
         
             // We compute the averga running time
 
-            double averageRuntime = accumulatedTime / nRuns;
+            double averageRuntime = overallAccumulatedTime / nRuns;
 
             // We print the average results
 
