@@ -386,6 +386,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             allPairs[ipair++][1] = pair.getCuiCode2();
         }
        
+       // We release the auxiliary set
+       
+       allCuiPairs.clear();
+        
         // We get the similarity and running time per concept pair
        
         double[][] simValues = pedersenLib.getSimilaritiesAndRunningTimes(
@@ -406,11 +410,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
            
            m_overallCachingTime += simValues[i][1];
        }
-       
-       // We release the auxiliary set
-       
-       allCuiPairs.clear();
-       
+              
        // Warning message
        
        System.out.println("Pre-calculation of UMLS::Similarity value (seconds) = "
@@ -433,9 +433,9 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We fill the matrix
         
-        for (int i = 0, k = 0; i < nCodes; i++)
+        for (int i = 0; i < nCodes; i++)
         {
-            for (int j = 0; j < nCodes; j++, k++)
+            for (int j = 0; j < nCodes; j++)
             {
                 allCuiPairs.add(new CuiPair(strAllCuiCodesInSentencePair[i],
                         strAllCuiCodesInSentencePair[j]));

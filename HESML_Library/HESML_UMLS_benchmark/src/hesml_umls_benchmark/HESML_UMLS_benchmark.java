@@ -64,7 +64,7 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";
+    private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";
     
     /**
      * Main function. This fucntion executes all experiments reported in
@@ -363,9 +363,9 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.HESML,
-                                                    SemanticLibraryType.SML};
-                                                    //SemanticLibraryType.UMLS_SIMILARITY};
+                                                    //SemanticLibraryType.HESML,
+                                                    //SemanticLibraryType.SML};
+                                                    SemanticLibraryType.UMLS_SIMILARITY};
 
         // We set the measures being evaluated
                                                     
