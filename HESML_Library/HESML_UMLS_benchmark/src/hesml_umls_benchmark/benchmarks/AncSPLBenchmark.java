@@ -62,14 +62,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     
     private SimilarityMeasureType   m_measureType1;
     private SimilarityMeasureType   m_measureType2;
-    
-    /**
-     * This flag sets if the benchmark will comapre the edge-counting
-     * shortest path length of the weighted one.
-     */
-    
-    protected boolean   m_useEdgeWeights;
-    
+       
     /**
      * Constructor to build the Snomed HESML database
      * @param strSnomedDir
@@ -92,8 +85,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
             IntrinsicICModelType    icModelMetric,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
-            int                     nRandomSamples,
-            boolean                 useEdgeWeights) throws Exception
+            int                     nRandomSamples) throws Exception
     {
         // We initialize the base class to load the HESML library
         
@@ -106,7 +98,6 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         m_nRandomSamples = nRandomSamples;
         m_icModelMetric = icModelMetric;
-        m_useEdgeWeights = useEdgeWeights;
         m_measureType1 = measureType1;
         m_measureType2 = measureType2;
     }
@@ -124,6 +115,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         System.out.println("-----------------------------------------------");
         System.out.println("\t Evaluating the approximation quality of the\n"
                 + "\t Ancestor-based Shortest Path Length (AncSPL) algorithm");
+        System.out.println("\t" + m_measureType1.toString() + " vs " +  m_measureType2.toString());
         System.out.println("-----------------------------------------------");
         
         // We load SNOMED taxonomy
@@ -136,10 +128,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We set the intrinsic IC model for the weighted case
         
-        if (m_useEdgeWeights)
-        {
-            ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(snomedTaxonomy);
-        }
+        ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(snomedTaxonomy);
         
         // We get the vector of random concept pairs
 
@@ -187,7 +176,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
                 + strOutputDataMatrix[iPair + 1][1] + " "
                 + strOutputDataMatrix[iPair + 1][2] + " "
                 + strOutputDataMatrix[iPair + 1][3] + " ("
-                + iPair + " of " + Integer.toString(snomedNodepairs.length) + "pairs)");
+                + (iPair + 1) + " of " + Integer.toString(snomedNodepairs.length) + "pairs)");
         }
         
         // We unload SNOMED taxonomy

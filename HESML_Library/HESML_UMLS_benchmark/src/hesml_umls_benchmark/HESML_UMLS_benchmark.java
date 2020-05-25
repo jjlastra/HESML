@@ -65,7 +65,6 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
     private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";
-    private static final String m_strUMNSRSfilename = "../UMLS_Datasets/UMNSRS_similarity.csv";
     
     /**
      * Main function. This fucntion executes all experiments reported in
@@ -162,10 +161,8 @@ public class HESML_UMLS_benchmark
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
-        
-        /*
-        weightedBasedBenchmark.run("raw_output_AncSPLLeacockChodorow_quality_exp.csv");
-        weightedBasedBenchmark.clear();*/
+
+         RunAncSPLExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -417,9 +414,8 @@ public class HESML_UMLS_benchmark
      * @param strMedSTSfilename
      */
     
-    private static void RunAnsSPLExperiment(
-            String  strRawOutputDir,
-            String  strMedSTSfilename) throws Exception
+    private static void RunAncSPLExperiment(
+            String  strRawOutputDir) throws Exception
     {
         // We set the measures being evaluated
                                                     
@@ -432,7 +428,7 @@ public class HESML_UMLS_benchmark
         measureTypes[2][0] = SimilarityMeasureType.CosineNormWeightedJiangConrath;
         measureTypes[2][1] = SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath;
         measureTypes[3][0] = SimilarityMeasureType.CaiStrategy1;
-        measureTypes[4][1] = SimilarityMeasureType.AncSPLCaiStrategy1;
+        measureTypes[3][1] = SimilarityMeasureType.AncSPLCaiStrategy1;
         
         // We build the vector of raw output filenames
         
@@ -440,29 +436,24 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < strOutputFilenames.length; i++)
         {
-            strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_MedSTS.csv";
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i][1] + "_exp4.csv";
         }
-        
-        /**
-         * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries by evaluating the MedSTS dataset [1].
-         * 
-         * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
-         * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
-         * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
-         * Language Resources and Evaluation, October.
-         */
+
+        // We compare the correlation between two measures
         
         for (int i = 0; i < measureTypes.length; i++)
         {
             IUMLSBenchmark benchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
-                                                SimilarityMeasureType.LeacockChodorow,
-                                                SimilarityMeasureType.AncSPLLeacockChodorow,
-                                                30, true, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                measureTypes[i][0],
+                                                measureTypes[i][1],
+                                                2, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
+            
+            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
+            benchmark.clear();
         }
     }
     

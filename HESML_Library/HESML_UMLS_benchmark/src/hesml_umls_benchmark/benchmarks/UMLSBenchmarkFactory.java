@@ -131,7 +131,6 @@ public class UMLSBenchmarkFactory
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
             int                     nRandomSamples,
-            boolean                 useEdgeWeights,
             String                  strSnomedDir,
             String                  strSnomedDBconceptFileName,
             String                  strSnomedDBRelationshipsFileName,
@@ -142,7 +141,7 @@ public class UMLSBenchmarkFactory
         return (new AncSPLBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename, icModel, 
-                measureType1, measureType2, nRandomSamples, useEdgeWeights));
+                measureType1, measureType2, nRandomSamples));
     }   
     
     
