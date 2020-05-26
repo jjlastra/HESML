@@ -284,7 +284,10 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         // practical running times for te Rada measure, thus we detect this case
         // and skip its evaluation.
 
-        library.setSimilarityMeasure(m_icModel, m_MeasureType);
+        if (umlsCuiPairs.length > 0) library.setSimilarityMeasure(m_icModel, m_MeasureType);
+        
+        // We set the NaN value for the cases in which the library
+        // is not evaluated for a specific measure
         
         if (umlsCuiPairs.length == 0)
         {

@@ -221,7 +221,6 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         conversionMap.put(SimilarityMeasureType.WuPalmer, "wup");
         conversionMap.put(SimilarityMeasureType.WuPalmerFast, "wup");
         conversionMap.put(SimilarityMeasureType.Rada, "cdist");
-        conversionMap.put(SimilarityMeasureType.AncSPLRada, "cdist");
         conversionMap.put(SimilarityMeasureType.LeacockChodorow, "lch");
         conversionMap.put(SimilarityMeasureType.PedersenPath, "path");
         conversionMap.put(SimilarityMeasureType.PekarStaab, "pks");

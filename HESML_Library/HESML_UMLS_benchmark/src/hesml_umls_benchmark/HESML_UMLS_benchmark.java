@@ -372,9 +372,9 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    //SemanticLibraryType.HESML,
-                                                    //SemanticLibraryType.SML};
-                                                    SemanticLibraryType.UMLS_SIMILARITY};
+                                                    SemanticLibraryType.UMLS_SIMILARITY,
+                                                    SemanticLibraryType.SML,
+                                                    SemanticLibraryType.HESML};
 
         // We set the measures being evaluated
                                                     
