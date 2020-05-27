@@ -185,9 +185,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
             similarity[i][1] = Double.valueOf(data[3]);
         }
         
-        // We close the output script file
+        // We close the output script file and remove the files
         
         csvReader.close();
+        this.clear();
         
         // Return the result
         
