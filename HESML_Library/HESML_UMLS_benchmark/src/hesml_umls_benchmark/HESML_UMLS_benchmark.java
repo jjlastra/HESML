@@ -24,6 +24,8 @@ package hesml_umls_benchmark;
 import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -128,6 +130,8 @@ public class HESML_UMLS_benchmark
         // We check if the UMLS database is correctly installed.
         
         testDbConnection();
+        
+        RunGoBenchmark();
         
         // We intialize the stopwatch
         
@@ -250,6 +254,17 @@ public class HESML_UMLS_benchmark
         // We return the result
         
         return (randomSamples);
+    }
+    
+    /**
+     * This function runs the GO-based benchmark between HESML and SML.
+     */
+    
+    private static void RunGoBenchmark() throws Exception
+    {
+        IOboOntology ontology = OboFactory.loadOntology("../GeneOntology/go.obo");
+        
+        
     }
     
     /**
