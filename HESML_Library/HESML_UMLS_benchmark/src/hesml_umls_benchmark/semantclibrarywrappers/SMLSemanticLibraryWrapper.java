@@ -222,7 +222,7 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         else
         {
             String strId1 = strFirstConceptId.replace("GO:", "");
-            String strId2 = strFirstConceptId.replace("GO:", "");
+            String strId2 = strSecondConceptId.replace("GO:", "");
             
             URI concept1 = m_factory.getURI(m_goURI.stringValue() + strId1);
             URI concept2 = m_factory.getURI(m_goURI.stringValue() + strId2);

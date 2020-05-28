@@ -297,13 +297,13 @@ public class HESML_UMLS_benchmark
         {
             case HESML:
                 
-                randomSamples = pathMeasures.contains(measureType) ? 200 : 1000000;
+                randomSamples = pathMeasures.contains(measureType) ? 15 : 1000000;
                 
                 break;
                 
             case SML:
                 
-                randomSamples = pathMeasures.contains(measureType) ? 20 : 1000000;                
+                randomSamples = pathMeasures.contains(measureType) ? 15 : 1000000;                
                 
                 break;
         }
