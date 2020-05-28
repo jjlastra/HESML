@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.obo.impl;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.impl.TaxonomyFactory;
 import hesml.taxonomyreaders.obo.IOboConcept;
 import hesml.taxonomyreaders.obo.IOboOntology;
@@ -159,9 +160,17 @@ public class OboOntology implements IOboOntology
             m_taxonomiesByNamespace.put(strNamespace, TaxonomyFactory.createBlankTaxonomy());
         }
         
-        // We traverse all OBO concepts
+        // We set the traversing flag and enqueue the concepts
         
         LinkedList<OboConcept> pending = new LinkedList<>(m_conceptsdIndexedById.values());
+        
+        for (OboConcept concept: m_conceptsdIndexedById.values())
+        {
+            concept.setVisited(false);
+            pending.add(concept);
+        }
+        
+        // We insert all concepts into their corresponding taxonomies
         
         while (pending.size() > 0)
         {
@@ -185,7 +194,7 @@ public class OboOntology implements IOboOntology
             
             // We check if the concept can be added to the taxonmy
             
-            if (parentsVisited)
+            if (parentsVisited && !concept.getVisited())
             {
                 // Obtengo la taxonomía asociada a su dominio
                 
@@ -206,18 +215,56 @@ public class OboOntology implements IOboOntology
                 
                 Long conceptNodeId = Integer.toUnsignedLong(taxonomy.getVertexes().getCount());
                 
-                taxonomy.addVertex(conceptNodeId, parentsId);
+                IVertex vertex = taxonomy.addVertex(conceptNodeId, parentsId);
+                
+                // We set the Tag name to the OBO node ID
+                
+                vertex.setStringTag(concept.getId());
                 
                 // We set the node ID
                 
                 concept.setTaxonomyNodeId(conceptNodeId);
                 concept.setVisited(true);
             }
-            else
+        }
+    }
+    
+    /**
+     * This function checks the topology of all imported taxonomies
+     */
+    
+    public void checkTopology() throws Exception
+    {
+        // We print the name of the ontology
+        
+        System.out.println("--- HESML OBO ontology ----");
+        System.out.println("Ontology name = " + m_strName);
+        System.out.println("Ontology overall concepts = " + m_conceptsdIndexedById.size());
+        
+        // We check all taxonomies
+        
+        for (String strNamespace: m_taxonomiesByNamespace.keySet())
+        {
+            // We get the taxonomy
+            
+            ITaxonomy taxonomy = m_taxonomiesByNamespace.get(strNamespace);
+                    
+            // Information message
+            
+            System.out.println("Taxonomy name = " + strNamespace
+                    + ", #nodes = " + taxonomy.getVertexes().getCount());
+            
+            // We check that there is a single root node
+            
+            if (taxonomy.getVertexes().getRoots().getCount() > 1)
             {
-                pending.add(concept);
+                throw (new Exception(""));
             }
         }
+        
+        // We close the information block
+        
+        System.out.println("---------------------");
     }
     
     /**

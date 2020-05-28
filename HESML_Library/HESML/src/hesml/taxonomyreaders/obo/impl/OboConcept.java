@@ -92,6 +92,17 @@ class OboConcept implements IOboConcept
     }
     
     /**
+     * This fucntion reurns the ID of the concept
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+        return (m_strId);
+    }
+    
+    /**
      * This function sets the taxonomy node Id associated to this object
      * @param nodeId 
      */

@@ -43,6 +43,10 @@ class OboReader
     static IOboOntology loadOntology(
             String  strOboFilename) throws FileNotFoundException, IOException, Exception
     {
+        // Warning message
+        
+        System.out.println("Loading OBO ontology file = " + strOboFilename);
+        
         // We cretae an OBO ontology in blank
         
         OboOntology ontology = null;
@@ -53,7 +57,7 @@ class OboReader
         
         // We set the tag for the ontology name
         
-        String strTagOntologyName = "ontology: ";
+        String strTagOntologyName = "ontology:";
         
         // We parse the concepts contained in the file
         
@@ -69,8 +73,9 @@ class OboReader
             }
             else if (strLine.startsWith(strTagOntologyName))
             {
-                String strOntologyName = strLine.substring(
-                        strTagOntologyName.length(), strLine.length() - 1);
+                // We extract the ontology name
+                
+                String strOntologyName = strLine.substring(strTagOntologyName.length()).trim();
                 
                 // We create a new ontology
                 
@@ -85,6 +90,7 @@ class OboReader
         // We build the taxonomies
         
         ontology.buildTaxonomies();
+        ontology.checkTopology();
         
         // We return the result
         
@@ -110,10 +116,12 @@ class OboReader
         
         // We set the tag names
         
-        String  tagNamespace = "namespace: ";
-        String  tagId = "id: ";
-        String  tagName = "name: ";
-        String  tagIsA = "is_a: ";
+        String  tagNamespace = "namespace:";
+        String  tagId = "id:";
+        String  tagName = "name:";
+        String  tagIsA = "is_a:";
+        String  tagObsolete = "is_obsolete:";
+        boolean isObsolete = false;
         
         // We parse all term fields
         
@@ -123,38 +131,46 @@ class OboReader
         {
             if (strLine.startsWith(tagId))
             {
-                strId = strLine.substring(tagId.length(), strLine.length() - 1);
-                
-                if (strId.equals("GO:000000"))
-                {
-                    int pepe = 10;
-                }
-            }
-            else if (strLine.startsWith(tagNamespace))
-            {
-                strNamespace = strLine.substring(tagNamespace.length(), strLine.length() - 1);
+                strId = strLine.substring(tagId.length()).trim();
             }
             else if (strLine.startsWith(tagName))
             {
-                strName = strLine.substring(tagName.length(), strLine.length() - 1);
+                strName = strLine.substring(tagName.length()).trim();
+            }
+            else if (strLine.startsWith(tagNamespace))
+            {
+                strNamespace = strLine.substring(tagNamespace.length()).trim();
             }
             else if (strLine.startsWith(tagIsA))
             {
-                String strGoId = strLine.substring(tagIsA.length(), strLine.length() - 1);
+                String strGoId = strLine.substring(tagIsA.length()).trim();
                 
-                String[] strFields = strGoId.split(" ");
+                String[] strFields = strGoId.split("\\s+");
                 
                 parentsId.add(strFields[0]);
             }
+            else if (strLine.startsWith(tagObsolete))
+            {
+                String value = strLine.substring(tagObsolete.length()).trim();
+                
+                isObsolete = value.equals("true");
+            }
         }
         
-        // We create a new concept
+        // We check that the concept is no obsolete
         
-        String[] strParentIds = new String[parentsId.size()];
-        
-        parentsId.toArray(strParentIds);
-        parentsId.clear();
-        
-        ontology.addConcept(strId, strNamespace, strName, strParentIds);
+        if (!isObsolete)
+        {
+            // We create the parents vector
+
+            String[] strParentIds = new String[parentsId.size()];
+
+            parentsId.toArray(strParentIds);
+            parentsId.clear();
+
+            // We create a new concept
+
+            ontology.addConcept(strId, strNamespace, strName, strParentIds);
+        }
     }
 }
