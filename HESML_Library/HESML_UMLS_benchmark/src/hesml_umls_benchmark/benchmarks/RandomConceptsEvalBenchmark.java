@@ -192,7 +192,6 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         //m_ontologyType = ontology;
         m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
         m_nRuns = nRuns;
-        m_strOboFilename = strOboFilename;
     }
     
     /**

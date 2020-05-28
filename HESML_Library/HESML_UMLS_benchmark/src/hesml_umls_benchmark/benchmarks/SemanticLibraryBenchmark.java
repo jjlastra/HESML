@@ -94,6 +94,7 @@ abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
         m_strSnomedDBRelationshipsFileName = strSnomedDBRelationshipsFileName;
         m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
         m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
+        m_strOboFilename = "";
         
         // We load the SNOMED database and build its HESML taxonomy
 
@@ -159,7 +160,16 @@ abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
             SemanticLibraryType[]   libraries,
             String                  strOboFilename) throws Exception
     {
+        // We initialize the class
+        
         m_strOboFilename = strOboFilename;
+        m_strMeShDir = "";
+        m_strUmlsDir = "";
+        m_strMeSHdescriptionFileName = "";
+        m_strSNOMED_CUI_mappingfilename = "";
+        m_strSnomedDBRelationshipsFileName = "";
+        m_strSnomedDBconceptFileName = "";
+        m_strSnomedDBdescriptionFileName = "";
         
         // We load the MeSH ontology and build
 
