@@ -57,7 +57,12 @@ class OboReader
         
         // We set the tag for the ontology name
         
-        String strTagOntologyName = "ontology:";
+        String tagOntologyName = "ontology:";
+        String tagDefaultNamespace = "default-namespace:";
+        
+        // Global names
+        
+        String strDefaultNamespace = "";
         
         // We parse the concepts contained in the file
         
@@ -67,19 +72,20 @@ class OboReader
         {
             // We detect a concept block
             
-            if (strLine.startsWith("[Term]"))
+            if (strLine.startsWith(tagOntologyName))
             {
-                parseTerm(reader, ontology);
-            }
-            else if (strLine.startsWith(strTagOntologyName))
-            {
-                // We extract the ontology name
+                // We extract the ontology name and cretae the ontology
                 
-                String strOntologyName = strLine.substring(strTagOntologyName.length()).trim();
-                
-                // We create a new ontology
-                
+                String strOntologyName = strLine.substring(tagOntologyName.length()).trim();
                 ontology = new OboOntology(strOntologyName);
+            }
+            else if (strLine.startsWith(tagDefaultNamespace))
+            {
+                strDefaultNamespace = strLine.substring(tagDefaultNamespace.length()).trim();
+            }
+            else if (strLine.startsWith("[Term]"))
+            {
+                parseTerm(reader, ontology, strDefaultNamespace);
             }
         }
         
@@ -104,13 +110,14 @@ class OboReader
     
     private static void parseTerm(
             BufferedReader  reader,
-            OboOntology     ontology) throws IOException, Exception
+            OboOntology     ontology,
+            String          strDefaultNamespace) throws IOException, Exception
     {
         // We initilize the attributes to be parsed
         
         String  strId = "";
         String  strName = "";
-        String  strNamespace = "";
+        String  strNamespace = strDefaultNamespace;
         
         HashSet<String> parentsId = new HashSet<>();
         
