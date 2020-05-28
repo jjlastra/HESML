@@ -136,13 +136,6 @@ public class HESML_UMLS_benchmark
         long startTime = System.currentTimeMillis();
         
         /**
-         * Experiment 5: we compare the performance of HESML and SML on
-         * the Gene Ontoogy (GO).
-         */
-        
-        RunRandomGOConceptsExperiment(strOutputDir);
-        
-        /**
          * Experiment 1: we compare the performance of the `HESML, SML and
          * UMLS::Similarity by evaluating the similarity of a sequence
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
@@ -172,6 +165,13 @@ public class HESML_UMLS_benchmark
          */
 
         RunAncSPLExperiment(strOutputDir);
+        
+        /**
+         * Experiment 5: we compare the performance of HESML and SML on
+         * the Gene Ontoogy (GO).
+         */
+        
+        RunRandomGOConceptsExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -203,12 +203,12 @@ public class HESML_UMLS_benchmark
         
         // We set some methods to be skipped by SML
         
-        HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
+        HashSet<SimilarityMeasureType> slowMeasures = new HashSet<>();
         HashSet<SimilarityMeasureType> smlNonImplementedMeasures = new HashSet<>();
         
         // We register some measure types with differences for SML and UMLS::Similarity
         
-        pathMeasures.add(SimilarityMeasureType.Rada);
+        slowMeasures.add(SimilarityMeasureType.Rada);
         
         smlNonImplementedMeasures.add(SimilarityMeasureType.AncSPLRada);
         smlNonImplementedMeasures.add(SimilarityMeasureType.WuPalmerFast);
@@ -220,7 +220,7 @@ public class HESML_UMLS_benchmark
             case HESML:
                 
                 randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
-                                && pathMeasures.contains(measureType)) ?
+                                && slowMeasures.contains(measureType)) ?
                                 15 : 1000000;
                 
                 break;
@@ -231,7 +231,7 @@ public class HESML_UMLS_benchmark
                 {
                     randomSamples = 0;
                 }
-                else if (!pathMeasures.contains(measureType))
+                else if (!slowMeasures.contains(measureType))
                 {
                     randomSamples = 1000000;
                 }
@@ -250,7 +250,7 @@ public class HESML_UMLS_benchmark
                 }
                 else
                 {
-                    randomSamples = !pathMeasures.contains(measureType) ? 500 : 15;
+                    randomSamples = (measureType == SimilarityMeasureType.Lin) ? 500 : 15;
                 }
                 
                 break;
