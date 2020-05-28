@@ -52,6 +52,13 @@ public interface IOboOntology
     IOboConcept getConceptById(String strId);
     
     /**
+     * This function returns a vector with all GO concept identifiers
+     * @return 
+     */
+    
+    String[] getConceptIds();
+    
+    /**
      * This function returns the ontology name
      * @return 
      */

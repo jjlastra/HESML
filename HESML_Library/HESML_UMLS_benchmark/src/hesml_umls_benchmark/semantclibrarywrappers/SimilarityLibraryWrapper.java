@@ -21,7 +21,9 @@
 
 package hesml_umls_benchmark.semantclibrarywrappers;
 
-import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.SimilarityMeasureType;
+import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.UMLSOntologyType;
 import java.io.BufferedReader;
 import java.io.File;
@@ -74,8 +76,14 @@ public abstract class SimilarityLibraryWrapper
      * Ontology type. Same wrapper is sued to load all ontologies
      */
     
-    private final UMLSOntologyType  m_ontologyType;
+    protected final UMLSOntologyType  m_ontologyType;
        
+    /**
+     * OBO filename and the selected namespace (taxonomy)
+     */
+    
+    protected String  m_strOboFilename;
+
     /**
      * Constructor to load SNOMED
      * @param strSnomedDir
@@ -109,6 +117,7 @@ public abstract class SimilarityLibraryWrapper
         
         m_strMeSHDir = "";
         m_strMeSHXmlFilename = "";
+        m_strOboFilename = "";
     }
     
     /**
@@ -140,8 +149,25 @@ public abstract class SimilarityLibraryWrapper
         m_strSnomedDBconceptFileName = "";
         m_strSnomedDBRelationshipsFileName = "";
         m_strSnomedDBdescriptionFileName = "";
+        m_strOboFilename = "";
     }
-
+    
+    SimilarityLibraryWrapper(
+            String  strOboFilename) throws Exception
+    {
+        // We initilaiza all attributes
+        
+        m_strOboFilename = strOboFilename;
+        m_ontologyType = UMLSOntologyType.MeSH;
+        m_strMeSHDir = "";
+        m_strMeSHXmlFilename = "";
+        m_strUmlsDir = "";
+        m_strUmlsCuiMappingFilename = "";
+        m_strSnomedDir = "";
+        m_strSnomedDBconceptFileName = "";
+        m_strSnomedDBRelationshipsFileName = "";
+        m_strSnomedDBdescriptionFileName = "";
+    }    
     /**
      * This function checks if the text is a Long number
      * @param strText

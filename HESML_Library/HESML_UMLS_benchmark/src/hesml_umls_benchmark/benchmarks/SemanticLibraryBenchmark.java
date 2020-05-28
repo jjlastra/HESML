@@ -21,13 +21,15 @@
 
 package hesml_umls_benchmark.benchmarks;
 
-import hesml_umls_benchmark.IUMLSBenchmark;
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryFactory;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import hesml_umls_benchmark.ISemanticLibrary;
+import hesml_umls_benchmark.ISemanticLibBenchmark;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -36,7 +38,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
  * @author j.lastra
  */
 
-abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
+abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
 {
     /**
      * Wrappers of the semantic measure libraries being evaluated
@@ -57,6 +59,13 @@ abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
     protected String    m_strMeSHdescriptionFileName;   
     protected String    m_strSNOMED_CUI_mappingfilename;
    
+    /**
+     * Gene Ontology filename
+     */
+    
+    protected String  m_strOboFilename;
+
+    
     /**
      * Constructor to build the Snomed HESML database
      * @param libraries
@@ -124,8 +133,9 @@ abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
         m_strUmlsDir = strUmlsDir;
         m_strMeSHdescriptionFileName = strMeSHXmlFileName;
         m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
+        m_strOboFilename = "";
         
-        // We load the SNOMED database and build its HESML taxonomy
+        // We load the MeSH ontology and build
 
         m_Libraries = new ISemanticLibrary[libraries.length];
         
@@ -135,6 +145,30 @@ abstract class SemanticLibraryBenchmark implements IUMLSBenchmark
                                     libraries[i], m_strMeShDir,
                                     m_strMeSHdescriptionFileName,
                                     m_strUmlsDir, m_strSNOMED_CUI_mappingfilename);
+        }
+    }
+    
+    /**
+     * Construcotr for GO.based benchamrks
+     * @param libraries
+     * @param strOboFilename
+     * @throws Exception 
+     */
+    
+    SemanticLibraryBenchmark(
+            SemanticLibraryType[]   libraries,
+            String                  strOboFilename) throws Exception
+    {
+        m_strOboFilename = strOboFilename;
+        
+        // We load the MeSH ontology and build
+
+        m_Libraries = new ISemanticLibrary[libraries.length];
+        
+        for (int i = 0; i < libraries.length; i++)
+        {
+            m_Libraries[i] = SimilarityLibraryFactory.getLibraryForGO(
+                                    libraries[i], strOboFilename);
         }
     }
     

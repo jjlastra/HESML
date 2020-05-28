@@ -76,6 +76,35 @@ public class OboOntology implements IOboOntology
     }
     
     /**
+     * This function returns a vector with all GO concept identifiers
+     * @return 
+     */
+    
+    @Override
+    public String[] getConceptIds()
+    {
+        // We create the output vector
+        
+        String[] strConceptsId = new String[m_taxonomy.getVertexes().getCount() - 1];
+        
+        // We retrieve all GO ids from the taxonomy nodes
+        
+        int i = 0;
+        
+        for (IVertex vertex: m_taxonomy.getVertexes())
+        {
+            if (!vertex.getStringTag().equals(""))
+            {
+                strConceptsId[i++] = vertex.getStringTag();
+            }
+        }
+        
+        // We return the result
+        
+        return (strConceptsId);
+    }
+    
+    /**
      * This fucntion adds a new concept to the ontology
      * @param strId
      * @param strNamespace

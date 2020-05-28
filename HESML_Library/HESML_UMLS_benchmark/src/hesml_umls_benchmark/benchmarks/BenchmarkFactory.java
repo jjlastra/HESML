@@ -24,18 +24,18 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.UMLSOntologyType;
-import hesml_umls_benchmark.IUMLSBenchmark;
 import hesml_umls_benchmark.SemanticLibraryType;
+import hesml_umls_benchmark.ISemanticLibBenchmark;
 
 /**
  * This function creates all UMLS benchmarks
  * @author j.lastra
  */
 
-public class UMLSBenchmarkFactory
+public class BenchmarkFactory
 {
     /**
-     * This function creates a random concept evaluation.
+     * This function creates a random concept evaluation on SNOMED-CT ontology.
      * @param libraries
      * @param similarityMeasure
      * @param icModel
@@ -51,7 +51,7 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
 
-    public static IUMLSBenchmark createSnomedConceptBenchmark(
+    public static ISemanticLibBenchmark createSnomedConceptBenchmark(
             SemanticLibraryType[]    libraries,
             UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
@@ -74,7 +74,7 @@ public class UMLSBenchmarkFactory
     }   
     
     /**
-     * This function creates a random concept evaluation.
+     * This function creates a random concept evaluation on MeSH ontology.
      * @param libraries
      * @param similarityMeasure
      * @param icModel
@@ -90,7 +90,7 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
 
-    public static IUMLSBenchmark createMeSHConceptBenchmark(
+    public static ISemanticLibBenchmark createMeSHConceptBenchmark(
             SemanticLibraryType[]    libraries,
             UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
@@ -106,6 +106,31 @@ public class UMLSBenchmarkFactory
                 similarityMeasure, icModel, nRandomSamplesPerLibrary,
                 nRuns, strMeShDir, strMeSHXmlDescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }   
+    
+    /**
+     * This function creates a random concept evaluation.
+     * @param libraries
+     * @param similarityMeasure
+     * @param icModel
+     * @param nRandomSamplesPerLibrary
+     * @param nRuns
+     * @param strGoOboFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static ISemanticLibBenchmark createGOConceptBenchmark(
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int[]                   nRandomSamplesPerLibrary,
+            int                     nRuns,
+            String                  strGoOboFilename) throws Exception
+    {
+        return (new RandomConceptsEvalBenchmark(libraries,
+                similarityMeasure, icModel, nRandomSamplesPerLibrary,
+                nRuns, strGoOboFilename));
     }   
     
     /**
@@ -126,7 +151,7 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
     
-    public static IUMLSBenchmark createAncSPLBenchmark(
+    public static ISemanticLibBenchmark createAncSPLBenchmark(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
@@ -162,7 +187,7 @@ public class UMLSBenchmarkFactory
      * @throws Exception 
      */
 
-    public static IUMLSBenchmark createMeSHSentenceBenchmark(
+    public static ISemanticLibBenchmark createMeSHSentenceBenchmark(
             SemanticLibraryType[]   libraries,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,

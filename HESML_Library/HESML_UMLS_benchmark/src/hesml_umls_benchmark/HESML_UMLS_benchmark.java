@@ -26,7 +26,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
-import hesml_umls_benchmark.benchmarks.UMLSBenchmarkFactory;
+import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;  
@@ -131,11 +131,16 @@ public class HESML_UMLS_benchmark
         
         testDbConnection();
         
-        RunGoBenchmark();
-        
         // We intialize the stopwatch
         
         long startTime = System.currentTimeMillis();
+        
+        /**
+         * Experiment 5: we compare the performance of HESML and SML on
+         * the Gene Ontoogy (GO).
+         */
+        
+        RunRandomGOConceptsExperiment(strOutputDir);
         
         /**
          * Experiment 1: we compare the performance of the `HESML, SML and
@@ -187,7 +192,7 @@ public class HESML_UMLS_benchmark
      * @return 
      */
     
-    private static int getRandonSamplesCountPerLibrary(
+    private static int getRandomSamplesCountPerLibrary(
             SemanticLibraryType     library,
             SimilarityMeasureType   measureType,
             UMLSOntologyType        ontology)
@@ -257,14 +262,55 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the GO-based benchmark between HESML and SML.
+     * This funtion returns the number of random samples used to evaluate
+     * a library on a specific ontology a similarity measure wit the aim
+     * of setting reasonable running times. It is needed becasue the large
+     * difference in performance of the libraries being evañuated.
+     * @param library
+     * @param measureType
+     * @return 
      */
     
-    private static void RunGoBenchmark() throws Exception
+    private static int getRandomSamplesCountGO(
+            SemanticLibraryType     library,
+            SimilarityMeasureType   measureType)
     {
-        IOboOntology ontology = OboFactory.loadOntology("../GeneOntology/go.obo");
+        // We initialize the output
         
+        int randomSamples = 100;
         
+        // We set some methods to be skipped by SML
+        
+        HashSet<SimilarityMeasureType> pathMeasures = new HashSet<>();
+        HashSet<SimilarityMeasureType> smlNonImplementedMeasures = new HashSet<>();
+        
+        // We register some measure types with differences for SML and UMLS::Similarity
+        
+        pathMeasures.add(SimilarityMeasureType.Rada);
+        
+        smlNonImplementedMeasures.add(SimilarityMeasureType.AncSPLRada);
+        smlNonImplementedMeasures.add(SimilarityMeasureType.WuPalmerFast);
+                        
+        // We set the value according to the library
+        
+        switch (library)
+        {
+            case HESML:
+                
+                randomSamples = pathMeasures.contains(measureType) ? 200 : 1000000;
+                
+                break;
+                
+            case SML:
+                
+                randomSamples = pathMeasures.contains(measureType) ? 20 : 1000000;                
+                
+                break;
+        }
+        
+        // We return the result
+        
+        return (randomSamples);
     }
     
     /**
@@ -328,13 +374,13 @@ public class HESML_UMLS_benchmark
 
             for (int j = 0; j < libraries.length; j++)
             {
-                nRandomSamplesPerLibrary[j] = getRandonSamplesCountPerLibrary(libraries[j],
+                nRandomSamplesPerLibrary[j] = getRandomSamplesCountPerLibrary(libraries[j],
                                                 measureTypes[i], ontologyType);
             }
         
             // We set the benchmark
             
-            IUMLSBenchmark benchmark = null;
+            ISemanticLibBenchmark benchmark = null;
             
             // We build the benchmark according tor the underlying ontology
             
@@ -342,7 +388,7 @@ public class HESML_UMLS_benchmark
             {
                 case SNOMEDCT_US:
                 
-                    benchmark = UMLSBenchmarkFactory.createSnomedConceptBenchmark(
+                    benchmark = BenchmarkFactory.createSnomedConceptBenchmark(
                                     libraries, ontologyType, measureTypes[i],
                                     IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                     nRuns, m_strSnomedDir, m_strSNOMED_conceptFilename,
@@ -354,7 +400,7 @@ public class HESML_UMLS_benchmark
                     
                 case MeSH:
                     
-                    benchmark = UMLSBenchmarkFactory.createMeSHConceptBenchmark(
+                    benchmark = BenchmarkFactory.createMeSHConceptBenchmark(
                                     libraries, ontologyType, measureTypes[i],
                                     IntrinsicICModelType.Seco, nRandomSamplesPerLibrary,
                                     nRuns, m_strMeSHdir, m_strMeSHXmlFilename,
@@ -362,6 +408,82 @@ public class HESML_UMLS_benchmark
                     
                     break;
             }
+        
+            // We run and destroy the benchmark
+            
+            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
+            benchmark.clear();
+        }
+    }
+    
+    /**
+     * This function executes the benchmark which evaluates the similarity fo
+     * a random sequence of GO concept pairs.
+     * @param strRawOutputDir
+     * @throws Exception 
+     */
+    
+    private static void RunRandomGOConceptsExperiment(
+            String  strRawOutputDir) throws Exception
+    {
+        // We set the vector of libraries to be compared
+        
+        SemanticLibraryType[] libraries = new SemanticLibraryType[]{
+                                                    SemanticLibraryType.SML,
+                                                    SemanticLibraryType.HESML};
+
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
+                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin};
+                
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_" + "GO.csv";
+        }
+
+        // We create the running-time vector
+
+        int[] nRandomSamplesPerLibrary = new int[libraries.length];
+        
+        /**
+         * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
+         * different similarity measures on a random sequence of concept pairs.
+         */
+        
+        int nRuns = 5;
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            /**
+             * We set the number of random concept pairs evaluated by each library
+             * with the aim of computing the average running times. Because of the
+             * running times could span different orders of magnitude the number
+             * of concept pairs need to be different to provide reasonable
+             * experimentation times.
+             */
+
+            for (int j = 0; j < libraries.length; j++)
+            {
+                nRandomSamplesPerLibrary[j] = getRandomSamplesCountGO(libraries[j],
+                                                measureTypes[i]);
+            }
+        
+            // We set the benchmark
+            
+            ISemanticLibBenchmark benchmark = null;
+            
+            // We build the benchmark according tor the underlying ontology
+            
+            benchmark = BenchmarkFactory.createGOConceptBenchmark(
+                            libraries, measureTypes[i], IntrinsicICModelType.Seco,
+                            nRandomSamplesPerLibrary, nRuns, "../GeneOntology/go.obo");
         
             // We run and destroy the benchmark
             
@@ -420,7 +542,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            IUMLSBenchmark sentenceBenchmark = UMLSBenchmarkFactory.createMeSHSentenceBenchmark(
+            ISemanticLibBenchmark sentenceBenchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strMedSTSfilename, 
                                         m_strMeSHdir, m_strMeSHXmlFilename,
@@ -467,7 +589,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            IUMLSBenchmark benchmark = UMLSBenchmarkFactory.createAncSPLBenchmark(
+            ISemanticLibBenchmark benchmark = BenchmarkFactory.createAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],

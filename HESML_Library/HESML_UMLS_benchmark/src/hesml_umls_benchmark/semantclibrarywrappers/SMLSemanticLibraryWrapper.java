@@ -40,6 +40,9 @@ import slib.sml.sm.core.metrics.ic.utils.ICconf;
 import slib.sml.sm.core.utils.SMConstants;
 import slib.sml.sm.core.utils.SMconf;
 import hesml_umls_benchmark.ISemanticLibrary;
+import slib.graph.algo.utils.GAction;
+import slib.graph.algo.utils.GActionType;
+import slib.graph.algo.utils.GraphActionExecutor;
 
 /**
  * * This class implementes the SNOMED similarity library based on SML.
@@ -78,6 +81,12 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     private URI m_meshURI;
+    
+    /**
+     * Gene Ontolgy URI used by SML to set the node references
+     */
+    
+    private URI m_goURI;
 
     /**
      * SML IC model and similarity measure
@@ -130,6 +139,7 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_factory = null;
         m_engine = null;
         m_indexedSnomedIDsByCUI = null;
+        m_strOboFilename = "";
     }
     
     /**
@@ -158,25 +168,67 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_factory = null;
         m_engine = null;
         m_indexedSnomedIDsByCUI = null;
+        m_strOboFilename = "";
+    }
+
+    /**
+     * THisconstructgor loads the OBO ontology and selects the taxonomy
+     * associated to the selected namespace.
+     * @param strOboGeneOntologyFilename
+     * @param strSelectedNamespace 
+     */
+    
+    SMLSemanticLibraryWrapper(
+            String strOboGeneOntologyFilename) throws Exception
+    {
+        // W initialize the base clase
+        
+        super(strOboGeneOntologyFilename);
+        
+        // We initialize the object
+        
+        m_graph = null;
+        m_factory = null;
+        m_engine = null;
+        m_indexedSnomedIDsByCUI = null;
     }
     
     /**
      * This fucntion returns the degree of similarity between two UMLS concepts.
-     * @param strFirstUmlsCUI
-     * @param strSecondUmlsCUI
+     * @param strFirstConceptId
+     * @param strSecondConceptId
      * @return 
      */
     
     @Override
     public double getSimilarity(
-            String  strFirstUmlsCUI,
-            String  strSecondUmlsCUI) throws Exception
+            String  strFirstConceptId,
+            String  strSecondConceptId) throws Exception
     {
-        // We initilizae the output
+        // We initiliaze the output
         
-        double similarity = (m_strSnomedDBconceptFileName != "") ?
-                            getSimilarityWithSNOMED(strFirstUmlsCUI, strSecondUmlsCUI) :
-                            getSimilarityWithMeSH(strFirstUmlsCUI, strSecondUmlsCUI);
+        double similarity = Double.NaN;
+        
+        // We compute the similarity
+        
+        if (!m_strSnomedDBconceptFileName.equals(""))
+        {
+            similarity = getSimilarityWithSNOMED(strFirstConceptId, strSecondConceptId);
+        }
+        else if (!m_strMeSHXmlFilename.equals(""))
+        {
+            similarity = getSimilarityWithMeSH(strFirstConceptId, strSecondConceptId);
+        }
+        else
+        {
+            String strId1 = strFirstConceptId.replace("GO:", "");
+            String strId2 = strFirstConceptId.replace("GO:", "");
+            
+            URI concept1 = m_factory.getURI(m_goURI.stringValue() + strId1);
+            URI concept2 = m_factory.getURI(m_goURI.stringValue() + strId2);
+            
+            m_engine.compare(m_smConf, concept1, concept2);
+        }
         
         // We return the result
         
@@ -361,7 +413,7 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             GraphLoaderGeneric.populate(dataConf, m_graph);
             System.out.println(m_graph.toString());
         }
-        else
+        else if (m_strMeSHXmlFilename != "")
         {
             // MeSH has been selected
             
@@ -378,6 +430,38 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
                                     m_strMeSHDir + "/" + m_strMeSHXmlFilename);
             
             GraphLoaderGeneric.populate(dataMeshXML, m_graph);
+        }
+        else
+        {
+            // We load the OBO ontology
+            // Next code is copied from SML example source code
+            // The Gene Ontology (OBO format)
+        
+            m_goURI = m_factory.getURI("http://go/");
+
+            // We define a prefix in order to build valid uris from ids such as GO:XXXXX, 
+            // considering the configuration specified below the URI associated to GO:XXXXX will be http://go/XXXXX
+            
+            m_factory.loadNamespacePrefix("GO", m_goURI.toString());
+            
+            m_graph = new GraphMemory(m_goURI);
+
+            GDataConf grapOboConf = new GDataConf(GFormat.OBO, m_strOboFilename);
+            GraphLoaderGeneric.populate(grapOboConf, m_graph);
+            
+            // We create a vertex corresponding to the virtual root
+            // and we add it to the graph. GO is made up by three
+            // independent taxonomies which are merged in SML
+            // by adding a virtual root.
+        
+            URI virtualRoot = m_factory.getURI("http://go/virtualRoot");
+            m_graph.addV(virtualRoot);
+        
+            // We root the graphs using the virtual root as root
+            
+            GAction rooting = new GAction(GActionType.REROOTING);
+            rooting.addParameter("root_uri", virtualRoot.stringValue());
+            GraphActionExecutor.applyAction(m_factory, rooting, m_graph);
         }
         
         // We define the engine used to compute the similarity

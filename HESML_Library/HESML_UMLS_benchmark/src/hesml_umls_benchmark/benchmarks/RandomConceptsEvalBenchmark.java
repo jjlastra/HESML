@@ -23,6 +23,8 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.SimilarityLibraryWrapper;
@@ -71,7 +73,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
      */
     
     private UMLSOntologyType  m_ontologyType;
-
+    
     /**
      * Constructor of the random concept pairs benchmark
      * @param libraries
@@ -136,7 +138,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
     RandomConceptsEvalBenchmark(
             SemanticLibraryType[]   libraries,
-            UMLSOntologyType  ontology,
+            UMLSOntologyType        ontology,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,
             int[]                   nRandomSamplesPerLibrary,
@@ -158,6 +160,39 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         m_ontologyType = ontology;
         m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
         m_nRuns = nRuns;
+    }
+    
+    /**
+     * Constructor to evaluate the libraries with GO ontology
+     * @param libraries
+     * @param similarityMeasure
+     * @param icModel
+     * @param nRandomSamplesPerLibrary
+     * @param nRuns
+     * @param strOboFilename
+     * @throws Exception 
+     */
+    
+    RandomConceptsEvalBenchmark(
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int[]                   nRandomSamplesPerLibrary,
+            int                     nRuns,
+            String                  strOboFilename) throws Exception
+    {
+        // We initialize the base class
+        
+        super(libraries, strOboFilename);    
+        
+        // We initialize the attributes of the object
+        
+        m_MeasureType = similarityMeasure;
+        m_icModel = icModel;
+        //m_ontologyType = ontology;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
+        m_nRuns = nRuns;
+        m_strOboFilename = strOboFilename;
     }
     
     /**
@@ -186,7 +221,9 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             
             // We get the collection of random UMLS CUI pairs
 
-            String[][] cuiPairs = getRandonCUIpairs(m_nRandomSamplesPerLibrary[iLib]);
+            String[][] conceptIdpairs = m_strOboFilename.equals("") ?
+                                    getRandomCUIpairs(m_nRandomSamplesPerLibrary[iLib]) :
+                                    getRandomGOpairs(m_nRandomSamplesPerLibrary[iLib]);
             
             // We load SNOMED and the resources of the library
             
@@ -194,7 +231,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             
             // We evaluate the library
             
-            double[] runningTimes = EvaluateLibrary(m_Libraries[iLib], cuiPairs, m_nRuns);
+            double[] runningTimes = EvaluateLibrary(m_Libraries[iLib], conceptIdpairs, m_nRuns);
             
             // We copy the results to the raw output matrix
             
@@ -236,44 +273,22 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
             strOutputDataMatrix[0][j + 1] = m_Libraries[i].getLibraryType().toString()
                                             + "-" + m_MeasureType.toString();
         }
-        // We reurn the result
+        // We return the result
         
         return (strOutputDataMatrix);
     }
     
     /**
-     * This function sets the Seco et al.(2004)[1] and the Lin similarity
-     * measure [2] using HESML [3] and SML [4] libraries. Then, the function
-     * evaluates the Lin similarity [2] of the set of random concept pairs.
-     * 
-     * [1] N. Seco, T. Veale, J. Hayes,
-     * An intrinsic information content metric for semantic similarity
-     * in WordNet, in: R. López de Mántaras, L. Saitta (Eds.), Proceedings
-     * of the 16th European Conference on Artificial Intelligence (ECAI),
-     * IOS Press, Valencia, Spain, 2004: pp. 1089–1094.
-     * 
-     * [2] D. Lin, An information-theoretic definition of similarity,
-     * in: Proceedings of the 15th International Conference on Machine
-     * Learning, Madison, WI, 1998: pp. 296–304.
-     * 
-     * [3] J.J. Lastra-Díaz, A. García-Serrano, M. Batet, M. Fernández, F. Chirigati,
-     * HESML: a scalable ontology-based semantic similarity measures library
-     * with a set of reproducible experiments and a replication dataset,
-     * Information Systems. 66 (2017) 97–118.
-     * 
-     * [4] S. Harispe, S. Ranwez, S. Janaqi, J. Montmain,
-     * The semantic measures library and toolkit: fast computation of semantic
-     * similarity and relatedness using biomedical ontologies,
-     * Bioinformatics. 30 (2014) 740–742.
-     * 
+     * This function evaluates the HESML, SML and UMS::Similarity libraries
+     * onto a same ontology.
      * @param library
-     * @param umlsCuiPairs
+     * @param conceptIdPairs
      * @param nRuns
      */
     
     private double[] EvaluateLibrary(
             ISemanticLibrary    library,
-            String[][]          umlsCuiPairs,
+            String[][]          conceptIdPairs,
             int                 nRuns) throws Exception
     {
         // We initialize the output vector
@@ -284,12 +299,12 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         // practical running times for te Rada measure, thus we detect this case
         // and skip its evaluation.
 
-        if (umlsCuiPairs.length > 0) library.setSimilarityMeasure(m_icModel, m_MeasureType);
+        if (conceptIdPairs.length > 0) library.setSimilarityMeasure(m_icModel, m_MeasureType);
         
         // We set the NaN value for the cases in which the library
         // is not evaluated for a specific measure
         
-        if (umlsCuiPairs.length == 0)
+        if (conceptIdPairs.length == 0)
         {
             for (int i = 0; i < runningTimes.length; i++)
             {
@@ -319,8 +334,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
                     // The function also returns the running times for each run
                     // similarityWithRunningTimes[similarity_i][runningTime_ị]
 
-                    double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(
-                                                                umlsCuiPairs, m_ontologyType);
+                    double[][] similarityWithRunningTimes = pedersenLib.getSimilaritiesAndRunningTimes(conceptIdPairs, m_ontologyType);
                     
                     // We initialize the running time for this run
                     
@@ -350,15 +364,14 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
                     // We evaluate the random concept pairs
 
-                    for (int i = 0; i < umlsCuiPairs.length; i++)
+                    for (int i = 0; i < conceptIdPairs.length; i++)
                     {
-                        library.getSimilarity(umlsCuiPairs[i][0], umlsCuiPairs[i][1]);
+                        library.getSimilarity(conceptIdPairs[i][0], conceptIdPairs[i][1]);
                     }
 
                     // We compute the elapsed time in seconds
 
                     runningTimes[iRun] = (System.currentTimeMillis() - startTime) / 1000.0;
-
                     overallAccumulatedTime += runningTimes[iRun];
                 }
             }
@@ -369,16 +382,15 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
 
             // We print the average results
 
-            System.out.println("# UMLS concept pairs evaluated = " + umlsCuiPairs.length);
+            System.out.println("# UMLS concept pairs evaluated = " + conceptIdPairs.length);
             System.out.println(library.getLibraryType() + " Average time (secs) = "
                     + averageRuntime);
 
             System.out.println(library.getLibraryType()
                     + " Average evaluation speed (#evaluation/second) = "
-                    + ((double)umlsCuiPairs.length) / averageRuntime);
+                    + ((double)conceptIdPairs.length) / averageRuntime);
             
             System.out.println("Similarity measure evaluated = " + m_MeasureType.toString());
-            System.out.println("Ontology used = " + m_ontologyType.toString());
         }
         
         // We return the results
@@ -395,7 +407,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
      * @return 
      */
     
-    private String[][] getRandonCUIpairs(
+    private String[][] getRandomCUIpairs(
             int nPairs) throws FileNotFoundException, IOException, XMLStreamException 
     {
         // We define the CUI keys vector
@@ -460,5 +472,54 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         // We return the output
         
         return (umlsCuiPairs);
+    }
+    
+    /**
+     * This function returns a collection of pairs of GO concepts
+     * @param nPairs
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws XMLStreamException 
+     */
+    
+    private String[][] getRandomGOpairs(
+            int nPairs) throws FileNotFoundException, IOException, XMLStreamException, Exception 
+    {
+        // We load the OBO ontology
+        
+        IOboOntology ontology = OboFactory.loadOntology(m_strOboFilename);
+
+        // We get a vector with all Ids
+        
+        String[] strAllGoIds = ontology.getConceptIds();
+        
+        // We create a vector of random CUI pairs which are contained in SNOMED
+        
+        String[][] goConceptPairs = new String[nPairs][2];
+        
+        // We create a random number
+        
+        Random rand = new Random(500);
+        
+        // We get the number of GO nodes mapped to the ontology
+        
+        long nConcepts = strAllGoIds.length;
+        
+        // We generate the ranomdon node pairs
+        
+        for (int i = 0; i < nPairs; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                int conceptIndex = (int)(rand.nextDouble() * (nConcepts - 1));
+                
+                goConceptPairs[i][j] = strAllGoIds[conceptIndex];
+            }
+        }
+        
+        // We return the output
+        
+        return (goConceptPairs);
     }
 }
