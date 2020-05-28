@@ -90,7 +90,8 @@ public class OboOntology implements IOboOntology
             String      strId,
             String      strNamespace,
             String      strName,
-            String[]    strParentIds) throws Exception
+            String[]    strParentIds,
+            String[]    strAlternativeIds) throws Exception
     {
         // We check that there is no other concept with the same ID
         
@@ -103,11 +104,18 @@ public class OboOntology implements IOboOntology
         // We create the concept and isnert in the ontology
         
         OboConcept concept = new OboConcept(this, strId, strNamespace,
-                                    strName, strParentIds);
+                                    strName, strParentIds, strAlternativeIds);
         
         // We add the conepot to the overall collection
         
         m_conceptsdIndexedById.put(strId, concept);
+        
+        // We register all alternative 'alias' IDs
+        
+        for (int i = 0; i < strAlternativeIds.length; i++)
+        {
+            m_conceptsdIndexedById.put(strAlternativeIds[i], concept);
+        }
         
         // We return the result
         
@@ -239,9 +247,10 @@ public class OboOntology implements IOboOntology
         
         System.out.println("--- HESML OBO ontology ----");
         System.out.println("Ontology name = " + m_strName);
-        System.out.println("Ontology overall concepts = " + m_conceptsdIndexedById.size());
         
         // We check all taxonomies
+        
+        int overallNodes = 0;
         
         for (String strNamespace: m_taxonomiesByNamespace.keySet())
         {
@@ -254,6 +263,10 @@ public class OboOntology implements IOboOntology
             System.out.println("Taxonomy name = " + strNamespace
                     + ", #nodes = " + taxonomy.getVertexes().getCount());
             
+            // We accumulate the overall concept count
+            
+            overallNodes += taxonomy.getVertexes().getCount();
+            
             // We check that there is a single root node
             
             if (taxonomy.getVertexes().getRoots().getCount() > 1)
@@ -264,7 +277,9 @@ public class OboOntology implements IOboOntology
         
         // We close the information block
         
-        System.out.println("---------------------");
+        System.out.println("Overall #concepts = " + overallNodes);
+        System.out.println("Overall indexed #concepts = " + m_conceptsdIndexedById.size());
+        System.out.println("----------------------------");
     }
     
     /**

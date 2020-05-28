@@ -60,6 +60,12 @@ class OboConcept implements IOboConcept
     private String[]  m_parentsId;
     
     /**
+     * Alias for this concept
+     */
+    
+    private String[]  m_alternativeIds;
+    
+    /**
      * Traversing flag
      */
     
@@ -70,9 +76,15 @@ class OboConcept implements IOboConcept
      */
     
     private OboOntology m_ontology;
-    
+
     /**
-     * Constructor
+     * Constructor of OBO concepts
+     * @param ontology
+     * @param strId
+     * @param strNamespace
+     * @param strName
+     * @param strParentIds
+     * @param strAlternativeIds 
      */
     
     OboConcept(
@@ -80,7 +92,8 @@ class OboConcept implements IOboConcept
             String      strId,
             String      strNamespace,
             String      strName,
-            String[]    strParentIds)
+            String[]    strParentIds,
+            String[]    strAlternativeIds)
     {
         m_strId = strId;
         m_ontology = ontology;
@@ -164,7 +177,18 @@ class OboConcept implements IOboConcept
     @Override
     public String[] getParentsId()
     {
-        return (m_parentsId);
+        return ((String[]) m_parentsId.clone());
+    }
+
+    /**
+     * This fucntion returns the parent Ids for the concept
+     * @return 
+     */
+    
+    @Override
+    public String[] getAlternativeIds()
+    {
+        return ((String[]) m_alternativeIds.clone());
     }
     
     /**

@@ -115,19 +115,24 @@ class OboReader
     {
         // We initilize the attributes to be parsed
         
-        String  strId = "";
-        String  strName = "";
-        String  strNamespace = strDefaultNamespace;
+        String strId = "";
+        String strName = "";
+        String strNamespace = strDefaultNamespace;
+        
+        // Auxiliary sets for parsing parents and alternative IDs
         
         HashSet<String> parentsId = new HashSet<>();
+        HashSet<String> alternativesId = new HashSet<>();
         
         // We set the tag names
         
-        String  tagNamespace = "namespace:";
-        String  tagId = "id:";
-        String  tagName = "name:";
-        String  tagIsA = "is_a:";
-        String  tagObsolete = "is_obsolete:";
+        String tagNamespace = "namespace:";
+        String tagId = "id:";
+        String tagName = "name:";
+        String tagIsA = "is_a:";
+        String tagObsolete = "is_obsolete:";
+        String tagAlternativeId = "alt_id:";
+        
         boolean isObsolete = false;
         
         // We parse all term fields
@@ -156,6 +161,12 @@ class OboReader
                 
                 parentsId.add(strFields[0]);
             }
+            else if (strLine.startsWith(tagAlternativeId))
+            {
+                String strAltId = strLine.substring(tagAlternativeId.length()).trim();
+                
+                alternativesId.add(strAltId);
+            }
             else if (strLine.startsWith(tagObsolete))
             {
                 String value = strLine.substring(tagObsolete.length()).trim();
@@ -174,10 +185,18 @@ class OboReader
 
             parentsId.toArray(strParentIds);
             parentsId.clear();
+            
+            // We create the alternative IDs vector
+            
+            String[] strAlternativeIds = new String[alternativesId.size()];
+
+            alternativesId.toArray(strAlternativeIds);
+            alternativesId.clear();
 
             // We create a new concept
 
-            ontology.addConcept(strId, strNamespace, strName, strParentIds);
+            ontology.addConcept(strId, strNamespace,
+                    strName, strParentIds, strAlternativeIds);
         }
     }
 }

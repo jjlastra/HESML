@@ -69,4 +69,11 @@ public interface IOboConcept
      */
     
     String[] getParentsId();
+    
+    /**
+     * This fucntion returns the parent Ids for the concept
+     * @return 
+     */
+    
+    String[] getAlternativeIds();
 }
