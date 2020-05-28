@@ -46,7 +46,7 @@ public class OboOntology implements IOboOntology
      * Taxonomies associated to each namespace
      */
     
-    private HashMap<String, ITaxonomy>  m_taxonomiesByNamespace;
+    private ITaxonomy   m_taxonomy;
     
     /**
      * Name of the ontology
@@ -60,7 +60,6 @@ public class OboOntology implements IOboOntology
     
     OboOntology(String strName)
     {
-        m_taxonomiesByNamespace = new HashMap<>();
         m_conceptsdIndexedById = new HashMap<>();
         m_strName = strName;
     }
@@ -127,9 +126,9 @@ public class OboOntology implements IOboOntology
      * @return 
      */
     
-    public ITaxonomy getTaxonomyByNamespace(String strNamespace)
+    public ITaxonomy getTaxonomy()
     {
-        return (m_taxonomiesByNamespace.get(strNamespace));
+        return (m_taxonomy);
     }
     
     /**
@@ -148,7 +147,8 @@ public class OboOntology implements IOboOntology
      * This fucntion builds the taxonomies assocyaed to the ontology
      */
     
-    public void buildTaxonomies() throws Exception
+    public void buildTaxonomy(
+        boolean useAncestorsCaching) throws Exception
     {
         // We create the collection of namespaces
         
@@ -163,10 +163,13 @@ public class OboOntology implements IOboOntology
         
         // We create a taxonomy for each namespace
         
-        for (String strNamespace: namespaces)
-        {
-            m_taxonomiesByNamespace.put(strNamespace, TaxonomyFactory.createBlankTaxonomy());
-        }
+        m_taxonomy = TaxonomyFactory.createBlankTaxonomy();
+        
+        // We createt he virtual root
+        
+        m_taxonomy.addVertex(0L, new Long[0]);
+        
+        Long[] rootParent = {0L};
         
         // We set the traversing flag and enqueue the concepts
         
@@ -204,10 +207,6 @@ public class OboOntology implements IOboOntology
             
             if (parentsVisited && !concept.getVisited())
             {
-                // Obtengo la taxonomía asociada a su dominio
-                
-                ITaxonomy taxonomy = m_taxonomiesByNamespace.get(concept.getNamespace());
-                
                 // We get the parents ID
                 
                 String[] parents = concept.getParentsId();
@@ -221,9 +220,15 @@ public class OboOntology implements IOboOntology
                 
                 // We insert the vertex in the taxonomy
                 
-                Long conceptNodeId = Integer.toUnsignedLong(taxonomy.getVertexes().getCount());
+                Long conceptNodeId = Integer.toUnsignedLong(m_taxonomy.getVertexes().getCount());
                 
-                IVertex vertex = taxonomy.addVertex(conceptNodeId, parentsId);
+                // We check if the vertex is a root of an independent taxonomy
+                
+                if (parentsId.length == 0) parentsId = rootParent;
+                
+                // We insert the vertex
+                
+                IVertex vertex = m_taxonomy.addVertex(conceptNodeId, parentsId);
                 
                 // We set the Tag name to the OBO node ID
                 
@@ -235,6 +240,11 @@ public class OboOntology implements IOboOntology
                 concept.setVisited(true);
             }
         }
+        
+        // We compute all cached information
+        
+        m_taxonomy.computesCachedAttributes();
+        if (useAncestorsCaching) m_taxonomy.computeCachedAncestorSet();
     }
     
     /**
@@ -248,36 +258,13 @@ public class OboOntology implements IOboOntology
         System.out.println("--- HESML OBO ontology ----");
         System.out.println("Ontology name = " + m_strName);
         
-        // We check all taxonomies
-        
-        int overallNodes = 0;
-        
-        for (String strNamespace: m_taxonomiesByNamespace.keySet())
-        {
-            // We get the taxonomy
-            
-            ITaxonomy taxonomy = m_taxonomiesByNamespace.get(strNamespace);
-                    
-            // Information message
-            
-            System.out.println("Taxonomy name = " + strNamespace
-                    + ", #nodes = " + taxonomy.getVertexes().getCount());
-            
-            // We accumulate the overall concept count
-            
-            overallNodes += taxonomy.getVertexes().getCount();
-            
-            // We check that there is a single root node
-            
-            if (taxonomy.getVertexes().getRoots().getCount() > 1)
-            {
-                throw (new Exception(""));
-            }
-        }
-        
+        // Information message
+
+        System.out.println("Unified taxonomy, #nodes = "
+                + m_taxonomy.getVertexes().getCount());
+
         // We close the information block
         
-        System.out.println("Overall #concepts = " + overallNodes);
         System.out.println("Overall indexed #concepts = " + m_conceptsdIndexedById.size());
         System.out.println("----------------------------");
     }
@@ -288,16 +275,7 @@ public class OboOntology implements IOboOntology
     
     public void clear()
     {
-        // We destry all taxonomies
-        
-        for (ITaxonomy taxonomy: m_taxonomiesByNamespace.values())
-        {
-            taxonomy.clear();
-        }
-        
-        // We release the mappings
-        
         m_conceptsdIndexedById.clear();
-        m_taxonomiesByNamespace.clear();
+        m_taxonomy.clear();
     }
 }

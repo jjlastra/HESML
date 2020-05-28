@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.obo.impl;
 
 import hesml.taxonomyreaders.obo.IOboConcept;
+import hesml.taxonomyreaders.obo.IOboOntology;
 
 /**
  * This class represents an OBO concept, a node of any OBO namespace (taxonomy)
@@ -189,6 +190,17 @@ class OboConcept implements IOboConcept
     public String[] getAlternativeIds()
     {
         return ((String[]) m_alternativeIds.clone());
+    }
+    
+    /**
+     * This function returns the container ontology
+     * @return 
+     */
+    
+    @Override
+    public IOboOntology getOntology()
+    {
+        return (m_ontology);
     }
     
     /**

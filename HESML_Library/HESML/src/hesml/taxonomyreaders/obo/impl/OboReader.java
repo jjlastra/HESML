@@ -95,7 +95,7 @@ class OboReader
         
         // We build the taxonomies
         
-        ontology.buildTaxonomies();
+        ontology.buildTaxonomy(true);
         ontology.checkTopology();
         
         // We return the result

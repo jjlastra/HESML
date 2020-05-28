@@ -28,6 +28,13 @@ package hesml.taxonomyreaders.obo;
 public interface IOboConcept
 {
     /**
+     * This function returns the container ontology
+     * @return 
+     */
+    
+    IOboOntology getOntology();
+    
+    /**
      * This function returns the unique ID of an OBO concept within
      * an OBO ontology.
      * @return 

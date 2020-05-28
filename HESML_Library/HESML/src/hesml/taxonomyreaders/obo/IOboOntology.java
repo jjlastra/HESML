@@ -31,11 +31,17 @@ import hesml.taxonomy.ITaxonomy;
 public interface IOboOntology
 {
     /**
-     * This function returns the taxonomy associated to a given namespace.
+     * This function releases the ontology resources
+     */
+    
+    void clear();
+    
+    /**
+     * This function returns the unified taxonomy
      * @return 
      */
     
-    ITaxonomy getTaxonomyByNamespace(String strNamespace);
+    ITaxonomy getTaxonomy();
     
     /**
      * This function retrieves a concept by its ID
