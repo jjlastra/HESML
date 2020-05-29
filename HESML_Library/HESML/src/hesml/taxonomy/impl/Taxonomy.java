@@ -317,7 +317,7 @@ class Taxonomy implements ITaxonomy
         
         for (IVertex vertex: smallSet)
         {
-            if ((vertex.getICvalue() > maxIC) && largeSet.contains(vertex))
+            if (largeSet.contains(vertex) && (vertex.getICvalue() > maxIC))
             {
                 maxIC = vertex.getICvalue();
                 micaVertex = vertex;
