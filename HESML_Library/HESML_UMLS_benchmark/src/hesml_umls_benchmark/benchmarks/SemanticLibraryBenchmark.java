@@ -183,6 +183,30 @@ abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
     }
     
     /**
+     * This function returns a vector of NaN values.
+     * @return 
+     */
+    
+    protected double[] getNullRunningTimes(
+        int nRuns)
+    {
+        // We create the output vector
+        
+        double[] runningTimes = new double[nRuns];
+        
+        // We fill the vector
+        
+        for (int i = 0; i < runningTimes.length; i++)
+        {
+            runningTimes[i] = Double.NaN;
+        }        
+        
+        // We return the result
+        
+        return (runningTimes);
+    }
+    
+    /**
      * This fucntion runs the benchmark and writes the results to the
      * output file.
      */

@@ -367,7 +367,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 5;
+        int nRuns = 10;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
@@ -600,7 +600,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                2, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                100, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);

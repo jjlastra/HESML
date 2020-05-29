@@ -343,14 +343,25 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public void setSimilarityMeasure(
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
         // We save the new configuration
         
-        m_icModel = icModel;
-        m_measureType = measureType;
+        boolean result = !convertHesmlMeasureTypeToUMLS_Sim(measureType).equals("");
+        
+        // We set the new measure type
+        
+        if (result)
+        {
+            m_icModel = icModel;
+            m_measureType = measureType;
+        }
+        
+        // We return the result
+        
+        return (result);
     }
     
     /**

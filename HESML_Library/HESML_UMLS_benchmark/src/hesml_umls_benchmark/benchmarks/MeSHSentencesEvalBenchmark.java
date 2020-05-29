@@ -174,9 +174,13 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     public void run(
             String  strOutputFilename) throws Exception
     {
+        // We initilizae the number of runs
+        
+        int nRuns = 5;
+        
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[2][m_Libraries.length + 1];
+        String[][] strOutputDataMatrix = new String[1 + nRuns][m_Libraries.length + 1];
         
         // We fill the first row header
         
@@ -197,22 +201,37 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             strOutputDataMatrix[0][iLib + 1] = m_Libraries[iLib].getLibraryType().toString()
                                         + "-" + m_MeasureType.toString();
             
-            // We load SNOMED and the resources of the library
+            // We set the output value
             
-            m_Libraries[iLib].loadOntology();
+            double[] runningTimes;
             
             // We set the similarity measure to be used
             
-            m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType);
+            if (m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType))
+            {
+                // We load MeSH ontology and the resources of the library
+
+                m_Libraries[iLib].loadOntology();
+
+                // We evaluate the library
+
+                runningTimes = EvaluateLibrary(m_Libraries[iLib], nRuns);
+
+                // We release the database and resources used by the library
+
+                m_Libraries[iLib].unloadOntology();
+            }
+            else
+            {
+                // The library does not implement the measure.
+                // We set the running times to NaN
+                
+                runningTimes = getNullRunningTimes(nRuns);
+            }
             
-            // We evaluate the library
+            // We save the results
             
-            CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[iLib], 1), iLib + 1);
-            
-            // We release the database and resources used by the library
-            
-            m_Libraries[iLib].unloadOntology();
+            CopyRunningTimesToMatrix(strOutputDataMatrix, runningTimes, iLib + 1);
         }
         
         // We write the output raw data
@@ -274,7 +293,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     
     private double[] EvaluateLibrary(
             ISemanticLibrary    library,
-            int                         nRuns) throws Exception
+            int                 nRuns) throws Exception
     {
         // We initialize the output vector
         
@@ -326,6 +345,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         // We compute the averga running time
         
         double averageRuntime = accumulatedEvalTime / nRuns;
+        
+        // We release the cache for the Pederse's library
+        
+        if (pedersenLib) m_CachedSimilarityValues.clear();
         
         // We print the average results
         

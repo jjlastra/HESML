@@ -292,7 +292,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
     {
         // We initialize the output vector
         
-        double[] runningTimes = new double[nRuns];
+        double[] runningTimes;
         
         // We set the similarity measure to be used. SML library does not provide
         // practical running times for te Rada measure, thus we detect this case
@@ -305,13 +305,14 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         
         if (conceptIdPairs.length == 0)
         {
-            for (int i = 0; i < runningTimes.length; i++)
-            {
-                runningTimes[i] = Double.NaN;
-            }
+            runningTimes = getNullRunningTimes(nRuns);
         }
         else
         {
+            // We creaet hte output vector
+            
+            runningTimes = new double[nRuns];
+            
             // We initializa the time counter
             
             double overallAccumulatedTime = 0.0;

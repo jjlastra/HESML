@@ -489,7 +489,7 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public void setSimilarityMeasure(
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
@@ -499,11 +499,18 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
 
         // We force the Seco IC model
 
-        m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
+        if (!strMeasure.equals(""))
+        {
+            m_icConf = new IC_Conf_Topo(SMConstants.FLAG_ICI_SECO_2004);
 
-        // Then we configure the pairwise measure to use, we here choose to use Lin formula
+            // Then we configure the pairwise measure to use, we here choose to use Lin formula
 
-        m_smConf = new SMconf(strMeasure, m_icConf);
+            m_smConf = new SMconf(strMeasure, m_icConf);
+        }
+        
+        // We return the result
+        
+        return (!strMeasure.equals(""));
     }
     
     /**
@@ -533,20 +540,12 @@ class SMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         conversionMap.put(SimilarityMeasureType.LeacockChodorow, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_LEACOCK_CHODOROW_1998);
         conversionMap.put(SimilarityMeasureType.PedersenPath, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_RADA_1989);
         conversionMap.put(SimilarityMeasureType.PekarStaab, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_PEKAR_STAAB_2002);
-        conversionMap.put(SimilarityMeasureType.WuPalmerFast, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_WU_PALMER_1994);
         conversionMap.put(SimilarityMeasureType.WuPalmer, SMConstants.FLAG_SIM_PAIRWISE_DAG_EDGE_WU_PALMER_1994);
 
-        // We check that the measure is implemented by thius library
-        
-        if (!conversionMap.containsKey(hesmlMeasureType))
-        {
-            throw (new Exception(hesmlMeasureType.toString() +
-                    " is not implemented by UMLS::Similarity"));
-        }
-        
         // We get the output measure tyoe
         
-        String strUMLSimMeasureType = conversionMap.get(hesmlMeasureType);
+        String strUMLSimMeasureType = conversionMap.containsKey(hesmlMeasureType) ?
+                                        conversionMap.get(hesmlMeasureType) : "";
         
         // We release the conversion table
         
