@@ -464,7 +464,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 5;
+        int nRuns = 10;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
