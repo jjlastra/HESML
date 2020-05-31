@@ -176,7 +176,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     {
         // We initilizae the number of runs
         
-        int nRuns = 1;
+        int nRuns = 5;
         
         // We create the output data matrix and fill the row headers
         
@@ -299,24 +299,24 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         double[] runningTimes = new double[nRuns];
         
-        // Becaause of the large running times of the UMLS_SIMILARITY library,
-        // this library is evaluated just one time, whilst the rest of 
-        // libraries are evaluated n times
-        // We compute all valus in one unique query
-        
-        boolean pedersenLib = (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
-        
-        if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
-        {
-            buildCachedSimilarityValues((UMLSSemanticLibraryWrapper) library);
-        }
-        
         // We execute multiple times the benchmark to compute a stable running time
 
         double accumulatedEvalTime = 0.0;
         
         for (int iRun = 0; iRun < nRuns; iRun++)
         {
+            // Becaause of the large running times of the UMLS_SIMILARITY library,
+            // this library is evaluated just one time, whilst the rest of 
+            // libraries are evaluated n times
+            // We compute all valus in one unique query
+
+            boolean pedersenLib = (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
+
+            if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
+            {
+                buildCachedSimilarityValues((UMLSSemanticLibraryWrapper) library);
+            }
+            
             // We initialize the stopwatch
 
             long startTime = System.currentTimeMillis();
@@ -335,7 +335,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             // We accumulate the query time for the UMLS::Similarity library
             // becuase it has bnen pre-calculated before
             
-            if (pedersenLib) runningTimes[iRun] += m_overallCachingTime;
+            if (pedersenLib)
+            {
+                runningTimes[iRun] += m_overallCachingTime;
+                m_CachedSimilarityValues.clear();
+            }
             
             // We accumulate the overall time
             
@@ -345,10 +349,6 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         // We compute the averga running time
         
         double averageRuntime = accumulatedEvalTime / nRuns;
-        
-        // We release the cache for the Pederse's library
-        
-        if (pedersenLib) m_CachedSimilarityValues.clear();
         
         // We print the average results
         

@@ -152,14 +152,6 @@ public class HESML_UMLS_benchmark
         RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
-         * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity by evaluating the MedSTS sentence similarity
-         * dataset.
-         */
-        
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
-        
-        /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
@@ -172,6 +164,14 @@ public class HESML_UMLS_benchmark
          */
         
         RunRandomGOConceptsExperiment(strOutputDir);
+        
+        /**
+         * Experiment 3: we compare the performance of the HEMSL, SML and
+         * UMLS::Similarity by evaluating the MedSTS sentence similarity
+         * dataset.
+         */
+        
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         // We show the overalll running time
         
