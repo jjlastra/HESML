@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import hesml.taxonomy.*;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class implements the ITaxonomy interface which represents an
@@ -141,10 +145,10 @@ class Taxonomy implements ITaxonomy
         // We retrieve the inclusive and unordered ancestor sets
         // of the input vertexes
         
-        HashSet<IVertex> beginAncestors = cachedAncestors ? ((Vertex)begin).getCachedAncestorSet()
+        Set<IVertex> beginAncestors = cachedAncestors ? ((Vertex)begin).getCachedAncestorSet()
                                         : getUnorderedAncestorSet(begin);
         
-        HashSet<IVertex> endAncestors = cachedAncestors ? ((Vertex)end).getCachedAncestorSet()
+        Set<IVertex> endAncestors = cachedAncestors ? ((Vertex)end).getCachedAncestorSet()
                                         : getUnorderedAncestorSet(end);
         
         // We traverse all the vertexes looking for the common ancestor
@@ -284,19 +288,20 @@ class Taxonomy implements ITaxonomy
             IVertex begin,
             IVertex end)
     {
-        IVertex micaVertex = null;    // Returned value
-
-        double  maxIC = Double.NEGATIVE_INFINITY;    // Maximum
+        // We initializa the output
+        
+        IVertex micaVertex = null;
 
         // We retrieves the inclusive ancestor sets of the input vertexes       
        
-        HashSet<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
-        HashSet<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
+        Set<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
+        Set<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
 
-        // We search on the smallest set
+        // We traverse all the vertexes looking for the common ancestor
+        // which satisfies the MICA criterium.
         
-        HashSet<IVertex> smallSet;
-        HashSet<IVertex> largeSet;
+        Set<IVertex> smallSet = null;
+        Set<IVertex> largeSet = null;
         
         if (beginAncestors.size() < endAncestors.size())
         {
@@ -309,18 +314,43 @@ class Taxonomy implements ITaxonomy
             largeSet = beginAncestors;
         }
         
+        // We check if the ancestor sets are ordered
+        
+        boolean ordered = (beginAncestors instanceof TreeSet);
+        
         // We traverse all the vertexes looking for the common ancestor
         // which satisfies the MICA criterium.
-        // In order to speed up the intersection of both sets,
-        // we check first the condition to select the vertex than
-        // its membership to the opposite ancestor set.
         
-        for (IVertex vertex: smallSet)
+        if (ordered)
         {
-            if ((vertex.getICvalue() > maxIC) && largeSet.contains(vertex))
+            // When the sets are ordered the first common ancestor is th eMICA
+            // because vertexes are decreasing ordered as regard their IC value
+            
+            for (IVertex vertex: smallSet)
             {
-                maxIC = vertex.getICvalue();
-                micaVertex = vertex;
+                if (largeSet.contains(vertex))
+                {
+                    micaVertex = vertex;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            // We initialize the max IC value
+            
+            double maxIC = Double.NEGATIVE_INFINITY;    // Maximum
+
+            // We must check for the max IC value
+            
+            for (IVertex vertex: smallSet)
+            {
+                if ((vertex.getICvalue() > maxIC)
+                        && largeSet.contains(vertex))
+                {
+                    maxIC = vertex.getICvalue();
+                    micaVertex = vertex;
+                }
             }
         }
         
@@ -528,16 +558,31 @@ class Taxonomy implements ITaxonomy
      * vertex on the SNOMED-CT taxonomy which contains many nodes with
      * multiple parents. It is optinal and uneeded on less complex ontologies
      * as WordNet
+     * @param useICvalues 
      */
 
     @Override
-    public void computeCachedAncestorSet() throws InterruptedException
+    public void computeCachedAncestorSet(
+        boolean useICvalues) throws InterruptedException
     {
         // We compute and save the ancestor set in the vertexes
         
         for (IVertex vertex: m_Vertexes)
         {
-            ((Vertex)vertex).setCachedAncestorSet(getUnorderedAncestorSet(vertex));
+            // We get the unordered ancestor set
+            
+            Set<IVertex> unorderedAncestorSet = getUnorderedAncestorSet(vertex);
+            
+            // We store the ancestor set
+            
+           if (!useICvalues)
+           {
+               ((Vertex)vertex).setCachedAncestorSet(unorderedAncestorSet);
+           }
+           else
+           {
+               ((Vertex)vertex).setCachedAncestorSetByICvalues(unorderedAncestorSet);
+           }
         }
     }
     

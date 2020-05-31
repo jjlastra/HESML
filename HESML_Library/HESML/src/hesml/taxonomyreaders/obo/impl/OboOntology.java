@@ -273,7 +273,7 @@ public class OboOntology implements IOboOntology
         // We compute all cached information
         
         m_taxonomy.computesCachedAttributes();
-        if (useAncestorsCaching) m_taxonomy.computeCachedAncestorSet();
+        if (useAncestorsCaching) m_taxonomy.computeCachedAncestorSet(false);
     }
     
     /**

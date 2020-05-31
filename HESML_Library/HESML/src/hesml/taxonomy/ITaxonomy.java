@@ -82,9 +82,10 @@ public interface ITaxonomy
      * vertex on the SNOMED-CT taxonomy which contains many nodes with
      * multiple parents. It is optinal and uneeded on less complex ontologies
      * as WordNet
+     * @param useICvalues 
      */
     
-    void computeCachedAncestorSet() throws InterruptedException;
+    void computeCachedAncestorSet(boolean useICvalues) throws InterruptedException;
     
     /**
      * This functions returns the collection of ordered vertexes in the

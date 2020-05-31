@@ -141,7 +141,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -157,14 +157,14 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-        RunAncSPLExperiment(strOutputDir);
+        //RunAncSPLExperiment(strOutputDir);
         
         /**
          * Experiment 5: we compare the performance of HESML and SML on
@@ -337,17 +337,17 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    SemanticLibraryType.UMLS_SIMILARITY,
-                                                    SemanticLibraryType.SML,
-                                                    SemanticLibraryType.HESML};
+                                                    //SemanticLibraryType.UMLS_SIMILARITY,
+                                                    SemanticLibraryType.HESML,
+                                                    SemanticLibraryType.SML};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    SimilarityMeasureType.Rada,
-                                                    SimilarityMeasureType.AncSPLRada,
-                                                    SimilarityMeasureType.Lin,
-                                                    SimilarityMeasureType.WuPalmerFast};
+                                                    //SimilarityMeasureType.Rada,
+                                                    //SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin};//,
+                                                    //SimilarityMeasureType.WuPalmerFast};
                 
         // We build the vector of raw output filenames
         
@@ -367,7 +367,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 10;
+        int nRuns = 6;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
@@ -464,7 +464,7 @@ public class HESML_UMLS_benchmark
          * different similarity measures on a random sequence of concept pairs.
          */
         
-        int nRuns = 10;
+        int nRuns = 6;
         
         for (int i = 0; i < measureTypes.length; i++)
         {
@@ -600,7 +600,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                100, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                50, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);

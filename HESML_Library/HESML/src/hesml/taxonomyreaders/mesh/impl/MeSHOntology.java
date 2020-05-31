@@ -190,7 +190,7 @@ class MeSHOntology implements IMeSHOntology
         // computation of MICA vertex in high-complexity ontologies as
         // SNOMED-CT.
         
-        if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet();
+        if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet(false);
         
         // We read the CUI mapping
         

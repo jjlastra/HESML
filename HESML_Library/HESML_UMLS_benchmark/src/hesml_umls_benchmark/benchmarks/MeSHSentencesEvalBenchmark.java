@@ -176,7 +176,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     {
         // We initilizae the number of runs
         
-        int nRuns = 5;
+        int nRuns = 1;
         
         // We create the output data matrix and fill the row headers
         

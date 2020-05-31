@@ -303,7 +303,7 @@ public class ReproducibleExperimentsInfo
             System.out.println("Pre-processing the WordNet taxonomy");
 
             taxonomy.computesCachedAttributes();
-            taxonomy.computeCachedAncestorSet();
+            taxonomy.computeCachedAncestorSet(false);
             
             // We store the taxonomy
             

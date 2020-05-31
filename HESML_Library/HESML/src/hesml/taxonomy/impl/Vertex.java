@@ -30,6 +30,9 @@ import java.util.PriorityQueue;
 import hesml.taxonomy.*;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.naming.ldap.HasControls;
 
 /**
@@ -113,10 +116,10 @@ class Vertex implements IVertex
     private int m_CachedAncestorsCount;
     
     /**
-     * Cached ancesot set used for the fast computation od MICA vertex
+     * Cached ancestor set used for the fast computation od MICA vertex
      */
     
-    private HashSet<IVertex>    m_CachedAncestorSet;
+    private Set<IVertex>    m_CachedAncestorSet;
     
     /**
      * Minimal depth of the vertex defined as the length of
@@ -172,7 +175,7 @@ class Vertex implements IVertex
      * @return 
      */
     
-    HashSet<IVertex> getCachedAncestorSet()
+    Set<IVertex> getCachedAncestorSet()
     {
         return (m_CachedAncestorSet);
     }
@@ -183,11 +186,42 @@ class Vertex implements IVertex
      */
     
     void setCachedAncestorSet(
-        HashSet<IVertex>    ancestorSet)
+        Set<IVertex>    ancestorSet)
     {
+        // We reset the old set
+        
+        if (m_CachedAncestorSet != null) m_CachedAncestorSet.clear();
+            
+        // We save the ordered ancestors
+
         m_CachedAncestorSet = ancestorSet;
     }
+
+    /**
+     * This function sets the cached ancestor set ordered by their IC values
+     * @param ancestorSet 
+     */
     
+    void setCachedAncestorSetByICvalues(
+        Set<IVertex>    ancestorSet)
+    {
+        // We reset the old set
+        
+        if (m_CachedAncestorSet != null) m_CachedAncestorSet.clear();
+            
+        // We build an decreasing ordering based on their IC value
+
+        SortedSet<IVertex> sortedAncestors = new TreeSet<IVertex>(new IcVertexComparator());
+
+        sortedAncestors.addAll(ancestorSet);
+
+        ancestorSet.clear();
+
+        // We save the ordered ancestors
+
+        m_CachedAncestorSet = sortedAncestors;
+    }
+        
     /**
      * This function returns the hashCode of the vertex.
      * @return 
@@ -646,8 +680,8 @@ class Vertex implements IVertex
      */
     
     private void computeDistanceFieldOnSubgraph(
-            HashSet<IVertex>    subgraph,
-            boolean             weighted)
+            Set<IVertex>    subgraph,
+            boolean         weighted)
     {
         // We reset all the minimum distances before to start the method
 
@@ -1010,7 +1044,7 @@ class Vertex implements IVertex
                 // We compute the shortes-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
 
-                HashSet<IVertex> targetAncestors = cachedAncestors ?
+                Set<IVertex> targetAncestors = cachedAncestors ?
                                         ((Vertex)target).getCachedAncestorSet()
                                         : m_Taxonomy.getUnorderedAncestorSet(target);
 
@@ -1025,7 +1059,7 @@ class Vertex implements IVertex
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
 
-                HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                                             : m_Taxonomy.getUnorderedAncestorSet(this);
 
                 computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
@@ -1038,11 +1072,11 @@ class Vertex implements IVertex
             {
                 // We obtain the ancestor set of both vertexes
 
-                HashSet<IVertex> targetAncestors = cachedAncestors ?
+                Set<IVertex> targetAncestors = cachedAncestors ?
                                             ((Vertex)target).getCachedAncestorSet()
                                             : m_Taxonomy.getUnorderedAncestorSet(target);
 
-                HashSet<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                         : m_Taxonomy.getUnorderedAncestorSet(this);
 
                 // We merge both ancestor sets to buld the subgraph

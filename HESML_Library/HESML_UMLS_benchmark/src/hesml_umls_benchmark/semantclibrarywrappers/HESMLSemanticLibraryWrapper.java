@@ -27,6 +27,7 @@ import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
@@ -40,6 +41,7 @@ import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -348,43 +350,36 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             
             // We get all tree nodes associated to the first CUI
             
-            HashSet<Long> firstTreeNodes = new HashSet<>();
+            HashSet<IVertex> firstTreeNodes = new HashSet<>();
             
-            for (int i = 0; i < firstMeshConcepts.length; i++)
+            for (IMeSHDescriptor descriptor: Arrays.asList(firstMeshConcepts))
             {
-                // We get all tree nodes associtaed to the MeSH descriptor
-                
-                Long[] nodeIds1 = firstMeshConcepts[i].getTaxonomyNodesId();
-                
-                // We register all node Ids
-                
-                firstTreeNodes.addAll(Arrays.asList(nodeIds1));
+                for (Long treeNodeId: Arrays.asList(descriptor.getTaxonomyNodesId()))
+                {
+                    firstTreeNodes.add(m_hesmlVertexes.getById(treeNodeId));
+                }
             }
 
             // We get all tree nodes associated to the second CUI
             
-            HashSet<Long> secondTreeNodes = new HashSet<>();
+            HashSet<IVertex> secondTreeNodes = new HashSet<>();
             
-            for (int i = 0; i < secondMeshConcepts.length; i++)
+            for (IMeSHDescriptor descriptor: Arrays.asList(secondMeshConcepts))
             {
-                // We get all tree nodes associtaed to the MeSH descriptor
-                
-                Long[] nodeIds2 = secondMeshConcepts[i].getTaxonomyNodesId();
-                
-                // We register all node Ids
-                
-                secondTreeNodes.addAll(Arrays.asList(nodeIds2));
+                for (Long treeNodeId: Arrays.asList(descriptor.getTaxonomyNodesId()))
+                {
+                    secondTreeNodes.add(m_hesmlVertexes.getById(treeNodeId));
+                }
             }
             
             // We compute the similarity for each pair of tree nodes
             
-            for (Long node1: firstTreeNodes)
+            for (IVertex vertex1: firstTreeNodes)
             {
-                for (Long node2: secondTreeNodes)
+                for (IVertex vertex2: secondTreeNodes)
                 {
                     double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
-                                        m_hesmlVertexes.getById(node1),
-                                        m_hesmlVertexes.getById(node2));
+                                                vertex1, vertex2);
                 
                     // We update the maximum similarity
 
@@ -415,7 +410,7 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      * @return true if the measure is allowed
      */
     
-    @Override
+        @Override
     public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
@@ -431,6 +426,7 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             System.out.println("Setting the " + icModel.toString() + " IC model into the SNOMED-CT  taxonomy");
             
             ICModelsFactory.getIntrinsicICmodel(icModel).setTaxonomyData(m_taxonomy);
+            m_taxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the Lin similarity measure

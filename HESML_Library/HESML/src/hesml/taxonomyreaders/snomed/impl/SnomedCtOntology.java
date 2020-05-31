@@ -294,7 +294,7 @@ class SnomedCtOntology implements ISnomedCtOntology
         // computation of MICA vertex in high-complexity ontologies as
         // SNOMED-CT.
         
-        if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet();
+        if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet(false);
     }
     
     /**
