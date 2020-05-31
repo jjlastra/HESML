@@ -141,7 +141,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -157,14 +157,14 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-        //RunAncSPLExperiment(strOutputDir);
+        RunAncSPLExperiment(strOutputDir);
         
         /**
          * Experiment 5: we compare the performance of HESML and SML on
@@ -337,17 +337,17 @@ public class HESML_UMLS_benchmark
          */
         
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
-                                                    //SemanticLibraryType.UMLS_SIMILARITY,
+                                                    SemanticLibraryType.UMLS_SIMILARITY,
                                                     SemanticLibraryType.HESML,
                                                     SemanticLibraryType.SML};
 
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
-                                                    //SimilarityMeasureType.Rada,
-                                                    //SimilarityMeasureType.AncSPLRada,
-                                                    SimilarityMeasureType.Lin};//,
-                                                    //SimilarityMeasureType.WuPalmerFast};
+                                                    SimilarityMeasureType.Rada,
+                                                    SimilarityMeasureType.AncSPLRada,
+                                                    SimilarityMeasureType.Lin,
+                                                    SimilarityMeasureType.WuPalmerFast};
                 
         // We build the vector of raw output filenames
         
