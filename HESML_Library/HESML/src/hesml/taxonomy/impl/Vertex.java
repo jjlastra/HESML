@@ -209,18 +209,14 @@ class Vertex implements IVertex
     @Override
     public boolean equals(Object obj)
     {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vertex other = (Vertex) obj;
-        if (this != other)
-        {
-            return false;
-        }
-        return true;
+        // We check the equality of the object
+        
+        boolean result = (obj != null) && (getClass() == obj.getClass())
+                        && (this == (Vertex)obj);
+        
+        // We return the result
+        
+        return (result);
     }
     
     /**
