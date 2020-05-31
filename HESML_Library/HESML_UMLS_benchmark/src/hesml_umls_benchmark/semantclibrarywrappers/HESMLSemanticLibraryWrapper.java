@@ -330,13 +330,13 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // We get the SNOMED concepts evoked by each CUI
         
-        IMeSHDescriptor[] firstMeshConcepts = m_hesmlMeshOntology.getConceptsForUmlsCUI(strFirstUmlsCUI);
-        IMeSHDescriptor[] secondMeshConcepts = m_hesmlMeshOntology.getConceptsForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_hesmlMeshOntology.getTaxonomyNodesForUmlsCUI(strFirstUmlsCUI);
+        IVertex[] secondVertexes = m_hesmlMeshOntology.getTaxonomyNodesForUmlsCUI(strSecondUmlsCUI);
         
         // We check the existence of MeSH concepts associated to the CUIS
         
-        if ((firstMeshConcepts.length > 0)
-                && (secondMeshConcepts.length > 0))
+        if ((firstVertexes.length > 0)
+                && (secondVertexes.length > 0))
         {
             // We initialize the maximum similarity
             
@@ -348,29 +348,11 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             // that a CUI concept evokes the full merge of all tree nodes
             // evoked by all its evoked MeSH descriptors.
             
-            // We get all tree nodes associated to the first CUI
-            
-            HashSet<IVertex> firstTreeNodes = new HashSet<>();
-            
-            for (IMeSHDescriptor descriptor: firstMeshConcepts)
-            {
-                firstTreeNodes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
-            }
-
-            // We get all tree nodes associated to the second CUI
-            
-            HashSet<IVertex> secondTreeNodes = new HashSet<>();
-            
-            for (IMeSHDescriptor descriptor: secondMeshConcepts)
-            {
-                secondTreeNodes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
-            }
-            
             // We compute the similarity for each pair of tree nodes
             
-            for (IVertex vertex1: firstTreeNodes)
+            for (IVertex vertex1: firstVertexes)
             {
-                for (IVertex vertex2: secondTreeNodes)
+                for (IVertex vertex2: secondVertexes)
                 {
                     double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
                                                 vertex1, vertex2);
@@ -380,11 +362,6 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
                     if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
                 }
             }
-            
-            // We release the auxiliary sets
-            
-            firstTreeNodes.clear();
-            secondTreeNodes.clear();
             
             // We assign the output similarity value
             

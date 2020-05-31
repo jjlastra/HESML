@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.mesh;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 
 /**
@@ -64,6 +65,15 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
     
     IMeSHDescriptor[] getConceptsForUmlsCUI(String strUmlsCUI);
 
+    /**
+     * This function returns all MeSH taxonomy nodes evoked
+     * by a specific UMLS CUI.
+     * @param strUmlCUI
+     * @return 
+     */
+    
+    IVertex[] getTaxonomyNodesForUmlsCUI(String strUmlCUI);
+    
     /**
      * This function returns all the taxonomy nodes (vertexes) ID evoked by
      * the inpuit UMLS concept (CUI).

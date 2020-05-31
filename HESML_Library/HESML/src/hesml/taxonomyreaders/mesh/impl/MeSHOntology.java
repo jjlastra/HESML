@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.mesh.impl;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomy.impl.TaxonomyFactory;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
@@ -454,6 +455,56 @@ class MeSHOntology implements IMeSHOntology
         return (evokedConcepts);
     }
 
+    /**
+     * This function returns all MeSH taxonomy nodes evoked
+     * by a specific UMLS CUI.
+     * @param strUmlCUI
+     * @return 
+     */
+    
+    @Override
+    public IVertex[] getTaxonomyNodesForUmlsCUI(String strUmlsCUI)
+    {
+        // We intilizae the output
+        
+        IVertex[] vertexes = null;
+        
+        // We retrieve the MeSH concepts associated to the input UMLS CUI
+        
+        HashSet<IMeSHDescriptor> tempConcepts = m_conceptsByUmlsCUI.get(strUmlsCUI);
+        
+        // We cretae the output vector
+
+        if (tempConcepts == null)
+        {
+            vertexes = new IVertex[0];
+        }
+        else
+        {
+            // We cretae a temporary set
+            
+            HashSet<IVertex> tempvertexes = new HashSet<>(4 * tempConcepts.size());
+            
+            // We retrieve al vertexe associated to the MeSH descriptors
+            
+            for (IMeSHDescriptor descriptor: tempConcepts)
+            {
+                tempvertexes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
+            }
+            
+            // We convert the set to an array
+            
+            vertexes = new IVertex[tempvertexes.size()];
+            
+            tempvertexes.toArray(vertexes);
+            tempvertexes.clear();
+        }
+                 
+        // We return the result
+        
+        return (vertexes);
+    }
+    
     /**
      * This function returns the MeSH concepts associated to the CUIs
      * or null if they are not found in the MeSH ontology.
