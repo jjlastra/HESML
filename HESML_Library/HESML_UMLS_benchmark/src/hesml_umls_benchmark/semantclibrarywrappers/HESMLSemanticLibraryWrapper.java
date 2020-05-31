@@ -268,13 +268,13 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // We get the SNOMED concepts evoked by each CUI
         
-        ISnomedConcept[] firstSnomedConcepts = m_hesmlSnomedOntology.getConceptsForUmlsCUI(strFirstUmlsCUI);
-        ISnomedConcept[] secondSnomedConcepts = m_hesmlSnomedOntology.getConceptsForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_hesmlSnomedOntology.getTaxonomyVertexesForUmlsCUI(strFirstUmlsCUI);
+        IVertex[] secondVertexes = m_hesmlSnomedOntology.getTaxonomyVertexesForUmlsCUI(strSecondUmlsCUI);
         
         // We check the existence oif SNOMED concepts associated to the CUIS
         
-        if ((firstSnomedConcepts.length > 0)
-                && (secondSnomedConcepts.length > 0))
+        if ((firstVertexes.length > 0)
+                && (secondVertexes.length > 0))
         {
             // We initialize the maximum similarity
             
@@ -282,22 +282,15 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             
             // We compare all pairs of evoked SNOMED concepts
             
-            for (int i = 0; i < firstSnomedConcepts.length; i++)
+            for (IVertex vertex1: firstVertexes)
             {
-                Long snomedId1 = firstSnomedConcepts[i].getSnomedId();
-                
-                for (int j = 0; j < secondSnomedConcepts.length; j++)
+                for (IVertex vertex2: secondVertexes)
                 {
-                    Long snomedId2 = secondSnomedConcepts[j].getSnomedId();
-                    
-                    // We evaluate the similarity measure
-        
                     double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
-                                            m_hesmlVertexes.getById(snomedId1),
-                                            m_hesmlVertexes.getById(snomedId2));
-                    
+                                                vertex1, vertex2);
+                
                     // We update the maximum similarity
-                    
+
                     if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
                 }
             }

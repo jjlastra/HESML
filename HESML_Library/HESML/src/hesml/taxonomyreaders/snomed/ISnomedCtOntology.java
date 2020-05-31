@@ -21,6 +21,7 @@
 package hesml.taxonomyreaders.snomed;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 
 /**
  * This interface encapsulates a SNOMED-CT terminology database.
@@ -53,6 +54,15 @@ public interface ISnomedCtOntology extends Iterable<ISnomedConcept>
     
     ISnomedConcept[] getConceptsForUmlsCUI(String umlsConceptCUI);
 
+    /**
+     * This function returns all vertexes associated to the SNOMED-CT
+     * concepts evoked by a specific UMLS CUI.
+     * @param umlsConceptCUI
+     * @return 
+     */
+    
+    IVertex[] getTaxonomyVertexesForUmlsCUI(String umlsConceptCUI);
+    
     /**
      * This function returns the SNOMED concept IDs associated to the CUI
      * or an empty array if it is not found in the SNOMED database.

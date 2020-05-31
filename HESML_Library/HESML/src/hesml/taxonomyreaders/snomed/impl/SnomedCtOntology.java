@@ -22,12 +22,15 @@
 package hesml.taxonomyreaders.snomed.impl;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
+import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.HashSet;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
+import java.util.Arrays;
 
 /**
  * This class implements the SNOMED-CT database.
@@ -142,13 +145,56 @@ class SnomedCtOntology implements ISnomedCtOntology
     {
         // We initialize the output
         
-        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.containsKey(umlsConceptCUI) ?
-                                    m_ConceptsIndexedByCUI.get(umlsConceptCUI) :
-                                    new ISnomedConcept[0];
+        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.get(umlsConceptCUI);
+        
+        // We filter the case in which the CUI is not contained in SMOD
+        
+        if (concepts == null) concepts = new ISnomedConcept[0];
         
         // We return the result
         
         return (concepts);
+    }
+    
+    /**
+     * This function returns all vertexes associated to the SNOMED-CT
+     * concepts evoked by a specific UMLS CUI.
+     * @param umlsConceptCUI
+     * @return 
+     */
+    
+    @Override
+    public IVertex[] getTaxonomyVertexesForUmlsCUI(String umlsConceptCUI)
+    {
+        // We initialize the output
+        
+        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.get(umlsConceptCUI);
+        
+        // We initialize the output
+        
+        IVertex[] vertexes = (concepts != null) ?
+                            new IVertex[concepts.length] :
+                            new IVertex[0];
+        
+        // We retrieve all vertex
+        
+        if (vertexes.length > 0)
+        {
+            // We get the taxonomy vertexes
+            
+            IVertexList taxonomyVertexes = m_Taxonomy.getVertexes();
+            
+            // We get the vertexes
+            
+            for (int i = 0; i < concepts.length; i++)
+            {
+                vertexes[i] = taxonomyVertexes.getById(concepts[i].getSnomedId());
+            }
+        }
+
+        // We return the result
+        
+        return (vertexes);
     }
     
     /**
