@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -192,7 +193,12 @@ class MeSHOntology implements IMeSHOntology
         
         if (useAncestorsCaching) m_Taxonomy.computeCachedAncestorSet(false);
         
-        // We read the CUI mapping
+        // We build the ca<che of vertexes per MeSH descriptor
+        
+        for (IMeSHDescriptor descriptor: m_meshConcepts)
+        {
+            ((MeSHDescriptor)descriptor).setCachedVertexes();
+        }
         
         // Debugging message
         

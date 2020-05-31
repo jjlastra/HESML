@@ -20,6 +20,8 @@
 
 package hesml.taxonomyreaders.mesh;
 
+import hesml.taxonomy.IVertex;
+
 /**
  * This interface represents a MeSH Descriptor Data (MeSH concepts). We use
  * the same nomenclature used by MeSH because MeSH uses the concept term to
@@ -58,6 +60,13 @@ public interface IMeSHDescriptor
      */
     
     Long[] getTaxonomyNodesId();
+    
+    /**
+     * This function returns the taxonomy nodes
+     * @return 
+     */
+    
+    IVertex[] getTaxonomyNodes();
     
     /**
      * This funtion returns the ontology containing this concept.

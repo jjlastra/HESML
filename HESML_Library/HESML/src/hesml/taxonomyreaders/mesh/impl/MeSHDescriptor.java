@@ -20,6 +20,9 @@
 
 package hesml.taxonomyreaders.mesh.impl;
 
+import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
+import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 
@@ -55,6 +58,12 @@ class MeSHDescriptor implements IMeSHDescriptor
      */
     
     private MeSHOntology    m_ownerOntology;
+    
+    /**
+     * Cached taxonomy nodes
+     */
+    
+    private IVertex[] m_Vertexes;
 
     /**
      * Constructor
@@ -74,6 +83,18 @@ class MeSHDescriptor implements IMeSHDescriptor
         m_strDescriptorId = strDescriptorId;
         m_strPreferredName = strPreferredName;
         m_strTreeNodeIds = strTreeNodeIds;
+        m_Vertexes = null;
+    }
+    
+    /**
+     * This function returns the taxonomy nodes
+     * @return 
+     */
+    
+    @Override
+    public IVertex[] getTaxonomyNodes()
+    {
+        return (m_Vertexes);
     }
     
     /**
@@ -120,6 +141,28 @@ class MeSHDescriptor implements IMeSHDescriptor
         // We return the result
         
         return (vertexesId);
+    }
+    
+    /**
+     * This fucntion stores the vertexes of the taxonomy
+     */
+    
+    void setCachedVertexes()
+    {
+        // We create the output vector with vertexes ID
+        
+        m_Vertexes = new IVertex[m_strTreeNodeIds.length];
+        
+        // We get the taxonomy
+        
+        IVertexList taxonomyVertexes = m_ownerOntology.getTaxonomy().getVertexes();
+        
+        // We retrieve all vertexes ID
+        
+        for (int i = 0; i < m_strTreeNodeIds.length; i++)
+        {
+            m_Vertexes[i] = taxonomyVertexes.getById(m_ownerOntology.getVertexIdForTreeNodeId(m_strTreeNodeIds[i]));
+        }
     }
     
     /**

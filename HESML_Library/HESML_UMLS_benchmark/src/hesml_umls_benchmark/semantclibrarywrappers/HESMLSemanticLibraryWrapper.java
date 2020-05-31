@@ -352,24 +352,18 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             
             HashSet<IVertex> firstTreeNodes = new HashSet<>();
             
-            for (IMeSHDescriptor descriptor: Arrays.asList(firstMeshConcepts))
+            for (IMeSHDescriptor descriptor: firstMeshConcepts)
             {
-                for (Long treeNodeId: Arrays.asList(descriptor.getTaxonomyNodesId()))
-                {
-                    firstTreeNodes.add(m_hesmlVertexes.getById(treeNodeId));
-                }
+                firstTreeNodes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
             }
 
             // We get all tree nodes associated to the second CUI
             
             HashSet<IVertex> secondTreeNodes = new HashSet<>();
             
-            for (IMeSHDescriptor descriptor: Arrays.asList(secondMeshConcepts))
+            for (IMeSHDescriptor descriptor: secondMeshConcepts)
             {
-                for (Long treeNodeId: Arrays.asList(descriptor.getTaxonomyNodesId()))
-                {
-                    secondTreeNodes.add(m_hesmlVertexes.getById(treeNodeId));
-                }
+                secondTreeNodes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
             }
             
             // We compute the similarity for each pair of tree nodes
@@ -423,7 +417,7 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         if (measureType != SimilarityMeasureType.Rada)
         {
-            System.out.println("Setting the " + icModel.toString() + " IC model into the SNOMED-CT  taxonomy");
+            System.out.println("Setting the " + icModel.toString() + " IC model into the taxonomy");
             
             ICModelsFactory.getIntrinsicICmodel(icModel).setTaxonomyData(m_taxonomy);
             m_taxonomy.computeCachedAncestorSet(true);
