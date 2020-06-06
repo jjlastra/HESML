@@ -29,7 +29,6 @@
 # We clear all session variables
 
 rm(list = ls())
-library(xtable)
 
 # IMPORTANT:configuration of the input/output directories
 # We define below the input directory for the input raw results
@@ -95,8 +94,6 @@ table1[4,3] = round(rawdata_WuPalmer_SNOMEDCT_US[1,2] / mean(rawdata_WuPalmer_SN
 table1[4,4] = "---";
 table1[4,5] = round(rawdata_WuPalmer_SNOMEDCT_US[1,4] / mean(rawdata_WuPalmer_SNOMEDCT_US[2:6,5]), digits = 3)
 
-print(xtable(table1, type = "latex"))
-
 # ------------------------------------------------------------------------
 # Table 2: Average speed in concepts per second in the MeSH ontology
 # ------------------------------------------------------------------------
@@ -140,8 +137,6 @@ table2[4,2] = "depth-based";
 table2[4,3] = round(rawdata_WuPalmer_MeSH[1,2] / mean(rawdata_WuPalmer_MeSH[2:6,3]), digits = 3)
 table2[4,4] = "---";
 table2[4,5] = round(rawdata_WuPalmer_MeSH[1,4] / mean(rawdata_WuPalmer_MeSH[2:6,5]), digits = 3)
-
-print(xtable(table2, type = "latex"))
 
 # ------------------------------------------------------------------------
 # Table 3: Average speed in the evaluation of the semantic simialirity
@@ -196,8 +191,6 @@ table3[4,3] = round(30 / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
 table3[4,4] = "---";
 table3[4,5] = round(30 / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
 
-print(xtable(table3, type = "latex"))
-
 # ------------------------------------------------------------------------
 # Table 4: Pearson and Spearman correlantion between base path-based measures
 # and their AncSPL variant
@@ -239,8 +232,6 @@ table4[4,2] = "AnsSPL-Cai";
 table4[4,3] = round(cor(rawdata_AncSPLCai_exp4[,3], rawdata_AncSPLCai_exp4[, 4], method = "pearson"), 4)
 table4[4,4] = round(cor(rawdata_AncSPLCai_exp4[,3], rawdata_AncSPLCai_exp4[, 4], method = "spearman"), 4)
 
-print(xtable(table4, type = "latex"))
-
 # ------------------------------------------------------------------------
 # Table 5: Average speed in concepts per second in the GO ontology
 # ------------------------------------------------------------------------
@@ -275,18 +266,14 @@ table5[3,2] = "IC-based";
 table5[3,3] = round(rawdata_Lin_GO[1,2] / mean(rawdata_Lin_GO[2:6,3]), digits = 3)
 table5[3,4] = round(rawdata_Lin_GO[1,4] / mean(rawdata_Lin_GO[2:6,5]), digits = 3)
 
-print(xtable(table5, type = "latex"))
-
-
 # ------------------------------------------------------------
-# We merge all metrics (Pearson, Spearman and Harmonic score)
-# into a same data table by concatening previouos data tables.
+# We save all final data tables 
 # ------------------------------------------------------------
 
-
-# We save all final assembled data tables 
-
-write.csv(table_allMetrics, file = paste(outputDir, sep="","table_allMetrics.csv"))
-write.csv(table_allMetrics_rounded, file = paste(outputDir, sep="","table_allMetrics_rounded.csv"))
+write.csv(table1, file = paste(outputDir, sep="","table1.csv"))
+write.csv(table2, file = paste(outputDir, sep="","table2.csv"))
+write.csv(table3, file = paste(outputDir, sep="","table3.csv"))
+write.csv(table4, file = paste(outputDir, sep="","table4.csv"))
+write.csv(table5, file = paste(outputDir, sep="","table5.csv"))
 
 
