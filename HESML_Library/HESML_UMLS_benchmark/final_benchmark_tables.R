@@ -276,4 +276,60 @@ write.csv(table3, file = paste(outputDir, sep="","table3.csv"))
 write.csv(table4, file = paste(outputDir, sep="","table4.csv"))
 write.csv(table5, file = paste(outputDir, sep="","table5.csv"))
 
+#-------------------------------
+# HTML report generation
+#-------------------------------
+
+library(knitr)
+library(readr)
+
+# We load and browse Table 1 in the paper
+
+kable_out <- kable(table1,
+                   caption = "Table 1. Average speed in CUI concept pairs per second obtained for the evaluation of three representative ontology-based semantic similarity measures based on the SNOMED-CT US 2019AB ontology (Nov, 2019) implemented by the three UMLS-based semantic measures libraries reported in the literature. Best performing values are shown in bold. Non-implemented methods (---) or more than 1 hour/pair (xxx). UMLS::Similarity uses caching for the shortest path computations in edge-counting measures.",
+                   format = "html",
+                   align = c('l','l','c','c','c'))
+
+readr::write_file(kable_out, "Table1.html")
+browseURL("Table1.html")
+
+# We load and browse Table 2 in the paper
+
+kable_out <- kable(table2,
+                   caption = "Table 2. Average speed in CUI concept pairs per second obtained for the evaluation of three representative ontology-based semantic similarity measures based on the MeSH 2019 ontology (Nov, 2019) implemented by the three UMLS-based semantic measures libraries reported in the literature. Best performing values are shown in bold. Non-implemented methods (---).",
+                   format = "html",
+                   align = c('l','l','c','c','c'))
+
+readr::write_file(kable_out, "Table2.html")
+browseURL("Table2.html")
+
+# We load and browse Table 3 in the paper
+
+kable_out <- kable(table3,
+                   caption = "Table 3. Average speed in sentence pairs per second obtained for the evaluation of the UBSM sentence similarity measure combined with three representative ontology-based similarity measures based on the MeSH ontology (Nov, 2019) in 30 sentence pairs from the MedSTS sentence similarity dataset (1068 sentence pairs). Best performing values are shown in bold. Non-implemented methods (---).",
+                   format = "html",
+                   align = c('l','l','c','c','c'))
+
+readr::write_file(kable_out, "Table3.html")
+browseURL("Table3.html")
+
+# We load and browse Table 4 in the paper
+
+kable_out <- kable(table4,
+                   caption = "Table 4. This table shows the Pearson and Spearman correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm introduced herein for 50 random CUI pairs. All similarity measures are implemented in HESML V1R5. CoswJ&C and Cai are the current state-of-the-art of semantic similarity measures based on WordNet.",
+                   format = "html",
+                   align = c('l','l','c','c'))
+
+readr::write_file(kable_out, "Table4.html")
+browseURL("Table4.html")
+
+# We load and browse Table 5 in the paper
+
+kable_out <- kable(table5,
+                   caption = "Table 5. Average speed in GO concept pairs per second obtained for the evaluation of two representative ontology-based semantic similarity measures based on the Gene Ontology (2020-05-02 version) implemented by state-of-the-art SML library and HESML. Best performing values are shown in bold.",
+                   format = "html",
+                   align = c('l','l','c','c'))
+
+readr::write_file(kable_out, "Table5.html")
+browseURL("Table5.html")
 
