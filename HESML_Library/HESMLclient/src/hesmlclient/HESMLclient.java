@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -161,7 +161,7 @@ public class HESMLclient
         
         // We print the HESML version
         
-        System.out.println("Running HESMLClient V1R4 (1.4.0.0, January 2018) based on "
+        System.out.println("Running HESMLClient V1R5 (1.5.0.0, April 2020) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -345,6 +345,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
   
         // We define the dataset to be evaluated
         
@@ -440,6 +441,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
   
         // We define the dataset to be evaluated
         
@@ -509,6 +511,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
   
         // We define the dataset to be evaluated
         
@@ -566,6 +569,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
 
         // We create the vectors containing the IC models and measure types
         
@@ -639,6 +643,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
   
         // We define the dataset to be evaluated
         
@@ -721,6 +726,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
         
         // We define the dataset to be evaluated
         
@@ -785,6 +791,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
         
         // We get the benchmark for a single non IC-based similarity measure
         
@@ -839,6 +846,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
         
         // We get the benchmark for a single non IC-based similarity measure
         
@@ -906,6 +914,7 @@ public class HESMLclient
         System.out.println("Pre-processing the WordNet taxonomy");
         
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
         
         // We obtain the concepts evoked by the words "shore" and "forest"
         
@@ -1010,6 +1019,7 @@ public class HESMLclient
         
         System.out.println("Pre-processing the taxonomy");
         wordnetTaxonomy.computesCachedAttributes();
+        wordnetTaxonomy.computeCachedAncestorSet(false);
         
         // We copy the words into the vertexes in order to allow
         // their use during the generation of the dataset files.

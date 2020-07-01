@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -96,14 +96,6 @@ public class ReproducibleExperimentsInfo
         File    inputXmlExpFile,
         String  strSchemaFilename) throws IOException, SAXException, ParserConfigurationException, Exception
     {
-        DocumentBuilder         docBuilder;
-        DocumentBuilderFactory  builderFactory;
-        
-        Document    xmlDocument;    // Reproducible experiments document
-        
-        Element rootNode;   // Root node
-        File    schemaFile; // Xml schema file
-                
         // We define the output directory as the directory of the input file
         
         m_strOutputDir = inputXmlExpFile.getCanonicalFile().getParent();
@@ -116,7 +108,7 @@ public class ReproducibleExperimentsInfo
         
         // We create the schema file
         
-        schemaFile = new File(m_strOutputDir + "/" + strSchemaFilename);        
+        File schemaFile = new File(m_strOutputDir + "/" + strSchemaFilename);        
         
         // We validate the file using the schema
         
@@ -129,16 +121,16 @@ public class ReproducibleExperimentsInfo
         // by using the schema that describes the Xml file format
         // for the reproducible experiments.
         
-        builderFactory = DocumentBuilderFactory.newInstance();
-        docBuilder = builderFactory.newDocumentBuilder();
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
         
         // We parse the input document
         
-        xmlDocument = docBuilder.parse(inputXmlExpFile);
+        Document xmlDocument = docBuilder.parse(inputXmlExpFile);
         
         // We get the root node
         
-        rootNode = xmlDocument.getDocumentElement();
+        Element rootNode = xmlDocument.getDocumentElement();
         
         // We load the experiment definitions
         
@@ -163,9 +155,7 @@ public class ReproducibleExperimentsInfo
         
         // We traverse the collection of experiments parsing them
         
-        for (int i = 0, nExperiments = experimentNodes.getLength();
-                i < nExperiments;
-                i++)
+        for (int i = 0; i < experimentNodes.getLength(); i++)
         {
             // We get the next experiment in the Xml node collection
             
@@ -313,6 +303,7 @@ public class ReproducibleExperimentsInfo
             System.out.println("Pre-processing the WordNet taxonomy");
 
             taxonomy.computesCachedAttributes();
+            taxonomy.computeCachedAncestorSet(false);
             
             // We store the taxonomy
             

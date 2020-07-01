@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -48,14 +48,23 @@ import hesml.taxonomy.*;
 class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureWeightedJiangConrath(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
     }
 
     /**
@@ -66,7 +75,9 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.WeightedJiangConrath);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.WeightedJiangConrath :
+                SimilarityMeasureType.AncSPLWeightedJiangConrath);
     }
     
     /**
@@ -88,7 +99,7 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
      */
     
     @Override
-    public double compare(IVertex left, IVertex right)
+    public double compare(IVertex left, IVertex right) throws Exception
     {
         // We compute the weighted distance between the nodes.
         // Before to evaluate this measure is necessary to
@@ -96,7 +107,9 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
         // IC-based weights used by the wieghted Jiang-Conrath
         // measures like this one.
         
-        return (left.getShortestPathDistanceTo(right, true));
+        return (!m_useFastShortestPathAlgorithm ? 
+                left.getShortestPathDistanceTo(right, true):
+                left.getFastShortestPathDistanceTo(right, true));
     }
     
     /**

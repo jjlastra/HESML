@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -86,14 +86,23 @@ class MeasureLin extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex micaVertex = m_Taxonomy.getMICA(left, right);
-       
-        // We compute the distance
+        // We skip the equal case
         
-        if (micaVertex != null)
+        if (left == right)
         {
-            similarity = 2.0 * micaVertex.getICvalue()
-                    / (left.getICvalue() + right.getICvalue());
+            similarity = 1.0;
+        }
+        else
+        {
+            IVertex micaVertex = m_Taxonomy.getMICA(left, right);
+       
+            // We compute the distance
+
+            if (micaVertex != null)
+            {
+                similarity = 2.0 * micaVertex.getICvalue()
+                        / (left.getICvalue() + right.getICvalue());
+            }
         }
         
         // We return the result

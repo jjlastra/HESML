@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -193,12 +193,6 @@ class WordNetReader
             IWordNetDB  wordnet,
             ITaxonomy   taxonomy) throws Exception
     {
-        Exception   error;      // Error thrown
-        String      strError;   // Error message
-                
-        IWordNetSynset  vertexSynset;   // Synset associated to the vertex
-        IWordNetSynset  childSynset;    //Child synset
-        
         // Debugging message
         
         System.out.println("Checking the topological consistency ...");
@@ -211,7 +205,7 @@ class WordNetReader
          
             System.out.println("Vertex = " + vertex.getID());
 
-            vertexSynset = wordnet.getSynset(vertex.getID());
+            IWordNetSynset vertexSynset = wordnet.getSynset(vertex.getID());
             
             // We check all the children
             
@@ -219,14 +213,14 @@ class WordNetReader
             {
                 // We get the child synset in WordNet
                 
-                childSynset = wordnet.getSynset(child.getID());
+                IWordNetSynset childSynset = wordnet.getSynset(child.getID());
                 
                 // We check that the vertexSynset is parent
                 
                 if (!childSynset.isParent(vertexSynset.getID()))
                 {
-                    strError = "The taxonomy is wrong";
-                    error = new Exception(strError);
+                    String strError = "The taxonomy is wrong";
+                    Exception error = new Exception(strError);
                     throw (error);
                 }
             }

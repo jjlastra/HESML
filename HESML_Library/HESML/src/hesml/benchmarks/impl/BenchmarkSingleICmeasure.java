@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -108,12 +108,6 @@ class BenchmarkSingleICmeasure  extends WordNetSimBenchmark
             String  strMatrixResultsFile,
             boolean showDebugInfo) throws Exception            
     {
-        ITaxonomyInfoConfigurator    intrinsicMethod;    // IC-computation method
-        
-        String[][]  strMatrix;  // Results matrix
-        
-        double[]  pearsonSpearman;    // Correlation values
-
         SimilarityMeasureType[] types = {m_MeasureType};
 
         // User message reporting the output file to be computed
@@ -126,7 +120,7 @@ class BenchmarkSingleICmeasure  extends WordNetSimBenchmark
         
         // We get the matrix
         
-        strMatrix = getOutputMetricsMatrix(types, m_ICmodels);
+        String[][] strMatrix = getOutputMetricsMatrix(types, m_ICmodels);
         
         // We compute all the IC-node methods
         
@@ -134,7 +128,7 @@ class BenchmarkSingleICmeasure  extends WordNetSimBenchmark
         {
             // We get the IC-node cheme
             
-            intrinsicMethod = ICModelsFactory.getIntrinsicICmodel(m_ICmodels[i]);
+            ITaxonomyInfoConfigurator intrinsicMethod = ICModelsFactory.getIntrinsicICmodel(m_ICmodels[i]);
         
             // We compute and saves the IC values per node
             
@@ -158,7 +152,7 @@ class BenchmarkSingleICmeasure  extends WordNetSimBenchmark
 
             // We evaluate the measure
             
-            pearsonSpearman = evalPearsonSpearmanMeasure(showDebugInfo);
+             double[] pearsonSpearman = evalPearsonSpearmanMeasure(showDebugInfo);
 
             // We show thee results
             

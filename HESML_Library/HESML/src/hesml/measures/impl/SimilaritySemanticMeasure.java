@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -72,8 +72,6 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
         
         double  bestSimilarityValue = getNullSimilarityValue();
         
-        double  similarity; // Similarity value
-        
         // We search for the best similarity value
         
         for (IVertex leftVertex: firstWordVertexes)
@@ -82,7 +80,7 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
             {
                 // We compoute the similarity value between left and right vertexes
                 
-                similarity = getSimilarity(leftVertex, rightVertex);
+                double similarity = getSimilarity(leftVertex, rightVertex);
                 
                 // We save the best value
                 
@@ -172,18 +170,14 @@ abstract class SimilaritySemanticMeasure implements ISimilarityMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        SimilarityMeasureClass    funClass;   // Function class
-        
         // We compute the distance
         
-        similarity = compare(left, right);
+        double similarity = compare(left, right);
         
         // We get the function class to convert it in a simkmilarity
         // if it was neeeded
         
-        funClass = getMeasureClass();
+        SimilarityMeasureClass funClass = getMeasureClass();
         
         // We convert the distance to similarity when it is necessary
         

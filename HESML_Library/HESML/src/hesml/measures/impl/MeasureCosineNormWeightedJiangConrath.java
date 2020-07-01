@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -48,16 +48,25 @@ import hesml.taxonomy.*;
 class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureCosineNormWeightedJiangConrath(
-            ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod) throws Exception
     {
         // We call the base constructor
         
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // We compute the max distance 
         
@@ -72,7 +81,9 @@ class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.CosineNormWeightedJiangConrath);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.CosineNormWeightedJiangConrath :
+                SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
     }
     
     /**
@@ -101,7 +112,9 @@ class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
     {
         // We compute the distance
         
-        double distance = left.getShortestPathDistanceTo(right, true);
+        double distance = !m_useFastShortestPathAlgorithm ? 
+                left.getShortestPathDistanceTo(right, true) :
+                left.getFastShortestPathDistanceTo(right, true);
         
         // We normalize the distance
         

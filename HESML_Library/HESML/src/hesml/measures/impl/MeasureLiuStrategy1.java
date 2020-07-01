@@ -41,6 +41,13 @@ import hesml.taxonomy.IVertex;
 class MeasureLiuStrategy1 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Tuning parameters defined in equation (4) of the Liu et al. (2007) paper.
      * The authors say that they obtain the highest correlation with alfa = 0.5
      * and beta = 0.55.
@@ -59,9 +66,11 @@ class MeasureLiuStrategy1 extends SimilaritySemanticMeasure
     MeasureLiuStrategy1(
             ITaxonomy   taxonomy,
             double      alfa,
-            double      beta)
+            double      beta,
+            boolean     useFastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // We save the tuning parameters
         
@@ -77,7 +86,9 @@ class MeasureLiuStrategy1 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.LiuStrategy1);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.LiuStrategy1 :
+                SimilarityMeasureType.AncSPLLiuStrategy1);
     }
     
     /**
@@ -124,7 +135,9 @@ class MeasureLiuStrategy1 extends SimilaritySemanticMeasure
                 // We obtain the shortest path distance (edge weight = 1.0)
                 // between the input vertexes
 
-                double length = left.getShortestPathDistanceTo(right, false);
+                double length = !m_useFastShortestPathAlgorithm ? 
+                        left.getShortestPathDistanceTo(right, false) :
+                        left.getFastShortestPathDistanceTo(right, false);
 
                 // We obtain the depth of the LCS vertex defiend as the the
                 // length of shortest path from the vertex to the root

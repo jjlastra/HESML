@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -51,23 +51,13 @@ class Yuan2013ICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icValue;    // Ic value
-        
-        double  fDepth;     // Depth factor
-        double  fLeaves;    // leaves factor
-        double  fHyper;     // Hypernyms factor
-        
-        double  logDepthMax;    // Depth max
-        double  logLeavesMax;   // leaves max + 1
-        double  logMaxNodes;
-        
         IVertexList vertexes = taxonomy.getVertexes();
         
         // We compute the static values
         
-        logLeavesMax = Math.log(vertexes.getLeavesCount()+ 1);
-        logDepthMax = Math.log(vertexes.getGreatestDepthMinBase1());
-        logMaxNodes = Math.log(vertexes.getCount());
+        double logLeavesMax = Math.log(vertexes.getLeavesCount()+ 1);
+        double logDepthMax = Math.log(vertexes.getGreatestDepthMinBase1());
+        double logMaxNodes = Math.log(vertexes.getCount());
         
         // We set the Ci values for each node
         
@@ -75,17 +65,17 @@ class Yuan2013ICmodel extends AbstractICmodel
         {
             // Wecompute the three factors
             
-            fDepth = Math.log(vertex.getDepthMinBase1()) / logDepthMax;
+            double fDepth = Math.log(vertex.getDepthMinBase1()) / logDepthMax;
             
-            fLeaves = Math.log(1.0 + vertex.getNonInclusiveSubsumedLeafSetCount())
+            double fLeaves = Math.log(1.0 + vertex.getNonInclusiveSubsumedLeafSetCount())
                        / logLeavesMax;
             
-            fHyper = Math.log(vertex.getNonInclusiveAncestorSetCount() + 1)
+            double fHyper = Math.log(vertex.getNonInclusiveAncestorSetCount() + 1)
                     / logMaxNodes;
             
             // We compute the ic-value
             
-            icValue = fDepth * (1.0 - fLeaves) + fHyper;
+            double icValue = fDepth * (1.0 - fLeaves) + fHyper;
             
             // We set hte ic-value
             

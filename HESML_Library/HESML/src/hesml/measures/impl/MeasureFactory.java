@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -81,26 +81,30 @@ public class MeasureFactory
         switch (measureType)
         {
             case Rada:
+            case AncSPLRada:    
                 
-                measure = new MeasureRada(taxonomy);
+                measure = new MeasureRada(taxonomy, (measureType == SimilarityMeasureType.AncSPLRada));
                 
                 break;
                 
             case Mubaid:
+            case AncSPLMubaid:
                 
-                measure = new MeasureAlMubaidNguyen2009(taxonomy);
+                measure = new MeasureAlMubaidNguyen2009(taxonomy, (measureType == SimilarityMeasureType.AncSPLMubaid));
                 
                 break;
                 
             case LeacockChodorow:
+            case AncSPLLeacockChodorow:
                 
-                measure = new MeasureLeacockChodorow(taxonomy);
+                measure = new MeasureLeacockChodorow(taxonomy, (measureType == SimilarityMeasureType.AncSPLLeacockChodorow));
                 
                 break;
                 
             case PedersenPath:
+            case AncSPLPedersenPath:
                 
-                measure = new MeasurePedersenPath(taxonomy);
+                measure = new MeasurePedersenPath(taxonomy, (measureType == SimilarityMeasureType.AncSPLPedersenPath));
                 
                 break;
                                 
@@ -123,20 +127,26 @@ public class MeasureFactory
                 break;
                 
             case Li2003Strategy3:
+            case AncSPLLi2003Strategy3:
                 
-                measure = new MeasureLi2003Strategy3(taxonomy);
+                measure = new MeasureLi2003Strategy3(taxonomy,
+                        (measureType == SimilarityMeasureType.AncSPLLi2003Strategy3));
                 
                 break;
 
             case Li2003Strategy4:
+            case AncSPLLi2003Strategy4:
                 
-                measure = new MeasureLi2003Strategy4(taxonomy);
+                measure = new MeasureLi2003Strategy4(taxonomy,
+                        (measureType == SimilarityMeasureType.AncSPLLi2003Strategy4));
                 
                 break;
                 
             case Li2003Strategy9:
+            case AncSPLLi2003Strategy9:
                 
-                measure = new MeasureLi2003Strategy9(taxonomy);
+                measure = new MeasureLi2003Strategy9(taxonomy,
+                        (measureType == SimilarityMeasureType.AncSPLLi2003Strategy9));
                 
                 break;
                 
@@ -147,20 +157,26 @@ public class MeasureFactory
                 break;
                 
             case Zhou:
+            case AncSPLZhou:
                 
-                measure = new MeasureZhou(taxonomy);
+                measure = new MeasureZhou(taxonomy, (measureType == SimilarityMeasureType.AncSPLZhou));
                 
                 break;
                 
             case CosineNormWeightedJiangConrath:
+            case AncSPLCosineNormWeightedJiangConrath:
                 
-                measure = new MeasureCosineNormWeightedJiangConrath(taxonomy);
+                measure = new MeasureCosineNormWeightedJiangConrath(taxonomy,
+                        (measureType == SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath));              
+
                 
                 break;
                 
             case WeightedJiangConrath:
+            case AncSPLWeightedJiangConrath:
                 
-                measure = new MeasureWeightedJiangConrath(taxonomy);
+                measure = new MeasureWeightedJiangConrath(taxonomy,
+                             (measureType == SimilarityMeasureType.AncSPLWeightedJiangConrath));
                 
                 break;
                 
@@ -231,9 +247,10 @@ public class MeasureFactory
                 break;
                 
             case Meng2014:
+            case AncSPLMeng2014:
                 
-                measure = new MeasureMeng2014(taxonomy);
-                        
+                measure = new MeasureMeng2014(taxonomy, (measureType == SimilarityMeasureType.AncSPLMeng2014));
+                         
                 break;
                 
             case Taieb2014:
@@ -243,32 +260,39 @@ public class MeasureFactory
                 break;
                 
             case Gao2015Strategy3:
+            case AncSPLGao2015Strategy3:
 
-                measure = new MeasureGao2015Method3(taxonomy);
+                measure = new MeasureGao2015Method3(taxonomy, (measureType == SimilarityMeasureType.AncSPLGao2015Strategy3));
                 
                 break;
                 
             case Hao:
+            case AncSPLHao:
                 
                 // We use the default values provided in the paper
                 
-                measure = new MeasureHao(taxonomy, 0.0, 1.0);
+                measure = new MeasureHao(taxonomy, 0.0, 1.0,
+                        (measureType == SimilarityMeasureType.AncSPLHao));
                 
                 break;
                 
             case LiuStrategy1:
+            case AncSPLLiuStrategy1:
                 
                 // We use the default values provided in the paper
                 
-                measure = new MeasureLiuStrategy1(taxonomy, 0.5, 0.55);
+                measure = new MeasureLiuStrategy1(taxonomy, 0.5, 0.55,
+                            (measureType == SimilarityMeasureType.AncSPLLiuStrategy1));
                 
                 break;
                 
             case LiuStrategy2:
+            case AncSPLLiuStrategy2:
                 
                 // We use the default values provided in the paper
                 
-                measure = new MeasureLiuStrategy2(taxonomy, 0.25, 0.25);
+                measure = new MeasureLiuStrategy2(taxonomy, 0.25, 0.25,
+                            (measureType == SimilarityMeasureType.AncSPLLiuStrategy2));
                 
                 break;
                 
@@ -279,14 +303,18 @@ public class MeasureFactory
                 break;
                 
             case PekarStaab:
+            case AncSPLPekarStaab:
                 
-                measure = new MeasurePekarStaab(taxonomy);
+                measure = new MeasurePekarStaab(taxonomy,
+                            (measureType == SimilarityMeasureType.AncSPLPekarStaab));
                 
                 break;
                 
             case CaiStrategy1:
+            case AncSPLCaiStrategy1:
                 
-                measure = new MeasureCaiStrategy1(taxonomy, 0.5, 0.1);
+                measure = new MeasureCaiStrategy1(taxonomy, 0.5, 0.1,
+                            (measureType == SimilarityMeasureType.AncSPLCaiStrategy1));
                 
                 break;
 

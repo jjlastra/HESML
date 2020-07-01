@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -89,15 +89,13 @@ public class WordNetFactory
     public static ITaxonomy buildTaxonomy(
             IWordNetDB  wordnet) throws InterruptedException, Exception
     {
-        ITaxonomy   taxonomy;   // Returned value
-       
         // We create the graph
         
-        taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
+        ITaxonomy taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
                     wordnet.getSynsetCount());
         
         // We create a vertex into the taxonomy for each synset.
-        // Each vertex shares the same ID that its synset parent.
+        // Each vertex shares the same ID that its parent synset.
         
         for (IWordNetSynset synset: wordnet)
         {

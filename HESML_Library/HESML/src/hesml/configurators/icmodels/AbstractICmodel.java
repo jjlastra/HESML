@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -50,16 +50,13 @@ abstract class AbstractICmodel
 
     protected void setICDeltaWeights(ITaxonomy taxonomy) throws Exception
     {
-        IVertex child;  // Extremes of an edge
-        IVertex parent;
-        
-        double  icChild;    // Ic values on the extremes
-        double  icParent;
-        
         // We computed the IC-delta for each edge
         
         for (IEdge edge: taxonomy.getEdges())
         {
+            IVertex child;  // Extremes of an edge
+            IVertex parent;
+            
             // We get the ic value for the child
             
             if (edge.getDirect().getEdgeType() == OrientedEdgeType.SubClassOf)
@@ -75,8 +72,8 @@ abstract class AbstractICmodel
             
             // We get the IC-values
             
-            icChild = child.getICvalue();
-            icParent = parent.getICvalue();
+            double icChild = child.getICvalue();
+            double icParent = parent.getICvalue();
             
             // We set the edge weight value
             

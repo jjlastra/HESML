@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -51,13 +51,9 @@ class BlanchardICmodel extends AbstractICmodel
     {
         double  twoLog = Math.log(2.0);
         
-        double  prob;           // Node probbaility
-        int     subsumedLeaves; // Leaves
-        int     totalLeaves;    // Overall count of leaves
-
         // We get the total number of leaves
         
-        totalLeaves = taxonomy.getVertexes().getLeavesCount();
+        int totalLeaves = taxonomy.getVertexes().getLeavesCount();
         
         // We compute the weights of every edge ion the taxonomy
         
@@ -65,11 +61,11 @@ class BlanchardICmodel extends AbstractICmodel
         {
             // We get the subsumed leaves
             
-            subsumedLeaves = vertex.getInclusiveSubsumedLeafSetCount();
+            int subsumedLeaves = vertex.getInclusiveSubsumedLeafSetCount();
             
             // We computes the probability
             
-            prob = (double) subsumedLeaves / (double)totalLeaves;
+            double prob = (double) subsumedLeaves / (double)totalLeaves;
             
             // We set the probability
             

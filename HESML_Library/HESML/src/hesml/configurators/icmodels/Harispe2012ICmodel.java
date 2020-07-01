@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -60,16 +60,9 @@ class Harispe2012ICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icValue;    // Returned value
-        
         double  maxLeaves = taxonomy.getVertexes().getLeavesCount();
         
         double  log2 = Math.log(2.0);   // Logarithm of 2
-        
-        double  prob;   // Estimation of the probability (Harispe 2012)
-        
-        double  leaves;     // Number of leaf nodes without including the node
-        double  subSummers;  // Set of ancestors including the node
         
         // We compute the IC value for each node
         
@@ -77,16 +70,16 @@ class Harispe2012ICmodel extends AbstractICmodel
         {
             // We get the leaves and hyponyms of the node
             
-            leaves = vertex.getNonInclusiveSubsumedLeafSetCount();
-            subSummers = vertex.getNonInclusiveAncestorSetCount() + 1;
+            double leaves = vertex.getNonInclusiveSubsumedLeafSetCount();
+            double subSummers = vertex.getNonInclusiveAncestorSetCount() + 1;
                     
             // We compute the estimation for the probability of the node
             
-            prob = (leaves + 1.0 / subSummers) / maxLeaves;
+            double prob = (leaves + 1.0 / subSummers) / maxLeaves;
             
             // We compute the IC-value of [harispe, 2012] in SML
             
-            icValue = -Math.log(prob) / log2;
+            double icValue = -Math.log(prob) / log2;
             
             // We save the IC-value in the vertex
             

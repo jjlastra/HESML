@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -33,14 +33,17 @@ public enum SimilarityMeasureType
      * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
      * Development and application of a metric on semantic nets.
      * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
-     *//**
-     * It asks for the similarity measure introduced in the paper below.
-     * Rada, R., Mili, H., Bicknell, E., and Blettner, M. (1989).
-     * Development and application of a metric on semantic nets.
-     * IEEE Transactions on Systems, Man, and Cybernetics, 19(1), 17–30.
+     * 
+     * AncSPLRada is a fast implementation of the Rada measure
+     * which is based on an efficient approximation of the Djikstra
+     * algortihm for taxonomies introduced by Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Rada,
+    AncSPLRada,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -48,9 +51,18 @@ public enum SimilarityMeasureType
      * Combining local context and WordNet similarity for word sense identification.
      * In C. Fellbaum (Ed.), WordNet: An electronic lexical database (pp. 265–283).
      * MIT Press.
+     * 
+     * AncSPLLeacockChodorow is a fast implementation of the
+     * LeacockChodorow measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     LeacockChodorow,
+    AncSPLLeacockChodorow,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -69,9 +81,15 @@ public enum SimilarityMeasureType
      * Pedersen, T., Pakhomov, S. V. S., Patwardhan, S., and Chute, C. G. (2007).
      * Measures of semantic similarity and relatedness in the biomedical domain.
      * Journal of Biomedical Informatics, 40(3), 288–299.
+     * 
+     * AncSPLPedersenPath is a fast implementation of the
+     * PedersenPath measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
      */
     
     PedersenPath,
+    AncSPLPedersenPath,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -80,9 +98,17 @@ public enum SimilarityMeasureType
      * Multiple Ontologies. IEEE Transactions on Systems, Man and Cybernetics.
      * Part C, Applications and Reviews: A Publication of the IEEE Systems,
      * Man, and Cybernetics Society, 39(4), 389–398.
+     * 
+     * AncSPLMubaid is a fast implementation of the Al-Mubaid measure [1]
+     * which is based on an efficient approximation of the Djikstra
+     * algortihm for taxonomies introduced by Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Mubaid,
+    AncSPLMubaid,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -117,10 +143,19 @@ public enum SimilarityMeasureType
      * Cai, Y., Zhang, Q., Lu, W., & Che, X. (2017).
      * A hybrid approach for measuring semantic similarity based on IC-weighted path
      * distance in WordNet. Journal of Intelligent Information Systems, 1–25.
+     * 
+     * AncSPLCaiStrategy1 is a fast implementation of the Cai et al. measure
+     * which is based on an efficient approximation of the Djikstra
+     * algortihm for taxonomies introduced by Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     CaiStrategy1,
     CaiStrategy2,
+    AncSPLCaiStrategy1,
+    
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -151,9 +186,15 @@ public enum SimilarityMeasureType
      * New model of semantic similarity measuring in wordnet. In Proc. of the
      * 3rd International Conference on Intelligent System and Knowledge
      * Engineering, 2008. ISKE 2008. (Vol. 1, pp. 256–261).
+     * 
+     * AncSPLZhou is a fast implementation of the
+     * Zhou measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
      */
     
     Zhou,
+    AncSPLZhou,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -170,9 +211,15 @@ public enum SimilarityMeasureType
      * Measuring Semantic Similarity of Word Pairs Using Path and
      * Information Content. International Journal of Future Generation
      * Communication and Networking, 7(3).
+     * 
+     * AncSPLMeng2014 is a fast implementation of the
+     * Meng2014 measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
      */
     
     Meng2014,
+    AncSPLMeng2014,
 
     /**
      * It asks for an unpublished logistic transformation of the
@@ -239,9 +286,15 @@ public enum SimilarityMeasureType
      * A novel family of IC-based similarity measures with a detailed experimental
      * survey on WordNet.Engineering Applications of Artificial Intelligence
      * Journal, 46, 140–153.
+     * 
+     * AncSPLWeightedJiangConrath is a fast implementation of the
+     * WeightedJiangConrath measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
      */
     
     WeightedJiangConrath,
+    AncSPLWeightedJiangConrath,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -249,9 +302,18 @@ public enum SimilarityMeasureType
      * A novel family of IC-based similarity measures with a detailed experimental
      * survey on WordNet.Engineering Applications of Artificial Intelligence
      * Journal, 46, 140–153.
+     * 
+     * AncSPLCosineNormWeightedJiangConrath is a fast implementation of the
+     * CosineNormWeightedJiangConrath which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     CosineNormWeightedJiangConrath,
+    AncSPLCosineNormWeightedJiangConrath,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -286,9 +348,18 @@ public enum SimilarityMeasureType
      * A WordNet-based semantic similarity measurement combining
      * edge-counting and information content theory.
      * Engineering Applications of Artificial Intelligence, 39, 80–88.
+     * 
+     * AncSPLGao2015Strategy3 is a fast implementation of the
+     * Gao2015Strategy3 measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
-    Gao2015Strategy3,
+    Gao2015Strategy3,    
+    AncSPLGao2015Strategy3,
 
     /**
      * It asks for the Strategy3 similarity measure introduced in the paper below.
@@ -296,9 +367,18 @@ public enum SimilarityMeasureType
      * An approach for measuring semantic similarity between words using
      * multiple information sources.
      * IEEE Transactions on Knowledge and Data Engineering, 15(4), 871–882.
+     * 
+     * AncSPLLi2003Strategy3 is a fast implementation of the
+     * Li2003Strategy3 measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Li2003Strategy3,
+    AncSPLLi2003Strategy3,
 
     /**
      * It asks for the Strategy4 similarity measure introduced in the paper below.
@@ -306,9 +386,18 @@ public enum SimilarityMeasureType
      * An approach for measuring semantic similarity between words using
      * multiple information sources.
      * IEEE Transactions on Knowledge and Data Engineering, 15(4), 871–882.
+     * 
+     * AncSPLLi2003Strategy4 is a fast implementation of the
+     * Li2003Strategy4 measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Li2003Strategy4,
+    AncSPLLi2003Strategy4,
 
     /**
      * It asks for the Strategy9 similarity measure introduced in the paper below.
@@ -316,9 +405,18 @@ public enum SimilarityMeasureType
      * An approach for measuring semantic similarity between words using
      * multiple information sources.
      * IEEE Transactions on Knowledge and Data Engineering, 15(4), 871–882.
+     * 
+     * AncSPLLi2003Strategy9 is a fast implementation of the
+     * Li2003Strategy9 measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Li2003Strategy9,
+    AncSPLLi2003Strategy9,
 
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -335,9 +433,18 @@ public enum SimilarityMeasureType
      * An Approach for Calculating Semantic Similarity between Words Using WordNet.
      * In Proc. of the Second International Conference on Digital Manufacturing
      * Automation (pp. 177–180). IEEE.
+     * 
+     * AncSPLHao is a fast implementation of the
+     * Hao measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     Hao,
+    AncSPLHao,
     
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -345,10 +452,20 @@ public enum SimilarityMeasureType
      * Measuring Semantic Similarity in Wordnet.
      * In Proc. of the 2007 International Conference on Machine Learning and
      * Cybernetics (Vol. 6, pp. 3431–3435). IEEE.
+     * 
+     * AncSPLLiuStrategy1 and AncSPLLiuStrategy2 are two fast implementation of the
+     * LiuStrategy1 and LiuStrategy2 measures which are based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: an efficient and scalable semantic measures library 
+     * or the biomedical domain, Sobmitted for Publication. (2020).
      */
     
     LiuStrategy1,
     LiuStrategy2,
+    AncSPLLiuStrategy1,
+    AncSPLLiuStrategy2,
     
     /**
      * It asks for the similarity measure introduced in the paper below.
@@ -366,9 +483,15 @@ public enum SimilarityMeasureType
      * of a Taxonomy into a Semantic Classification Decision. In Proceedings of
      * the 19th International Conference on Computational Linguistics
      * (Vol. 1, pp. 1–7). Stroudsburg, PA, USA: Association for Computational Linguistics.
+     * 
+     * AncSPLPekarStaab is a fast implementation of the
+     * PekarStaab measure which is based on an efficient approximation
+     * of the Djikstra algortihm for taxonomies introduced by
+     * Lastra-Díaz et al. (2020) [1].
      */
     
     PekarStaab,
+    AncSPLPekarStaab,
     
     /**
      * Word embedding pre-trained model

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -41,6 +41,13 @@ import hesml.taxonomy.*;
 class MeasureLi2003Strategy4 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Exponential factor initializaed to the best
      * default value for this measure in the paper.
      */
@@ -59,9 +66,11 @@ class MeasureLi2003Strategy4 extends SimilaritySemanticMeasure
      */
     
     MeasureLi2003Strategy4(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy  taxonomy,
+            boolean    useFastMethod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // We initialize the best default value on the RG65 dataset
         
@@ -103,21 +112,18 @@ class MeasureLi2003Strategy4 extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        double  f1, f2; // Function values
-        
         // We compute the length-based similiarity function
 
-        f1 = MeasureLi2003Strategy3.simStrategyFun1(left, right, m_Alpha);
+        double f1 = MeasureLi2003Strategy3.simStrategyFun1(left, right,
+                    m_Alpha, m_useFastShortestPathAlgorithm);
 
         // We get the depth-based term
 
-        f2 = simStrategyFun2(left, right, m_Beta);
+        double f2 = simStrategyFun2(left, right, m_Beta);
 
         // We compute the similarity
 
-        similarity = f1 * f2;
+        double similarity = f1 * f2;
         
         // We return the result
         
@@ -139,14 +145,9 @@ class MeasureLi2003Strategy4 extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0; // Returned value
         
-        double  depth;      // Depth of the LCA node
-        IVertex lcsVertex;  // Lowest common subsumer
-        
-        double  expBeta, expNegBeta;    // Auxiliar terms
-        
         // We compute the depth-based similarity function
         
-        lcsVertex = left.getTaxonomy().getLCS(left, right, false);
+        IVertex lcsVertex = left.getTaxonomy().getLCS(left, right, false);
         
         // We check the LCS value
         
@@ -154,10 +155,10 @@ class MeasureLi2003Strategy4 extends SimilaritySemanticMeasure
         {
             // We get the LCS depth value
 
-            depth = lcsVertex.getDepthMin();
+            double depth = lcsVertex.getDepthMin();
 
-            expBeta = Math.exp(beta * depth);
-            expNegBeta = Math.exp(-beta * depth);
+            double expBeta = Math.exp(beta * depth);
+            double expNegBeta = Math.exp(-beta * depth);
 
             // We compute the overall term S4
 

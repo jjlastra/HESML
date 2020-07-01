@@ -42,14 +42,23 @@ import hesml.taxonomy.IVertex;
 class MeasurePekarStaab extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasurePekarStaab(
-            ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm  = useFastMethod;
     }
 
     /**
@@ -60,7 +69,9 @@ class MeasurePekarStaab extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.PekarStaab);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.PekarStaab :
+                SimilarityMeasureType.AncSPLPekarStaab);
     }
     
     /**
@@ -110,9 +121,18 @@ class MeasurePekarStaab extends SimilaritySemanticMeasure
 
                 // We compute the distance between the input vertexes, LCS and root
 
-                double distLcsRoot = lcsVertex.getShortestPathDistanceTo(root, false);
-                double distLeftLcs = left.getShortestPathDistanceTo(lcsVertex, false);
-                double distRightLcs = right.getShortestPathDistanceTo(lcsVertex, false);
+                double distLcsRoot = !m_useFastShortestPathAlgorithm ? 
+                                lcsVertex.getShortestPathDistanceTo(root, false) :
+                                lcsVertex.getFastShortestPathDistanceTo(root, false);
+                
+                double distLeftLcs = !m_useFastShortestPathAlgorithm ? 
+                                left.getShortestPathDistanceTo(lcsVertex, false) :
+                                left.getFastShortestPathDistanceTo(lcsVertex, false);
+                
+                double distRightLcs = !m_useFastShortestPathAlgorithm ? 
+                                right.getShortestPathDistanceTo(lcsVertex, false) :
+                                right.getFastShortestPathDistanceTo(lcsVertex, false);
+                
 
                 // We compute the similarity as defined in equation (2) of the paper
 

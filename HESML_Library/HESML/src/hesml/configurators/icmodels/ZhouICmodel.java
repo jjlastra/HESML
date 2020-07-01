@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -49,18 +49,10 @@ class ZhouICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icSecovalue;    // Computed IC value for [Seco et al., 2004]
-        double  icZhouFactor;      // Additional Zhou factor
-        
-        double  icZhou; // Total value
-        
-        double  logMaxNodes;    // Depth max
-        double  logDepthMax;
-
         // We get hte depth max factor
         
-        logDepthMax = Math.log(taxonomy.getVertexes().getGreatestDepthMinBase1());
-        logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
+        double logDepthMax = Math.log(taxonomy.getVertexes().getGreatestDepthMinBase1());
+        double logMaxNodes = Math.log(taxonomy.getVertexes().getCount());
         
         // We set the IC values for the nodes
         
@@ -68,16 +60,16 @@ class ZhouICmodel extends AbstractICmodel
         {
             // We compute the value of [Seco, 2004]
             
-            icSecovalue = 1.0 - Math.log(vertex.getNonInclusiveHyponymSetCount() + 1) /
+            double icSecovalue = 1.0 - Math.log(vertex.getNonInclusiveHyponymSetCount() + 1) /
                             logMaxNodes;
             
             // We compute the Zhou factor
             
-            icZhouFactor = Math.log(vertex.getDepthMinBase1()) / logDepthMax;
+            double icZhouFactor = Math.log(vertex.getDepthMinBase1()) / logDepthMax;
             
             // We comptue the total value
             
-            icZhou = 0.5 * icSecovalue + 0.5 * icZhouFactor;
+            double icZhou = 0.5 * icSecovalue + 0.5 * icZhouFactor;
             
             // We set the IC value
             

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -52,33 +52,23 @@ class HadjTaieb2013ICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icValue;    // IC-value for each vertex
-        
-        double  avgDepth;   // Average depth for the hypernyms
-        double  score;
-        
-        double  hypoVertex; // Hyponyms inclusive of the vertex
-        double  hypoParent; // Hyponyms inclusive of the parent
-        
-        IVertexList hyper;  // Set of hypernyms including the node
-        
         // (1) We compute the scores for each node
         
         for (IVertex vertex: taxonomy.getVertexes())
         {
             // We get the hyponyms of the vertex according to the method
             
-            hypoVertex = vertex.getNonInclusiveHyponymSetCount() + 1;
+            double hypoVertex = vertex.getNonInclusiveHyponymSetCount() + 1;
                     
             // We reset the score
             
-            score = 0.0;
+            double score = 0.0;
             
             for (IVertex parent: vertex.getParents())
             {
                 // We get the Hypo value for the parent
                 
-                hypoParent = parent.getNonInclusiveHyponymSetCount() + 1;
+                double hypoParent = parent.getNonInclusiveHyponymSetCount() + 1;
                 
                 // We accumulate the score
                 
@@ -96,11 +86,11 @@ class HadjTaieb2013ICmodel extends AbstractICmodel
         {
             // We get the hypernyms of the node
             
-            hyper = vertex.getAncestors(true);
+            IVertexList hyper = vertex.getAncestors(true);
             
             // We compute the average depth
             
-            avgDepth = 0.0;
+            double avgDepth = 0.0;
             
             for (IVertex hypernym: hyper)
             {
@@ -111,14 +101,14 @@ class HadjTaieb2013ICmodel extends AbstractICmodel
             
             // We compute the ic-value
             
-            score = 0.0;
+            double score = 0.0;
             
             for (IVertex hypernym: hyper)
             {
                 score += hypernym.getMinDistance();
             }
             
-            icValue = score * avgDepth;
+            double icValue = score * avgDepth;
         
             // We set the IC value
             

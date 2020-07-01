@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -30,6 +30,10 @@ import java.util.ArrayList;
 import hesml.taxonomy.*;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class implements the ITaxonomy interface which represents an
@@ -56,6 +60,12 @@ class Taxonomy implements ITaxonomy
      */
     
     private final VertexList  m_Vertexes;
+    
+    /**
+     * This attribute is true when the taxoniomy is tree-like
+     */
+    
+    private boolean m_isTreeLike;
     
     /**
      * Constructor
@@ -124,18 +134,22 @@ class Taxonomy implements ITaxonomy
             IVertex end,
             boolean useLongestDepth) throws Exception
     {
-        Exception   error;      // Error thrown
-        String      strError;   // Error message
-        
         IVertex lcaVertex = null;    // Returned value
 
         int  maxDepth = -1;    // Maximum
         
+        // We check whether the taxonomy holds the cached ancestor set
+        
+        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
+        
         // We retrieve the inclusive and unordered ancestor sets
         // of the input vertexes
         
-        HashSet<IVertex> beginAncestors = getUnorderedAncestorSet(begin);
-        HashSet<IVertex> endAncestors = getUnorderedAncestorSet(end);
+        Set<IVertex> beginAncestors = cachedAncestors ? ((Vertex)begin).getCachedAncestorSet()
+                                        : getUnorderedAncestorSet(begin);
+        
+        Set<IVertex> endAncestors = cachedAncestors ? ((Vertex)end).getCachedAncestorSet()
+                                        : getUnorderedAncestorSet(end);
         
         // We traverse all the vertexes looking for the common ancestor
         // which satisfies the LCS criterium.
@@ -163,15 +177,18 @@ class Taxonomy implements ITaxonomy
         
         // We reset the visited sets
         
-        beginAncestors.clear();
-        endAncestors.clear();
+        if (!cachedAncestors)
+        {
+            beginAncestors.clear();
+            endAncestors.clear();
+        }
         
         // We check the mica
         
         if (lcaVertex == null)
         {
-            strError = "The vertexes do not share a common ancestor";
-            error = new Exception(strError);
+            String strError = "The vertexes do not share a common ancestor";
+            Exception error = new Exception(strError);
             throw (error);
         }
                
@@ -235,16 +252,151 @@ class Taxonomy implements ITaxonomy
     @Override
     public IVertex getMICA(
             IVertex begin,
-            IVertex end) throws InterruptedException, Exception
+            IVertex end) throws Exception
+    {
+        // We check whether the taxonomy holds the cached ancestor set
+        
+        boolean cachedAncestors = (((Vertex)m_Vertexes.getAt(0)).getCachedAncestorSet() != null);
+
+        // We compute the MICA vertex using the cached or direct traversing methods
+        
+        IVertex micaVertex = cachedAncestors ? getCachedMICA(begin, end) : getUncachedMICA(begin, end);
+        
+        // We check the existence of the MICA vertex
+        
+        if (micaVertex == null)
+        {
+            throw (new Exception("A MICA vertex was not found"));
+        }
+        
+        // We return the result
+        
+        return (micaVertex);
+    }
+    
+    /**
+     * This function returns the most informative common ancestor (MICA) vertex.
+     * The method marks all the ancestor vertexes from both input vertexes,
+     * then it looks for the intersection set which is defined as the
+     * marked vertexes in both ancestor sets.
+     * @param begin First input vertex
+     * @param end Second input vertex
+     * @return The most informative common ancestor (MICA) vertex.
+     */
+    
+    private IVertex getCachedMICA(
+            IVertex begin,
+            IVertex end)
+    {
+        // We initializa the output
+        
+        IVertex micaVertex = null;
+
+        // We retrieves the inclusive ancestor sets of the input vertexes       
+       
+        Set<IVertex> beginAncestors = ((Vertex)begin).getCachedAncestorSet();
+        Set<IVertex> endAncestors = ((Vertex)end).getCachedAncestorSet();
+
+        // We traverse all the vertexes looking for the common ancestor
+        // which satisfies the MICA criterium.
+        
+        Set<IVertex> smallSet = null;
+        Set<IVertex> largeSet = null;
+        
+        if (beginAncestors.size() < endAncestors.size())
+        {
+            smallSet = beginAncestors;
+            largeSet = endAncestors;
+        }
+        else
+        {
+            smallSet= endAncestors;
+            largeSet = beginAncestors;
+        }
+        
+        // We check if the ancestor sets are ordered
+        
+        boolean ordered = (beginAncestors instanceof TreeSet);
+        
+        // We traverse all the vertexes looking for the common ancestor
+        // which satisfies the MICA criterium.
+        
+        if (ordered)
+        {
+            // When the sets are ordered the first common ancestor is th eMICA
+            // because vertexes are decreasing ordered as regard their IC value
+            
+            for (IVertex vertex: smallSet)
+            {
+                if (largeSet.contains(vertex))
+                {
+                    micaVertex = vertex;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            // We initialize the max IC value
+            
+            double maxIC = Double.NEGATIVE_INFINITY;    // Maximum
+
+            // We must check for the max IC value
+            
+            for (IVertex vertex: smallSet)
+            {
+                if ((vertex.getICvalue() > maxIC)
+                        && largeSet.contains(vertex))
+                {
+                    maxIC = vertex.getICvalue();
+                    micaVertex = vertex;
+                }
+            }
+        }
+        
+        // We return the result
+        
+        return (micaVertex);
+    }
+    
+    /**
+     * This function returns the most informative common ancestor (MICA) vertex.
+     * The method marks all the ancestor vertexes from both input vertexes,
+     * then it looks for the intersection set which is defined as the
+     * marked vertexes in both ancestor sets.
+     * @param begin First input vertex
+     * @param end Second input vertex
+     * @return The most informative common ancestor (MICA) vertex.
+     */
+
+    private IVertex getUncachedMICA(
+            IVertex begin,
+            IVertex end)
     {
         IVertex micaVertex = null;    // Returned value
 
         double  maxIC = Double.NEGATIVE_INFINITY;    // Maximum
         
-        // We retrieves the inclusive ancestor sets of the input vertexes
-        
+        // We retrieves the inclusive ancestor sets of the input vertexes       
+       
         HashSet<IVertex> beginAncestors = getUnorderedAncestorSet(begin);
         HashSet<IVertex> endAncestors = getUnorderedAncestorSet(end);
+
+        // We search on the smallest set
+        
+        HashSet<IVertex> smallSet;
+        HashSet<IVertex> largeSet;
+        
+        if (beginAncestors.size() < endAncestors.size())
+        {
+            smallSet = beginAncestors;
+            largeSet = endAncestors;
+        }
+        else
+        {
+            smallSet= endAncestors;
+            largeSet = beginAncestors;
+        }
         
         // We traverse all the vertexes looking for the common ancestor
         // which satisfies the MICA criterium.
@@ -252,10 +404,9 @@ class Taxonomy implements ITaxonomy
         // we check first the condition to select the vertex than
         // its membership to the opposite ancestor set.
         
-        for (IVertex vertex: beginAncestors)
+        for (IVertex vertex: smallSet)
         {
-            if ((vertex.getICvalue() > maxIC)
-                    && endAncestors.contains(vertex))
+            if ((vertex.getICvalue() > maxIC) && largeSet.contains(vertex))
             {
                 maxIC = vertex.getICvalue();
                 micaVertex = vertex;
@@ -265,14 +416,7 @@ class Taxonomy implements ITaxonomy
         // We release the visiting sets
         
         beginAncestors.clear();
-        endAncestors.clear();
-        
-        // We check the mica
-        
-        if (micaVertex == null)
-        {
-            throw (new Exception("A MICA vertex was not found"));
-        }
+        endAncestors.clear();      
                
         // We return the result
         
@@ -288,16 +432,16 @@ class Taxonomy implements ITaxonomy
      * @throws InterruptedException 
      */
     
-    private HashSet<IVertex>  getUnorderedAncestorSet(
-            IVertex seed) throws InterruptedException
+    public HashSet<IVertex>  getUnorderedAncestorSet(
+            IVertex seed)
     {
         // We create the output ancestor set
         
-        HashSet<IVertex>    ancestorSet = new HashSet<>();
+        HashSet<IVertex> ancestorSet = new HashSet<>();
         
         // We create the traversal queue
         
-        LinkedList<IVertex>  pending = new LinkedList<>();
+        LinkedList<IVertex> pending = new LinkedList<>();
         
         // We enqueue this vertes to mark all the ancestors
         
@@ -381,7 +525,65 @@ class Taxonomy implements ITaxonomy
         
         this.computeHyponymCount();
         this.computeAllDepths();
-        this.computeLeavesCount();        
+        this.computeLeavesCount();  
+        
+        // We check if the taxonomy is a tree
+        
+        m_isTreeLike = true;
+        
+        for (IVertex vertex: m_Vertexes)
+        {
+            if (vertex.getParentsCount() > 1)
+            {
+                m_isTreeLike = false;
+                break;
+            }
+        }
+    }
+    
+    /**
+     * This function notifies if the taxonomy is a TREE
+     * @return 
+     */
+    
+    @Override
+    public boolean isTreeLike()
+    {
+        return (m_isTreeLike);
+    }
+    
+    /**
+     * This function computes the ancestor set of each vertex. This function
+     * has been included in V1R5 version to speed up the computation of MICA
+     * vertex on the SNOMED-CT taxonomy which contains many nodes with
+     * multiple parents. It is optinal and uneeded on less complex ontologies
+     * as WordNet
+     * @param useICvalues 
+     */
+
+    @Override
+    public void computeCachedAncestorSet(
+        boolean useICvalues) throws InterruptedException
+    {
+        // We compute and save the ancestor set in the vertexes
+        
+        for (IVertex vertex: m_Vertexes)
+        {
+            // We get the unordered ancestor set
+            
+            Set<IVertex> unorderedAncestorSet = getUnorderedAncestorSet(vertex);
+            
+            // We store the ancestor set
+            
+           if (!useICvalues)
+           {
+               ((Vertex)vertex).setCachedAncestorSet(unorderedAncestorSet);
+           }
+           else
+           {
+               ((Vertex)vertex).setCachedAncestorSetByICvalues(unorderedAncestorSet);
+           }
+        }
     }
     
     /**

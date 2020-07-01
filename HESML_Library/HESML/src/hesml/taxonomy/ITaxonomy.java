@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -40,6 +40,13 @@ public interface ITaxonomy
     void clear();
     
     /**
+     * This function notifies if the taxonomy is a TREE
+     * @return 
+     */
+    
+    boolean isTreeLike();
+    
+    /**
      * This function returns the sum of the probability for
      * the leaf nodes.
      * @return The overall probability for the leaf nodes.
@@ -70,6 +77,17 @@ public interface ITaxonomy
     void computesCachedAttributes() throws Exception;
     
     /**
+     * This function computes the ancestor set of each vertex. This function
+     * has been included in V1R5 version to speed up the computation of MICA
+     * vertex on the SNOMED-CT taxonomy which contains many nodes with
+     * multiple parents. It is optinal and uneeded on less complex ontologies
+     * as WordNet
+     * @param useICvalues 
+     */
+    
+    void computeCachedAncestorSet(boolean useICvalues) throws InterruptedException;
+    
+    /**
      * This functions returns the collection of ordered vertexes in the
      * taxonomy. The list is totally ordered from the root, what means
      * that each vertex is subsequent to all its parents.
@@ -97,7 +115,7 @@ public interface ITaxonomy
      */
 
     IVertex getMICA(IVertex begin, IVertex end)
-            throws InterruptedException, Exception;
+            throws Exception;
 
     /**
      * This function computes the lowest common subsumer (ancestor),

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -55,15 +55,6 @@ class CondProbHyponymsICmodel extends AbstractCondProbICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        int hypoTotal;  // Total hyponyms for the children
-        
-        IEdge   incidentEdge;   // Incident endge
-        
-        IVertexList children;   // Children nodes
-        
-        double  weight;    // Weight for the direct oriented edge
-        double  condProb;   // Normalized conditional probability
-        
         double  twoLog = Math.log(2.0);
         
         // NOTE: this function sets the edge weigths (IC(P(c|p)) when
@@ -77,11 +68,11 @@ class CondProbHyponymsICmodel extends AbstractCondProbICmodel
         {
             // We get the children vertexes
             
-            children = parent.getChildren();
+            IVertexList children = parent.getChildren();
             
             // We compute the total of hyponyms for the children
             
-            hypoTotal = 0;
+            int hypoTotal = 0;
                     
             for (IVertex child: children)
             {
@@ -94,11 +85,11 @@ class CondProbHyponymsICmodel extends AbstractCondProbICmodel
             {
                 // We compute the normalized conditional probability
                 
-                condProb = (1.0 + child.getNonInclusiveHyponymSetCount()) / (double)hypoTotal;
+                double condProb = (1.0 + child.getNonInclusiveHyponymSetCount()) / (double)hypoTotal;
                 
                 // We get the incident edge joining the vertexes
                 
-                incidentEdge = parent.getIncidentEdge(child).getEdge();
+                IEdge incidentEdge = parent.getIncidentEdge(child).getEdge();
                 
                 // We set the conditional probability for the edge
                 
@@ -107,7 +98,7 @@ class CondProbHyponymsICmodel extends AbstractCondProbICmodel
                 // We compute the IC of the conditional probability as the
                 // negative of its binary logarithm
 
-                weight = -Math.log(condProb) / twoLog;
+                double weight = -Math.log(condProb) / twoLog;
                 
                 // We set the weight for the non-oriented edge
                 

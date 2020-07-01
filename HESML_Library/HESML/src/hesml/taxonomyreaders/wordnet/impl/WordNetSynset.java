@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -122,7 +122,9 @@ class WordNetSynset implements IWordNetSynset
     @Override
     public boolean isParent(Long synsetID)
     {
-        boolean parent = false; // Returned value
+        // We initialize the result
+        
+        boolean parent = false;
         
         // We check if the synset is a prent of the current synset
         
@@ -149,16 +151,17 @@ class WordNetSynset implements IWordNetSynset
     @Override
     public boolean isChild(Long synsetID)
     {
-        boolean isChild = false;    // Retuened value
+        // We initialize the output
         
-        IWordNetSynset  child = m_OwnerDB.getSynset(synsetID);
+        boolean isChild = false;
+        
+        // We retrieve the synset from DB
+        
+        IWordNetSynset child = m_OwnerDB.getSynset(synsetID);
         
         // We check the query
         
-        if (child != null)
-        {
-            child.isParent(m_SynsetId);
-        }
+        if (child != null) isChild = child.isParent(m_SynsetId);
         
         // We return the result
         
@@ -306,11 +309,9 @@ class WordNetSynset implements IWordNetSynset
     @Override
     public Set<IWordNetSynset> getParents()
     {
-        HashSet<IWordNetSynset> parents;    // Returned value
-        
         // We create the set of parents
         
-        parents = new HashSet<>();
+        HashSet<IWordNetSynset> parents = new HashSet<>();
         
         // We get the parents from the owner DB
         

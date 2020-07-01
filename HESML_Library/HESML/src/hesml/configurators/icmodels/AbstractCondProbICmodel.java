@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -49,13 +49,6 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
     protected void setNodesProbabilityAndICValue(
             ITaxonomy   taxonomy) throws Exception
     {
-        double  childProb;  // Probability
-        
-        IVertex root;   // Root node
-        
-        IHalfEdge   loop;   // Cursor
-        IHalfEdge   first;
-        
         double  log2 = Math.log(2.0);
         
         // We reset the visiting flags for all the vertexes
@@ -64,7 +57,8 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
         
         // We set to 1 the probability of the root node
         
-        root = taxonomy.getVertexes().getAt(0);
+        IVertex root = taxonomy.getVertexes().getAt(0);
+        
         root.setProbability(1.0);
         root.setICValue(0.0);
         root.setVisited(true);
@@ -79,12 +73,12 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
             {
                 // We initialize  the probability of the vertex
 
-                childProb = 0.0;
+                double childProb = 0.0;
 
                 // We iterate on the pàrents
 
-                first = vertex.getFirstOutcomingEdge();
-                loop = first;
+                IHalfEdge first = vertex.getFirstOutcomingEdge();
+                IHalfEdge loop = first;
                 
                 do
                 {
@@ -135,10 +129,6 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
     protected void setAsymmetricWeights(
         ITaxonomy   taxonomy)
     {
-        IHalfEdge   loop;           // Cursor
-        IHalfEdge   firstOutEdge;   // First outcoming edge
-        
-        double  weight;                 // Weight of the ascending edges
         double  log2 = Math.log(2.0);   // Log2
         
         // We traverse all the vertexes in order to set the asymmetric
@@ -148,8 +138,8 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
         {
             // We get the first outcoming edge of the vertex
             
-            firstOutEdge = vertex.getFirstOutcomingEdge();
-            loop = firstOutEdge;
+            IHalfEdge firstOutEdge = vertex.getFirstOutcomingEdge();
+            IHalfEdge loop = firstOutEdge;
             
             // We iterates around the vertex
             
@@ -170,7 +160,7 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
                     // is equal to w = log(p(child)) / log(2) because of
                     // p(parent | child) = 1 / p(child)
                     
-                    weight = -Math.log(1.0 / vertex.getProbability()) / log2;
+                    double weight = -Math.log(1.0 / vertex.getProbability()) / log2;
                     loop.setWeight(weight);
                 }
                 
@@ -229,9 +219,6 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
         ITaxonomy   taxonomy,
         boolean     setWeightsToICdiff) throws Exception
     {
-        IVertexList  leaves; // Subsumed leaves
-        
-        double  probability;            // Node probability
         double  log2 = Math.log(2.0);
         
         // We set the probability and IC value of each node
@@ -246,11 +233,11 @@ abstract class AbstractCondProbICmodel extends AbstractICmodel
             {
                 // We get the subsumed leaves of the vertex
                 
-                leaves = vertex.getSubsumedLeaves(true);
+                IVertexList leaves = vertex.getSubsumedLeaves(true);
                 
                 // We set the overall node probability to 0
                 
-                probability = 0.0;
+                double probability = 0.0;
                 
                 // We compute the accumulated probability
                 

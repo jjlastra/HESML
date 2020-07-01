@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureMeng2014 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Constant in the exponential
      */
     
@@ -51,18 +58,20 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
      */
     
     MeasureMeng2014(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     useFastMethod)
     {
         // We call the base constructor
         
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMethod;
         
         // Default value in the paper
         
         m_K = 0.08;
     }
 
-        /**
+    /**
      * This function returns the type of measure.
      * @return The type of semantic measure.
      */
@@ -70,7 +79,9 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Meng2014);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Meng2014 :
+                SimilarityMeasureType.AncSPLMeng2014);
     }
 
     /**
@@ -98,22 +109,23 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
+        // We obtain the MICA vertex
+        
         IVertex micaVertex = m_Taxonomy.getMICA(left, right);
        
-        double  length; // Length based in edge counting
-        double  power;  // Power factor
-        
         // We check the MCIA vertex
         
         if (micaVertex != null)
         {
             // We get the length among concepts
 
-            length = left.getShortestPathDistanceTo(right, false);
+            double length = !m_useFastShortestPathAlgorithm ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
 
             // We measure the power factor
 
-            power = (Math.exp(m_K * length) - 1.0);
+            double power = (Math.exp(m_K * length) - 1.0);
 
             // We compute the distance
 

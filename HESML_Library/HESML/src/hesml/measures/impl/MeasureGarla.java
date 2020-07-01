@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -84,17 +84,13 @@ class MeasureGarla extends BaseJiangConrathMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity; // Returned value
-        
-        double  distance;   // Standard JC distance
-
         // We compute the distance
         
-        distance = getClassicJiangConrathDist(left, right);
+        double distance = getClassicJiangConrathDist(left, right);
         
         // We normalize the distance
         
-        similarity = 1.0 / (distance + 1.0);
+        double similarity = 1.0 / (distance + 1.0);
         
         // We return the result
         

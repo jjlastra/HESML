@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -85,15 +85,14 @@ class MeasureResnik extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
+        // We obtain the MICA vertex
+        
         IVertex micaVertex = m_Taxonomy.getMICA(right, left);
         
         // We compute the similarity value, but we check before the
         // existence of the MICA vertex.
         
-        if (micaVertex != null)
-        {
-            similarity = micaVertex.getICvalue();
-        }
+        if (micaVertex != null) similarity = micaVertex.getICvalue();
         
         // We return the result
         

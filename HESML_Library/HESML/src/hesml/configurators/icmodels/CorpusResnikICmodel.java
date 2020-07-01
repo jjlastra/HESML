@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -81,14 +81,11 @@ class CorpusResnikICmodel extends PedersenFilesICmodel
     private void buildResnikICmodel(
             ITaxonomy   taxonomy) throws Exception
     {
-        double  rootFrq;    // Maxium frequency of concepts (root)
-        double  prob;       // Probability
-        
         double  twoLog = Math.log(2.0);
 
         // We get the maximum frequency saved in the root node
         
-        rootFrq = taxonomy.getVertexes().getAt(0).getProbability();
+        double rootFrq = taxonomy.getVertexes().getAt(0).getProbability();
         
         // We compute the weights of every edge ion the taxonomy
         
@@ -99,7 +96,7 @@ class CorpusResnikICmodel extends PedersenFilesICmodel
             // It occurs on some Pedersen datasets, thus, we guarantee
             // that it doesn´t occur.
             
-            prob = Math.max(1.0, vertex.getProbability()) / rootFrq;
+            double prob = Math.max(1.0, vertex.getProbability()) / rootFrq;
             
             // We save the probability and IC value
             

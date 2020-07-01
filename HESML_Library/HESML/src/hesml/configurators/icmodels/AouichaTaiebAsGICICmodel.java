@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -52,22 +52,6 @@ class AouichaTaiebAsGICICmodel extends AbstractICmodel
     @Override
     public void setTaxonomyData(ITaxonomy taxonomy) throws Exception
     {
-        double  icValue;    // IC-value for each vertex
-        
-        double  avgDepth;   // Average depth for the hypernyms
-        double  score;
-        
-        double  hypoVertex; // Hyponyms inclusive of the vertex
-        double  hypoParent; // Hyponyms inclusive of the parent
-        
-        double  ancestorSpec;   // Ancestor specificity (eq.21 in the paper)
-        double  hypoOverlap;    // Hyponym graph overlapping factor (eq. 22)
-
-        IVertexList ancestors;              // Ancestor set
-        IVertexList descendants;            // Descendant set (hyponyms)
-        IVertexList hypernymDescendants;    // Descendants of a hypernym node
-        IVertexList parents;                // Direct parents of an ancestor
-        
         int i = 1;  // Counter
         
         // We compute the IC value for each node. 
@@ -83,34 +67,34 @@ class AouichaTaiebAsGICICmodel extends AbstractICmodel
             
             // We get the ancestor set including the base vertex
             
-            ancestors = vertex.getAncestors(true);
+            IVertexList ancestors = vertex.getAncestors(true);
             
             // We compute and accumulate the ancestor specificity
             // for each ancestor node
             
-            icValue = 0.0;
+            double icValue = 0.0;
             
             for (IVertex ancestor: ancestors)
             {
                 // We get the descendants and parent (hypernyms)
                 // of the ancestor node
                 
-                descendants = ancestor.getHyponyms(true);
-                parents = ancestor.getParents();
+                IVertexList descendants = ancestor.getHyponyms(true);
+                IVertexList parents = ancestor.getParents();
                 
                 // We compute the ancestor specificity
                 
-                ancestorSpec = 0.0;
+                double ancestorSpec = 0.0;
                 
                 for (IVertex hypernym: parents)
                 {
                     // We get the descendants of the parent node
                     
-                    hypernymDescendants = hypernym.getHyponyms(true);
+                    IVertexList hypernymDescendants = hypernym.getHyponyms(true);
                     
                     // We compute the hyponym overlapping factor
                     
-                    hypoOverlap = ((double)descendants.getCount()) /
+                    double hypoOverlap = ((double)descendants.getCount()) /
                                 ((double)hypernymDescendants.getCount());
                     
                     // We release the hyperhym descendants

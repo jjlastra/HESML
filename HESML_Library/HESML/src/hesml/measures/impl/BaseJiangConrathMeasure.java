@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -63,10 +63,6 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     
     protected void computeMaxDistance() throws Exception
     {
-        double  distance;   // Distance
-        
-        IVertex root;   // Root node
-        
         // Debug message
         
         System.out.println("Computing the maximum distance");
@@ -77,7 +73,7 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
         
         // We get the root node
         
-        root = m_Taxonomy.getVertexes().getAt(0);
+        IVertex root = m_Taxonomy.getVertexes().getAt(0);
         
         // We compute the distance to any leaf node
         
@@ -87,7 +83,7 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
             {
                 // We compute the distance to the root
                 
-                distance = vertex.getICvalue();
+                double distance = vertex.getICvalue();
                 
                 // Chekc for the maxium
                 
@@ -127,8 +123,6 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
         
         if (micaVertex != null)
         {
-            // We compute the distance
-
             distance = left.getICvalue() + right.getICvalue()
                     - 2.0 * micaVertex.getICvalue();
         }
@@ -171,11 +165,9 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     private double distanceToSimilarity(
         double  distance)
     {
-        double  similarity; // Returned value
-        
         // We normalize the distance
         
-        similarity = 1 - distance / (2.0 * m_MaxDistance);
+        double similarity = 1 - distance / (2.0 * m_MaxDistance);
         
         // We return the result
         
@@ -192,11 +184,9 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     protected double getExpNormSimilarity(
         double  distance)
     {
-        double  similarity; // retgurned value
-        
         // We normalize the distance
         
-        similarity = distanceToSimilarity(distance);
+        double similarity = distanceToSimilarity(distance);
         
         // We apply the exponential scaling
         
@@ -216,18 +206,15 @@ abstract class BaseJiangConrathMeasure extends SimilaritySemanticMeasure
     protected double getLogisticNormSimilarity(
         double  distance)
     {
-        double  similarity;    // Returned value
-        double  k = 8.0;        // Logistic constant
+        double  k = 8.0;    // Logistic constant
                 
-        double  arg;    // Exponential argument
-        
         // We normalize the distance
         
-        similarity = distanceToSimilarity(distance);
+        double similarity = distanceToSimilarity(distance);
         
         // We compute the logistic param
         
-        arg = -k * (similarity - 0.5);
+        double arg = -k * (similarity - 0.5);
         
         // We apply the logistic tuning function
         

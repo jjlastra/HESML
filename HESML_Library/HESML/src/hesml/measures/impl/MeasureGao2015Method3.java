@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureGao2015Method3 extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Alpha
      */
     
@@ -57,9 +64,11 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
      */
     
     MeasureGao2015Method3(
-        ITaxonomy   taxonomy)
+            ITaxonomy   taxonomy,
+            boolean     usefastMethod)
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = usefastMethod;
         
         // We set the default values as defined in the paper above
         
@@ -86,7 +95,9 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Gao2015Strategy3);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Gao2015Strategy3 :
+                SimilarityMeasureType.AncSPLGao2015Strategy3);
     }
 
     /**
@@ -102,10 +113,8 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
             IVertex right) throws InterruptedException, Exception
     {
         double  similarity = 0.0;   // Returned value
-        
-        double  length; // Shortest path length between concepts
-        double  weight; // Weight    
-        double  icMICAvalue;
+
+        // We obtain the MICA vertex
 
         IVertex micaVertex = m_Taxonomy.getMICA(left, right);
         
@@ -115,22 +124,19 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
         {
             // We get the shortest path length between the concepts
 
-            length = left.getShortestPathDistanceTo(right, false);
+            double length = !m_useFastShortestPathAlgorithm ? 
+                    left.getShortestPathDistanceTo(right, false) :
+                    left.getFastShortestPathDistanceTo(right, false);
 
             // We get the IC value of the lowest common ancestor
 
-            icMICAvalue = micaVertex.getICvalue();
+            double icMICAvalue = micaVertex.getICvalue();
 
             // We comptue the IC-based weight
 
-            if (icMICAvalue >= 1.0)
-            {
-                weight = Math.pow(1.0 + 1.0 / icMICAvalue, m_Beta);
-            }
-            else
-            {
-                weight = Math.pow(2.0, m_Beta);
-            }
+            double  weight = (icMICAvalue >= 1.0) ?
+                                Math.pow(1.0 + 1.0 / icMICAvalue, m_Beta) :
+                                Math.pow(2.0, m_Beta);
 
             // We comptue the similarity value
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -55,19 +55,15 @@ class TaxonomyCSVWriter
             String      strCSVFilename,
             boolean     includeProb) throws IOException, Exception
     {
-        BufferedWriter  writer; // Writer
-        
-        String  strLine;    // Line written
-        
-        char    sep = ';';  // Separator dield
-        
         // We create a writer for the text file
         
-        writer = new BufferedWriter(new FileWriter(strCSVFilename, false));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(strCSVFilename, false));
         
         // We write the titles
         
-        strLine = "Synset ID" + sep
+        char sep = ';';  // Separator dield
+        
+        String strLine = "Synset ID" + sep
                 + "Words" + sep
                 + "ParentsID" + sep
                 + "IC value" + sep;

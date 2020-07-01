@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -88,8 +88,6 @@ class MeasurePirroSeco extends SimilaritySemanticMeasure
     {
         double  similarity = 0.0;   // Returned value
 
-        IVertex micaVertex; // LCA with the maximum IC value
-        
         // We filter the equal values
         
         if (left == right)
@@ -100,7 +98,7 @@ class MeasurePirroSeco extends SimilaritySemanticMeasure
         {
             // We get the MICA vertex
 
-            micaVertex = m_Taxonomy.getMICA(left, right);
+            IVertex micaVertex = m_Taxonomy.getMICA(left, right);
 
             // We compute the distance
 

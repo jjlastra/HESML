@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2018 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -40,6 +40,13 @@ import hesml.taxonomy.*;
 class MeasureZhou extends SimilaritySemanticMeasure
 {
     /**
+     * This flag forces the use of the fast approximantion of Djikstra
+     * algortihm instead of the exact method (false),
+     */
+    
+    private boolean m_useFastShortestPathAlgorithm;
+    
+    /**
      * Maxikum depth of the base taxonomy
      */
     
@@ -51,9 +58,11 @@ class MeasureZhou extends SimilaritySemanticMeasure
      */
     
     MeasureZhou(
-        ITaxonomy   taxonomy) throws Exception
+            ITaxonomy   taxonomy,
+            boolean     useFastMetod) throws Exception
     {
         super(taxonomy);
+        m_useFastShortestPathAlgorithm = useFastMetod;
         
         // We get the maximum depth of the base taxonomy. We note
         // that Zhou et al. define the depth in base 1, it means that
@@ -70,7 +79,9 @@ class MeasureZhou extends SimilaritySemanticMeasure
     @Override
     public SimilarityMeasureType getMeasureType()
     {
-        return (SimilarityMeasureType.Zhou);
+        return (!m_useFastShortestPathAlgorithm ?
+                SimilarityMeasureType.Zhou :
+                SimilarityMeasureType.AncSPLZhou);
     }
     
     /**
@@ -96,27 +107,23 @@ class MeasureZhou extends SimilaritySemanticMeasure
             IVertex left,
             IVertex right) throws InterruptedException, Exception
     {
-        double  similarity;   // Returned value
-
-        double  distJC;         // Distancia de Jiang-Conrath
-        double  depthFactor;    // Depth factor
-        double  length;         // Length
-        
         // We get the Jiang-Conrath distance
         
-        distJC = BaseJiangConrathMeasure.getClassicJiangConrathDist(left, right);
+        double distJC = BaseJiangConrathMeasure.getClassicJiangConrathDist(left, right);
         
         // We get the edge length between the nodes
         
-        length = left.getShortestPathDistanceTo(right, false);
+        double length = !m_useFastShortestPathAlgorithm ? 
+                        left.getShortestPathDistanceTo(right, false) :
+                        left.getFastShortestPathDistanceTo(right, false);
         
         // We compute the depth factor
         
-        depthFactor = Math.log(length + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
+        double depthFactor = Math.log(length + 1.0) / Math.log(2.0 * m_DepthMax - 1.0);
         
         // We comptue the overall similarity
         
-        similarity = 1.0 - 0.5 * (depthFactor + 0.5 * distJC);
+        double similarity = 1.0 - 0.5 * (depthFactor + 0.5 * distJC);
         
         // We return the result
         
