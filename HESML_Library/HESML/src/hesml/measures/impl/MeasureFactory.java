@@ -61,6 +61,24 @@ public class MeasureFactory
     {
         return (new MeasureTaieb2014(taxonomy, maxSynsetsNumberPerWord));
     }
+    
+    /**
+     * This function creates a groupwise measure based on a groupwise
+     * metric and any pairwise similarity measure.
+     * @param taxonomy
+     * @param pairwiseMeasureType
+     * @param groupwiseMetricType
+     * @return 
+     */
+    
+    public static IGroupwiseSimilarityMeasure getGroupwiseBasedOnPairwiseMeasure(
+            ITaxonomy               taxonomy,
+            SimilarityMeasureType   pairwiseMeasureType,
+            GroupwiseMetricType     groupwiseMetricType) throws Exception
+    {
+        return (new GroupwiseBasedOnPairwiseMeasure(taxonomy,
+                getMeasure(taxonomy, pairwiseMeasureType), groupwiseMetricType));
+    }
 
     /**
      * This function creates an instance of an specific similarity measure.
