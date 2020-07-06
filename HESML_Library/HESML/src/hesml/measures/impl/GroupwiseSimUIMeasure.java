@@ -27,17 +27,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class implements the groupsie GO-based semantic similairty measure
- * introduced by Pesquita et al. [1].
+ * THis class implements the simUI measure introduced by Gentleman [1, page 10].
  * 
- * [1] C. Pesquita, D. Faria, H. Bastos, A. Falcão, F. Couto,
- * Evaluating GO-based semantic similarity measures, in:
- * Proc. 10th Annual Bio-Ontologies Meeting, 2007: p. 38.
+ * [1] R. Gentleman, Visualizing and distances using GO,
+ * URL Http://www.Bioconductor. Org/docs/vignettes. Html. 38 (2005).
+ * http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.592.2206&rep=rep1&type=pdf.
  * 
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
+class GroupwiseSimUIMeasure implements IGroupwiseSimilarityMeasure
 {
     /**
      * This function returns the type of the measure.
@@ -47,7 +46,7 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
     @Override
     public GroupwiseSimilarityMeasureType getMeasureType()
     {
-        return (GroupwiseSimilarityMeasureType.SimGIC);
+        return (GroupwiseSimilarityMeasureType.SimUI);
     }
 
     /**
@@ -75,30 +74,12 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
 
         // We compute the numerator of simGIC
         
-        double numeratorICsum = 0.0;
-        
-        for (IVertex vertex : intersectionSet)
-        {
-            numeratorICsum += vertex.getICvalue();
-        }
-        
-        // We compute the denominator of simGIC
-        
-        double denominatorICsum = 0.0;
-        
-        for (IVertex vertex : unionSet)
-        {
-            denominatorICsum += vertex.getICvalue();
-        }
+        double similarity = (double) intersectionSet.size() / (double) unionSet.size();
         
         // We clear both auxiliary sets
         
         unionSet.clear();
         intersectionSet.clear();
-        
-        // We compute the similarity
-        
-        double similarity = numeratorICsum / denominatorICsum;
         
         // We return the result
         
