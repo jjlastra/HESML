@@ -81,6 +81,53 @@ public class MeasureFactory
     }
 
     /**
+     * This function creates a groupwise measure which noi require parameters,
+     * such as SimLP, SimGIC and SimLP.
+     * @param groupwiseMeasureType
+     * @return 
+     */
+    
+    public static IGroupwiseSimilarityMeasure getGroupwiseNoParameterMeasure(
+            GroupwiseSimilarityMeasureType  groupwiseMeasureType) throws Exception
+    {
+        // We initialize the output
+        
+        IGroupwiseSimilarityMeasure groupwiseMeasure = null;
+        
+        // We create the specific groupwise similairty measure
+        
+        switch (groupwiseMeasureType)
+        {
+            case SimGIC:
+                
+                groupwiseMeasure = new GroupwiseSimGICMeasure();
+                
+                break;
+
+            case SimLP:
+                
+                groupwiseMeasure = new GroupwiseSimLPMeasure();
+                
+                break;
+
+            case SimUI:
+                
+                groupwiseMeasure = new GroupwiseSimUIMeasure();
+                
+                break;
+                
+            default:
+                
+                throw (new Exception("Unssoported type in this function -> "
+                        + groupwiseMeasureType.toString()));
+        }
+        
+        // We return the result
+        
+        return (groupwiseMeasure);
+    }
+    
+    /**
      * This function creates an instance of an specific similarity measure.
      * @param taxonomy
      * @param measureType
