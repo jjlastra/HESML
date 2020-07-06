@@ -26,5 +26,8 @@ package hesml.measures;
 
 public enum GroupwiseSimilarityMeasureType
 {
-    BasedOnPairwiseMeasure
+    BasedOnPairwiseMeasure,
+    SimGIC,
+    SimUI,
+    SimLP
 }
