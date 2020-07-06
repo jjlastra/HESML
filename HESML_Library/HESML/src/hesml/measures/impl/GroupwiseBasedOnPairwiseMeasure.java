@@ -172,8 +172,10 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
      * in the pioneering paper by Lord et al.[1] and detailed by
      * Azuaje et al. [2, formula 1].
      * 
-     * [1] F.M. Couto, M.J. Silva, P.M. Coutinho, Measuring semantic similarity
-     * between Gene Ontology terms, Data Knowl. Eng. 61 (2007) 137–152.
+     * [1] P.W. Lord, R.D. Stevens, A. Brass, C.A.
+     * Goble, Semantic similarity measures as tools for exploring the gene ontology,
+     * in: Pacific Symposium on Biocomputing., homepages.cs.ncl.ac.uk, 2003: pp. 601–612.
+     * 
      * [2] F. Azuaje, H. Wang, O. Bodenreider,
      * Ontology-driven similarity approaches to supporting gene functional
      * assessment, in: Proceedings of the ISMB’2005 SIG Meeting on
@@ -221,15 +223,15 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
      * assessment, in: Proceedings of the ISMB’2005 SIG Meeting on
      * Bio-Ontologies, academia.edu, 2005: pp. 9–10.
      * 
-     * @param left The first set of vertexes (concepts) 
-     * @param right The second set of vertexes (concepts) 
+     * @param leftVertexes The first set of vertexes (concepts) 
+     * @param rightVertexes The second set of vertexes (concepts) 
      * @return 
      * @throws java.lang.InterruptedException 
      */
     
     private double bestMatchAverageSimilarity(
-            Set<IVertex> left,
-            Set<IVertex> right) throws Exception
+            Set<IVertex> leftVertexes,
+            Set<IVertex> rightVertexes) throws Exception
     {
         // We initialize the output value
         
@@ -238,13 +240,13 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
         // We compute the maximum similarity for each left vertex
         // as regards the right set
         
-        for (IVertex vertex1: left)
+        for (IVertex leftVertex: leftVertexes)
         {
             double bestMatch = Double.NEGATIVE_INFINITY;
             
-            for (IVertex vertex2: right)
+            for (IVertex rightVertex: rightVertexes)
             {
-                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(vertex1, vertex2));
+                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
             }
             
             // We acumulate the best match for every vertex
@@ -255,13 +257,13 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
         // We compute the maximum similarity for each right vertex
         // as regards the left set
         
-        for (IVertex vertex1: right)
+        for (IVertex rightVertex: rightVertexes)
         {
             double bestMatch = Double.NEGATIVE_INFINITY;
             
-            for (IVertex vertex2: left)
+            for (IVertex leftVertex: leftVertexes)
             {
-                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(vertex1, vertex2));
+                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
             }
             
             // We acumulate the best match for every vertex
@@ -271,7 +273,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
         
         // We compute the average value
         
-        similarity /= ((double)(left.size() + right.size()));
+        similarity /= ((double)(leftVertexes.size() + rightVertexes.size()));
         
         // We return the result
         
