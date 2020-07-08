@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="UMLSExperiments">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UMLSExperiment" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="InputCuiPairsDir"/>
+							<xs:element name="InputCuiPairsFilename"/>
+							<xs:element name="OutputFilename"/>
+							<xs:element name="UMLSOntology">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="OntologyFilesDir" type="xs:string"/>
+										<xs:choice>
+											<xs:element name="MeSH">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="XmlMeSHOntologyFilename" type="xs:string"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="SNOMED-CT">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="SnomedConceptsFilename"/>
+														<xs:element name="SnomedRelationshipsFilename"/>
+														<xs:element name="SnomedDescriptionFilename"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:choice>
+										<xs:element name="UMLSCuiFilename" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Measures">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="SimilarityMeasure" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="SimilarityMeasureType" type="SimilarityMeasureType"/>
+													<xs:element name="IntrinsicICModel" type="IntrinsicICModelType" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="SimilarityMeasureType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AncSPLCaiStrategy1"/>
+			<xs:enumeration value="AncSPLCosineNormWeightedJiangConrath"/>
+			<xs:enumeration value="AncSPLGao2015Strategy3"/>
+			<xs:enumeration value="AncSPLHao"/>
+			<xs:enumeration value="AncSPLLeacockChodorow"/>
+			<xs:enumeration value="AncSPLLi2003Strategy3"/>
+			<xs:enumeration value="AncSPLLi2003Strategy4"/>
+			<xs:enumeration value="AncSPLLi2003Strategy9"/>
+			<xs:enumeration value="AncSPLLiuStrategy1"/>
+			<xs:enumeration value="AncSPLLiuStrategy2"/>
+			<xs:enumeration value="AncSPLMeng2014"/>
+			<xs:enumeration value="AncSPLMubaid"/>
+			<xs:enumeration value="AncSPLPedersenPath"/>
+			<xs:enumeration value="AncSPLPekarStaab"/>
+			<xs:enumeration value="AncSPLRada"/>
+			<xs:enumeration value="AncSPLWeightedJiangConrath"/>
+			<xs:enumeration value="AncSPLZhou"/>
+			<xs:enumeration value="CaiStrategy1"/>
+			<xs:enumeration value="CaiStrategy2"/>
+			<xs:enumeration value="CosineLin"/>
+			<xs:enumeration value="CosineNormJiangConrath"/>
+			<xs:enumeration value="CosineNormWeightedJiangConrath"/>
+			<xs:enumeration value="ExpNormJiangConrath"/>
+			<xs:enumeration value="FaITH"/>
+			<xs:enumeration value="Gao2015Strategy3"/>
+			<xs:enumeration value="Garla"/>
+			<xs:enumeration value="Hao"/>
+			<xs:enumeration value="JiangConrath"/>
+			<xs:enumeration value="LeacockChodorow"/>
+			<xs:enumeration value="Li2003Strategy3"/>
+			<xs:enumeration value="Li2003Strategy4"/>
+			<xs:enumeration value="Li2003Strategy9"/>
+			<xs:enumeration value="Lin"/>
+			<xs:enumeration value="LiuStrategy1"/>
+			<xs:enumeration value="LiuStrategy2"/>
+			<xs:enumeration value="LogisticLin"/>
+			<xs:enumeration value="LogisticNormJiangConrath"/>
+			<xs:enumeration value="Meng2012"/>
+			<xs:enumeration value="Meng2014"/>
+			<xs:enumeration value="Mubaid"/>
+			<xs:enumeration value="PedersenPath"/>
+			<xs:enumeration value="PekarStaab"/>
+			<xs:enumeration value="PirroSeco"/>
+			<xs:enumeration value="Rada"/>
+			<xs:enumeration value="Resnik"/>
+			<xs:enumeration value="Sanchez2012"/>
+			<xs:enumeration value="Stojanovic"/>
+			<xs:enumeration value="Taieb2014"/>
+			<xs:enumeration value="Taieb2014sim2"/>
+			<xs:enumeration value="WeightedJiangConrath"/>
+			<xs:enumeration value="WuPalmer"/>
+			<xs:enumeration value="WuPalmerFast"/>
+			<xs:enumeration value="Zhou"/>
+			<xs:enumeration value="EMBWordEmbedding"/>
+			<xs:enumeration value="UKBppvEmbedding"/>
+			<xs:enumeration value="NasariEmbedding"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntrinsicICModelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Seco"/>
+			<xs:enumeration value="Blanchard"/>
+			<xs:enumeration value="Zhou"/>
+			<xs:enumeration value="Sanchez2011"/>
+			<xs:enumeration value="Harispe"/>
+			<xs:enumeration value="Sanchez2012"/>
+			<xs:enumeration value="Meng"/>
+			<xs:enumeration value="Yuan"/>
+			<xs:enumeration value="HadjTaieb"/>
+			<xs:enumeration value="CondProbHyponyms"/>
+			<xs:enumeration value="CondProbUniform"/>
+			<xs:enumeration value="CondProbLeaves"/>
+			<xs:enumeration value="CondProbCosine"/>
+			<xs:enumeration value="CondProbLogistic"/>
+			<xs:enumeration value="CondProbLogisticK10"/>
+			<xs:enumeration value="CondProbLogisticK12"/>
+			<xs:enumeration value="CondProbRefHyponyms"/>
+			<xs:enumeration value="CondProbRefUniform"/>
+			<xs:enumeration value="CondProbRefLeaves"/>
+			<xs:enumeration value="CondProbRefCosine"/>
+			<xs:enumeration value="CondProbRefLogistic"/>
+			<xs:enumeration value="CondProbRefCosineLeaves"/>
+			<xs:enumeration value="CondProbRefLogisticLeaves"/>
+			<xs:enumeration value="CondProbRefLeavesSubsumers"/>
+			<xs:enumeration value="CondProbRefLeavesSubsumersRatio"/>
+			<xs:enumeration value="CondProbRefSubsumedLeavesRatio"/>
+			<xs:enumeration value="Adhikari"/>
+			<xs:enumeration value="AouichaTaiebAsGIC"/>
+			<xs:enumeration value="AICAouichaTaiebHamadu2016"/>
+			<xs:enumeration value="Cai"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
