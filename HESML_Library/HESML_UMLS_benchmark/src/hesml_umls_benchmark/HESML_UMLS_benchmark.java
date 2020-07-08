@@ -24,8 +24,6 @@ package hesml_umls_benchmark;
 import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml.taxonomyreaders.obo.IOboOntology;
-import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
