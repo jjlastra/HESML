@@ -419,17 +419,15 @@ abstract class XmlBenchmarkReader
     {
         SimilarityMeasureType[] measures;   // Returned value
         
-        ArrayList<SimilarityMeasureType>    temp;   // Temporary list
-        
         Element measuresNode = getFirstChildWithTagName(experimentRoot, "SimilarityMeasures");
         
         // We create the temporary list
         
-        temp = new ArrayList<>();
+        ArrayList<SimilarityMeasureType> temp = new ArrayList<>();
         
         // We recover all the measure types in the node list
         
-        NodeList    measureList = measuresNode.getChildNodes();
+        NodeList measureList = measuresNode.getChildNodes();
         
         for (int i = 0, nMeasures = measureList.getLength(); i < nMeasures; i++)
         {
@@ -573,7 +571,7 @@ abstract class XmlBenchmarkReader
     protected SimilarityMeasureType ConvertToSimilarityMeasureType(
             String  strMeasureType)
     {
-        SimilarityMeasureType   measure = SimilarityMeasureType.CosineLin;
+        SimilarityMeasureType measure = SimilarityMeasureType.CosineLin;
         
         // We look for the matching value
         

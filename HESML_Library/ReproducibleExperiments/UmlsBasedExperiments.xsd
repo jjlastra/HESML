@@ -17,6 +17,7 @@
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element name="OntologyFilesDir" type="xs:string"/>
+										<xs:element name="UMLSCuiFilename" type="xs:string"/>
 										<xs:choice>
 											<xs:element name="MeSH">
 												<xs:complexType>
@@ -35,7 +36,6 @@
 												</xs:complexType>
 											</xs:element>
 										</xs:choice>
-										<xs:element name="UMLSCuiFilename" type="xs:string"/>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>

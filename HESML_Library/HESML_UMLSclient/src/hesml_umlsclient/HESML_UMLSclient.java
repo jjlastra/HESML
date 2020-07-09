@@ -21,6 +21,7 @@
 
 package hesml_umlsclient;
 
+import hesml.HESMLversion;
 import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
@@ -31,11 +32,11 @@ import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
-import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -90,10 +91,80 @@ public class HESML_UMLSclient
     
     public static void main(String[] args) throws Exception
     {
+        // We initialize the flag to show the usage message
+        
+        boolean showUsage = false;
+        
+        // We print the HESML version
+        
+        System.out.println("Running HESML_UMLSClient V1R5 (1.5.0.1, July 2020) based on "
+                + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
+        
+        System.out.println("Java heap size in Mb = "
+            + (Runtime.getRuntime().totalMemory() / (1024 * 1024)));
+        
+        // We read the incoming parameters and load the reproducible
+        // experiments defined by the user in a XML-based file with
+        // extension *.umlsexp
+        
+        if ((args.length == 1) && (args[0].endsWith(".xml")))
+        {
+            // We load a reproducible experiment file in XML file format
+
+            File inputFile = new File(args[0]);  // Get the file path
+
+            // We check the existence of the file
+
+            if (inputFile.exists())
+            {
+                // We get the start time
+
+                long startFileProcessingTime = System.currentTimeMillis();
+
+                // Loading the experiment file
+
+                System.out.println("Loading and running the UMLS-based experiments defined in "
+                        + inputFile.getName());
+
+                // We parse the input file in order to recover the
+                // experiments definition.
+
+                UMLSReproducibleExperimentsInfo reproInfo =
+                        new UMLSReproducibleExperimentsInfo(inputFile.getPath());
+
+                // We execute all the experiments defined in the input file
+
+                reproInfo.RunAllExperiments();
+
+                // We measure the elapsed time to run the experiments
+
+                long    endTime = System.currentTimeMillis();
+                long    minutes = (endTime - startFileProcessingTime) / 60000;
+                long    seconds = (endTime - startFileProcessingTime) / 1000;
+
+                System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
+                System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
+            }
+        }
+        else
+        {
+            showUsage = true;
+        }
+        
+        // For a wrong calling to the program, we show the usage.
+        
+        if (showUsage)
+        {
+            System.err.println("\nIn order to properly use the HESMLclient program");
+            System.err.println("you should call it using any of the two methods shown below:\n");
+            System.err.println("(1) C:> java -jar dist\\HESMLclient.jar <reproexperiment.exp>");
+            System.err.println("(2) C:> java -jar dist\\HESMLclient.jar -WNSimRepV1 <outputdir>");
+        }
+
         // We execute an example on evaluating the similarity between CUI
         // concepts using MeSh ontology
 
-        exampleMeSHsimilarity();
+        //exampleMeSHsimilarity();
         
         // We execute an example on evaluating the similarity between CUI
         // concepts using SNOMED-CT ontology
