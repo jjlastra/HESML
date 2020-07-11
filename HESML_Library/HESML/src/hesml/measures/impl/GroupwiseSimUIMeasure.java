@@ -85,5 +85,16 @@ class GroupwiseSimUIMeasure implements IGroupwiseSimilarityMeasure
         
         return (similarity);
     }
+    
+    /**
+     * This fucntion returns the type of groupwise measure
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+        return (GroupwiseSimilarityMeasureType.SimUI.toString());
+    }
 }
 

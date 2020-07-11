@@ -23,6 +23,7 @@ package hesml.taxonomyreaders.mesh;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
+import java.util.Set;
 
 /**
  * This interface represents a MeSH Descriptor Data (MeSH concept).
@@ -73,6 +74,15 @@ public interface IMeSHOntology extends Iterable<IMeSHDescriptor>
      */
     
     IVertex[] getTaxonomyNodesForUmlsCUI(String strUmlCUI);
+    
+    /**
+     * This function returns all vertexes associated to the SNOMED-CT
+     * concepts evoked by a specific UMLS CUI.
+     * @param umlsConceptCUI
+     * @return
+     */
+    
+    Set<IVertex> getTaxonomyVertexSetForUmlsCUI(String umlsConceptCUI);
     
     /**
      * This function returns all the taxonomy nodes (vertexes) ID evoked by

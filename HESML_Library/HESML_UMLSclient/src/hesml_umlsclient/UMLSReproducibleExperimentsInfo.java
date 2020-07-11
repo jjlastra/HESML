@@ -23,15 +23,21 @@ package hesml_umlsclient;
 import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
-import hesml.measures.ISimilarityMeasure;
+import hesml.measures.GroupwiseMetricType;
+import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -176,10 +182,12 @@ class UMLSReproducibleExperimentsInfo
         String strOntologyFileDir = umlsOntologyNode.getElementsByTagName("OntologyFilesDir").item(0).getTextContent();
         String strUmlsCuiFilename = umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
         
-        // We chek which ontology will be used: MeSH or SNOMED
+        // We check which ontology will be used: MeSH or SNOMED
         
         if (umlsOntologyNode.getElementsByTagName("MeSH").getLength() > 0)
         {
+            // We get the main XML node of MeSH ontology
+            
             Element meshNode = (Element) umlsOntologyNode.getElementsByTagName("MeSH").item(0);
             
             String strMeshFilename = meshNode.getElementsByTagName("XmlMeSHOntologyFilename").item(0).getTextContent();
@@ -205,6 +213,179 @@ class UMLSReproducibleExperimentsInfo
                                 strSnomedDescriptionFilename, strOntologyFileDir,
                                 strUmlsCuiFilename);
         }
+        
+        // We load the input CUI pair list, parse and EVALUATE the similarity measures
+        
+        String[][] strRawOutputMatrix = loadAndEvaluateSimilarityMeasures(experimentNode,
+                            loadInputCuiPairs(strInputCuiPairsDir + "/" + strInputCuiPairsFilename));
+        
+        // We write the output file for the experiment
+        
+        
+    }
+    
+    /**
+     * This funcion parses and inmmediately evaluates the similairty measures
+     * defined in the XML-based experimetn file.
+     * @param measuresNode XML node containing the similarity measures
+     * @param strInputCuiPairs Matrix containg all CUI pairs
+     * @return A matrix with the CUI pairs and one column with the similarity values for each measure
+     */
+    
+    private String[][] loadAndEvaluateSimilarityMeasures(
+            Element     measuresNode,
+            String[][]  strInputCuiPairs) throws Exception
+    {
+        // We get the current taxonomy
+        
+        ITaxonomy taxonomy = (m_MeshOntology != null) ? m_MeshOntology.getTaxonomy()
+                            : m_SnomedOntology.getTaxonomy();
+        
+        // We retrieve the list of similarity measure nodes
+        
+        NodeList similarityMeasures = measuresNode.getElementsByTagName("SimilarityMeasure");
+        
+        // We initialize the output matrix
+        
+        String[][] strOutputmatrix = new String[1 + strInputCuiPairs.length][2 + similarityMeasures.getLength()];
+        
+        strOutputmatrix[0][0] = "CUI 1";
+        strOutputmatrix[0][1] = "CUI 2";
+        
+        // We load and evaluates the measures. IMPORTANT: the optional IC models
+        // are parsed and applied to the taxonomy in function loadSimilarityMeasure()
+        
+        for (int iMeasure = 0, iMeasureCol = 2;
+                iMeasure < similarityMeasures.getLength();
+                iMeasure++, iMeasureCol++)
+        {
+            // We get the measure node
+            
+            Element measureNode = (Element) similarityMeasures.item(iMeasure);
+            
+            // We read first the IC model because it should be applied before to
+            // initialize the measure. Several IC-based measures computes a
+            // normalization function which depends on the IC values.
+            
+            ITaxonomyInfoConfigurator icModel = loadIcModel(taxonomy, measureNode);
+        
+            if (icModel != null) icModel.setTaxonomyData(taxonomy);
+            
+            // We load the similarity measure and optional IC model
+            
+            SimilarityMeasureType pairwiseMeasureType = readSimilarityMeasureType(taxonomy, measureNode);
+            
+            IGroupwiseSimilarityMeasure groupwiseMeasure =
+                    MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(taxonomy,
+                        pairwiseMeasureType, GroupwiseMetricType.Maximum);
+            
+            // We set the column title
+            
+            strOutputmatrix[0][iMeasureCol] = (icModel == null) ? groupwiseMeasure.toString()
+                    : groupwiseMeasure.toString() + "-" + icModel.toString();
+            
+            // We evaluate the similarity of the input dataset
+            
+            for (int iPair = 0; iPair < strInputCuiPairs.length; iPair++)
+            {
+                // We get the CUI pair
+                
+                String strCui1 = strInputCuiPairs[iPair][0];
+                String strCui2 = strInputCuiPairs[iPair][1];
+                
+                // We copy the CUI pairs in the two frist columns
+                
+                strOutputmatrix[1 + iPair][0] = strCui1;
+                strOutputmatrix[1 + iPair][1] = strCui2;
+                
+                // We get the the vertexes for both CUIs
+                
+                Set<IVertex> cuiNodes1 = (m_MeshOntology != null) ?
+                                        m_MeshOntology.getTaxonomyVertexSetForUmlsCUI(strCui1) :
+                                        m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strCui1);
+
+                Set<IVertex> cuiNodes2 = (m_MeshOntology != null) ?
+                                        m_MeshOntology.getTaxonomyVertexSetForUmlsCUI(strCui2) :
+                                        m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strCui2);
+                
+                // We evaluate the similarity between the sets of ontoogy concepts
+                
+                double similarity = groupwiseMeasure.compare(cuiNodes1, cuiNodes2);
+                
+                // We save the similarity value
+                
+                strOutputmatrix[1 + iPair][iMeasureCol] = Double.toString(similarity);
+                
+                // We release the auxiliary sets
+                
+                cuiNodes1.clear();
+                cuiNodes2.clear();
+            }
+        }
+        
+        // We return the result
+        
+        return (strOutputmatrix);
+    }
+    
+    
+    /**
+     * This function loads the CUI pairs defined in a Comma Separated Values (CSV) file.
+     * @param strInputCuiPairsCSVfilename
+     * @return 
+     */
+    
+    private String[][] loadInputCuiPairs(
+            String  strInputCuiPairsCSVfilename) throws IOException
+    {
+        // We create the reader of the file
+        
+        BufferedReader reader = new BufferedReader(new FileReader(strInputCuiPairsCSVfilename));
+        
+        // We create an auxiliary list
+        
+        ArrayList<String[]> strTempPairs = new ArrayList<>();
+        
+        // We read the content of the file in row mode
+        
+        int iPair = 0;  // Pairs counter
+        
+        String strLine;
+        
+        while ((strLine = reader.readLine()) != null)
+        {
+            // We retrieve the 3 fields
+            
+            String[] strFields = strLine.split(";|,");
+            
+            // We create a new word pair
+            
+            if (strFields.length == 2) strTempPairs.add(strFields);
+        }
+        
+        // We close the file
+        
+        reader.close();
+        
+        // We cretae the output matrix
+        
+        String[][] strOutputCuiPairs = new String[strTempPairs.size()][2];
+        
+        int i = 0;
+        
+        for (String[] strCuiPair : strTempPairs)
+        {
+            strOutputCuiPairs[i][0] = strCuiPair[0];
+            strOutputCuiPairs[i++][1] = strCuiPair[1];
+        }
+
+        // We release the temporary list
+        
+        strTempPairs.clear();
+        
+        // We return the result
+        
+        return (strOutputCuiPairs);
     }
     
     /**
@@ -212,9 +393,10 @@ class UMLSReproducibleExperimentsInfo
      * evaluated in this experiments.
      * @param taxonomy
      * @param similarityMeasureDefinitions 
+     * @return The type of pairwise similarity measure
      */
     
-    private ISimilarityMeasure loadSimilarityMeasure(
+    private SimilarityMeasureType readSimilarityMeasureType(
             ITaxonomy   taxonomy,
             Element     similarityMeasureNode) throws Exception
     {
@@ -237,13 +419,9 @@ class UMLSReproducibleExperimentsInfo
             }
         }
         
-        // We load the pairwise similarity measure
-        
-        ISimilarityMeasure measure = MeasureFactory.getMeasure(taxonomy, inputMeasureType);
-        
         // We return the result
         
-        return (measure);
+        return (inputMeasureType);
     }
     
     /**

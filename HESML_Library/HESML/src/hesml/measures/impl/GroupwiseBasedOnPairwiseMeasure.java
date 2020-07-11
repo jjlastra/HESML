@@ -279,4 +279,16 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
         
         return (similarity);
     }
+    
+    /**
+     * This fucntion returns the type of groupwise measure
+     * @return 
+     */
+    
+    @Override
+    public String toString()
+    {
+        return (m_groupwiseMetric.toString()
+                + "/" + m_pairwiseMeasure.getMeasureType().toString());
+    }
 }

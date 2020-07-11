@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.HashSet;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * This class implements the SNOMED-CT database.
@@ -154,6 +155,45 @@ class SnomedCtOntology implements ISnomedCtOntology
         // We return the result
         
         return (concepts);
+    }
+    
+    /**
+     * This function returns all vertexes associated to the SNOMED-CT
+     * concepts evoked by a specific UMLS CUI.
+     * @param umlsConceptCUI
+     * @return
+     */
+    
+    @Override
+    public Set<IVertex> getTaxonomyVertexSetForUmlsCUI(String umlsConceptCUI)
+    {
+        // We initialize the output
+        
+        ISnomedConcept[] concepts = m_ConceptsIndexedByCUI.get(umlsConceptCUI);
+        
+        // We initialize the output
+        
+        Set<IVertex> vertexes = (concepts != null) ? new HashSet<>(concepts.length) : new HashSet<>(0);
+        
+        // We retrieve all vertex
+        
+        if ((concepts != null) && (concepts.length > 0))
+        {
+            // We get the taxonomy vertexes
+            
+            IVertexList taxonomyVertexes = m_Taxonomy.getVertexes();
+            
+            // We get the vertexes
+            
+            for (int i = 0; i < concepts.length; i++)
+            {
+                vertexes.add(taxonomyVertexes.getById(concepts[i].getSnomedId()));
+            }
+        }
+
+        // We return the result
+        
+        return (vertexes);
     }
     
     /**

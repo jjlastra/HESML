@@ -26,6 +26,7 @@ import hesml.taxonomy.IVertexList;
 import hesml.taxonomy.impl.TaxonomyFactory;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -34,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * This class implements an in-memory representation of the whole MeSH taxonomy
@@ -467,7 +469,7 @@ class MeSHOntology implements IMeSHOntology
     {
         // We intilizae the output
         
-        IVertex[] vertexes = null;
+        IVertex[] vertexes = new IVertex[0];
         
         // We retrieve the MeSH concepts associated to the input UMLS CUI
         
@@ -475,17 +477,13 @@ class MeSHOntology implements IMeSHOntology
         
         // We cretae the output vector
 
-        if (tempConcepts == null)
-        {
-            vertexes = new IVertex[0];
-        }
-        else
+        if (tempConcepts != null)
         {
             // We cretae a temporary set
             
             HashSet<IVertex> tempvertexes = new HashSet<>(4 * tempConcepts.size());
             
-            // We retrieve al vertexe associated to the MeSH descriptors
+            // We retrieve all vertexes associated to the MeSH descriptors
             
             for (IMeSHDescriptor descriptor: tempConcepts)
             {
@@ -498,6 +496,41 @@ class MeSHOntology implements IMeSHOntology
             
             tempvertexes.toArray(vertexes);
             tempvertexes.clear();
+        }
+                 
+        // We return the result
+        
+        return (vertexes);
+    }
+    
+    /**
+     * This function returns all vertexes associated to the SNOMED-CT
+     * concepts evoked by a specific UMLS CUI.
+     * @param umlsConceptCUI
+     * @return
+     */
+    
+    @Override
+    public Set<IVertex> getTaxonomyVertexSetForUmlsCUI(String umlsConceptCUI)
+    {
+        // We retrieve the MeSH concepts associated to the input UMLS CUI
+        
+        HashSet<IMeSHDescriptor> concepts = m_conceptsByUmlsCUI.get(umlsConceptCUI);
+        
+        // We initialize the output
+        
+        Set<IVertex> vertexes = (concepts != null) ? new HashSet<>(4 * concepts.size()) : new HashSet<>(0);
+        
+        // We retrieve all vertex
+        
+        if ((concepts != null) && (concepts.size() > 0))
+        {
+            // We retrieve al vertexe associated to the MeSH descriptors
+            
+            for (IMeSHDescriptor descriptor: concepts)
+            {
+                vertexes.addAll(Arrays.asList(descriptor.getTaxonomyNodes()));
+            }
         }
                  
         // We return the result
