@@ -34,7 +34,9 @@ import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
@@ -180,7 +182,8 @@ class UMLSReproducibleExperimentsInfo
         Element umlsOntologyNode = (Element) experimentNode.getElementsByTagName("UMLSOntology").item(0);
         
         String strOntologyFileDir = umlsOntologyNode.getElementsByTagName("OntologyFilesDir").item(0).getTextContent();
-        String strUmlsCuiFilename = umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
+        String strUmlsCuiFileDir = umlsOntologyNode.getElementsByTagName("UMLSCuiFileDir").item(0).getTextContent();
+        String strUmlsCuiFilename = strUmlsCuiFileDir + "/" + umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
         
         // We check which ontology will be used: MeSH or SNOMED
         
@@ -190,7 +193,7 @@ class UMLSReproducibleExperimentsInfo
             
             Element meshNode = (Element) umlsOntologyNode.getElementsByTagName("MeSH").item(0);
             
-            String strMeshFilename = meshNode.getElementsByTagName("XmlMeSHOntologyFilename").item(0).getTextContent();
+            String strMeshFilename = strOntologyFileDir + "/" + meshNode.getElementsByTagName("XmlMeSHOntologyFilename").item(0).getTextContent();
             
             // We load the MeSH ontology
             
@@ -202,9 +205,9 @@ class UMLSReproducibleExperimentsInfo
             
             Element snomedNode = (Element) umlsOntologyNode.getElementsByTagName("SNOMED-CT").item(0);
             
-            String strSnomedConceptsFilename = snomedNode.getElementsByTagName("SnomedConceptsFilename").item(0).getTextContent();
-            String strSnomedRelationshipsFilename = snomedNode.getElementsByTagName("SnomedRelationshipsFilename").item(0).getTextContent();
-            String strSnomedDescriptionFilename = snomedNode.getElementsByTagName("SnomedDescriptionFilename").item(0).getTextContent();
+            String strSnomedConceptsFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedConceptsFilename").item(0).getTextContent();
+            String strSnomedRelationshipsFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedRelationshipsFilename").item(0).getTextContent();
+            String strSnomedDescriptionFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedDescriptionFilename").item(0).getTextContent();
             
             // We load the SNOMED-Ct ontology
             
@@ -221,7 +224,7 @@ class UMLSReproducibleExperimentsInfo
         
         // We write the output file for the experiment
         
-        
+        writeOutputCSVfile(strRawOutputMatrix, strInputCuiPairsDir + "/" + strOutputFilename);
     }
     
     /**
@@ -328,6 +331,46 @@ class UMLSReproducibleExperimentsInfo
         return (strOutputmatrix);
     }
     
+    /**
+     * This function saves an output data matrix int oa CSV file
+     * @param strDataMatrix 
+     * @param strOutputFilename 
+     */
+    
+    private static void writeOutputCSVfile(
+            String[][]  strDataMatrix,
+            String      strOutputFilename) throws IOException
+    {
+        // We create a writer for the text file
+        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(strOutputFilename, false));
+        
+        // We write the info for each taxonomy node
+        
+        char sep = ';';  // Separator dield
+        
+        for (int iRow = 0; iRow < strDataMatrix.length; iRow++)
+        {
+            // We initialize the line
+            
+            String strLine = "\n" + strDataMatrix[iRow][0];
+            
+            // We build the row
+            
+            for (int iCol = 1; iCol < strDataMatrix[0].length; iCol++)
+            {
+                strLine += (sep + strDataMatrix[iRow][iCol]);
+            }
+            
+            // We write the line
+            
+            writer.write(strLine);
+        }
+        
+        // We close the file
+        
+        writer.close();
+    }
     
     /**
      * This function loads the CUI pairs defined in a Comma Separated Values (CSV) file.
@@ -348,8 +391,6 @@ class UMLSReproducibleExperimentsInfo
         
         // We read the content of the file in row mode
         
-        int iPair = 0;  // Pairs counter
-        
         String strLine;
         
         while ((strLine = reader.readLine()) != null)
@@ -360,7 +401,7 @@ class UMLSReproducibleExperimentsInfo
             
             // We create a new word pair
             
-            if (strFields.length == 2) strTempPairs.add(strFields);
+            if (strFields.length > 2) strTempPairs.add(strFields);
         }
         
         // We close the file
@@ -371,12 +412,12 @@ class UMLSReproducibleExperimentsInfo
         
         String[][] strOutputCuiPairs = new String[strTempPairs.size()][2];
         
-        int i = 0;
+        int iPair = 0;
         
         for (String[] strCuiPair : strTempPairs)
         {
-            strOutputCuiPairs[i][0] = strCuiPair[0];
-            strOutputCuiPairs[i++][1] = strCuiPair[1];
+            strOutputCuiPairs[iPair][0] = strCuiPair[0];
+            strOutputCuiPairs[iPair++][1] = strCuiPair[1];
         }
 
         // We release the temporary list
