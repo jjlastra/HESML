@@ -35,6 +35,7 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -139,6 +140,22 @@ class UMLSReproducibleExperimentsInfo
     }
     
     /**
+     * This function returns the directory of the input experiment file.
+     * @return 
+     */
+    
+    private String getInputExperimentFileDir()
+    {
+        // We obtain the directory of the input file
+        
+        File fileInfo = new File(m_strXmlExperimentsFilename);
+        
+        // We return the result
+        
+        return (fileInfo.getParentFile().getPath());
+    }
+    
+    /**
      * This function clear the ontologies used for each experiment
      */
     
@@ -183,7 +200,7 @@ class UMLSReproducibleExperimentsInfo
         
         String strOntologyFileDir = umlsOntologyNode.getElementsByTagName("OntologyFilesDir").item(0).getTextContent();
         String strUmlsCuiFileDir = umlsOntologyNode.getElementsByTagName("UMLSCuiFileDir").item(0).getTextContent();
-        String strUmlsCuiFilename = strUmlsCuiFileDir + "/" + umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
+        String strUmlsCuiFilename = umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
         
         // We check which ontology will be used: MeSH or SNOMED
         
@@ -197,7 +214,8 @@ class UMLSReproducibleExperimentsInfo
             
             // We load the MeSH ontology
             
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(strMeshFilename, strUmlsCuiFilename);
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(strMeshFilename,
+                                strUmlsCuiFileDir + "/" + strUmlsCuiFilename);
         }
         else
         {
@@ -205,15 +223,15 @@ class UMLSReproducibleExperimentsInfo
             
             Element snomedNode = (Element) umlsOntologyNode.getElementsByTagName("SNOMED-CT").item(0);
             
-            String strSnomedConceptsFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedConceptsFilename").item(0).getTextContent();
-            String strSnomedRelationshipsFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedRelationshipsFilename").item(0).getTextContent();
-            String strSnomedDescriptionFilename = strOntologyFileDir + "/" + snomedNode.getElementsByTagName("SnomedDescriptionFilename").item(0).getTextContent();
+            String strSnomedConceptsFilename = snomedNode.getElementsByTagName("SnomedConceptsFilename").item(0).getTextContent();
+            String strSnomedRelationshipsFilename = snomedNode.getElementsByTagName("SnomedRelationshipsFilename").item(0).getTextContent();
+            String strSnomedDescriptionFilename = snomedNode.getElementsByTagName("SnomedDescriptionFilename").item(0).getTextContent();
             
             // We load the SNOMED-Ct ontology
             
             m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(strOntologyFileDir,
                                 strSnomedConceptsFilename, strSnomedRelationshipsFilename,
-                                strSnomedDescriptionFilename, strOntologyFileDir,
+                                strSnomedDescriptionFilename, strUmlsCuiFileDir,
                                 strUmlsCuiFilename);
         }
         
@@ -222,9 +240,11 @@ class UMLSReproducibleExperimentsInfo
         String[][] strRawOutputMatrix = loadAndEvaluateSimilarityMeasures(experimentNode,
                             loadInputCuiPairs(strInputCuiPairsDir + "/" + strInputCuiPairsFilename));
         
-        // We write the output file for the experiment
+        // We write the output file for the experiment into the directory
+        // containg the input epxeriemnt file
         
-        writeOutputCSVfile(strRawOutputMatrix, strInputCuiPairsDir + "/" + strOutputFilename);
+        writeOutputCSVfile(strRawOutputMatrix,
+                getInputExperimentFileDir() + "/" + strOutputFilename);
     }
     
     /**
@@ -250,7 +270,7 @@ class UMLSReproducibleExperimentsInfo
         
         // We initialize the output matrix
         
-        String[][] strOutputmatrix = new String[1 + strInputCuiPairs.length][2 + similarityMeasures.getLength()];
+        String[][] strOutputmatrix = new String[1 + strInputCuiPairs.length][strInputCuiPairs[0].length + similarityMeasures.getLength()];
         
         strOutputmatrix[0][0] = "CUI 1";
         strOutputmatrix[0][1] = "CUI 2";
@@ -258,7 +278,7 @@ class UMLSReproducibleExperimentsInfo
         // We load and evaluates the measures. IMPORTANT: the optional IC models
         // are parsed and applied to the taxonomy in function loadSimilarityMeasure()
         
-        for (int iMeasure = 0, iMeasureCol = 2;
+        for (int iMeasure = 0, iMeasureCol = strInputCuiPairs[0].length;
                 iMeasure < similarityMeasures.getLength();
                 iMeasure++, iMeasureCol++)
         {
@@ -296,10 +316,12 @@ class UMLSReproducibleExperimentsInfo
                 String strCui1 = strInputCuiPairs[iPair][0];
                 String strCui2 = strInputCuiPairs[iPair][1];
                 
-                // We copy the CUI pairs in the two frist columns
+                // We copy the CUI pair values in the first columns
                 
-                strOutputmatrix[1 + iPair][0] = strCui1;
-                strOutputmatrix[1 + iPair][1] = strCui2;
+                for (int i = 0; i < strInputCuiPairs[iPair].length; i++)
+                {
+                    strOutputmatrix[1 + iPair][i] = strInputCuiPairs[iPair][i];
+                }
                 
                 // We get the the vertexes for both CUIs
                 
@@ -410,14 +432,23 @@ class UMLSReproducibleExperimentsInfo
         
         // We cretae the output matrix
         
-        String[][] strOutputCuiPairs = new String[strTempPairs.size()][2];
+        String[][] strOutputCuiPairs = new String[strTempPairs.size()][strTempPairs.get(0).length];
         
         int iPair = 0;
         
         for (String[] strCuiPair : strTempPairs)
         {
-            strOutputCuiPairs[iPair][0] = strCuiPair[0];
-            strOutputCuiPairs[iPair++][1] = strCuiPair[1];
+            // We copy all attributes of each pair. Third column
+            // would be commonly a human similairty judgement
+            
+            for (int iColumn = 0; iColumn < strCuiPair.length; iColumn++)
+            {
+                strOutputCuiPairs[iPair][iColumn] = strCuiPair[iColumn];
+            }
+            
+            // We increase the pair counter
+            
+            iPair++;
         }
 
         // We release the temporary list

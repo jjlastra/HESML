@@ -150,7 +150,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
     {
         // We initialize the output value
         
-        double similarity = Double.NEGATIVE_INFINITY;
+        double similarity = m_pairwiseMeasure.getNullSimilarityValue();
         
         // We compute all pairwise similarity valies
         
@@ -193,21 +193,28 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
     {
         // We initialize the output value
         
-        double similarity = 0.0;
+        double similarity = m_pairwiseMeasure.getNullSimilarityValue();
         
         // We compute all pairwise similarity values
         
-        for (IVertex vertex1: left)
+        if ((left.size() > 0) && (right.size() > 0))
         {
-            for (IVertex vertex2: right)
+            // We compute the average
+            
+            similarity = 0.0;
+            
+            for (IVertex vertex1: left)
             {
-                similarity += m_pairwiseMeasure.compare(vertex1, vertex2);
+                for (IVertex vertex2: right)
+                {
+                    similarity += m_pairwiseMeasure.compare(vertex1, vertex2);
+                }
             }
+        
+            // We compute the average value
+        
+            similarity /= ((double)(left.size() * right.size()));
         }
-        
-        // We compute the average value
-        
-        similarity /= ((double)(left.size() * right.size()));
         
         // We return the result
         
@@ -235,45 +242,50 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
     {
         // We initialize the output value
         
-        double similarity = 0.0;
+        double similarity = m_pairwiseMeasure.getNullSimilarityValue();
         
         // We compute the maximum similarity for each left vertex
         // as regards the right set
         
-        for (IVertex leftVertex: leftVertexes)
+        if ((leftVertexes.size() > 0) && (rightVertexes.size() > 0))
         {
-            double bestMatch = Double.NEGATIVE_INFINITY;
-            
-            for (IVertex rightVertex: rightVertexes)
-            {
-                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
-            }
-            
-            // We acumulate the best match for every vertex
-            
-            similarity += bestMatch;
-        }
-
-        // We compute the maximum similarity for each right vertex
-        // as regards the left set
-        
-        for (IVertex rightVertex: rightVertexes)
-        {
-            double bestMatch = Double.NEGATIVE_INFINITY;
+            similarity = 0.0;
             
             for (IVertex leftVertex: leftVertexes)
             {
-                bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
+                double bestMatch = m_pairwiseMeasure.getNullSimilarityValue();
+
+                for (IVertex rightVertex: rightVertexes)
+                {
+                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
+                }
+
+                // We acumulate the best match for every vertex
+
+                similarity += bestMatch;
             }
-            
-            // We acumulate the best match for every vertex
-            
-            similarity += bestMatch;
+
+            // We compute the maximum similarity for each right vertex
+            // as regards the left set
+
+            for (IVertex rightVertex: rightVertexes)
+            {
+                double bestMatch = m_pairwiseMeasure.getNullSimilarityValue();
+
+                for (IVertex leftVertex: leftVertexes)
+                {
+                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
+                }
+
+                // We acumulate the best match for every vertex
+
+                similarity += bestMatch;
+            }
+
+            // We compute the average value
+
+            similarity /= ((double)(leftVertexes.size() + rightVertexes.size()));
         }
-        
-        // We compute the average value
-        
-        similarity /= ((double)(leftVertexes.size() + rightVertexes.size()));
         
         // We return the result
         
