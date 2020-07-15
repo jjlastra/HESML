@@ -107,7 +107,7 @@ public class HESML_UMLSclient
         // experiments defined by the user in a XML-based file with
         // extension *.umlsexp
         
-        if ((args.length == 1) && (args[0].endsWith(".xml")))
+        if ((args.length == 1) && (args[0].endsWith(".umlsexp")))
         {
             // We load a reproducible experiment file in XML file format
 
