@@ -40,6 +40,7 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
+							<xs:element name="GroupwiseMetricType" type="GroupwiseMetricType"/>
 							<xs:element name="Measures">
 								<xs:complexType>
 									<xs:sequence>
@@ -152,6 +153,13 @@
 			<xs:enumeration value="AouichaTaiebAsGIC"/>
 			<xs:enumeration value="AICAouichaTaiebHamadu2016"/>
 			<xs:enumeration value="Cai"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GroupwiseMetricType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Maximum"/>
+			<xs:enumeration value="Average"/>
+			<xs:enumeration value="BestMatchAverage"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

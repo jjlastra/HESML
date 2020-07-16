@@ -235,9 +235,14 @@ class UMLSReproducibleExperimentsInfo
                                 strUmlsCuiFilename);
         }
         
+        // We get the grouwise metric
+        
+        GroupwiseMetricType groupwiseMetric = readGroupwiseMetric(
+                experimentNode.getElementsByTagName("GroupwiseMetricType").item(0).getTextContent());
+        
         // We load the input CUI pair list, parse and EVALUATE the similarity measures
         
-        String[][] strRawOutputMatrix = loadAndEvaluateSimilarityMeasures(experimentNode,
+        String[][] strRawOutputMatrix = loadAndEvaluateSimilarityMeasures(experimentNode, groupwiseMetric,
                             loadInputCuiPairs(strInputCuiPairsDir + "/" + strInputCuiPairsFilename));
         
         // We write the output file for the experiment into the directory
@@ -245,6 +250,35 @@ class UMLSReproducibleExperimentsInfo
         
         writeOutputCSVfile(strRawOutputMatrix,
                 getInputExperimentFileDir() + "/" + strOutputFilename);
+    }
+    
+    /**
+     * This function reads the groupwise metric type.
+     * @param strGroupwiseMetricType
+     * @return 
+     */
+    
+    private GroupwiseMetricType readGroupwiseMetric(
+            String  strGroupwiseMetricType)
+    {
+        // We retrieve the enum type
+        
+        GroupwiseMetricType metricType = GroupwiseMetricType.Average;
+        
+        // We look for the matching value
+        
+        for (GroupwiseMetricType groupwiseMetric: GroupwiseMetricType.values())
+        {
+            if (groupwiseMetric.toString().equals(strGroupwiseMetricType))
+            {
+                metricType = groupwiseMetric;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (metricType);
     }
     
     /**
@@ -256,8 +290,9 @@ class UMLSReproducibleExperimentsInfo
      */
     
     private String[][] loadAndEvaluateSimilarityMeasures(
-            Element     measuresNode,
-            String[][]  strInputCuiPairs) throws Exception
+            Element             measuresNode,
+            GroupwiseMetricType groupwsieMetric,
+            String[][]          strInputCuiPairs) throws Exception
     {
         // We get the current taxonomy
         
@@ -300,7 +335,7 @@ class UMLSReproducibleExperimentsInfo
             
             IGroupwiseSimilarityMeasure groupwiseMeasure =
                     MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(taxonomy,
-                        pairwiseMeasureType, GroupwiseMetricType.Maximum);
+                        pairwiseMeasureType, groupwsieMetric);
             
             // We set the column title
             
