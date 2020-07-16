@@ -124,7 +124,7 @@ class MeasurePirroSeco extends SimilaritySemanticMeasure
     @Override
     public double getNullSimilarityValue()
     {
-        //return (-2.0 * m_Taxonomy.getVertexes().getGreatestICValue());
-        return (Double.NEGATIVE_INFINITY);
+        return (-2.0 * m_Taxonomy.getVertexes().getGreatestICValue());
+        //return (Double.NEGATIVE_INFINITY);
     }
 }

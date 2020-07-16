@@ -49,16 +49,23 @@ class MeasureRada extends SimilaritySemanticMeasure
     private boolean m_useFastShortestPathAlgorithm;
     
     /**
+     * Maxium distanbce value used to set the null similarity value
+     */
+    
+    private double  m_maxDistance;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureRada(
             ITaxonomy   taxonomy,
-            boolean     useFastMethod)
+            boolean     useFastMethod) throws Exception
     {
         super(taxonomy);
         m_useFastShortestPathAlgorithm = useFastMethod;
+        m_maxDistance = 2.0 * taxonomy.getVertexes().getGreatestDepthMax();
     }
     
     /**
@@ -118,6 +125,6 @@ class MeasureRada extends SimilaritySemanticMeasure
     @Override
     public double getNullSimilarityValue()
     {
-        return (Double.NEGATIVE_INFINITY);
+        return (1.0 - m_maxDistance / 2.0);
     }
 }
