@@ -370,7 +370,7 @@ class UMLSReproducibleExperimentsInfo
                 
                 // We evaluate the similarity between the sets of ontoogy concepts
                 
-                double similarity = groupwiseMeasure.compare(cuiNodes1, cuiNodes2);
+                double similarity = groupwiseMeasure.getSimilarity(cuiNodes1, cuiNodes2);
                 
                 // We save the similarity value
                 

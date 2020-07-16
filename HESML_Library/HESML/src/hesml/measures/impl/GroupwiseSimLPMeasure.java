@@ -59,7 +59,7 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
      */
     
     @Override
-    public double compare(
+    public double getSimilarity(
             Set<IVertex> leftVertexes,
             Set<IVertex> rightVertexes)
             throws InterruptedException, Exception

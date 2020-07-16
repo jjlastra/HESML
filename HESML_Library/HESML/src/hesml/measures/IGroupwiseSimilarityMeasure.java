@@ -47,7 +47,7 @@ public interface IGroupwiseSimilarityMeasure
      * @throws java.lang.InterruptedException 
      */
     
-    double compare(
+    double getSimilarity(
             Set<IVertex> left,
             Set<IVertex> right)
             throws InterruptedException, Exception;

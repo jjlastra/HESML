@@ -14,6 +14,7 @@
 				<XmlMeSHOntologyFilename>desc2020.xml</XmlMeSHOntologyFilename>
 			</MeSH>
 		</UMLSOntology>
+		<GroupwiseMetricType>Maximum</GroupwiseMetricType>
 		<Measures>
 			<SimilarityMeasure>
 				<SimilarityMeasureType>Lin</SimilarityMeasureType>
@@ -38,6 +39,7 @@
 				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
 			</SNOMED-CT>
 		</UMLSOntology>
+		<GroupwiseMetricType>Maximum</GroupwiseMetricType>		
 		<Measures>
 			<SimilarityMeasure>
 				<SimilarityMeasureType>Lin</SimilarityMeasureType>

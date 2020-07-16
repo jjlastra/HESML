@@ -93,7 +93,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
      */
     
     @Override
-    public double compare(
+    public double getSimilarity(
             Set<IVertex> left,
             Set<IVertex> right)
             throws InterruptedException, Exception
@@ -120,7 +120,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
                 
             case BestMatchAverage:
                 
-                //similarity = maximumSimilarity(left, right);
+                similarity = bestMatchAverageSimilarity(left, right);
                 
                 break;
         }
@@ -158,7 +158,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
         {
             for (IVertex vertex2: right)
             {
-                similarity = Math.max(similarity, m_pairwiseMeasure.compare(vertex1, vertex2));
+                similarity = Math.max(similarity, m_pairwiseMeasure.getSimilarity(vertex1, vertex2));
             }
         }
         
@@ -207,7 +207,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
             {
                 for (IVertex vertex2: right)
                 {
-                    similarity += m_pairwiseMeasure.compare(vertex1, vertex2);
+                    similarity += m_pairwiseMeasure.getSimilarity(vertex1, vertex2);
                 }
             }
         
@@ -257,7 +257,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
 
                 for (IVertex rightVertex: rightVertexes)
                 {
-                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
+                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.getSimilarity(leftVertex, rightVertex));
                 }
 
                 // We acumulate the best match for every vertex
@@ -274,7 +274,7 @@ class GroupwiseBasedOnPairwiseMeasure implements IGroupwiseSimilarityMeasure
 
                 for (IVertex leftVertex: leftVertexes)
                 {
-                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.compare(leftVertex, rightVertex));
+                    bestMatch = Math.max(bestMatch, m_pairwiseMeasure.getSimilarity(leftVertex, rightVertex));
                 }
 
                 // We acumulate the best match for every vertex

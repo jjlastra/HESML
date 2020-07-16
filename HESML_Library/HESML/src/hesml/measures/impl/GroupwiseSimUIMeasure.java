@@ -59,7 +59,7 @@ class GroupwiseSimUIMeasure implements IGroupwiseSimilarityMeasure
      */
     
     @Override
-    public double compare(
+    public double getSimilarity(
             Set<IVertex> left,
             Set<IVertex> right)
             throws InterruptedException, Exception
