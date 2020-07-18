@@ -152,7 +152,6 @@ class MeasureZhou extends SimilaritySemanticMeasure
         // We return the value
         
         return (lowestSimiliarity);
-        //return (Double.NEGATIVE_INFINITY);
     }    
 }
 

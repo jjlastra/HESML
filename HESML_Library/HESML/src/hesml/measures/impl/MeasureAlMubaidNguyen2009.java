@@ -48,16 +48,23 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
     private boolean m_useFastShortestPathAlgorithm;
     
     /**
+     * Highest depth value
+     */
+    
+    private double m_maxDepth;
+    
+    /**
      * Constructor
      * @param taxonomy The taxonomy used to compute the measurements.
      */
     
     MeasureAlMubaidNguyen2009(
             ITaxonomy   taxonomy,
-            boolean     usefastMethod)
+            boolean     usefastMethod) throws Exception
     {
         super(taxonomy);
         m_useFastShortestPathAlgorithm = usefastMethod;
+        m_maxDepth = m_Taxonomy.getVertexes().getGreatestDepthMin();
     }
     
     /**
@@ -152,6 +159,13 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
     @Override
     public double getNullSimilarityValue()
     {
-        return (Double.NEGATIVE_INFINITY);
+        // We compute the lowest distance value
+        
+        double distance = Math.log(1 + 2.0 * m_maxDepth * m_maxDepth);
+        double nullSimilarity = 1.0 - 0.5 * distance;
+        
+        // We return the result
+        
+        return (nullSimilarity);
     }
 }
