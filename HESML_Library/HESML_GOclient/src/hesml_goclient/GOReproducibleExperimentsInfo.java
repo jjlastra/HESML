@@ -18,7 +18,7 @@
  * see <http://creativecommons.org/licenses/by-nc-sa/4.0/>.
  */
 
-package hesml_umlsclient;
+package hesml_goclient;
 
 import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
@@ -51,19 +51,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * This class implements the parsing of any UMLS-based semantic similarity
+ * This class implements the parsing of any GO-based semantic similarity
  * experiments encoding the evaluation of the degree of similarity between
- * CUI concept pairs defined in a complementary dataset file in CSV file format.
+ * GO concept pairs defined in a complementary dataset file in CSV file format.
  * 
  * This class parses (*.umlsexp) files in XML file format as defined by
  * the following schema file included in the HESML distribution. This schema
  * file was created with XML Spy 5.
- * ../ReproducibleExperiments/UmlsBasedExperiments.xsd
+ * ../ReproducibleExperiments/GOBasedExperiments.xsd
  * 
  * @author j.lastra
  */
 
-class UMLSReproducibleExperimentsInfo
+class GOReproducibleExperimentsInfo
 {
     /**
      * MeSH ontology loaded in memory
@@ -88,7 +88,7 @@ class UMLSReproducibleExperimentsInfo
      * @param strXmlExperimentsFilename 
      */
     
-    UMLSReproducibleExperimentsInfo (
+    GOReproducibleExperimentsInfo (
             String  strXmlExperimentsFilename)
     {
         m_strXmlExperimentsFilename = strXmlExperimentsFilename;
