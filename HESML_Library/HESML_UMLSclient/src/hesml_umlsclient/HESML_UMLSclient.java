@@ -97,7 +97,7 @@ public class HESML_UMLSclient
         
         // We print the HESML version
         
-        System.out.println("Running HESML_UMLSClient V1R5 (1.5.0.1, July 2020) based on "
+        System.out.println("Running HESML_UMLSclient V1R5 (1.5.0.1, July 2020) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -135,6 +135,7 @@ public class HESML_UMLSclient
                 // We execute all the experiments defined in the input file
 
                 reproInfo.RunAllExperiments();
+                reproInfo.clear();
 
                 // We measure the elapsed time to run the experiments
 
@@ -155,21 +156,10 @@ public class HESML_UMLSclient
         
         if (showUsage)
         {
-            System.err.println("\nIn order to properly use the HESMLclient program");
-            System.err.println("you should call it using any of the two methods shown below:\n");
-            System.err.println("(1) C:> java -jar dist\\HESMLclient.jar <reproexperiment.exp>");
-            System.err.println("(2) C:> java -jar dist\\HESMLclient.jar -WNSimRepV1 <outputdir>");
+            System.err.println("\nIn order to properly use the HESML_UMLSclient program");
+            System.err.println("you should call it using the method below:\n");
+            System.err.println("(1) C:> java -jar dist\\HESML_UMLSclient.jar <reproexperiment.exp>");
         }
-
-        // We execute an example on evaluating the similarity between CUI
-        // concepts using MeSh ontology
-
-        //exampleMeSHsimilarity();
-        
-        // We execute an example on evaluating the similarity between CUI
-        // concepts using SNOMED-CT ontology
-        
-        //exampleSnomedSimilarity();
     }
     
     /**

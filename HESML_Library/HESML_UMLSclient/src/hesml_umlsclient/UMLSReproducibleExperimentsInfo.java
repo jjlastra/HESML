@@ -159,7 +159,7 @@ class UMLSReproducibleExperimentsInfo
      * This function clear the ontologies used for each experiment
      */
     
-    private void clear()
+    public void clear()
     {
         // We releaso both ontolgies
         

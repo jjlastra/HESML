@@ -52,6 +52,14 @@ public interface IOboOntology
     IOboConcept getConceptById(String strId);
     
     /**
+     * This function checks if the concept is conatined in the ontology
+     * @param strId
+     * @return 
+     */
+    
+    boolean containsConceptId(String strId);
+    
+    /**
      * This function returns a vector with all GO concept identifiers
      * @return 
      */

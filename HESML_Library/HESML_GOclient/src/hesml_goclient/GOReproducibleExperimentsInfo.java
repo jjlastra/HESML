@@ -25,12 +25,15 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.GroupwiseMetricType;
 import hesml.measures.IGroupwiseSimilarityMeasure;
+import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.io.BufferedReader;
@@ -66,16 +69,10 @@ import org.xml.sax.SAXException;
 class GOReproducibleExperimentsInfo
 {
     /**
-     * MeSH ontology loaded in memory
-     */
-    
-    private IMeSHOntology   m_MeshOntology;
-    
-    /**
      * SNOMED-CT ontology
      */
     
-    private ISnomedCtOntology   m_SnomedOntology;
+    private IOboOntology   m_OboOntology;
     
     /**
      * Experiments file
@@ -92,8 +89,7 @@ class GOReproducibleExperimentsInfo
             String  strXmlExperimentsFilename)
     {
         m_strXmlExperimentsFilename = strXmlExperimentsFilename;
-        m_MeshOntology = null;
-        m_SnomedOntology = null;
+        m_OboOntology = null;
     }
     
     /**
@@ -122,7 +118,7 @@ class GOReproducibleExperimentsInfo
         
         // We get the node with collection of experiments 
         
-        NodeList experimentNodes = xmlDocument.getElementsByTagName("UMLSExperiment");
+        NodeList experimentNodes = xmlDocument.getElementsByTagName("OboOntologyExperiments");
         
         // We traverse the collection of experiments parsing them
         
@@ -159,22 +155,17 @@ class GOReproducibleExperimentsInfo
      * This function clear the ontologies used for each experiment
      */
     
-    private void clear()
+    public void clear()
     {
         // We releaso both ontolgies
         
-        if (m_MeshOntology != null)
+        if (m_OboOntology != null)
         {
-            m_MeshOntology.clear();
-            m_MeshOntology = null;
-        }
-        
-        if (m_SnomedOntology != null)
-        {
-            m_SnomedOntology.clear();
-            m_SnomedOntology = null;
+            m_OboOntology.clear();
+            m_OboOntology = null;
         }
     }
+    
     /**
      * This function parses and run a single experiment
      * @param experimentNode 
@@ -189,61 +180,42 @@ class GOReproducibleExperimentsInfo
         
         // We read the input and output files
         
-        String strInputCuiPairsDir = experimentNode.getElementsByTagName("InputCuiPairsDir").item(0).getTextContent();
-        String strInputCuiPairsFilename = experimentNode.getElementsByTagName("InputCuiPairsFilename").item(0).getTextContent();
+        String strInputFilesDir = experimentNode.getElementsByTagName("InputFilesDirectory").item(0).getTextContent();
         String strOutputFilename = experimentNode.getElementsByTagName("OutputFilename").item(0).getTextContent();
         
         // We get the basic information of the UMLS ontology including the filename
         // containing the CUI codes (MRCONSO.RRF)
         
-        Element umlsOntologyNode = (Element) experimentNode.getElementsByTagName("UMLSOntology").item(0);
+        Element umlsOntologyNode = (Element) experimentNode.getElementsByTagName("OBOOntology").item(0);
         
-        String strOntologyFileDir = umlsOntologyNode.getElementsByTagName("OntologyFilesDir").item(0).getTextContent();
-        String strUmlsCuiFileDir = umlsOntologyNode.getElementsByTagName("UMLSCuiFileDir").item(0).getTextContent();
-        String strUmlsCuiFilename = umlsOntologyNode.getElementsByTagName("UMLSCuiFilename").item(0).getTextContent();
+        String strOntologyFileDir = umlsOntologyNode.getElementsByTagName("OntologyDir").item(0).getTextContent();
+        String strOBOFilename = umlsOntologyNode.getElementsByTagName("OBOfilename").item(0).getTextContent();
         
-        // We check which ontology will be used: MeSH or SNOMED
+        // We load the SNOMED-Ct ontology
+
+        m_OboOntology = OboFactory.loadOntology(strOntologyFileDir + "/" + strOBOFilename);
         
-        if (umlsOntologyNode.getElementsByTagName("MeSH").getLength() > 0)
+        // We defibne the raw output matrix
+        
+        String[][] strRawOutputMatrix = null;
+        
+        // There are two types of experiments as follows: (1) the pairwise comparison of GO pairs,
+        // and (2) the comparison of sets of GO terms
+        
+        if (experimentNode.getElementsByTagName("PairwiseEvaluation").getLength() > 0)
         {
-            // We get the main XML node of MeSH ontology
+            // We get the node for the pairwise evaluation
             
-            Element meshNode = (Element) umlsOntologyNode.getElementsByTagName("MeSH").item(0);
+            Element pairwiseEvalNode = (Element) experimentNode.getElementsByTagName("PairwiseEvaluation").item(0);
+            String strInputGOpairsFilename = pairwiseEvalNode.getElementsByTagName("InputGOpairsFilename").item(0).getTextContent();
             
-            String strMeshFilename = strOntologyFileDir + "/" + meshNode.getElementsByTagName("XmlMeSHOntologyFilename").item(0).getTextContent();
-            
-            // We load the MeSH ontology
-            
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(strMeshFilename,
-                                strUmlsCuiFileDir + "/" + strUmlsCuiFilename);
+            strRawOutputMatrix = loadAndEvaluatePairwiseSimMeasures(experimentNode,
+                            loadInputCuiPairs(strInputFilesDir + "/" + strInputGOpairsFilename));
         }
-        else
+        else if (experimentNode.getElementsByTagName("GroupwiseEvaluation").getLength() > 0)
         {
-            // We load the SNOMED-CT ontology information
-            
-            Element snomedNode = (Element) umlsOntologyNode.getElementsByTagName("SNOMED-CT").item(0);
-            
-            String strSnomedConceptsFilename = snomedNode.getElementsByTagName("SnomedConceptsFilename").item(0).getTextContent();
-            String strSnomedRelationshipsFilename = snomedNode.getElementsByTagName("SnomedRelationshipsFilename").item(0).getTextContent();
-            String strSnomedDescriptionFilename = snomedNode.getElementsByTagName("SnomedDescriptionFilename").item(0).getTextContent();
-            
-            // We load the SNOMED-Ct ontology
-            
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(strOntologyFileDir,
-                                strSnomedConceptsFilename, strSnomedRelationshipsFilename,
-                                strSnomedDescriptionFilename, strUmlsCuiFileDir,
-                                strUmlsCuiFilename);
+            strRawOutputMatrix = null;
         }
-        
-        // We get the grouwise metric
-        
-        GroupwiseMetricType groupwiseMetric = readGroupwiseMetric(
-                experimentNode.getElementsByTagName("GroupwiseMetricType").item(0).getTextContent());
-        
-        // We load the input CUI pair list, parse and EVALUATE the similarity measures
-        
-        String[][] strRawOutputMatrix = loadAndEvaluateSimilarityMeasures(experimentNode, groupwiseMetric,
-                            loadInputCuiPairs(strInputCuiPairsDir + "/" + strInputCuiPairsFilename));
         
         // We write the output file for the experiment into the directory
         // containg the input epxeriemnt file
@@ -285,35 +257,33 @@ class GOReproducibleExperimentsInfo
      * This funcion parses and inmmediately evaluates the similairty measures
      * defined in the XML-based experimetn file.
      * @param measuresNode XML node containing the similarity measures
-     * @param strInputCuiPairs Matrix containg all CUI pairs
+     * @param strInputOboTermPairs Matrix containg all OBO concept pairs
      * @return A matrix with the CUI pairs and one column with the similarity values for each measure
      */
     
-    private String[][] loadAndEvaluateSimilarityMeasures(
-            Element             measuresNode,
-            GroupwiseMetricType groupwsieMetric,
-            String[][]          strInputCuiPairs) throws Exception
+    private String[][] loadAndEvaluatePairwiseSimMeasures(
+            Element     measuresNode,
+            String[][]  strInputOboTermPairs) throws Exception
     {
         // We get the current taxonomy
         
-        ITaxonomy taxonomy = (m_MeshOntology != null) ? m_MeshOntology.getTaxonomy()
-                            : m_SnomedOntology.getTaxonomy();
+        ITaxonomy taxonomy = m_OboOntology.getTaxonomy();
         
         // We retrieve the list of similarity measure nodes
         
-        NodeList similarityMeasures = measuresNode.getElementsByTagName("SimilarityMeasure");
+        NodeList similarityMeasures = measuresNode.getElementsByTagName("PairwiseSimilarityMeasure");
         
         // We initialize the output matrix
         
-        String[][] strOutputmatrix = new String[1 + strInputCuiPairs.length][strInputCuiPairs[0].length + similarityMeasures.getLength()];
+        String[][] strOutputmatrix = new String[1 + strInputOboTermPairs.length][strInputOboTermPairs[0].length + similarityMeasures.getLength()];
         
-        strOutputmatrix[0][0] = "CUI 1";
-        strOutputmatrix[0][1] = "CUI 2";
+        strOutputmatrix[0][0] = "OBO term 1";
+        strOutputmatrix[0][1] = "OBO term 2";
         
         // We load and evaluates the measures. IMPORTANT: the optional IC models
         // are parsed and applied to the taxonomy in function loadSimilarityMeasure()
         
-        for (int iMeasure = 0, iMeasureCol = strInputCuiPairs[0].length;
+        for (int iMeasure = 0, iMeasureCol = strInputOboTermPairs[0].length;
                 iMeasure < similarityMeasures.getLength();
                 iMeasure++, iMeasureCol++)
         {
@@ -333,53 +303,48 @@ class GOReproducibleExperimentsInfo
             
             SimilarityMeasureType pairwiseMeasureType = readSimilarityMeasureType(taxonomy, measureNode);
             
-            IGroupwiseSimilarityMeasure groupwiseMeasure =
-                    MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(taxonomy,
-                        pairwiseMeasureType, groupwsieMetric);
+            ISimilarityMeasure pairwiseMeasure = MeasureFactory.getMeasure(taxonomy, pairwiseMeasureType);
             
             // We set the column title
             
-            strOutputmatrix[0][iMeasureCol] = (icModel == null) ? groupwiseMeasure.toString()
-                    : groupwiseMeasure.toString() + "-" + icModel.toString();
+            strOutputmatrix[0][iMeasureCol] = (icModel == null) ? pairwiseMeasure.toString()
+                    : pairwiseMeasure.toString() + "-" + icModel.toString();
             
             // We evaluate the similarity of the input dataset
             
-            for (int iPair = 0; iPair < strInputCuiPairs.length; iPair++)
+            for (int iPair = 0; iPair < strInputOboTermPairs.length; iPair++)
             {
                 // We get the CUI pair
                 
-                String strCui1 = strInputCuiPairs[iPair][0];
-                String strCui2 = strInputCuiPairs[iPair][1];
+                String strOboConcept1 = strInputOboTermPairs[iPair][0];
+                String strOboConcept2 = strInputOboTermPairs[iPair][1];
                 
                 // We copy the CUI pair values in the first columns
                 
-                for (int i = 0; i < strInputCuiPairs[iPair].length; i++)
+                for (int i = 0; i < strInputOboTermPairs[iPair].length; i++)
                 {
-                    strOutputmatrix[1 + iPair][i] = strInputCuiPairs[iPair][i];
+                    strOutputmatrix[1 + iPair][i] = strInputOboTermPairs[iPair][i];
                 }
                 
-                // We get the the vertexes for both CUIs
-                
-                Set<IVertex> cuiNodes1 = (m_MeshOntology != null) ?
-                                        m_MeshOntology.getTaxonomyVertexSetForUmlsCUI(strCui1) :
-                                        m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strCui1);
+                // We get the the vertexes for both OCO concepts
 
-                Set<IVertex> cuiNodes2 = (m_MeshOntology != null) ?
-                                        m_MeshOntology.getTaxonomyVertexSetForUmlsCUI(strCui2) :
-                                        m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strCui2);
+                IVertex vertex1 = m_OboOntology.containsConceptId(strOboConcept1) ?
+                                    taxonomy.getVertexes().getById(m_OboOntology.getConceptById(strOboConcept1).getTaxonomyNodeId())
+                                    : null;
+                
+                IVertex vertex2 = m_OboOntology.containsConceptId(strOboConcept2) ?
+                                    taxonomy.getVertexes().getById(m_OboOntology.getConceptById(strOboConcept2).getTaxonomyNodeId())
+                                    : null;
                 
                 // We evaluate the similarity between the sets of ontoogy concepts
                 
-                double similarity = groupwiseMeasure.getSimilarity(cuiNodes1, cuiNodes2);
+                double similarity = ((vertex1 != null) && (vertex2 != null)) ?
+                                    pairwiseMeasure.getSimilarity(vertex1, vertex2)
+                                    : pairwiseMeasure.getNullSimilarityValue();
                 
                 // We save the similarity value
                 
                 strOutputmatrix[1 + iPair][iMeasureCol] = Double.toString(similarity);
-                
-                // We release the auxiliary sets
-                
-                cuiNodes1.clear();
-                cuiNodes2.clear();
             }
         }
         
@@ -458,7 +423,7 @@ class GOReproducibleExperimentsInfo
             
             // We create a new word pair
             
-            if (strFields.length > 2) strTempPairs.add(strFields);
+            if (strFields.length > 0) strTempPairs.add(strFields);
         }
         
         // We close the file

@@ -105,6 +105,18 @@ public class OboOntology implements IOboOntology
     }
     
     /**
+     * This function checks if the concept is conatined in the ontology
+     * @param strId
+     * @return 
+     */
+    
+    @Override
+    public boolean containsConceptId(String strId)
+    {
+        return (m_conceptsdIndexedById.containsKey(strId));
+    }
+    
+    /**
      * This fucntion adds a new concept to the ontology
      * @param strId
      * @param strNamespace
