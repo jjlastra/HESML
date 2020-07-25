@@ -98,7 +98,8 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
         
         // We compute the similarity
         
-        double similarity = numeratorICsum / denominatorICsum;
+        double similarity = (denominatorICsum > 0.0) ?
+                            numeratorICsum / denominatorICsum : 1.0;
         
         // We return the result
         
