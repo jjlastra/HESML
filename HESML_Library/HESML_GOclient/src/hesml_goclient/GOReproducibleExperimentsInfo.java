@@ -24,6 +24,7 @@ import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.GroupwiseMetricType;
+import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
@@ -355,6 +356,25 @@ class GOReproducibleExperimentsInfo
             
             groupwiseMeasure = MeasureFactory.getGroupwiseNoParameterMeasure(
                                 MeasureFactory.convertToGroupwiseSimilarityMeasureType(strGroupwiseSimMeasure));
+        }
+        else if (groupwiseMeasureNode.getElementsByTagName("SimGIC").getLength() > 0)
+        {
+            // We get the root node of the SimGIC measure
+            
+            Element simGICmeasureNode = (Element)groupwiseMeasureNode.getElementsByTagName("SimGIC").item(0);
+            
+            // We load the IC model and set the IC values
+            
+            String strIntrinsicICModel = simGICmeasureNode.getElementsByTagName("IntrinsicICModel").item(0).getTextContent();
+
+            ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(
+                        ICModelsFactory.convertToIntrinsicICModelType(strIntrinsicICModel));
+
+            icModel.setTaxonomyData(goTaxonomy);
+
+            // Once loaded the IC model, we cretae the SimGIC measure
+            
+            groupwiseMeasure = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
         }
         else if (groupwiseMeasureNode.getElementsByTagName("BasedOnPairwiseMeasure").getLength() > 0)
         {

@@ -65,12 +65,36 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
             Set<IVertex> right)
             throws InterruptedException, Exception
     {
+        // We compute the full ancestor set for the left set
+        
+        HashSet<IVertex> leftAncestors = new HashSet<>(left.size());
+        
+        for (IVertex vertex : left)
+        {
+            for (IVertex ancestor : vertex.getAncestors(true))
+            {
+                leftAncestors.add(ancestor);
+            }
+        }
+
+        // We compute the full ancestor set for the left set
+        
+        HashSet<IVertex> rightAncestors = new HashSet<>(right.size());
+        
+        for (IVertex vertex : right)
+        {
+            for (IVertex ancestor : vertex.getAncestors(true))
+            {
+                rightAncestors.add(ancestor);
+            }
+        }
+        
         // We compute the union and intersection sets
         
-        Set<IVertex> unionSet = new HashSet<>(left);
+        Set<IVertex> unionSet = new HashSet<>(leftAncestors);
         unionSet.addAll(right);
         
-        Set<IVertex> intersectionSet = new HashSet<>(left);
+        Set<IVertex> intersectionSet = new HashSet<>(leftAncestors);
         intersectionSet.retainAll(right);
 
         // We compute the numerator of simGIC

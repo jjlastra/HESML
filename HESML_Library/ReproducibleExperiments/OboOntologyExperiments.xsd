@@ -54,6 +54,13 @@
 																</xs:sequence>
 															</xs:complexType>
 														</xs:element>
+														<xs:element name="SimGIC">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="IntrinsicICModel" type="IntrinsicICModelType"/>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
 													</xs:choice>
 												</xs:complexType>
 											</xs:element>
@@ -163,8 +170,6 @@
 	</xs:simpleType>
 	<xs:simpleType name="GroupwiseSimilarityType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="BasedOnPairwiseMeasure"/>
-			<xs:enumeration value="SimGIC"/>
 			<xs:enumeration value="SimUI"/>
 			<xs:enumeration value="SimLP"/>
 		</xs:restriction>

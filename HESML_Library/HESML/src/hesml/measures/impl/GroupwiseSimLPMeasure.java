@@ -70,7 +70,7 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
         
         // We compute the full ancestor set for the left set
         
-        HashSet<IVertex> leftAncestors = new HashSet<>(5 * leftVertexes.size());
+        HashSet<IVertex> leftAncestors = new HashSet<>(leftVertexes.size());
         
         for (IVertex vertex : leftVertexes)
         {
@@ -82,9 +82,9 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
 
         // We compute the full ancestor set for the left set
         
-        HashSet<IVertex> rightAncestors = new HashSet<>(5 * rightVertexes.size());
+        HashSet<IVertex> rightAncestors = new HashSet<>(rightVertexes.size());
         
-        for (IVertex vertex : rightAncestors)
+        for (IVertex vertex : rightVertexes)
         {
             for (IVertex ancestor : vertex.getAncestors(true))
             {
@@ -94,13 +94,13 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
         
         // We compute the intersection set
         
-        leftVertexes.retainAll(rightAncestors);
+        leftAncestors.retainAll(rightAncestors);
         
         // We search for the deepest vertexes
         
         double similarity = 0.0;
         
-        for (IVertex vertex : leftVertexes)
+        for (IVertex vertex : leftAncestors)
         {
             similarity = Math.max(similarity, vertex.getDepthMax());
         }

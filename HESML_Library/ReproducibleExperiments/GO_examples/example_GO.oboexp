@@ -31,7 +31,9 @@
 			<InputGOtermsFilename1>GO_term_list1.txt</InputGOtermsFilename1>
 			<InputGOtermsFilename2>GO_term_list2.txt</InputGOtermsFilename2>
 			<GroupwiseSimilarityMeasure>
-				<GroupwiseSimilarityType>SimGIC</GroupwiseSimilarityType>
+				<SimGIC>
+					<IntrinsicICModel>Seco</IntrinsicICModel>
+				</SimGIC>
 			</GroupwiseSimilarityMeasure>
 			<GroupwiseSimilarityMeasure>
 				<GroupwiseSimilarityType>SimUI</GroupwiseSimilarityType>
