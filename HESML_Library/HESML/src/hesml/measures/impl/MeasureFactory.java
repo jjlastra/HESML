@@ -24,6 +24,7 @@ package hesml.measures.impl;
 // HESML references
 
 import hesml.configurators.ITaxonomyInfoConfigurator;
+import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
@@ -60,6 +61,115 @@ public class MeasureFactory
             int         maxSynsetsNumberPerWord) throws Exception
     {
         return (new MeasureTaieb2014(taxonomy, maxSynsetsNumberPerWord));
+    }
+    
+    /**
+     * This function returns the SimilarityMeasureType corresponding to the input string.
+     * @param strInputMeasureType 
+     * @return The type of pairwise similarity measure
+     */
+    
+    public static SimilarityMeasureType convertToSimilarityMeasureType(
+            String strInputMeasureType) throws Exception
+    {
+        // We retrieve the enum type
+        
+        SimilarityMeasureType inputMeasureType = SimilarityMeasureType.CosineLin;
+        
+        // We look for the matching value
+
+        boolean found = false;
+        
+        for (SimilarityMeasureType measureType: SimilarityMeasureType.values())
+        {
+            if (measureType.toString().equals(strInputMeasureType))
+            {
+                inputMeasureType = measureType;
+                found = true;
+                break;
+            }
+        }
+        
+        // We check that input string could be correctly parsed
+        
+        if (!found) throw (new Exception("Unknown SimilarityMeasureType = " + strInputMeasureType));
+        
+        // We return the result
+        
+        return (inputMeasureType);
+    }
+
+    /**
+     * This function returns the SimilarityMeasureType corresponding to the input string.
+     * @param strInputMeasureType 
+     * @return The type of pairwise similarity measure
+     */
+    
+    public static GroupwiseSimilarityMeasureType convertToGroupwiseSimilarityMeasureType(
+            String strInputMeasureType) throws Exception
+    {
+        // We retrieve the enum type
+        
+        GroupwiseSimilarityMeasureType inputMeasureType = GroupwiseSimilarityMeasureType.SimLP;
+        
+        // We look for the matching value
+
+        boolean found = false;
+        
+        for (GroupwiseSimilarityMeasureType measureType: GroupwiseSimilarityMeasureType.values())
+        {
+            if (measureType.toString().equals(strInputMeasureType))
+            {
+                inputMeasureType = measureType;
+                found = true;
+                break;
+            }
+        }
+        
+        // We check that input string could be correctly parsed
+        
+        if (!found) throw (new Exception("Unknown GroupwiseSimilarityMeasureType = " + strInputMeasureType));
+        
+        // We return the result
+        
+        return (inputMeasureType);
+    }
+    
+    /**
+     * This function converts the input string to its correspnding
+     * groupwise metric type.
+     * @param strGroupwiseMetricType
+     * @return The  equivalent groupwise metric type
+     */
+    
+    public static GroupwiseMetricType convertToGroupwiseMetric(
+            String  strGroupwiseMetricType) throws Exception
+    {
+        // We retrieve the enum type
+        
+        GroupwiseMetricType metricType = GroupwiseMetricType.Average;
+        
+        // We look for the matching value
+        
+        boolean found = false;
+        
+        for (GroupwiseMetricType groupwiseMetric: GroupwiseMetricType.values())
+        {
+            if (groupwiseMetric.toString().equals(strGroupwiseMetricType))
+            {
+                metricType = groupwiseMetric;
+                found = true;
+                break;
+            }
+        }
+        
+        // We check that input string could be correctly parsed
+        
+        if (!found) throw (new Exception("Unknown GroupwiseMetricType = " + strGroupwiseMetricType));
+        
+        // We return the result
+        
+        return (metricType);
     }
     
     /**

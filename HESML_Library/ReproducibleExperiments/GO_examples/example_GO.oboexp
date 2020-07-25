@@ -28,8 +28,8 @@
 			<OBOfilename>go.obo</OBOfilename>
 		</OBOOntology>
 		<GroupwiseEvaluation>
-			<InputGOtermsFilename1>GO_term_list1.csv</InputGOtermsFilename1>
-			<InputGOtermsFilename2>GO_term_list2.csv</InputGOtermsFilename2>
+			<InputGOtermsFilename1>GO_term_list1.txt</InputGOtermsFilename1>
+			<InputGOtermsFilename2>GO_term_list2.txt</InputGOtermsFilename2>
 			<GroupwiseSimilarityMeasure>
 				<GroupwiseSimilarityType>SimGIC</GroupwiseSimilarityType>
 			</GroupwiseSimilarityMeasure>

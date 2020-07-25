@@ -237,7 +237,7 @@ class UMLSReproducibleExperimentsInfo
         
         // We get the grouwise metric
         
-        GroupwiseMetricType groupwiseMetric = readGroupwiseMetric(
+        GroupwiseMetricType groupwiseMetric = MeasureFactory.convertToGroupwiseMetric(
                 experimentNode.getElementsByTagName("GroupwiseMetricType").item(0).getTextContent());
         
         // We load the input CUI pair list, parse and EVALUATE the similarity measures
@@ -251,36 +251,7 @@ class UMLSReproducibleExperimentsInfo
         writeOutputCSVfile(strRawOutputMatrix,
                 getInputExperimentFileDir() + "/" + strOutputFilename);
     }
-    
-    /**
-     * This function reads the groupwise metric type.
-     * @param strGroupwiseMetricType
-     * @return 
-     */
-    
-    private GroupwiseMetricType readGroupwiseMetric(
-            String  strGroupwiseMetricType)
-    {
-        // We retrieve the enum type
-        
-        GroupwiseMetricType metricType = GroupwiseMetricType.Average;
-        
-        // We look for the matching value
-        
-        for (GroupwiseMetricType groupwiseMetric: GroupwiseMetricType.values())
-        {
-            if (groupwiseMetric.toString().equals(strGroupwiseMetricType))
-            {
-                metricType = groupwiseMetric;
-                break;
-            }
-        }
-        
-        // We return the result
-        
-        return (metricType);
-    }
-    
+       
     /**
      * This funcion parses and inmmediately evaluates the similairty measures
      * defined in the XML-based experimetn file.
@@ -331,7 +302,8 @@ class UMLSReproducibleExperimentsInfo
             
             // We load the similarity measure and optional IC model
             
-            SimilarityMeasureType pairwiseMeasureType = readSimilarityMeasureType(taxonomy, measureNode);
+            SimilarityMeasureType pairwiseMeasureType = MeasureFactory.convertToSimilarityMeasureType(
+                    measureNode.getElementsByTagName("SimilarityMeasureType").item(0).getTextContent());
             
             IGroupwiseSimilarityMeasure groupwiseMeasure =
                     MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(taxonomy,
@@ -500,42 +472,6 @@ class UMLSReproducibleExperimentsInfo
      * evaluated in this experiments.
      * @param taxonomy
      * @param similarityMeasureDefinitions 
-     * @return The type of pairwise similarity measure
-     */
-    
-    private SimilarityMeasureType readSimilarityMeasureType(
-            ITaxonomy   taxonomy,
-            Element     similarityMeasureNode) throws Exception
-    {
-        // We read the measure type
-        
-        String strInputMeasureType = similarityMeasureNode.getElementsByTagName("SimilarityMeasureType").item(0).getTextContent();
-        
-        // We retrieve the enum type
-        
-        SimilarityMeasureType inputMeasureType = SimilarityMeasureType.CosineLin;
-        
-        // We look for the matching value
-        
-        for (SimilarityMeasureType measureType: SimilarityMeasureType.values())
-        {
-            if (measureType.toString().equals(strInputMeasureType))
-            {
-                inputMeasureType = measureType;
-                break;
-            }
-        }
-        
-        // We return the result
-        
-        return (inputMeasureType);
-    }
-    
-    /**
-     * This function parses and loads the similarity measure which will be
-     * evaluated in this experiments.
-     * @param taxonomy
-     * @param similarityMeasureDefinitions 
      */
     
     private ITaxonomyInfoConfigurator loadIcModel(
@@ -556,18 +492,7 @@ class UMLSReproducibleExperimentsInfo
         
             // We retrieve the enum type
         
-            IntrinsicICModelType inputModelType = IntrinsicICModelType.Seco;
-        
-            // We look for the matching value
-
-            for (IntrinsicICModelType icModelType: IntrinsicICModelType.values())
-            {
-                if (icModelType.toString().equals(strInputIcModelType))
-                {
-                    inputModelType = icModelType;
-                    break;
-                }
-            }
+            IntrinsicICModelType inputModelType = ICModelsFactory.convertToIntrinsicICModelType(strInputIcModelType);
         
             // We load the pairwise similarity measure
         

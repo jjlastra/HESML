@@ -118,7 +118,7 @@ class GOReproducibleExperimentsInfo
         
         // We get the node with collection of experiments 
         
-        NodeList experimentNodes = xmlDocument.getElementsByTagName("OboOntologyExperiments");
+        NodeList experimentNodes = xmlDocument.getElementsByTagName("OBOExperiment");
         
         // We traverse the collection of experiments parsing them
         
@@ -210,11 +210,23 @@ class GOReproducibleExperimentsInfo
             String strInputGOpairsFilename = pairwiseEvalNode.getElementsByTagName("InputGOpairsFilename").item(0).getTextContent();
             
             strRawOutputMatrix = loadAndEvaluatePairwiseSimMeasures(experimentNode,
-                            loadInputCuiPairs(strInputFilesDir + "/" + strInputGOpairsFilename));
+                            loadInputGOPairs(strInputFilesDir + "/" + strInputGOpairsFilename));
         }
         else if (experimentNode.getElementsByTagName("GroupwiseEvaluation").getLength() > 0)
         {
-            strRawOutputMatrix = null;
+            // We get the node for the pairwise evaluation
+            
+            Element groupwisewiseEvalNode = (Element) experimentNode.getElementsByTagName("GroupwiseEvaluation").item(0);
+            
+            String strInputGOtermsFilename1 = groupwisewiseEvalNode.getElementsByTagName("InputGOtermsFilename1").item(0).getTextContent();
+            String strInputGOtermsFilename2 = groupwisewiseEvalNode.getElementsByTagName("InputGOtermsFilename2").item(0).getTextContent();
+            
+            // We evaluate all groupwise measures
+            
+            strRawOutputMatrix = loadAndEvaluateGroupwiseSimMeasures(m_OboOntology,
+                                    groupwisewiseEvalNode,
+                                    loadGOtermList(strInputFilesDir + "/" + strInputGOtermsFilename1),
+                                    loadGOtermList(strInputFilesDir + "/" + strInputGOtermsFilename2));
         }
         
         // We write the output file for the experiment into the directory
@@ -225,32 +237,159 @@ class GOReproducibleExperimentsInfo
     }
     
     /**
-     * This function reads the groupwise metric type.
-     * @param strGroupwiseMetricType
+     * This functions reads a list of GO terms from a plain text file which contains
+     * one GO term per line.
+     * @param strGOtermsFilename
      * @return 
      */
     
-    private GroupwiseMetricType readGroupwiseMetric(
-            String  strGroupwiseMetricType)
+    private String[] loadGOtermList(
+            String  strGOtermsFilename) throws IOException
     {
-        // We retrieve the enum type
+        // We create the reader of the file
         
-        GroupwiseMetricType metricType = GroupwiseMetricType.Average;
+        BufferedReader reader = new BufferedReader(new FileReader(strGOtermsFilename));
+
+        // We create the temporary list to parse the GO terms
         
-        // We look for the matching value
+        ArrayList<String> auxTerms = new ArrayList<>();
         
-        for (GroupwiseMetricType groupwiseMetric: GroupwiseMetricType.values())
+        // We read the content of the file in row mode
+        
+        String strLine;
+        
+        while ((strLine = reader.readLine()) != null)
         {
-            if (groupwiseMetric.toString().equals(strGroupwiseMetricType))
+            auxTerms.add(strLine);
+        }
+        
+        // We close the file
+        
+        reader.close();
+        
+        // We create the output term vector
+
+        String[] strOutputList = new String[auxTerms.size()];
+        
+        auxTerms.toArray(strOutputList);
+        auxTerms.clear();
+        
+        // We return the result
+        
+        return (strOutputList);
+    }
+    
+    /**
+     * This function computes the GO-based semantic similarity between both
+     * sets of GO terms using a groupwise measure
+     * @param groupwiseNode
+     * @param goTerms1
+     * @param goTerms2
+     * @return 
+     */
+    
+    private String[][] loadAndEvaluateGroupwiseSimMeasures(
+            IOboOntology    goOntology,
+            Element         groupwiseNode,
+            String[]        goTerms1,
+            String[]        goTerms2) throws Exception
+    {
+        // We get the collection of groupwise measures
+        
+        NodeList groupwiseMeasures = groupwiseNode.getElementsByTagName("GroupwiseSimilarityMeasure");
+        
+        // We create the output matrix
+        
+        String[][] strOutputRawMatrix = new String[1 + groupwiseMeasures.getLength()][2];
+        
+        strOutputRawMatrix[0][0] = "Measure";
+        strOutputRawMatrix[0][1] = "Similarity value";
+        
+        // We get the taxonomy vertexes for both GO sets
+        
+        Set<IVertex> goNodes1 = goOntology.getTaxonomyNodesForOBOterms(goTerms1);
+        Set<IVertex> goNodes2 = goOntology.getTaxonomyNodesForOBOterms(goTerms2);
+        
+        // We load and evaluate each groupwise measure
+        
+        for (int i = 0; i < groupwiseMeasures.getLength(); i++)
+        {
+            // We get the next groupwise measure
+            
+            IGroupwiseSimilarityMeasure measure = readGroupwiseMeasure((Element) groupwiseMeasures.item(i),
+                                                    goOntology.getTaxonomy());
+
+            // We evaluate the measure
+            
+            strOutputRawMatrix[i + 1][0] = measure.toString();
+            strOutputRawMatrix[i + 1][1] = Double.toString(measure.getSimilarity(goNodes1, goNodes2));
+        }
+        
+        // We return the output
+        
+        return (strOutputRawMatrix);
+    }
+    
+    /**
+     * This function parses the groupwise XML node and creates an instance
+     * of a groupwise similarity measure.
+     * @param groupwiseMeasureNode
+     * @param goTaxonomy
+     * @return 
+     */
+    
+    private IGroupwiseSimilarityMeasure readGroupwiseMeasure(
+            Element     groupwiseMeasureNode,
+            ITaxonomy   goTaxonomy) throws Exception
+    {
+        // We initialize the ouptut value
+        
+        IGroupwiseSimilarityMeasure groupwiseMeasure = null;
+        
+        // We check the type of groupwise measure to know which type of measure
+        // should be parsed.
+        
+        if (groupwiseMeasureNode.getElementsByTagName("GroupwiseSimilarityType").getLength() > 0)
+        {
+            String strGroupwiseSimMeasure = groupwiseMeasureNode.getElementsByTagName("GroupwiseSimilarityType").item(0).getTextContent();
+            
+            groupwiseMeasure = MeasureFactory.getGroupwiseNoParameterMeasure(
+                                MeasureFactory.convertToGroupwiseSimilarityMeasureType(strGroupwiseSimMeasure));
+        }
+        else if (groupwiseMeasureNode.getElementsByTagName("BasedOnPairwiseMeasure").getLength() > 0)
+        {
+            // We get the root node of the groupwise measure based on a pairwise similairity measure
+            
+            Element groupwiseDefNode = (Element)groupwiseMeasureNode.getElementsByTagName("BasedOnPairwiseMeasure").item(0);
+            
+            // IMPORTANT: IC model shpould be set vefore the creation of IC-based measures
+            // We load the IC model whenever it has been defined
+            
+            if (groupwiseDefNode.getElementsByTagName("IntrinsicICModel").getLength() > 0)
             {
-                metricType = groupwiseMetric;
-                break;
+                String strIntrinsicICModel = groupwiseDefNode.getElementsByTagName("IntrinsicICModel").item(0).getTextContent();
+                
+                ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(
+                            ICModelsFactory.convertToIntrinsicICModelType(strIntrinsicICModel));
+                
+                // We set the IC values in the taxpnomy nodes
+                
+                icModel.setTaxonomyData(goTaxonomy);
             }
+            
+            // We parse the measure parameters
+            
+            String strSimilarityMeasureType = groupwiseDefNode.getElementsByTagName("SimilarityMeasureType").item(0).getTextContent();
+            String strGroupwiseMetricType = groupwiseDefNode.getElementsByTagName("GroupwiseMetricType").item(0).getTextContent();
+            
+            groupwiseMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(goTaxonomy,
+                                MeasureFactory.convertToSimilarityMeasureType(strSimilarityMeasureType),
+                                MeasureFactory.convertToGroupwiseMetric(strGroupwiseMetricType));
         }
         
         // We return the result
         
-        return (metricType);
+        return (groupwiseMeasure);
     }
     
     /**
@@ -301,9 +440,10 @@ class GOReproducibleExperimentsInfo
             
             // We load the similarity measure and optional IC model
             
-            SimilarityMeasureType pairwiseMeasureType = readSimilarityMeasureType(taxonomy, measureNode);
+            String strPairwiseMeasureType = measureNode.getElementsByTagName("SimilarityMeasureType").item(0).getTextContent();
             
-            ISimilarityMeasure pairwiseMeasure = MeasureFactory.getMeasure(taxonomy, pairwiseMeasureType);
+            ISimilarityMeasure pairwiseMeasure = MeasureFactory.getMeasure(taxonomy,
+                                                MeasureFactory.convertToSimilarityMeasureType(strPairwiseMeasureType));
             
             // We set the column title
             
@@ -395,12 +535,12 @@ class GOReproducibleExperimentsInfo
     }
     
     /**
-     * This function loads the CUI pairs defined in a Comma Separated Values (CSV) file.
+     * This function loads the GO pairs defined in a Comma Separated Values (CSV) file.
      * @param strInputCuiPairsCSVfilename
      * @return 
      */
     
-    private String[][] loadInputCuiPairs(
+    private String[][] loadInputGOPairs(
             String  strInputCuiPairsCSVfilename) throws IOException
     {
         // We create the reader of the file
@@ -465,42 +605,6 @@ class GOReproducibleExperimentsInfo
      * evaluated in this experiments.
      * @param taxonomy
      * @param similarityMeasureDefinitions 
-     * @return The type of pairwise similarity measure
-     */
-    
-    private SimilarityMeasureType readSimilarityMeasureType(
-            ITaxonomy   taxonomy,
-            Element     similarityMeasureNode) throws Exception
-    {
-        // We read the measure type
-        
-        String strInputMeasureType = similarityMeasureNode.getElementsByTagName("SimilarityMeasureType").item(0).getTextContent();
-        
-        // We retrieve the enum type
-        
-        SimilarityMeasureType inputMeasureType = SimilarityMeasureType.CosineLin;
-        
-        // We look for the matching value
-        
-        for (SimilarityMeasureType measureType: SimilarityMeasureType.values())
-        {
-            if (measureType.toString().equals(strInputMeasureType))
-            {
-                inputMeasureType = measureType;
-                break;
-            }
-        }
-        
-        // We return the result
-        
-        return (inputMeasureType);
-    }
-    
-    /**
-     * This function parses and loads the similarity measure which will be
-     * evaluated in this experiments.
-     * @param taxonomy
-     * @param similarityMeasureDefinitions 
      */
     
     private ITaxonomyInfoConfigurator loadIcModel(
@@ -519,24 +623,9 @@ class GOReproducibleExperimentsInfo
             
             String strInputIcModelType = icModelNode.getElementsByTagName("IntrinsicICModel").item(0).getTextContent();
         
-            // We retrieve the enum type
-        
-            IntrinsicICModelType inputModelType = IntrinsicICModelType.Seco;
-        
-            // We look for the matching value
-
-            for (IntrinsicICModelType icModelType: IntrinsicICModelType.values())
-            {
-                if (icModelType.toString().equals(strInputIcModelType))
-                {
-                    inputModelType = icModelType;
-                    break;
-                }
-            }
-        
             // We load the pairwise similarity measure
         
-            icModel = ICModelsFactory.getIntrinsicICmodel(inputModelType);
+            icModel = ICModelsFactory.getIntrinsicICmodel(ICModelsFactory.convertToIntrinsicICModelType(strInputIcModelType));
         }
         
         // We return the result

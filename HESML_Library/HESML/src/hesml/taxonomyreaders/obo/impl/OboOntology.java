@@ -28,6 +28,7 @@ import hesml.taxonomyreaders.obo.IOboOntology;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * This class represents an OBO ontology
@@ -182,6 +183,38 @@ public class OboOntology implements IOboOntology
     public IOboConcept getConceptById(String strId)
     {
         return (m_conceptsdIndexedById.get(strId));
+    }
+    
+    /**
+     * This function retrieves the set of taxonomy vertexes corresponding
+     * to the OBO concept set.
+     * @param strOBOconceptIds
+     * @return 
+     */
+    
+    @Override
+    public Set<IVertex> getTaxonomyNodesForOBOterms(String[] strOBOconceptIds)
+    {
+        // We initialize the output
+        
+        HashSet<IVertex> vertexes = new HashSet<>();
+        
+        // We retrieve the vertexes for each OBO concept term
+        
+        for (int i = 0; i < strOBOconceptIds.length; i++)
+        {
+            // We try to retrieve the associated OBO concept
+            
+            IOboConcept concept = getConceptById(strOBOconceptIds[i]);
+            
+            // If the OBO concept exists, we retrieve the taxonomy vertex
+            
+            if (concept != null) vertexes.add(m_taxonomy.getVertexes().getById(concept.getTaxonomyNodeId()));
+        }
+        
+        // We return the result
+        
+        return (vertexes);
     }
     
     /**

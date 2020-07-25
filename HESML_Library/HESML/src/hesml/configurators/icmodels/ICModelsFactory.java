@@ -80,6 +80,42 @@ public class ICModelsFactory
     }
     
     /**
+     * This function returns the IntrinsicICModelType corresponding to the input string.
+     * @param strInputICmodelType 
+     * @return The type of intrinsic IC model type
+     */
+    
+    public static IntrinsicICModelType convertToIntrinsicICModelType(
+            String strInputICmodelType) throws Exception
+    {
+        // We retrieve the enum type
+        
+        IntrinsicICModelType retrievedICmodelType = IntrinsicICModelType.Seco;
+        
+        // We look for the matching value
+
+        boolean found = false;
+        
+        for (IntrinsicICModelType icModelType: IntrinsicICModelType.values())
+        {
+            if (icModelType.toString().equals(strInputICmodelType))
+            {
+                retrievedICmodelType = icModelType;
+                found = true;
+                break;
+            }
+        }
+        
+        // We check that input string could be correctly parsed
+        
+        if (!found) throw (new Exception("Unknown IntrinsicICModelType = " + strInputICmodelType));
+        
+        // We return the result
+        
+        return (retrievedICmodelType);
+    }
+    
+    /**
      * This function returns an instance of an intrinsic IC model.
      * @param method Intrinsic IC model type to be created
      * @return IC model

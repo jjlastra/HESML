@@ -21,6 +21,8 @@
 package hesml.taxonomyreaders.obo;
 
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
+import java.util.Set;
 
 /**
  * This interface represents any ontology based on the OBO file format, such
@@ -50,6 +52,15 @@ public interface IOboOntology
      */
     
     IOboConcept getConceptById(String strId);
+    
+    /**
+     * This function retrieves the set of taxonomy vertexes corresponding
+     * to the OBO concept set.
+     * @param strOBOconceptIds
+     * @return 
+     */
+    
+    Set<IVertex> getTaxonomyNodesForOBOterms(String[] strOBOconceptIds);
     
     /**
      * This function checks if the concept is conatined in the ontology
