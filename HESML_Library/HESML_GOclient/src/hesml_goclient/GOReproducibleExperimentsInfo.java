@@ -467,8 +467,8 @@ class GOReproducibleExperimentsInfo
             
             // We set the column title
             
-            strOutputmatrix[0][iMeasureCol] = (icModel == null) ? pairwiseMeasure.toString()
-                    : pairwiseMeasure.toString() + "-" + icModel.toString();
+            strOutputmatrix[0][iMeasureCol] = (icModel == null) ? pairwiseMeasure.getMeasureType().toString()
+                    : pairwiseMeasure.getMeasureType().toString() + "-" + icModel.toString();
             
             // We evaluate the similarity of the input dataset
             
