@@ -42,15 +42,19 @@ public class HESMLversion
         System.out.println("semantic similarity measures and information content models");
         System.out.println("\nRelease name: " + getReleaseName());    
         System.out.println("Version code: " + getVersionCode());
-        System.out.println("Version date: January 2018");
-        System.out.println("Copyright (C) 2017 Universidad Nacional de Educación a Distancia (UNED)");
+        System.out.println("Version date: July 2020");
+        System.out.println("Copyright (C) 2020 Universidad Nacional de Educación a Distancia (UNED)");
         
-        System.out.println("\nMain HESML publication:\n");
-        System.out.println("Lastra-Díaz, J. J. & García-Serrano, A. & Batet, M. & Fernández, M. & Chirigati, F. (2017).");
+        System.out.println("\nMain HESML publications:\n");
+        System.out.println("[1] Lastra-Díaz, J. J. & García-Serrano, A. & Batet, M. & Fernández, M. & Chirigati, F. (2017).");
         System.out.println("HESML: a scalable ontology-based semantic similarity measures library");
         System.out.println("with a set of reproducible experiments and a replication dataset.");
         System.out.println("Information Systems 66, pp. 97-118.");
         System.out.println("http://dx.doi.org/10.1016/j.is.2017.02.002\n");
+        
+        System.out.println("[2] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
+        System.out.println("HESML: a real-time semantic measures library for the biomedical");
+        System.out.println("domain with a reproducible survey, Submitted for Publication. (2020)\n");
     }
     
     /**
@@ -70,6 +74,6 @@ public class HESMLversion
     
     public static String getVersionCode()
     {
-        return ("(1.5.0.0)");
+        return ("(1.5.0.1)");
     }
 }
