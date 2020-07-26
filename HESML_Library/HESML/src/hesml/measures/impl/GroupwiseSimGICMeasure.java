@@ -92,10 +92,10 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
         // We compute the union and intersection sets
         
         Set<IVertex> unionSet = new HashSet<>(leftAncestors);
-        unionSet.addAll(right);
+        unionSet.addAll(rightAncestors);
         
         Set<IVertex> intersectionSet = new HashSet<>(leftAncestors);
-        intersectionSet.retainAll(right);
+        intersectionSet.retainAll(rightAncestors);
 
         // We compute the numerator of simGIC
         
@@ -119,6 +119,8 @@ class GroupwiseSimGICMeasure implements IGroupwiseSimilarityMeasure
         
         unionSet.clear();
         intersectionSet.clear();
+        leftAncestors.clear();
+        rightAncestors.clear();
         
         // We compute the similarity
         

@@ -60,8 +60,8 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
     
     @Override
     public double getSimilarity(
-            Set<IVertex> leftVertexes,
-            Set<IVertex> rightVertexes)
+            Set<IVertex> left,
+            Set<IVertex> right)
             throws InterruptedException, Exception
     {
         // According to Gentleman [1]: "For simLP the similarity measure is the
@@ -70,9 +70,9 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
         
         // We compute the full ancestor set for the left set
         
-        HashSet<IVertex> leftAncestors = new HashSet<>(leftVertexes.size());
+        HashSet<IVertex> leftAncestors = new HashSet<>(left.size());
         
-        for (IVertex vertex : leftVertexes)
+        for (IVertex vertex : left)
         {
             for (IVertex ancestor : vertex.getAncestors(true))
             {
@@ -82,9 +82,9 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
 
         // We compute the full ancestor set for the left set
         
-        HashSet<IVertex> rightAncestors = new HashSet<>(rightVertexes.size());
+        HashSet<IVertex> rightAncestors = new HashSet<>(right.size());
         
-        for (IVertex vertex : rightVertexes)
+        for (IVertex vertex : right)
         {
             for (IVertex ancestor : vertex.getAncestors(true))
             {
