@@ -1,6 +1,6 @@
 # HESML V1R5
 
-HESML V1R5 Java software library of ontology-based semantic similarity measures and information content (IC) models. Main novelty of V1R5 version is the implementation of the most imporan biomedicl ontologies, such as SNOMED-CT, MeSH, GO and OBO-based ontologies, in addition to WordNet.
+HESML V1R5 Java software library of ontology-based semantic similarity measures and information content (IC) models. Main novelty of V1R5 version is the implementation of the most important biomedical ontologies, such as SNOMED-CT, MeSH, GO and OBO-based ontologies, in addition to WordNet.
 
 This is the GitHub public repository for the HESML Java software library of ontology-based semantic similarity measures and Information Content (IC) models.
 
