@@ -1,12 +1,12 @@
 # HESML V1R5
 
-HESML Java software library of ontology-based semantic similarity measures and information content (IC) models
+HESML V1R5 Java software library of ontology-based semantic similarity measures and information content (IC) models. Main novelty of V1R5 version is the implementation of the most imporan biomedicl ontologies, such as SNOMED-CT, MeSH, GO and OBO-based ontologies, in addition to WordNet.
 
-This is the GitHub public repository for the HESML Java software library of ontology-based semantic similarity measures and information content models.
+This is the GitHub public repository for the HESML Java software library of ontology-based semantic similarity measures and Information Content (IC) models.
 
 The initial master code of this repository matches the HESML V1R2 version available as Mendeley dataset at http://dx.doi.org/10.17632/t87s78dg78.2.
 
-HESML V1R5 is the fifth release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models based on WordNet, which also implements the evaluation of pre-trained word embedding models.
+HESML V1R5 is the fifth release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models, which also implements the evaluation of pre-trained word embedding models.
 
 HESML V1R5 implements most ontology-based semantic similarity measures and Information Content (IC) models reported in the literature which are based on WordNet, SNOMED-CT, MeSH, GO and OBO-based ontologies. In addition, it provides a XML-based input file format in order to specify the execution of reproducible experiments on word/concept similarity based on WordNet, SNOMED-CT, MeSH, and GO ontologies, even with no software coding.
 
@@ -24,7 +24,7 @@ Main novelties provided by HESML V1R5 are as follows:
 
 # Licensing information
 
-HESML library is freely distributed for any non-commercial purpose under a CC By-NC-SA-4.0 license, subject to the citing of the main HESML paper [1] as attribution requirement. On other hand, the commercial use of the similarity measures introduced in [2], as well as part of the intrinsic IC models introduced in [3] and [4], is protected by a patent application [5]. In addition, any user of HESML must fulfill other licensing terms described in [1] related to other resources distributed with the library, such as WordNet and a dataset of corpus-based IC models, among others.
+HESML library is freely distributed for any non-commercial purpose under a CC By-NC-SA-4.0 license, subject to the citing of the main HESML papers [1, 7] as attribution requirement. On other hand, the commercial use of the similarity measures introduced in [2], as well as part of the intrinsic IC models introduced in [3] and [4], is protected by a patent application [5]. In addition, any user of HESML must fulfill other licensing terms described in [1] related to other resources distributed with the library, such as WordNet and a dataset of corpus-based IC models, among others.
 
 # References:
 
@@ -56,7 +56,7 @@ HESML V1R5 is distributed as a Java class library (HESML-V1R5.0.1.jar) plus thre
 
 The HESML-V1R5.0.1.jar file is already included in the HESML_Library\HESML\dist folder of the HESML_Release_V1R5.zip distribution file. In order to compile HESML from its source files, you must follow the following steps:
 
-(1) Download the full distribution of HESML V1R3.
+(1) Download the full distribution of HESML V1R5.
 
 (2) Install Java 8, Java SE Dev Kit 8 and NetBeans 8.0.2 or higher in your workstation.
 
@@ -70,4 +70,4 @@ hesml+subscribe@googlegroups.com
 
 Steps to use the library
 
-You can use the HESML client programs to run reproducible experiments or create your own client programs using the client source code as example. For more information, including a detailed description of how to run the reproducible experiments and extending the library, we refer the reader to the paper [1] above.
+You can use the HESML client programs to run reproducible experiments or create your own client programs using the client source code as example. For more information, including a detailed description of how to run the reproducible experiments and extending the library, we refer the reader to the introductory paper [1] cited above.
