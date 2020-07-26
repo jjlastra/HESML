@@ -21,8 +21,22 @@
 package hesml_goclient;
 
 import hesml.HESMLversion;
+import hesml.configurators.ITaxonomyInfoConfigurator;
+import hesml.configurators.IntrinsicICModelType;
+import hesml.configurators.icmodels.ICModelsFactory;
+import hesml.measures.GroupwiseMetricType;
+import hesml.measures.GroupwiseSimilarityMeasureType;
+import hesml.measures.IGroupwiseSimilarityMeasure;
+import hesml.measures.ISimilarityMeasure;
+import hesml.measures.SimilarityMeasureType;
+import hesml.measures.impl.MeasureFactory;
+import hesml.taxonomy.IVertex;
+import hesml.taxonomyreaders.obo.IOboConcept;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
@@ -108,5 +122,104 @@ public class HESML_GOclient {
             System.err.println("you should call it using the method below:\n");
             System.err.println("(1) C:> java -jar dist\\HESML_GOclient.jar <reproexperiment.exp>");
         }
+    }
+    
+    /**
+     * This function shows how to load the GO ontology and evaluate a pairwise similarity measure.
+     */
+    
+    private static void exampleGOpairwiseSimilarity() throws Exception
+    {
+        String  strGoOBOfilename = "../GeneOntology/go.obo";
+        
+        // We load the GO ontology
+        
+        IOboOntology goOntology = OboFactory.loadOntology(strGoOBOfilename);
+        
+        // We set the Sanchez2011 IC model
+        
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Sanchez2011);
+        
+        icModel.setTaxonomyData(goOntology.getTaxonomy());
+        
+        // We create an instance of the Lin measure
+        
+        ISimilarityMeasure linMeasure = MeasureFactory.getMeasure(goOntology.getTaxonomy(),
+                                        SimilarityMeasureType.Lin);
+        
+        // We get the OBO concepts associated to the GOtemrs
+        
+        IOboConcept concept1 = goOntology.getConceptById("GO:0060139");
+        IOboConcept concept2 = goOntology.getConceptById("GO:0071839");
+        
+        if ((concept1 != null) && (concept2 != null))
+        {
+            // We get the taxonomy nodes associated to the GO terms
+            
+            IVertex v1 = goOntology.getTaxonomy().getVertexes().getById(concept1.getTaxonomyNodeId());
+            IVertex v2 = goOntology.getTaxonomy().getVertexes().getById(concept2.getTaxonomyNodeId());
+            
+            // We compute the pairwise similarity
+            
+            double similarity = linMeasure.getSimilarity(v1, v2);
+        }
+        
+        // We relrease the ontology
+        
+        goOntology.clear();
+    }
+    
+    /**
+     * This function shows how to load the GO ontology and evaluate a groupwise similarity measure.
+     */
+    
+    @SuppressWarnings("empty-statement")
+    private static void exampleGOgroupwiseSimilarity() throws Exception
+    {
+        String  strGoOBOfilename = "../GeneOntology/go.obo";
+        
+        // We load the GO ontology
+        
+        IOboOntology goOntology = OboFactory.loadOntology(strGoOBOfilename);
+        
+        // We set the Sanchez2011 IC model
+        
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Sanchez2011);
+        
+        icModel.setTaxonomyData(goOntology.getTaxonomy());
+        
+        // We create an instance of the groupwise BMA measure based on pairwise Lin
+        
+        IGroupwiseSimilarityMeasure bmaLinMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                        goOntology.getTaxonomy(),
+                                                        SimilarityMeasureType.Lin,
+                                                        GroupwiseMetricType.BestMatchAverage);
+
+        IGroupwiseSimilarityMeasure simGICmeasure = MeasureFactory.getGroupwiseNoParameterMeasure(
+                                                    GroupwiseSimilarityMeasureType.SimGIC);
+        
+        // We define two sets of GO concepts
+        
+        String[] strGOterms1 = new String[] {"GO:0060139", "GO:0071839", "GO:0044346"};
+        String[] strGOterms2 = new String[] {"GO:1902489", "GO:0016505", "GO:0043066"};
+
+        // We get the sets of vertexes associated to both GO term list
+        
+        Set<IVertex> v1 = goOntology.getTaxonomyNodesForOBOterms(strGOterms1);
+        Set<IVertex> v2 = goOntology.getTaxonomyNodesForOBOterms(strGOterms2);
+        
+        // We compute the groupwise similarity using two different groupwise measures
+        
+        if (!v1.isEmpty() && !v2.isEmpty())
+        {
+            double similarityBMA_Lin_Sanchez2011 = bmaLinMeasure.getSimilarity(v1, v2);
+            double similaritySimGIC = simGICmeasure.getSimilarity(v1, v2);
+        }
+        
+        // We relrese all resources
+        
+        v2.clear();
+        v2.clear();
+        goOntology.clear();
     }
 }
