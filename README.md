@@ -20,7 +20,7 @@ Main novelties provided by HESML V1R5 are as follows:
 
 (1) implementation of the SNOMED-CT, MeSH, GO and OBO-based ontologies for the biomedical doman [5].
 
-(2) software implementation of six new groupwise similarity measures as follows: SimUI [8], SimLP [8], SimGIC [9], Average [10], Maximum [11], Best-match-Avergae (BMA) [10].
+(2) software implementation of six new groupwise similarity measures as follows: SimUI [8], SimLP [8], SimGIC [9], Average [10], Maximum [11], Best-match-Average (BMA) [10].
 
 (3) the introduction of a new family of efficient path-based semantic similarity measures based on the reformulation of path-based measures using the new AncSPL  [7] algorithm for the real-time computation of the length of the shortest path between concepts.
 
@@ -30,27 +30,27 @@ HESML library is freely distributed for any non-commercial purpose under a CC By
 
 # References:
 
-[1] Lastra-Díaz, J. J., García-Serrano, A., Batet, M., Fernández, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems 66, 97-118. http://dx.doi.org/10.1016/j.is.2017.02.002
+[1] Lastra-DÃ­az, J. J., GarcÃ­a-Serrano, A., Batet, M., FernÃ¡ndez, M. and Chirigati, F. (2017). HESML: a scalable ontology-based semantic similarity measures library with a set of reproducible experiments and a replication dataset. Information Systems 66, 97-118. http://dx.doi.org/10.1016/j.is.2017.02.002
 
-[2] Lastra-Díaz, J. J., & García-Serrano, A. (2015). A novel family of IC-based similarity measures with a detailed experimental survey on WordNet. Engineering Applications of Artificial Intelligence Journal, 46, 140-153. http://dx.doi.org/10.1016/j.engappai.2015.09.006
+[2] Lastra-DÃ­az, J. J., & GarcÃ­a-Serrano, A. (2015). A novel family of IC-based similarity measures with a detailed experimental survey on WordNet. Engineering Applications of Artificial Intelligence Journal, 46, 140-153. http://dx.doi.org/10.1016/j.engappai.2015.09.006
 
-[3] Lastra-Díaz, J. J., & García-Serrano, A. (2015). A new family of information content models with an experimental survey on WordNet. Knowledge-Based Systems, 89, 509-526. http://dx.doi.org/10.1016/j.knosys.2015.08.019
+[3] Lastra-DÃ­az, J. J., & GarcÃ­a-Serrano, A. (2015). A new family of information content models with an experimental survey on WordNet. Knowledge-Based Systems, 89, 509-526. http://dx.doi.org/10.1016/j.knosys.2015.08.019
 
-[4] Lastra-Díaz, J. J., & García-Serrano, A. (2016). A refinement of the well-founded Information Content models with a very detailed experimental survey on WordNet. Universidad Nacional de Educación a Distancia (UNED). http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
+[4] Lastra-DÃ­az, J. J., & GarcÃ­a-Serrano, A. (2016). A refinement of the well-founded Information Content models with a very detailed experimental survey on WordNet. Universidad Nacional de EducaciÃ³n a Distancia (UNED). http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
 
-[5] Lastra Díaz, J. J., & García Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
+[5] Lastra DÃ­az, J. J., & GarcÃ­a Serrano, A. (2016). System and method for the indexing and retrieval of semantically annotated data using an ontology-based information retrieval model. United States Patent and Trademark Office (USPTO) Application, US2016/0179945 A1.
 
-[6] J.J. Lastra-Díaz, J. Goikoetxea, M. Hadj Taieb, A. García-Serrano, M. Ben Aouicha, E. Agirre, A reproducible survey on word embeddings and ontology-based methods for word similarity: linear combinations outperform the state of the art, Engineering Applications of Artificial Intelligence. 85 (2019) 645–665. https://doi.org/10.1016/j.engappai.2019.07.010
+[6] J.J. Lastra-DÃ­az, J. Goikoetxea, M. Hadj Taieb, A. GarcÃ­a-Serrano, M. Ben Aouicha, E. Agirre, A reproducible survey on word embeddings and ontology-based methods for word similarity: linear combinations outperform the state of the art, Engineering Applications of Artificial Intelligence. 85 (2019) 645â€“665. https://doi.org/10.1016/j.engappai.2019.07.010
 
-[7] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano, HESML: a real-time semantic measures library for the biomedical domain with a reproducible survey, Submitted for Publication. (2020).
+[7] J.J. Lastra-DÃ­az, A. Lara-Clares, A. GarcÃ­a-Serrano, HESML: a real-time semantic measures library for the biomedical domain with a reproducible survey, Submitted for Publication. (2020).
 
 [8] R. Gentleman, Visualizing and distances using GO, URL Http://www. Bioconductor. Org/docs/vignettes. Html. 38 (2005). http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.592.2206&rep=rep1&type=pdf.
 
-[9] C. Pesquita, D. Faria, H. Bastos, A. Falcão, F. Couto, Evaluating GO-based semantic similarity measures, in: Proc. 10th Annual Bio-Ontologies Meeting, 2007: p. 38.
+[9] C. Pesquita, D. Faria, H. Bastos, A. FalcÃ£o, F. Couto, Evaluating GO-based semantic similarity measures, in: Proc. 10th Annual Bio-Ontologies Meeting, 2007: p. 38.
 
-[10] F. Azuaje, H. Wang, O. Bodenreider, Ontology-driven similarity approaches to supporting gene functional assessment, in: Proceedings of the ISMB’2005 SIG Meeting on Bio-Ontologies, academia.edu, 2005: pp. 9–10.
+[10] F. Azuaje, H. Wang, O. Bodenreider, Ontology-driven similarity approaches to supporting gene functional assessment, in: Proceedings of the ISMBâ€™2005 SIG Meeting on Bio-Ontologies, academia.edu, 2005: pp. 9â€“10.
 
-[11] J.L. Sevilla, V. Segura, A. Podhorski, E. Guruceaga, J.M. Mato, L.A. Martínez-Cruz, F.J. Corrales, A. Rubio, Correlation between gene expression and GO semantic similarity, IEEE/ACM Trans. Comput. Biol. Bioinform. 2 (2005) 330–338.
+[11] J.L. Sevilla, V. Segura, A. Podhorski, E. Guruceaga, J.M. Mato, L.A. MartÃ­nez-Cruz, F.J. Corrales, A. Rubio, Correlation between gene expression and GO semantic similarity, IEEE/ACM Trans. Comput. Biol. Bioinform. 2 (2005) 330â€“338.
 
 Steps to reproduce the library
 
