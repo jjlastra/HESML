@@ -20,7 +20,9 @@ Main novelties provided by HESML V1R5 are as follows:
 
 (1) implementation of the SNOMED-CT, MeSH, GO and OBO-based ontologies for the biomedical doman [5].
 
-(2) software implementation of six new groupwie similarity measures as follows: SimUI [8], SimLP [8], SimGIC [9], Average [10], Maximum [11], Best-match-Avergae (BMA) [10].
+(2) software implementation of six new groupwise similarity measures as follows: SimUI [8], SimLP [8], SimGIC [9], Average [10], Maximum [11], Best-match-Avergae (BMA) [10].
+
+(3) the introduction of a new family of efficient path-based semantic similarity measures based on the reformulation of path-based measures using the new AncSPL  [7] algorithm for the real-time computation of the length of the shortest path between concepts.
 
 # Licensing information
 
