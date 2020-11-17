@@ -2,7 +2,9 @@
 
 ## Features implemented in HESML-STS --- sprint 0
 	- String-based sentence similarity measures
-	- Benchmarks: BIOSSES, MedSTS, CTR
+	- Preprocessing methods: Char filtering, stop words removal, tokenizers and lowe casing.
+	- Benchmark datasets: BIOSSES, MedSTS, CTR
+	- Expriment configuration file: string_benchmark.stsexp
 	- R script for post-processing results. Output in .csv and .latex formats.
 
 

@@ -70,7 +70,3 @@ RUN git clone -b HESML-STS_dev_sprint_0 https://github.com/jjlastra/HESML.git
 RUN cd $HOME/HESML/HESML/HESML_Library/HESMLSTSclient && java -jar -Xms4096m dist/HESMLSTSclient.jar ../ReproducibleExperiments/BioSentenceSimilarity_paper/string_benchmark.stsexp
 
 RUN cd $HOME/HESML/HESML/HESML_Library/ReproducibleExperiments/Post-scripts/ && Rscript bio_sentence_sim_allExperiments_table.R
-
-# Establish the results folder as default
-
-WORKDIR $HOME/HESML/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles
