@@ -58,7 +58,7 @@ public class HESMLSTSclient
      */
     
     private static final String  m_strBaseDir = "../";
-    private static final String  m_strStopWordsDir = m_strBaseDir + "StopWordsFiles/";
+    private static final String  m_strStopWordsDir = "StopWordsFiles/";
 
     
     /**
