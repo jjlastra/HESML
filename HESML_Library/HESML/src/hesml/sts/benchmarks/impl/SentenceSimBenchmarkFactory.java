@@ -228,6 +228,10 @@ public class SentenceSimBenchmarkFactory
                                 readWordProcessing(measureNode)));
 
                         break;
+                        
+                    case "WBSMMeasure":
+                        
+                        tempMeasureList.add(readWBSMmeasure(measureNode));
                 }
             }
         }
@@ -607,5 +611,62 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (recoveredMethod);
+    }
+    
+    /**
+     * This function parses a WBSM measure defined in the XML-based experiment file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readWBSMmeasure(
+        Element measureNode) throws Exception
+    {
+        // We get the WordNet databse information
+
+        String strWordNetDbDir = readStringField(measureNode, "WordNetDbDir");
+        String strWordNetDbFilename = readStringField(measureNode, "WordNetDbFilename");
+        
+        // We read the word similairty type
+        
+        SimilarityMeasureType wordMeasureType = convertToWordSimilarityMeasureType(
+                                                readStringField(measureNode, "WordSimilarityMeasureType"));
+        
+        // We create the singleton instance of the WordNet database and taxonomy
+
+        if (m_WordNetDbSingleton == null)
+        {
+            // We load the singleton instance of WordNet-related objects. It is done to
+            // avoid the memory cost of multiple instances of WordNet when multiple
+            // instances of the WBSM measure are created.
+            
+            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(strWordNetDbDir, strWordNetDbFilename);    
+            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+
+            // We pre-process the taxonomy to compute all the parameters
+            // used by the intrinsic IC-computation methods
+
+            m_WordNetTaxonomySingleton.computesCachedAttributes();
+        }
+
+        // We get the intrinsic IC model if anyone has been defined
+
+        String strICModelTag = "IntrinsicICmodel";
+        
+        IntrinsicICModelType icModelType = containsChildWithTagName(measureNode, strICModelTag) ?
+                                            convertToIntrincICmodelType(readStringField(measureNode, strICModelTag))
+                                            : IntrinsicICModelType.Seco;
+
+        // Add the WBSM measure to the list
+
+        ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getWBSMMeasure(
+                                                readStringField(measureNode, "Label"),
+                                                readWordProcessing(measureNode), 
+                                                m_WordNetDbSingleton, m_WordNetTaxonomySingleton,
+                                                wordMeasureType, icModelType);
+        
+        // We return the result
+        
+        return (measure);
     }
 }
