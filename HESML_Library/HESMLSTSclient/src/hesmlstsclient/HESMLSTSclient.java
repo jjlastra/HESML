@@ -22,6 +22,9 @@
 package hesmlstsclient;
 
 import hesml.HESMLversion;
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.ISimilarityMeasure;
+import hesml.measures.SimilarityMeasureType;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
@@ -30,6 +33,9 @@ import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.IWordProcessing;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
+import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,10 +61,15 @@ public class HESMLSTSclient
      * 
      * m_strBaseDir: the base directory with the resources
      * m_strStopWordsDir: Subdirectory with all the stop words files
+     * m_strWordNetDatasetsDir: Subdirectory with all the WordNet datasets
+     * m_strWordNet3_0_Dir: Subdirectory with WordNet v3.0 dictionary
      */
     
     private static final String  m_strBaseDir = "../";
     private static final String  m_strStopWordsDir = "StopWordsFiles/";
+    
+    private static final String  m_strWordNetDatasetsDir = m_strBaseDir + "/WN_Datasets/";
+    private static final String  m_strWordNet3_0_Dir = m_strBaseDir + "/Wordnet-3.0/dict";
 
     
     /**
@@ -164,6 +175,7 @@ public class HESMLSTSclient
         // Execute the tests
         
         testStringMeasures(sentences1, sentences2);
+        testWBSMMeasures(sentences1, sentences2);
     }
     
     /**
@@ -234,6 +246,73 @@ public class HESMLSTSclient
                 System.out.println("---- Sentence " + i + " : " + score);
             }
         }
+        measure.clear();
+    }
+    
+    /**
+     * Test WBSM Measures from BIOSSES2017
+     * 
+     * @param sentences1
+     * @param sentences2 
+     */
+    
+    private static void testWBSMMeasures(
+            String[] sentences1,
+            String[] sentences2) throws IOException, InterruptedException, Exception
+    {
+         // Initialize the preprocessing method and measures
+        
+        IWordProcessing preprocesser = null;
+        ISentenceSimilarityMeasure measure = null;
+        ISimilarityMeasure wordSimilarityMeasure = null;
+        
+        IWordNetDB  wordnet;            // WordNet DB
+        ITaxonomy   wordnetTaxonomy;    // WordNet taxonomy
+        
+        // We load the WordNet database
+        
+        wordnet = WordNetFactory.loadWordNetDatabase(m_strWordNet3_0_Dir, "data.noun");
+        
+        // We build the taxonomy
+        
+        System.out.println("Building the WordNet taxonomy ...");
+        
+        wordnetTaxonomy = WordNetFactory.buildTaxonomy(wordnet);
+               
+        // We pre-process the taxonomy to compute all the parameters
+        // used by the intrinsic IC-computation methods
+        
+        System.out.println("Pre-processing the WordNet taxonomy");
+        
+        wordnetTaxonomy.computesCachedAttributes();
+        
+        // Create a Wordpreprocessing object using WordPieceTokenizer
+        
+        preprocesser = PreprocessingFactory.getWordProcessing(
+                        "", TokenizerType.WhiteSpace, 
+                        true, CharFilteringType.None);
+        
+        // Create the measure
+        
+        measure = SentenceSimilarityFactory.getWBSMMeasure("WBSM test",
+                        preprocesser, wordnet, wordnetTaxonomy,
+                        SimilarityMeasureType.Lin, IntrinsicICModelType.Seco);
+        
+        // Get the similarity scores for the lists of sentences
+            
+        double[] simScores = measure.getSimilarityValues(sentences1, sentences2);
+        
+        // Print the results - For testing purposes
+        
+        System.out.println("Scores for WBSM measure: ");
+        for (int i = 0; i < simScores.length; i++)
+        {
+            double score = simScores[i];
+            System.out.println("---- Sentence " + i + " : " + score);
+        }
+        
+        // We release the resources
+        
         measure.clear();
     }
 }

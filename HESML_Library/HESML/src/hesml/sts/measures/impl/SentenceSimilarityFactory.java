@@ -21,9 +21,13 @@
 
 package hesml.sts.measures.impl;
 
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.SimilarityMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
+import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
 
 /**
  * This class builds the sentence similarity measures.
@@ -92,5 +96,30 @@ public class SentenceSimilarityFactory
         // We return the result
         
         return (measure);
+    }
+    
+    /**
+     * This function creates a WBSM measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param wordnetTaxonomy
+     * @param wordSimilarityMeasureType
+     * @param icModelType
+     * @param wordnet
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+    
+    public static ISentenceSimilarityMeasure getWBSMMeasure(
+            String                  strLabel,
+            IWordProcessing         preprocesser,
+            IWordNetDB              wordnet,
+            ITaxonomy               wordnetTaxonomy,
+            SimilarityMeasureType   wordSimilarityMeasureType,
+            IntrinsicICModelType    icModelType) throws Exception
+    {
+        return (new WBSMMeasure(strLabel, preprocesser, wordnet,
+                wordnetTaxonomy, wordSimilarityMeasureType, icModelType));
     }
 }
