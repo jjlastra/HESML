@@ -27,6 +27,9 @@ import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 
 /**
@@ -121,5 +124,71 @@ public class SentenceSimilarityFactory
     {
         return (new WBSMMeasure(strLabel, preprocesser, wordnet,
                 wordnetTaxonomy, wordSimilarityMeasureType, icModelType));
+    }
+    
+    /**
+     * This function creates a UBSM measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param SnomedOntology
+     * @param wordSimilarityMeasureType
+     * @param icModelType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+    
+    public static ISentenceSimilarityMeasure getUBSMMeasure(
+            String                  strLabel,
+            IWordProcessing         preprocesser,
+            ISnomedCtOntology       SnomedOntology,
+            SimilarityMeasureType   wordSimilarityMeasureType,
+            IntrinsicICModelType    icModelType) throws Exception
+    {
+        return (new UBSMMeasure(strLabel, preprocesser, SnomedOntology, wordSimilarityMeasureType, icModelType));
+    }
+    
+    /**
+     * This function creates a UBSM measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param MeshOntology
+     * @param wordSimilarityMeasureType
+     * @param icModelType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+    
+    public static ISentenceSimilarityMeasure getUBSMMeasure(
+            String                  strLabel,
+            IWordProcessing         preprocesser,
+            IMeSHOntology           MeshOntology,
+            SimilarityMeasureType   wordSimilarityMeasureType,
+            IntrinsicICModelType    icModelType) throws Exception
+    {
+        return (new UBSMMeasure(strLabel, preprocesser, MeshOntology, wordSimilarityMeasureType, icModelType));
+    }
+    
+    /**
+     * This function creates a UBSM measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param OboOntology
+     * @param wordSimilarityMeasureType
+     * @param icModelType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+    
+    public static ISentenceSimilarityMeasure getUBSMMeasure(
+            String                  strLabel,
+            IWordProcessing         preprocesser,
+            IOboOntology            OboOntology,
+            SimilarityMeasureType   wordSimilarityMeasureType,
+            IntrinsicICModelType    icModelType) throws Exception
+    {
+        return (new UBSMMeasure(strLabel, preprocesser, OboOntology, wordSimilarityMeasureType, icModelType));
     }
 }

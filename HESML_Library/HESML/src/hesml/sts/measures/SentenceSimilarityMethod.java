@@ -130,5 +130,13 @@ public enum SentenceSimilarityMethod
      * for the Biomedical Domain.” Bioinformatics  33 (14): i49–58.
      */
     
-    WBSMMeasure
+    WBSMMeasure,
+    
+    /**
+     * Sogancioglu, Gizem, Hakime Öztürk, and Arzucan Özgür. 2017. 
+     * “BIOSSES: A Semantic Sentence Similarity Estimation System 
+     * for the Biomedical Domain.” Bioinformatics  33 (14): i49–58.
+     */
+    
+    UBSMMeasure
 }

@@ -34,6 +34,13 @@ import hesml.sts.preprocess.IWordProcessing;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
+import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
@@ -70,6 +77,35 @@ public class HESMLSTSclient
     
     private static final String  m_strWordNetDatasetsDir = m_strBaseDir + "/WN_Datasets/";
     private static final String  m_strWordNet3_0_Dir = m_strBaseDir + "/Wordnet-3.0/dict";
+    
+    /**
+     * Filenames and directory for the SNOMED-CT files
+     */
+
+    private static String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
+    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+
+    /** 
+     * Filename and directory for the UMLS CUI mapping file
+     */
+    
+    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";    
+    
+    /**
+     * Filenames and directory for the MeSH ontology
+     */
+    
+    private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
+    private static final String m_strMeSHdescriptorFilename = "desc2020.xml";
+    
+    
+    /**
+    * Filename of the OBO ontology
+    */
+    private static final String m_strOboFilename = "";
 
     
     /**
@@ -174,8 +210,9 @@ public class HESMLSTSclient
         
         // Execute the tests
         
-        testStringMeasures(sentences1, sentences2);
-        testWBSMMeasures(sentences1, sentences2);
+        // testStringMeasures(sentences1, sentences2);
+        // testWBSMMeasures(sentences1, sentences2);
+        testUBSMMeasures(sentences1, sentences2);
     }
     
     /**
@@ -297,6 +334,93 @@ public class HESMLSTSclient
         measure = SentenceSimilarityFactory.getWBSMMeasure("WBSM test",
                         preprocesser, wordnet, wordnetTaxonomy,
                         SimilarityMeasureType.Lin, IntrinsicICModelType.Seco);
+        
+        // Get the similarity scores for the lists of sentences
+            
+        double[] simScores = measure.getSimilarityValues(sentences1, sentences2);
+        
+        // Print the results - For testing purposes
+        
+        System.out.println("Scores for WBSM measure: ");
+        for (int i = 0; i < simScores.length; i++)
+        {
+            double score = simScores[i];
+            System.out.println("---- Sentence " + i + " : " + score);
+        }
+        
+        // We release the resources
+        
+        measure.clear();
+    }
+    
+    /**
+     * Test UBSM Measures from BIOSSES2017
+     * 
+     * @param sentences1
+     * @param sentences2 
+     */
+    
+    private static void testUBSMMeasures(
+            String[] sentences1,
+            String[] sentences2) throws IOException, InterruptedException, Exception
+    {
+         // Initialize the preprocessing method and measures
+        
+        IWordProcessing preprocesser = null;
+        ISentenceSimilarityMeasure measure = null;
+        ISimilarityMeasure wordSimilarityMeasure = null;
+        
+        ISnomedCtOntology  m_SnomedOntology = null;            // WordNet DB
+        IMeSHOntology m_MeshOntology = null;    // WordNet taxonomy
+        IOboOntology m_OboOntology = null;    // WordNet taxonomy
+        
+        IVertexList m_vertexes;
+        ITaxonomy   m_taxonomy;
+        
+        if ((m_strSnomedDir != "") && (m_SnomedOntology == null))
+        {
+            // We load the SNOMED ontology and get the vertex list of its taxonomy
+            
+            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+                                    m_strSnomedConceptFilename,
+                                    m_strSnomedRelationshipsFilename,
+                                    m_strSnomedDescriptionFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+            
+            m_taxonomy = m_SnomedOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+        }
+        else if ((m_strMeSHdir != "") && (m_MeshOntology == null))
+        {
+            // We load the MeSH ontology and get the vertex list of its taxonomy
+            
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+            
+            m_taxonomy = m_MeshOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+        } 
+        else if ((m_strOboFilename != "") && (m_OboOntology == null))
+        {
+            // We load the OBO ontology
+            
+            m_OboOntology = OboFactory.loadOntology(m_strOboFilename);
+            m_taxonomy = m_OboOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+        }
+            
+        // Create a Wordpreprocessing object using WordPieceTokenizer
+        
+        preprocesser = PreprocessingFactory.getWordProcessing(
+                        "", TokenizerType.WhiteSpace, 
+                        true, CharFilteringType.None);
+        
+        // Create the measure
+        
+        measure = SentenceSimilarityFactory.getUBSMMeasure("WBSM test",
+                        preprocesser, m_SnomedOntology,
+                        SimilarityMeasureType.Rada, IntrinsicICModelType.Seco);
         
         // Get the similarity scores for the lists of sentences
             

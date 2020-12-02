@@ -24,7 +24,6 @@ package hesml.measures.impl;
 // HESML references
 
 import hesml.configurators.ITaxonomyInfoConfigurator;
-import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
