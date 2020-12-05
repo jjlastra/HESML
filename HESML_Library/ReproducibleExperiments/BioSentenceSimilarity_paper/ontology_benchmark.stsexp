@@ -7,23 +7,107 @@
 		<DatasetFilename>BIOSSESNormalized.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 
+			
 			<WBSMMeasure>
-				<Label>WBSM Lin</Label>
+				<Label>WBSM AncSPLRada</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Lin</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
-			<UBSMMeasure>
-				<Label>UBSM Cai</Label>
+
+			<WBSMMeasure>
+				<Label>WBSM JiangConrath</Label>
 				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Cai</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Resnik</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLRada</Label>
+				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
 				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
@@ -32,18 +116,133 @@
 				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<WordSimilarityMeasureType>Cai</WordSimilarityMeasureType>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
 
+			<UBSMMeasure>
+				<Label>UBSM JiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
 
-			
+			<UBSMMeasure>
+				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Cai</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Resnik</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+	
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
 	<SingleDatasetSentenceSimilarityValuesExperiment>
@@ -51,24 +250,107 @@
 		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
 		<DatasetFilename>MedStsFullNormalized.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
-			
+
 			<WBSMMeasure>
-				<Label>WBSM Lin</Label>
+				<Label>WBSM AncSPLRada</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Lin</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
-			<UBSMMeasure>
-				<Label>UBSM Cai</Label>
+
+			<WBSMMeasure>
+				<Label>WBSM JiangConrath</Label>
 				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Cai</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Resnik</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLRada</Label>
+				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
 				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
@@ -77,12 +359,129 @@
 				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<WordSimilarityMeasureType>Cai</WordSimilarityMeasureType>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM JiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Cai</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Resnik</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -95,23 +494,106 @@
 		<DatasetFilename>CTRNormalized_averagedScore.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 			
-			<WBSMMeasure>
-				<Label>WBSM Lin</Label>
+				<WBSMMeasure>
+				<Label>WBSM AncSPLRada</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Lin</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
-			<UBSMMeasure>
-				<Label>UBSM Cai</Label>
+
+			<WBSMMeasure>
+				<Label>WBSM JiangConrath</Label>
 				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Cai</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+			<WBSMMeasure>
+				<Label>WBSM Resnik</Label>
+				<Method>WBSMMeasure</Method>
+				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+				<WordNetDbFilename>data.noun</WordNetDbFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>false</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</WBSMMeasure>
+
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLRada</Label>
+				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
 				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
@@ -120,16 +602,134 @@
 				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<WordSimilarityMeasureType>Cai</WordSimilarityMeasureType>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
-			
+
+			<UBSMMeasure>
+				<Label>UBSM JiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>JiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Cai</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>AncSPLCaiStrategy1</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+			<UBSMMeasure>
+				<Label>UBSM Resnik</Label>
+				<Method>UBSMMeasure</Method>
+				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+				<OboFilename>None</OboFilename>
+				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+				</WordProcessing>
+			</UBSMMeasure>
+
+				
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
 </SentenceSimilarityExperiments>

@@ -47,7 +47,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.simple.parser.ParseException;
 
 /**
  * This class implements a basic client application of the HESML similarity
@@ -192,7 +191,7 @@ public class HESMLSTSclient
      * of HEMSL-STS library.
      */
     
-    private static void SampleExperiments() throws IOException, InterruptedException, ParseException, Exception
+    private static void SampleExperiments() throws IOException, InterruptedException, Exception
     {
         // Initialize the sentences to be tested.
         // sentences1 are first sentences
@@ -243,7 +242,7 @@ public class HESMLSTSclient
         wordPreprocessing = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv3_9_1, 
-                        true, 
+                        true, true,
                         CharFilteringType.Blagec2019);
         
         // Add the string based methods to test
@@ -327,7 +326,7 @@ public class HESMLSTSclient
         
         preprocesser = PreprocessingFactory.getWordProcessing(
                         "", TokenizerType.WhiteSpace, 
-                        true, CharFilteringType.None);
+                        true, false, CharFilteringType.None);
         
         // Create the measure
         
@@ -377,7 +376,28 @@ public class HESMLSTSclient
         IVertexList m_vertexes;
         ITaxonomy   m_taxonomy;
         
-        if ((m_strSnomedDir != "") && (m_SnomedOntology == null))
+        // Create a Wordpreprocessing object using WordPieceTokenizer
+        
+        preprocesser = PreprocessingFactory.getWordProcessing(
+                        "", TokenizerType.WhiteSpace, 
+                        false, true, CharFilteringType.BIOSSES);
+        
+        if ((m_strMeSHdir != "") && (m_MeshOntology == null))
+        {
+            // We load the MeSH ontology and get the vertex list of its taxonomy
+            
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+            
+            // Create the measure
+        
+            measure = SentenceSimilarityFactory.getUBSMMeasureMeSH("WBSM test",
+                        preprocesser, m_MeshOntology,
+                        SimilarityMeasureType.Lin, IntrinsicICModelType.Seco);
+            
+        }
+        else if ((m_strSnomedDir != "") && (m_SnomedOntology == null))
         {
             // We load the SNOMED ontology and get the vertex list of its taxonomy
             
@@ -386,41 +406,25 @@ public class HESMLSTSclient
                                     m_strSnomedRelationshipsFilename,
                                     m_strSnomedDescriptionFilename,
                                     m_strUMLSdir, m_strUmlsCuiMappingFilename);
-            
-            m_taxonomy = m_SnomedOntology.getTaxonomy();
-            m_vertexes = m_taxonomy.getVertexes();
+           
+            // Create the measure
+        
+            measure = SentenceSimilarityFactory.getUBSMMeasureSnomed("WBSM test",
+                        preprocesser, m_SnomedOntology,
+                        SimilarityMeasureType.CaiStrategy1, IntrinsicICModelType.Seco);
         }
-        else if ((m_strMeSHdir != "") && (m_MeshOntology == null))
-        {
-            // We load the MeSH ontology and get the vertex list of its taxonomy
-            
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-            
-            m_taxonomy = m_MeshOntology.getTaxonomy();
-            m_vertexes = m_taxonomy.getVertexes();
-        } 
         else if ((m_strOboFilename != "") && (m_OboOntology == null))
         {
             // We load the OBO ontology
             
             m_OboOntology = OboFactory.loadOntology(m_strOboFilename);
-            m_taxonomy = m_OboOntology.getTaxonomy();
-            m_vertexes = m_taxonomy.getVertexes();
-        }
             
-        // Create a Wordpreprocessing object using WordPieceTokenizer
+            // Create the measure
         
-        preprocesser = PreprocessingFactory.getWordProcessing(
-                        "", TokenizerType.WhiteSpace, 
-                        true, CharFilteringType.None);
-        
-        // Create the measure
-        
-        measure = SentenceSimilarityFactory.getUBSMMeasure("WBSM test",
-                        preprocesser, m_SnomedOntology,
+            measure = SentenceSimilarityFactory.getUBSMMeasureObo("WBSM test",
+                        preprocesser, m_OboOntology,
                         SimilarityMeasureType.Rada, IntrinsicICModelType.Seco);
+        }
         
         // Get the similarity scores for the lists of sentences
             
@@ -428,7 +432,7 @@ public class HESMLSTSclient
         
         // Print the results - For testing purposes
         
-        System.out.println("Scores for WBSM measure: ");
+        System.out.println("Scores for UBSM measure: ");
         for (int i = 0; i < simScores.length; i++)
         {
             double score = simScores[i];

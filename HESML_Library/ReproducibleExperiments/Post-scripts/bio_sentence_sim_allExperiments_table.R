@@ -28,7 +28,7 @@ rm(list = ls())
 # Define the root path 
 
 rootDir = "/home/user/HESML/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper"
-# rootDir = "/home/alicia/Desktop/HESML_dockerdev/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper"
+rootDir = "/home/alicia/Desktop/HESML_dockerdev/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper"
 
 
 # We import the library that implements the data structures.

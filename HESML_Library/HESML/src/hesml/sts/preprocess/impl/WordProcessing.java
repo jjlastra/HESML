@@ -21,6 +21,12 @@
 
 package hesml.sts.preprocess.impl;
 
+
+import bioc.BioCDocument;
+import gov.nih.nlm.nls.metamap.document.FreeText;
+import gov.nih.nlm.nls.metamap.lite.types.Entity;
+import gov.nih.nlm.nls.metamap.lite.types.Ev;
+import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.IWordProcessing;
@@ -30,10 +36,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -46,6 +59,14 @@ class WordProcessing implements IWordProcessing
     // Configure if the text would be lowercased.
     
     private final boolean m_lowercaseNormalization; 
+    
+    // Configure the concept annotation using Metamap
+    
+    private final boolean m_conceptsAnnotation;
+    
+    // Metamap Lite instance
+    
+    protected MetaMapLite m_metaMapLiteInst;
 
     // Set the tokenization method
     
@@ -98,6 +119,7 @@ class WordProcessing implements IWordProcessing
     WordProcessing(
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
+            boolean             conceptsAnnotation,
             String              strStopWordsFileName,
             CharFilteringType   charFilteringType) throws IOException
     {
@@ -107,6 +129,25 @@ class WordProcessing implements IWordProcessing
         m_lowercaseNormalization = lowercaseNormalization;
         m_strStopWordsFileName = strStopWordsFileName;
         m_charFilter = new CharsFiltering(charFilteringType);
+        m_conceptsAnnotation = conceptsAnnotation;
+        
+        // Initialize Metamap to null
+        
+        m_metaMapLiteInst = null;
+        
+        // Load Metamap Lite if necessary
+        
+        if(m_conceptsAnnotation) try {
+            loadMetamapLite();
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         // Initialize the temporal dirs to null.
         
@@ -137,12 +178,13 @@ class WordProcessing implements IWordProcessing
     WordProcessing(
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
+            boolean             conceptsAnnotation,
             String              strStopWordsFileName,
             CharFilteringType   charFilteringType,
             String              tempDir,
             String              pythonVenvDir,
             String              pythonScriptDir,
-            String              modelDirPath) throws IOException
+            String              modelDirPath) throws IOException 
     {
         // We saev the tokeniztion parameters
         
@@ -150,6 +192,11 @@ class WordProcessing implements IWordProcessing
         m_lowercaseNormalization = lowercaseNormalization;
         m_strStopWordsFileName = strStopWordsFileName;
         m_charFilter = new CharsFiltering(charFilteringType);
+        m_conceptsAnnotation = conceptsAnnotation;
+        
+        // Initialize Metamap to null
+        
+        m_metaMapLiteInst = null;
         
         // Initialize the temporal dirs to null.
         
@@ -162,9 +209,18 @@ class WordProcessing implements IWordProcessing
         
         getStopWords();
         
+        // Load Metamap Lite if necessary
+        
+        if(m_conceptsAnnotation) try {
+            loadMetamapLite();
+        } catch (IllegalAccessException | ClassNotFoundException | 
+                InstantiationException | NoSuchMethodException ex) {
+            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         // Compile the pattern in the constructor for efficiency reasons.
         
-        m_pattern = Pattern.compile("[[:alnum:]]");
+        m_pattern = Pattern.compile("[[:alnum:m_metaMapLiteInst]]");
     }
 
     /**
@@ -203,6 +259,11 @@ class WordProcessing implements IWordProcessing
         if(strFilteredSentence.length() > 2 
                 && m_pattern.matcher(strFilteredSentence).find())
         {           
+            // Annotate the text (if set)
+            
+            if(m_conceptsAnnotation) 
+                strFilteredSentence = annotateSentence(strFilteredSentence);
+
             // Tokenize the text
             
             ITokenizer tokenizer = null;
@@ -329,5 +390,74 @@ class WordProcessing implements IWordProcessing
         // Return the stop words
         
         return isStopWord;
+    }
+    
+    /**
+     * This function loads the Metamap Lite instance before executing the queries.
+     */
+    
+    private void loadMetamapLite() throws ClassNotFoundException, 
+                                    InstantiationException, NoSuchMethodException, 
+                                    IllegalAccessException, IOException
+    {
+        // Initialization Section
+        
+        Properties myProperties = new Properties();
+        
+        // Select the 2018AB database
+        
+        // myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
+        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2020AA/USAbase/");
+        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
+        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
+        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
+        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
+        
+        myProperties.setProperty("metamaplite.sourceset", "MSH");
+
+        // We create the METAMAP maname
+        
+        m_metaMapLiteInst = new MetaMapLite(myProperties);
+        
+    }
+    
+    /**
+     * This function annotates a sentence with CUI codes replacing 
+     * keywords with codes in the same sentence.
+     * @return 
+     */
+    
+    private String annotateSentence(
+            String sentence) throws InvocationTargetException, IOException, Exception
+    {
+        // Initialize the result
+        
+        String annotatedSentence = sentence;
+        
+        // Processing Section
+
+        // Each document must be instantiated as a BioC document before processing
+        
+        BioCDocument document = FreeText.instantiateBioCDocument(sentence);
+        
+        // Proccess the document with Metamap
+        
+        List<Entity> entityList = m_metaMapLiteInst.processDocument(document);
+
+        // For each keyphrase, select the first CUI candidate and replace in text.
+        
+        for (Entity entity: entityList) 
+        {
+            for (Ev ev: entity.getEvSet()) 
+            {
+                // Replace in text
+                
+                annotatedSentence = annotatedSentence.replaceAll(entity.getMatchedText(), ev.getConceptInfo().getCUI());
+            }
+        }
+        
+        // Return the result
+        
+        return (annotatedSentence);
     }
 }

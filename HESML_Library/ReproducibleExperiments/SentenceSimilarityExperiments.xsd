@@ -67,7 +67,7 @@
 				<xs:element name="StopWordsFilename" type="xs:string"/>
 				<xs:element name="TokenizerType" type="TokenizerType"/>
 				<xs:element name="LowercaseNormalization"/>
-				<xs:element name="MetamapAnnotation" minOccurs="0"/>
+				<xs:element name="ConceptAnnotation" minOccurs="0"/>
 				<xs:choice>
 					<xs:element name="CharFilteringType" type="CharFilteringType" minOccurs="0"/>
 					<xs:element name="ReplacementPatterns" minOccurs="0">
@@ -180,6 +180,7 @@
 				<xs:element name="UMLSdir" type="xs:string"/>
 				<xs:element name="MeSHdir" type="xs:string"/>
 				<xs:element name="MeSHdescriptorFilename" type="xs:string"/>
+				<xs:element name="OboFilename" type="xs:string"/>
 				<xs:element name="WordSimilarityMeasureType" type="SimilarityMeasureType"/>
 				<xs:element ref="WordProcessing"/>
 				<xs:element name="IntrinsicICmodel" minOccurs="0"/>
@@ -191,13 +192,13 @@
 			<xs:enumeration value="BERTEmbeddingModel"/>
 			<xs:enumeration value="USEModel"/>
 			<xs:enumeration value="ParagraphVector"/>
-			<xs:enumeration value="WBSMMeasure"/>
 			<xs:enumeration value="Sent2vecModel"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="OntologyBasedMethod">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="WBSMMeasure"/>
+			<xs:enumeration value="UBSMMeasure"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="BERTpoolingMethod">

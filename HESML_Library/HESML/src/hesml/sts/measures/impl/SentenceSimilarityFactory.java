@@ -138,7 +138,7 @@ public class SentenceSimilarityFactory
      * @throws java.lang.Exception
      */
     
-    public static ISentenceSimilarityMeasure getUBSMMeasure(
+    public static ISentenceSimilarityMeasure getUBSMMeasureSnomed(
             String                  strLabel,
             IWordProcessing         preprocesser,
             ISnomedCtOntology       SnomedOntology,
@@ -160,7 +160,7 @@ public class SentenceSimilarityFactory
      * @throws java.lang.Exception
      */
     
-    public static ISentenceSimilarityMeasure getUBSMMeasure(
+    public static ISentenceSimilarityMeasure getUBSMMeasureMeSH(
             String                  strLabel,
             IWordProcessing         preprocesser,
             IMeSHOntology           MeshOntology,
@@ -182,7 +182,7 @@ public class SentenceSimilarityFactory
      * @throws java.lang.Exception
      */
     
-    public static ISentenceSimilarityMeasure getUBSMMeasure(
+    public static ISentenceSimilarityMeasure getUBSMMeasureObo(
             String                  strLabel,
             IWordProcessing         preprocesser,
             IOboOntology            OboOntology,

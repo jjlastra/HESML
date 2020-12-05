@@ -32,6 +32,13 @@ import hesml.sts.preprocess.IWordProcessing;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
+import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
@@ -64,6 +71,14 @@ public class SentenceSimBenchmarkFactory
      */
     
     private static ITaxonomy    m_WordNetTaxonomySingleton = null;
+    
+    // Singleton instances of biomedical ontologies and taxonomy
+
+    private static ISnomedCtOntology  m_SnomedOntology = null;          
+    private static IMeSHOntology m_MeshOntology = null;    
+    private static IOboOntology m_OboOntology = null;    
+    private static IVertexList m_vertexes;
+    private static ITaxonomy   m_taxonomy;
     
     /**
      * This function returns an instance of a single-dataset sentence
@@ -232,6 +247,14 @@ public class SentenceSimBenchmarkFactory
                     case "WBSMMeasure":
                         
                         tempMeasureList.add(readWBSMmeasure(measureNode));
+                        
+                        break;
+                    
+                    case "UBSMMeasure":
+                        
+                        tempMeasureList.add(readUBSMmeasure(measureNode));
+                        
+                        break;
                 }
             }
         }
@@ -240,7 +263,7 @@ public class SentenceSimBenchmarkFactory
          
         ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[tempMeasureList.size()];
         
-        // We copy yhr measures to the vector and release the temporrary list
+        // We copy the measures to the vector and release the temporary list
         
         tempMeasureList.toArray(measures);
         tempMeasureList.clear();
@@ -280,6 +303,7 @@ public class SentenceSimBenchmarkFactory
                                         strStopWordsFileDir + "/" + strStopWordsFilename,
                                         convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
                                         readBooleanField(wordProcessingNode, "LowercaseNormalization"),
+                                        readBooleanField(wordProcessingNode, "ConceptAnnotation"),
                                         convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")));
         // We return the result
         
@@ -665,6 +689,119 @@ public class SentenceSimBenchmarkFactory
                                                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton,
                                                 wordMeasureType, icModelType);
         
+        // We return the result
+        
+        return (measure);
+    }
+    
+    /**
+     * This function parses a UBSM measure defined in the XML-based experiment file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readUBSMmeasure(
+        Element measureNode) throws Exception
+    {
+        // We initialize the mesure
+        
+        ISentenceSimilarityMeasure measure = null;
+
+        // We get the WordNet databse information
+
+        String SnomedDir = readStringField(measureNode, "SnomedDir");
+        String SnomedConceptFilename = readStringField(measureNode, "SnomedConceptFilename");
+        String SnomedRelationshipsFilename = readStringField(measureNode, "SnomedRelationshipsFilename");
+        String SnomedDescriptionFilename = readStringField(measureNode, "SnomedDescriptionFilename");
+        String UmlsCuiMappingFilename = readStringField(measureNode, "UmlsCuiMappingFilename");
+        String UMLSdir = readStringField(measureNode, "UMLSdir");
+        String MeSHdir = readStringField(measureNode, "MeSHdir");
+        String MeSHdescriptorFilename = readStringField(measureNode, "MeSHdescriptorFilename");
+        String OboFilename = readStringField(measureNode, "OboFilename");
+        
+        // We read the word similarity type
+        
+        SimilarityMeasureType wordMeasureType = convertToWordSimilarityMeasureType(
+                                                readStringField(measureNode, "WordSimilarityMeasureType"));
+        
+        // We get the intrinsic IC model if anyone has been defined
+
+        String strICModelTag = "IntrinsicICmodel";
+        
+        IntrinsicICModelType icModelType = containsChildWithTagName(measureNode, strICModelTag) ?
+                                            convertToIntrincICmodelType(readStringField(measureNode, strICModelTag))
+                                            : IntrinsicICModelType.Seco;
+        
+        // We load the singleton instance of WordNet-related objects. It is done to
+        // avoid the memory cost of multiple instances of WordNet when multiple
+        // instances of the WBSM measure are created.
+
+        if ((MeSHdir != "") && (m_MeshOntology == null))
+        {
+            // We load the MeSH ontology and get the vertex list of its taxonomy
+
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+                                    MeSHdir + "/" + MeSHdescriptorFilename,
+                                    UMLSdir + "/" + UmlsCuiMappingFilename);
+
+            m_taxonomy = m_MeshOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+            
+        }
+        else if ((SnomedDir != "") && (m_SnomedOntology == null) 
+                    && (m_MeshOntology == null))
+        {
+            // We load the SNOMED ontology and get the vertex list of its taxonomy
+
+            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(SnomedDir,
+                                    SnomedConceptFilename,
+                                    SnomedRelationshipsFilename,
+                                    SnomedDescriptionFilename,
+                                    UMLSdir, UmlsCuiMappingFilename);
+
+            m_taxonomy = m_SnomedOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+            
+        }
+        else if ((OboFilename != "") && (m_OboOntology == null) 
+                    && (m_MeshOntology == null) && (m_SnomedOntology == null))
+        {
+            // We load the OBO ontology
+
+            m_OboOntology = OboFactory.loadOntology(OboFilename);
+            m_taxonomy = m_OboOntology.getTaxonomy();
+            m_vertexes = m_taxonomy.getVertexes();
+            
+        } 
+        
+        // Create the measure 
+        
+        if(m_MeshOntology != null)
+        {
+            // Create the measure
+
+            measure = SentenceSimilarityFactory.getUBSMMeasureMeSH(readStringField(measureNode, "Label"),
+                        readWordProcessing(measureNode), m_MeshOntology,
+                        wordMeasureType, icModelType);
+            
+        }else if(m_SnomedOntology != null)
+        {
+            // Create the measure
+
+            measure = SentenceSimilarityFactory.getUBSMMeasureSnomed(readStringField(measureNode, "Label"),
+                        readWordProcessing(measureNode), m_SnomedOntology,
+                        wordMeasureType, icModelType);
+            
+        }else if(m_OboOntology != null)
+        {
+            // Create the measure
+
+            measure = SentenceSimilarityFactory.getUBSMMeasureObo(readStringField(measureNode, "Label"),
+                        readWordProcessing(measureNode), m_OboOntology,
+                        wordMeasureType, icModelType);
+            
+        }
+
         // We return the result
         
         return (measure);

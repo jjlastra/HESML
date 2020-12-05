@@ -96,7 +96,7 @@ class WBSMMeasure extends SentenceSimilarityMeasure
         
         // Initialize the word similarity measure 
         
-        m_wordSimilarityMeasure = MeasureFactory.getMeasure(wordnetTaxonomy, wordSimilarityType);;
+        m_wordSimilarityMeasure = MeasureFactory.getMeasure(wordnetTaxonomy, wordSimilarityType);
         
         // Initialize the WordNetDB, taxonomy and IC model
         

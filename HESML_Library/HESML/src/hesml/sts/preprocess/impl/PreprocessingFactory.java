@@ -41,6 +41,7 @@ public class PreprocessingFactory
      * @param stopWordFileName
      * @param tokenizerType
      * @param lowercaseNormalization
+     * @param conceptsAnnotation
      * @param charFilteringType
      * @return 
      * @throws java.io.IOException
@@ -50,10 +51,11 @@ public class PreprocessingFactory
             String              stopWordFileName,
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
+            boolean             conceptsAnnotation,
             CharFilteringType   charFilteringType) throws IOException
     {   
         return (new WordProcessing(tokenizerType,lowercaseNormalization,
-                stopWordFileName, charFilteringType));
+                conceptsAnnotation, stopWordFileName, charFilteringType));
     }
     
     
@@ -63,6 +65,7 @@ public class PreprocessingFactory
      * @param stopWordFileName
      * @param tokenizerType
      * @param lowercaseNormalization
+     * @param conceptsAnnotation
      * @param charFilteringType
      * @param tempDir
      * @param modelDirPath
@@ -76,6 +79,7 @@ public class PreprocessingFactory
             String              stopWordFileName,
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
+            boolean             conceptsAnnotation,
             CharFilteringType   charFilteringType,
             String              tempDir,
             String              pythonVirtualEnvironmentDir,
@@ -83,7 +87,7 @@ public class PreprocessingFactory
             String              modelDirPath) throws IOException
     {   
         return (new WordProcessing(tokenizerType, lowercaseNormalization,
-                stopWordFileName, charFilteringType, tempDir,
+                conceptsAnnotation, stopWordFileName, charFilteringType, tempDir,
                 pythonVirtualEnvironmentDir, pythonScriptDir, modelDirPath));
     }    
 }

@@ -40,6 +40,8 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -125,6 +127,8 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         m_ICmodel = ICModelsFactory.getIntrinsicICmodel(icModelType);
         
         m_taxonomy = m_SnomedOntology.getTaxonomy();
+
+        m_Vertexes = m_taxonomy.getVertexes();
         
         // Initialize the word similarity measure 
         
@@ -159,6 +163,7 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         m_ICmodel = ICModelsFactory.getIntrinsicICmodel(icModelType);
         
         m_taxonomy = m_MeshOntology.getTaxonomy();
+        m_Vertexes = m_taxonomy.getVertexes();
         
         // Initialize the word similarity measure 
         
@@ -195,6 +200,7 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         m_ICmodel = ICModelsFactory.getIntrinsicICmodel(icModelType);
         
         m_taxonomy = m_OboOntology.getTaxonomy();
+        m_Vertexes = m_taxonomy.getVertexes();
         
         // Initialize the word similarity measure 
         
@@ -239,7 +245,7 @@ class UBSMMeasure extends SentenceSimilarityMeasure
             System.out.println("Setting the " + m_ICmodel.toString() + " IC model into the taxonomy");
             
             m_ICmodel.setTaxonomyData(m_taxonomy);
-            m_taxonomy.computeCachedAncestorSet(true);
+            // m_taxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the similarity measure
@@ -315,10 +321,6 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         ArrayList<String> dictionary = null;
         
-        // We initialize the CUI dictionary vector
-        
-        String[] cuiDictionary = null; 
-        
         // Preprocess the sentences and get the tokens for each sentence
         
         String[] lstWordsSentence1 = m_preprocesser.getWordTokens(strRawSentence1);
@@ -328,14 +330,10 @@ class UBSMMeasure extends SentenceSimilarityMeasure
                 
         dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
         
-        // Construct the CUI dictionary
-        
-        cuiDictionary = getCuisDictionary(lstWordsSentence1, lstWordsSentence2);
-        
         // 2. Initialize the semantic vectors.
         
-        semanticVector1 = constructSemanticVector(dictionary, cuiDictionary, lstWordsSentence1);
-        semanticVector2 = constructSemanticVector(dictionary, cuiDictionary, lstWordsSentence2);
+        semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1);
+        semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2);
 
         // 3. Use WordNet to construct the semantic vector
         
@@ -349,6 +347,87 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         // Return the similarity value
         
         return (similarity);
+    }
+    
+    /**
+     * This method compute the cosine similarity of the HashMap values.
+     * 
+     * @param sentence1Map
+     * @param sentence2Map
+     * @return 
+     */
+    
+    private double computeCosineSimilarity(
+            double[] sentence1Vector,
+            double[] sentence2Vector)
+    {
+        // Initialize the result
+        
+        double similarity = 0.0;
+
+        // We check the validity of the word vectors. They could be null if
+        // any word is not contained in the vocabulary of the embedding.
+        
+        if ((sentence1Vector != null) && (sentence2Vector != null))
+        {
+            // We compute the cosine similarity function (dot product)
+            
+            for (int i = 0; i < sentence1Vector.length; i++)
+            {
+                similarity += sentence1Vector[i] * sentence2Vector[i];
+            }
+            
+            // We divide by the vector norms
+            
+            similarity /= (MeasureFactory.getVectorNorm(sentence1Vector)
+                        * MeasureFactory.getVectorNorm(sentence2Vector));
+        }
+        
+        // Return the result
+        
+        return (similarity);
+    }
+    
+    /**
+     * This method initializes the semantic vectors.
+     * Each vector has the words from the dictionary vector.
+     * If the word exists in the sentence of the semantic vector, the value is 1.
+     * 
+     * @param lstWordsSentence1
+     * @param lstWordsSentence2
+     * @throws FileNotFoundException 
+     */
+    
+    private double[] constructSemanticVector(
+            ArrayList<String>   dictionary,
+            String[]            lstWordsSentence) throws FileNotFoundException
+    {
+        // Initialize the semantic vector
+        
+        double[] semanticVector = new double[dictionary.size()];
+        
+        // Convert arrays to set to facilitate the operations 
+        // (this method do not preserve the word order)
+        
+        Set<String> setWordsSentence1 = new HashSet<>(Arrays.asList(lstWordsSentence));
+
+        // For each list of words of a sentence
+        // If the value is in the sentence, the value of the semantic vector will be 1.
+        
+        int count = 0;
+        for (String word : dictionary)
+        {
+            // We check if the first sentence contains the word
+            
+            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 0.0;
+
+            semanticVector[count] = wordVectorComponent;
+            count++;
+        } 
+        
+        // Return the result
+        
+        return (semanticVector);
     }
     
     /**
@@ -437,30 +516,35 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         double similarity = Double.NaN;
         
-        // We compute the similarity using the active ontology
+        // If both concepts are CUIs codes, compute similarity values
         
-        if (m_SnomedOntology != null)
+        if(isCuiCode(strFirstConceptId) && isCuiCode(strSecondConceptId))
         {
-            similarity = getSnomedSimilarity(strFirstConceptId, strSecondConceptId);
-        }
-        else if (m_MeshOntology != null)
-        {
-            similarity = getMeSHSimilarity(strFirstConceptId, strSecondConceptId);
-        }
-        else if (m_OboOntology != null)
-        {
-            // We get the OBO concepts
-            
-            IOboConcept concept1 = m_OboOntology.getConceptById(strFirstConceptId);
-            IOboConcept concept2 = m_OboOntology.getConceptById(strSecondConceptId);
-            
-            // We check the existence of both concepts
-            
-            if ((concept1 != null) && (concept2 != null))
+            // We compute the similarity using the active ontology
+        
+            if (m_MeshOntology != null)
             {
-                similarity = m_wordSimilarityMeasure.getSimilarity(
-                                m_Vertexes.getById(concept1.getTaxonomyNodeId()),
-                                m_Vertexes.getById(concept2.getTaxonomyNodeId()));
+                similarity = getMeSHSimilarity(strFirstConceptId, strSecondConceptId);
+            }
+            else if (m_SnomedOntology != null)
+            {
+                similarity = getSnomedSimilarity(strFirstConceptId, strSecondConceptId);
+            }
+            else if (m_OboOntology != null)
+            {
+                // We get the OBO concepts
+
+                IOboConcept concept1 = m_OboOntology.getConceptById(strFirstConceptId);
+                IOboConcept concept2 = m_OboOntology.getConceptById(strSecondConceptId);
+
+                // We check the existence of both concepts
+
+                if ((concept1 != null) && (concept2 != null))
+                {
+                    similarity = m_wordSimilarityMeasure.getSimilarity(
+                                    m_Vertexes.getById(concept1.getTaxonomyNodeId()),
+                                    m_Vertexes.getById(concept2.getTaxonomyNodeId()));
+                }
             }
         }
         
@@ -469,44 +553,7 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         return (similarity);
     }
     
-    /**
-     * This method compute the cosine similarity of the HashMap values.
-     * 
-     * @param sentence1Map
-     * @param sentence2Map
-     * @return 
-     */
-    
-    private double computeCosineSimilarity(
-            double[] sentence1Vector,
-            double[] sentence2Vector)
-    {
-        // Initialize the result
-        
-        double similarity = 0.0;
-
-        // We check the validity of the word vectors. They could be null if
-        // any word is not contained in the vocabulary of the embedding.
-        
-        if ((sentence1Vector != null) && (sentence2Vector != null))
-        {
-            // We compute the cosine similarity function (dot product)
-            
-            for (int i = 0; i < sentence1Vector.length; i++)
-            {
-                similarity += sentence1Vector[i] * sentence2Vector[i];
-            }
-            
-            // We divide by the vector norms
-            
-            similarity /= (MeasureFactory.getVectorNorm(sentence1Vector)
-                        * MeasureFactory.getVectorNorm(sentence2Vector));
-        }
-        
-        // Return the result
-        
-        return (similarity);
-    }
+   
     
     /**
      * Constructs the dictionary set with all the distinct words from the sentences.
@@ -538,54 +585,6 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         return (dictionary);
     }
-    
-    /**
-     * This method initializes the semantic vectors.
-     * Each vector has the words from the dictionary vector.
-     * If the word exists in the sentence of the semantic vector, the value is 1.
-     * 
-     * @param lstWordsSentence1
-     * @param lstWordsSentence2
-     * @throws FileNotFoundException 
-     */
-    
-    private double[] constructSemanticVector(
-            ArrayList<String>   dictionary,
-            String[]            cuiDictionary,
-            String[]            lstWordsSentence) throws FileNotFoundException
-    {
-        // Initialize the semantic vector
-        
-        double[] semanticVector = new double[dictionary.size()];
-        
-        // Convert arrays to set to facilitate the operations 
-        // (this method do not preserve the word order)
-        
-        Set<String> setWordsSentence1 = new HashSet<>(Arrays.asList(lstWordsSentence));
-
-        // For each list of words of a sentence
-        // If the value is in the sentence, the value of the semantic vector will be 1.
-        
-        int count = 0;
-        for (String word : dictionary)
-        {
-            if (isCuiCode(word))
-            {
-                // We check if the first sentence contains the word
-
-                double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 0.0;
-
-                semanticVector[count] = wordVectorComponent;
-                count++;
-            }
-        } 
-        
-        // Return the result
-        
-        return (semanticVector);
-    }
-    
-
     
     /**
      * This function returns the degree of similarity between two CUI concepts
@@ -660,10 +659,10 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         // We get the SNOMED concepts evoked by each CUI
         
-        IVertex[] firstVertexes = m_MeshOntology.getTaxonomyNodesForUmlsCUI(strFirstUmlsCUI);
-        IVertex[] secondVertexes = m_MeshOntology.getTaxonomyNodesForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_MeshOntology.getTaxonomyNodesForUmlsCUI(strFirstUmlsCUI.toUpperCase());
+        IVertex[] secondVertexes = m_MeshOntology.getTaxonomyNodesForUmlsCUI(strSecondUmlsCUI.toUpperCase());
         
-        // We check the existence of MeSH concepts associated to the CUIS
+        // We check the existence oif SNOMED concepts associated to the CUIS
         
         if ((firstVertexes.length > 0)
                 && (secondVertexes.length > 0))
@@ -672,24 +671,18 @@ class UBSMMeasure extends SentenceSimilarityMeasure
             
             double maxSimilarity = Double.NEGATIVE_INFINITY;
             
-            // We compare all pairs of evoked MeSH tree nodes. Note that a UMLS
-            // CUI evokes multiple MeSH concepts (descriptors), and every MeSH
-            // descriptor has multiples tree nodes concepts. Thus, we consider
-            // that a CUI concept evokes the full merge of all tree nodes
-            // evoked by all its evoked MeSH descriptors.
-            
-            // We compute the similarity for each pair of tree nodes
+            // We compare all pairs of evoked SNOMED concepts
             
             for (IVertex vertex1: firstVertexes)
             {
                 for (IVertex vertex2: secondVertexes)
                 {
-                    double snomedSimilarity = m_wordSimilarityMeasure.getSimilarity(
+                    double meshSimilarity = m_wordSimilarityMeasure.getSimilarity(
                                                 vertex1, vertex2);
                 
                     // We update the maximum similarity
 
-                    if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
+                    if (meshSimilarity > maxSimilarity) maxSimilarity = meshSimilarity;
                 }
             }
             
@@ -704,55 +697,12 @@ class UBSMMeasure extends SentenceSimilarityMeasure
     }
     
     /**
-     * Constructs the dictionary set with all the distinct words from both
-     * input sentences.
-     * @param lstWordsSentence1
-     * @param lstWordsSentence2
-     * @throws FileNotFoundException 
-     */
-    
-    private String[] getCuisDictionary(
-            String[] lstWordsSentence1, 
-            String[] lstWordsSentence2) 
-    {
-        // Create a linked set with the ordered union of the two sentences
-        
-        HashSet<String> cuiDictionary = new HashSet<>();
-        
-        // We filter all CUI codes
-        
-        for (int i = 0; i < lstWordsSentence1.length; i++)
-        {
-            if (isCuiCode(lstWordsSentence1[i])) cuiDictionary.add(lstWordsSentence1[i]);
-        }
-
-        for (int i = 0; i < lstWordsSentence2.length; i++)
-        {
-            if (isCuiCode(lstWordsSentence2[i])) cuiDictionary.add(lstWordsSentence2[i]);
-        }
-        
-        // Copy the linked set to the output vector
-        
-        String[] sentencePairDictionary = new String[cuiDictionary.size()];
-        
-        cuiDictionary.toArray(sentencePairDictionary);
-        
-        // We release the auxiliary set
-        
-        cuiDictionary.clear();
-        
-        // Return the result
-        
-        return (sentencePairDictionary);
-    }
-    
-    /**
      * Filter if a String is or not a CUI code
      */
     
     private boolean isCuiCode(String word)
     {
-        return (word.matches("C\\d\\d\\d\\d\\d\\d\\d"));
+        return (word.matches("C\\d\\d\\d\\d\\d\\d\\d") || word.matches("c\\d\\d\\d\\d\\d\\d\\d"));
     }
     
     /**
@@ -762,10 +712,17 @@ class UBSMMeasure extends SentenceSimilarityMeasure
     @Override
     public void clear()
     {
+        // We release the resources of the base class
+        
+        super.clear();
+        
         // We unload the ontologies
         
         if (m_SnomedOntology != null) m_SnomedOntology.clear();
         if (m_MeshOntology != null) m_MeshOntology.clear();
         if (m_OboOntology != null) m_OboOntology.clear();
+        
+        m_taxonomy = null;
+        m_Vertexes = null;
     }
 }
