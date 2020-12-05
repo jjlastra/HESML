@@ -7,7 +7,6 @@
 		<DatasetFilename>BIOSSESNormalized.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 
-			
 			<WBSMMeasure>
 				<Label>WBSM AncSPLRada</Label>
 				<Method>WBSMMeasure</Method>
@@ -41,11 +40,11 @@
 			</WBSMMeasure>
 
 			<WBSMMeasure>
-				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Label>WBSM CosineNormJiangConrath</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -152,7 +151,7 @@
 			</UBSMMeasure>
 
 			<UBSMMeasure>
-				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Label>UBSM CosineNormJiangConrath</Label>
 				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -163,7 +162,7 @@
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -284,11 +283,11 @@
 			</WBSMMeasure>
 
 			<WBSMMeasure>
-				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Label>WBSM CosineNormJiangConrath</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -395,7 +394,7 @@
 			</UBSMMeasure>
 
 			<UBSMMeasure>
-				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Label>UBSM CosineNormJiangConrath</Label>
 				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -406,7 +405,7 @@
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -484,7 +483,8 @@
 					<ConceptAnnotation>true</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
-			</UBSMMeasure>
+			</UBSMMeasure>			
+			
 
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
@@ -494,7 +494,7 @@
 		<DatasetFilename>CTRNormalized_averagedScore.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 			
-				<WBSMMeasure>
+			<WBSMMeasure>
 				<Label>WBSM AncSPLRada</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
@@ -527,11 +527,11 @@
 			</WBSMMeasure>
 
 			<WBSMMeasure>
-				<Label>WBSM AncSPLWeightedJiangConrath</Label>
+				<Label>WBSM CosineNormJiangConrath</Label>
 				<Method>WBSMMeasure</Method>
 				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
 				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -638,7 +638,7 @@
 			</UBSMMeasure>
 
 			<UBSMMeasure>
-				<Label>UBSM AncSPLWeightedJiangConrath</Label>
+				<Label>UBSM CosineNormJiangConrath</Label>
 				<Method>UBSMMeasure</Method>
 				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -649,7 +649,7 @@
 				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>AncSPLWeightedJiangConrath</WordSimilarityMeasureType>
+				<WordSimilarityMeasureType>CosineNormJiangConrath</WordSimilarityMeasureType>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
@@ -727,9 +727,8 @@
 					<ConceptAnnotation>true</ConceptAnnotation>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
-			</UBSMMeasure>
-
-				
+			</UBSMMeasure>			
+			
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
 </SentenceSimilarityExperiments>

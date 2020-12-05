@@ -94,15 +94,23 @@ class WBSMMeasure extends SentenceSimilarityMeasure
         
         super(preprocesser);
         
-        // Initialize the word similarity measure 
-        
-        m_wordSimilarityMeasure = MeasureFactory.getMeasure(wordnetTaxonomy, wordSimilarityType);
-        
         // Initialize the WordNetDB, taxonomy and IC model
         
         m_wordnet = wordnet;
         m_wordnetTaxonomy = wordnetTaxonomy;
         m_ICmodel = ICModelsFactory.getIntrinsicICmodel(icModelType);
+        
+         // We set the IC model in the taxonomy
+        
+        if (wordSimilarityType != SimilarityMeasureType.Rada)
+        {
+            m_ICmodel.setTaxonomyData(m_wordnetTaxonomy);
+            // m_wordnetTaxonomy.computeCachedAncestorSet(true);
+        }
+        
+        // Initialize the word similarity measure 
+        
+        m_wordSimilarityMeasure = MeasureFactory.getMeasure(m_wordnetTaxonomy, wordSimilarityType);
 
         // We save the label
 
@@ -469,8 +477,5 @@ class WBSMMeasure extends SentenceSimilarityMeasure
        // We release the resources of the base class
        
        super.clear();
-       
-       m_wordnet.clear();
-       m_wordnetTaxonomy.clear();
     }
 }

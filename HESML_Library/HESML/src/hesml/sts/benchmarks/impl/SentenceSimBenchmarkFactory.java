@@ -47,7 +47,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.json.simple.parser.ParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -77,8 +76,8 @@ public class SentenceSimBenchmarkFactory
     private static ISnomedCtOntology  m_SnomedOntology = null;          
     private static IMeSHOntology m_MeshOntology = null;    
     private static IOboOntology m_OboOntology = null;    
-    private static IVertexList m_vertexes;
-    private static ITaxonomy   m_taxonomy;
+    private static IVertexList m_vertexes = null;
+    private static ITaxonomy   m_taxonomy = null;
     
     /**
      * This function returns an instance of a single-dataset sentence
@@ -259,7 +258,7 @@ public class SentenceSimBenchmarkFactory
             }
         }
         
-        // We create the vector to return the collection of senntence similarity measures
+        // We create the vector to return the collection of sentence similarity measures
          
         ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[tempMeasureList.size()];
         

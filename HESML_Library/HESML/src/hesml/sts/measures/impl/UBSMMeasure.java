@@ -242,10 +242,8 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         if (measureType != SimilarityMeasureType.Rada)
         {
-            System.out.println("Setting the " + m_ICmodel.toString() + " IC model into the taxonomy");
-            
             m_ICmodel.setTaxonomyData(m_taxonomy);
-            // m_taxonomy.computeCachedAncestorSet(true);
+            m_taxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the similarity measure
@@ -715,14 +713,5 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         // We release the resources of the base class
         
         super.clear();
-        
-        // We unload the ontologies
-        
-        if (m_SnomedOntology != null) m_SnomedOntology.clear();
-        if (m_MeshOntology != null) m_MeshOntology.clear();
-        if (m_OboOntology != null) m_OboOntology.clear();
-        
-        m_taxonomy = null;
-        m_Vertexes = null;
     }
 }
