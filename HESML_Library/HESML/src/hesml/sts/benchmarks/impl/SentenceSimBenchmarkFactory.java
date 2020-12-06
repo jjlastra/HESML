@@ -24,6 +24,7 @@ package hesml.sts.benchmarks.impl;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
+import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
@@ -254,6 +255,12 @@ public class SentenceSimBenchmarkFactory
                         tempMeasureList.add(readUBSMmeasure(measureNode));
                         
                         break;
+                    
+                    case "COMMeasure":
+                        
+                        tempMeasureList.add(readCOMMmeasure(measureNode));
+                        
+                        break;
                 }
             }
         }
@@ -331,6 +338,34 @@ public class SentenceSimBenchmarkFactory
         // We get the output value
         
         String strText = child.getFirstChild().getNodeValue();
+        
+        // We return the result
+        
+        return (strText);
+    }
+    
+    /**
+     * This function reads a text value of a child element.
+     * @param parent
+     * @param strFieldName
+     * @return 
+     */
+    
+    private static Double readDoubleField(
+            Element parent,
+            String  strFieldName)
+    {
+        // We get the child node matching the input name
+
+        Element child = getFirstChildWithTagName(parent, strFieldName);
+        
+        // We check the existence of the child node
+        
+        if (child == null) throw (new IllegalArgumentException(strFieldName));
+        
+        // We get the output value
+        
+        Double strText = new Double(child.getFirstChild().getNodeValue());
         
         // We return the result
         
@@ -645,6 +680,10 @@ public class SentenceSimBenchmarkFactory
     private static ISentenceSimilarityMeasure readWBSMmeasure(
         Element measureNode) throws Exception
     {
+        // Initialize the result
+        
+        ISentenceSimilarityMeasure measure = null;
+                
         // We get the WordNet databse information
 
         String strWordNetDbDir = readStringField(measureNode, "WordNetDbDir");
@@ -682,7 +721,7 @@ public class SentenceSimBenchmarkFactory
 
         // Add the WBSM measure to the list
 
-        ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getWBSMMeasure(
+        measure = SentenceSimilarityFactory.getWBSMMeasure(
                                                 readStringField(measureNode, "Label"),
                                                 readWordProcessing(measureNode), 
                                                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton,
@@ -692,7 +731,42 @@ public class SentenceSimBenchmarkFactory
         
         return (measure);
     }
+
+    /**
+     * This function parses a UBSM measure defined in the XML-based experiment file.
+     * @param measureNode
+     * @return 
+     */
     
+    private static ICombinedSentenceSimilarityMeasure readCOMMmeasure(
+        Element measureNode) throws Exception
+    {
+        // We initialize the mesure
+        
+        ICombinedSentenceSimilarityMeasure measure = null;
+        
+        // We get the WBSM and UBSM nodes
+        
+        Element WBSMMeasureNode = (Element) measureNode.getElementsByTagName("WBSMMeasure").item(0);
+        Element UBSMMeasureNode = (Element) measureNode.getElementsByTagName("UBSMMeasure").item(0);
+ 
+        // We read the nodes and create a list with the WBSM and USBM measures 
+        
+        ISentenceSimilarityMeasure[] comMeasures = {readWBSMmeasure(WBSMMeasureNode),
+                                                    readUBSMmeasure(UBSMMeasureNode)};
+        
+        // We create the measure
+        
+        measure = SentenceSimilarityFactory.getCOMMeasure(
+                                                readStringField(measureNode, "Label"),
+                                                readDoubleField(measureNode, "Lambda"), 
+                                                comMeasures);
+        
+        // We return the result
+        
+        return (measure);
+    }
+            
     /**
      * This function parses a UBSM measure defined in the XML-based experiment file.
      * @param measureNode
@@ -706,7 +780,7 @@ public class SentenceSimBenchmarkFactory
         
         ISentenceSimilarityMeasure measure = null;
 
-        // We get the WordNet databse information
+        // We get the ontology database information
 
         String SnomedDir = readStringField(measureNode, "SnomedDir");
         String SnomedConceptFilename = readStringField(measureNode, "SnomedConceptFilename");

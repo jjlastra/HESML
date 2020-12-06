@@ -23,6 +23,7 @@ package hesml.sts.measures.impl;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
@@ -147,6 +148,25 @@ public class SentenceSimilarityFactory
     {
         return (new UBSMMeasure(strLabel, preprocesser, SnomedOntology, wordSimilarityMeasureType, icModelType));
     }
+    
+    /**
+     * This function creates a COM measure.
+     * 
+     * @param strLabel
+     * @param lambda
+     * @param measures
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+    
+    public static ICombinedSentenceSimilarityMeasure getCOMMeasure(
+            String                          strLabel,
+            Double                          lambda,
+            ISentenceSimilarityMeasure[]    measures) throws Exception
+    {
+        return (new COMMeasure(strLabel, lambda, measures));
+    }
+    
     
     /**
      * This function creates a UBSM measure.

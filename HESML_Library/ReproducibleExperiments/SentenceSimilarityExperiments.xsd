@@ -28,6 +28,7 @@
 							<xs:element ref="WBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="UBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="Sent2vecModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="COMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 						</xs:choice>
 					</xs:complexType>
 				</xs:element>
@@ -172,18 +173,28 @@
 			<xs:sequence>
 				<xs:element name="Label" type="xs:string"/>
 				<xs:element name="Method" type="OntologyBasedMethod"/>
-				<xs:element name="SnomedDir" type="xs:string"/>
-				<xs:element name="SnomedConceptFilename" type="xs:string"/>
-				<xs:element name="SnomedRelationshipsFilename" type="xs:string"/>
-				<xs:element name="SnomedDescriptionFilename" type="xs:string"/>
-				<xs:element name="UmlsCuiMappingFilename" type="xs:string"/>
-				<xs:element name="UMLSdir" type="xs:string"/>
-				<xs:element name="MeSHdir" type="xs:string"/>
-				<xs:element name="MeSHdescriptorFilename" type="xs:string"/>
-				<xs:element name="OboFilename" type="xs:string"/>
+				<xs:element name="SnomedDir" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedConceptFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedRelationshipsFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedDescriptionFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="UmlsCuiMappingFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="UMLSdir" type="xs:string" minOccurs="0"/>
+				<xs:element name="MeSHdir" type="xs:string" minOccurs="0"/>
+				<xs:element name="MeSHdescriptorFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="OboFilename" type="xs:string" minOccurs="0"/>
 				<xs:element name="WordSimilarityMeasureType" type="SimilarityMeasureType"/>
 				<xs:element ref="WordProcessing"/>
 				<xs:element name="IntrinsicICmodel" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="COMMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Lambda" type="xs:double"/>
+				<xs:element name="WBSMMeasure" type="WBSMMeasure"/>
+				<xs:element name="UBSMMeasure" type="UBSMMeasure"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

@@ -50,5 +50,12 @@ public enum SentenceSimilarityFamily
      * This type encapsulates all the ontology-based sentence measures.
      */
     
-    OntologyBased
+    OntologyBased,
+    
+    /**
+     * This type encapsulates all the sentence measures that 
+     * are combinations of other measures.
+     */
+    
+    Combined
 }
