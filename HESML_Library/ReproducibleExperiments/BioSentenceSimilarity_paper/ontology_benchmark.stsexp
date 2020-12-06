@@ -87,21 +87,7 @@
 				</WordProcessing>
 			</WBSMMeasure>
 
-			<WBSMMeasure>
-				<Label>WBSM Resnik</Label>
-				<Method>WBSMMeasure</Method>
-				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
-				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</WBSMMeasure>
+			
 
 
 			<UBSMMeasure>
@@ -219,28 +205,6 @@
 				</WordProcessing>
 			</UBSMMeasure>
 
-			<UBSMMeasure>
-				<Label>UBSM Resnik</Label>
-				<Method>UBSMMeasure</Method>
-				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
-				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
-				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
-				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
-				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
-				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
-				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
-				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</UBSMMeasure>
 	
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
@@ -330,22 +294,7 @@
 				</WordProcessing>
 			</WBSMMeasure>
 
-			<WBSMMeasure>
-				<Label>WBSM Resnik</Label>
-				<Method>WBSMMeasure</Method>
-				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
-				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</WBSMMeasure>
-
+			
 
 			<UBSMMeasure>
 				<Label>UBSM AncSPLRada</Label>
@@ -462,28 +411,7 @@
 				</WordProcessing>
 			</UBSMMeasure>
 
-			<UBSMMeasure>
-				<Label>UBSM Resnik</Label>
-				<Method>UBSMMeasure</Method>
-				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
-				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
-				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
-				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
-				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
-				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
-				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
-				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</UBSMMeasure>			
+			
 			
 
 		</SentenceSimilarityMeasures>
@@ -574,21 +502,6 @@
 				</WordProcessing>
 			</WBSMMeasure>
 
-			<WBSMMeasure>
-				<Label>WBSM Resnik</Label>
-				<Method>WBSMMeasure</Method>
-				<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
-				<WordNetDbFilename>data.noun</WordNetDbFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</WBSMMeasure>
 
 
 			<UBSMMeasure>
@@ -706,28 +619,7 @@
 				</WordProcessing>
 			</UBSMMeasure>
 
-			<UBSMMeasure>
-				<Label>UBSM Resnik</Label>
-				<Method>UBSMMeasure</Method>
-				<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
-				<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
-				<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
-				<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
-				<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
-				<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
-				<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
-				<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
-				<OboFilename>None</OboFilename>
-				<WordSimilarityMeasureType>Resnik</WordSimilarityMeasureType>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
-					<CharFilteringType>BIOSSES</CharFilteringType>
-				</WordProcessing>
-			</UBSMMeasure>			
+						
 			
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>

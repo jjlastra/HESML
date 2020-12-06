@@ -186,7 +186,7 @@ class WordProcessing implements IWordProcessing
             String              pythonScriptDir,
             String              modelDirPath) throws IOException 
     {
-        // We saev the tokeniztion parameters
+        // We save the tokeniztion parameters
         
         m_tokenizerType = tokenizerType;
         m_lowercaseNormalization = lowercaseNormalization;

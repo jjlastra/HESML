@@ -210,17 +210,13 @@ class WBSMMeasure extends SentenceSimilarityMeasure
                 
         dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
         
-        // 2. Initialize the semantic vectors.
+        // 2. Initialize and compute the semantic vectors.
         
         semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1);
         semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2);
 
-        // 3. Use WordNet to construct the semantic vector
         
-        semanticVector1 = computeSemanticVector(semanticVector1, dictionary);
-        semanticVector2 = computeSemanticVector(semanticVector2, dictionary);
-        
-        // 4. Compute the cosine similarity between the semantic vectors
+        // 3. Compute the cosine similarity between the semantic vectors
         
         similarity = computeCosineSimilarity(semanticVector1, semanticVector2);
         
@@ -230,52 +226,16 @@ class WBSMMeasure extends SentenceSimilarityMeasure
     }
     
     /**
-     * Compute the values from the semantic vector in the positions with zeros.
-     * 
-     * For each vector position, check if the value is zero.
-     * If the value is zero, compute the word similarity with the dictionary
-     * using word similarity measures and get the maximum value.
-     * 
-     * @param semanticVector
-     * @return 
-     */
-    
-    private double[] computeSemanticVector(
-            double[]            semanticVector,
-            ArrayList<String>   dictionary) throws Exception
-    {
-        // Initialize the result
-        
-        double[] semanticVectorComputed = new double[semanticVector.length];
-        
-        // Compute the semantic vector value in each position
-        
-        for (int i = 0; i < semanticVector.length; i++)
-        {
-            // If the value is zero, get the word similarity
-            
-            double wordVectorComponent = semanticVector[i] == 1.0 ? 1.0 : 
-                        getWordSimilarityScore(dictionary.get(i), dictionary);
-  
-            semanticVectorComputed[i] = wordVectorComponent;
-        }
-
-        // Return the result
-        
-        return (semanticVectorComputed);
-    }
-    
-    /**
      * Get the maximum similarity value comparing a word with a list of words.
      * 
      * @param word
-     * @param dictionary
+     * @param lstWordsSentence
      * @return double
      */
     
     private double getWordSimilarityScore(
             String              word,
-            ArrayList<String>   dictionary) throws Exception
+            String[]            lstWordsSentence) throws Exception
     {
         // Initialize the result
         
@@ -284,7 +244,7 @@ class WBSMMeasure extends SentenceSimilarityMeasure
         // Iterate the dictionary and compare the similarity 
         // between the pivot word and the dictionary words to get the maximum value.
         
-        for (String wordDict : dictionary)
+        for (String wordDict : lstWordsSentence)
         {
             // Get the similarity between the words
             
@@ -436,7 +396,7 @@ class WBSMMeasure extends SentenceSimilarityMeasure
     
     private double[] constructSemanticVector(
             ArrayList<String>   dictionary,
-            String[]            lstWordsSentence) throws FileNotFoundException
+            String[]            lstWordsSentence) throws FileNotFoundException, Exception
     {
         // Initialize the semantic vector
         
@@ -455,8 +415,9 @@ class WBSMMeasure extends SentenceSimilarityMeasure
         {
             // We check if the first sentence contains the word
             
-            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 0.0;
-
+            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 
+                        getWordSimilarityScore(word, lstWordsSentence);
+            
             semanticVector[count] = wordVectorComponent;
             count++;
         } 
