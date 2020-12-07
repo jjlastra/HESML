@@ -23,9 +23,11 @@ package hesml.sts.benchmarks.impl;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.SWEMpoolingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
@@ -235,7 +237,7 @@ public class SentenceSimBenchmarkFactory
                 {
                     case "StringBasedSentenceSimilarityMeasure":
                     
-                        // We loads and register a string-based measurs from the XML file 
+                        // We load and register a string-based measurs from the XML file 
                         
                         tempMeasureList.add(SentenceSimilarityFactory.getStringBasedMeasure(
                                 readStringField(measureNode, "Label"),
@@ -259,6 +261,12 @@ public class SentenceSimBenchmarkFactory
                     case "COMMeasure":
                         
                         tempMeasureList.add(readCOMMmeasure(measureNode));
+                        
+                        break;
+                        
+                    case "SWEMMeasure":
+                        
+                        tempMeasureList.add(readSWEMmeasure(measureNode));
                         
                         break;
                 }
@@ -731,6 +739,38 @@ public class SentenceSimBenchmarkFactory
         
         return (measure);
     }
+    
+    /**
+     * This function parses a UBSM measure defined in the XML-based experiment file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readSWEMmeasure(
+        Element measureNode) throws Exception
+    {
+        // We initialize the mesure
+        
+        ISentenceSimilarityMeasure measure = null;
+        
+        // We load and register a SWEM measurs from the XML file 
+                        
+        String strPretrainedModelFilename = readStringField(measureNode, "PretrainedModelFilename");
+        String strPretrainedModelDir = readStringField(measureNode, "PretrainedModelDirectory");
+
+        measure = SentenceSimilarityFactory.getSWEMMeasure(
+                readStringField(measureNode, "Label"),
+                convertToSWEMpoolingMethod(readStringField(measureNode, "Pooling")),
+                convertToWordEmbeddingFileType(readStringField(measureNode, "WordEmbeddingFileFormat")),
+                readWordProcessing(measureNode),
+                strPretrainedModelDir + "/" + strPretrainedModelFilename);
+
+        // We return the result
+        
+        return (measure);
+    }
+    
+    
 
     /**
      * This function parses a UBSM measure defined in the XML-based experiment file.
@@ -878,5 +918,63 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (measure);
+    }
+    
+    /**
+     * This function converts the input string into a SWEMpoolingMethod value.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static SWEMpoolingMethod convertToSWEMpoolingMethod(
+            String  strPoolingMethod)
+    {
+        // We initialize the output
+        
+        SWEMpoolingMethod recoveredPooling = SWEMpoolingMethod.Average;
+        
+        // We look for the matching value
+        
+        for (SWEMpoolingMethod poolingType: SWEMpoolingMethod.values())
+        {
+            if (poolingType.toString().equals(strPoolingMethod))
+            {
+                recoveredPooling = poolingType;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredPooling);
+    }
+    
+    /**
+     * This function converts the input string into a WordEmbeddingFileType value.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static WordEmbeddingFileType convertToWordEmbeddingFileType(
+            String  strEmbeddingFileType)
+    {
+        // We initialize the output
+        
+        WordEmbeddingFileType recoveredType = WordEmbeddingFileType.BioWordVecBinaryWordEmbedding;
+        
+        // We look for the matching value
+        
+        for (WordEmbeddingFileType fileType: WordEmbeddingFileType.values())
+        {
+            if (fileType.toString().equals(strEmbeddingFileType))
+            {
+                recoveredType = fileType;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredType);
     }
 }

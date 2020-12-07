@@ -23,8 +23,10 @@ package hesml.sts.measures.impl;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.SWEMpoolingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
@@ -32,6 +34,8 @@ import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * This class builds the sentence similarity measures.
@@ -210,5 +214,32 @@ public class SentenceSimilarityFactory
             IntrinsicICModelType    icModelType) throws Exception
     {
         return (new UBSMMeasure(strLabel, preprocesser, OboOntology, wordSimilarityMeasureType, icModelType));
+    }
+    
+    /**
+     * This function creates a Simple Word-Emebedding model for
+     * sentence similarity based on a pooling strategy and one
+     * pre-traiend WE file.
+     * 
+     * @param strLabel
+     * @param poolingMethod
+     * @param embeddingType
+     * @param preprocesser
+     * @param strPretrainedWEFilename
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.text.ParseException 
+     */
+    
+    public static ISentenceSimilarityMeasure getSWEMMeasure(
+            String                  strLabel,
+            SWEMpoolingMethod       poolingMethod,
+            WordEmbeddingFileType   embeddingType,
+            IWordProcessing         preprocesser,
+            String                  strPretrainedWEFilename) 
+            throws IOException, ParseException, Exception
+    {
+        return (new SimpleWordEmbeddingModelMeasure(strLabel, poolingMethod,
+                embeddingType, preprocesser, strPretrainedWEFilename));
     }
 }

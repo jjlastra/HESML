@@ -680,4 +680,43 @@ public class MeasureFactory
         
         return (norm);
     }
+    
+    /**
+     * This function loads a word embedding model implementing
+     * a word similarity measure.
+     * @param embeddingType
+     * @param strRawVectorFile
+     * @param words
+     * @return 
+     */
+    
+    public static IPretrainedWordEmbedding getWordEmbeddingModel(
+            WordEmbeddingFileType   embeddingType,
+            String                  strRawVectorFile) throws IOException, ParseException, Exception
+    {
+        // We initialize the output
+        
+        IPretrainedWordEmbedding model = null;
+        
+        // We create the word mebedding model
+        
+        switch(embeddingType)
+        {
+            case BioWordVecBinaryWordEmbedding:
+             
+                model = new BioWordVecBinaryEmbeddingModel(strRawVectorFile);
+                
+                break;
+                
+            case FastTextVecWordEmbedding:
+             
+                model = new FastTextVecWordEmbeddingModel(strRawVectorFile);
+                
+                break;
+        }
+        
+        // We return the result
+        
+        return (model);
+    }
 }
