@@ -21,6 +21,7 @@
 
 package hesml.sts.preprocess.impl;
 
+import bioc.preprocessing.pipeline.PreprocessingPipeline;
 import edu.stanford.nlp.ling.CoreLabel;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.TokenizerType;
@@ -238,41 +239,39 @@ class Tokenizer implements ITokenizer
 
         String[] tokens = {};
         
-        System.err.println("BioC Tokenizer temporarily disabled due to incompatibilities...");
-
         // Create a BioC Processing Pipeline object and set the sentence text.
 
-//        PreprocessingPipeline preprocessingPipeline = new PreprocessingPipeline("sentence");
-//        preprocessingPipeline.setParseText(strSentence);
-//
-//        // Perform the sentence splitting (which firstly performs a tokenization process)
-//
-//        List<List<CoreLabel>> sentencesCoreLabels = preprocessingPipeline.performSentenceSplit();
-//
-//        // Iterate the tokens in the sentence and write the token in the list
-//
-//        ArrayList<String> tokenizedTokens = new ArrayList();
-//
-//        List<CoreLabel> sentenceCoreLabel = sentencesCoreLabels.get(0);
-//
-//        for(CoreLabel token: sentenceCoreLabel)
-//        {
-//            // Extract the token from the sentence
-//
-//            String word = strSentence.substring(token.beginPosition(), token.endPosition());
-//
-//            // Add the token to the list
-//
-//            tokenizedTokens.add(word);
-//        }
-//
-//        // Convert the arraylist to an array
-//
-//        tokens = tokenizedTokens.toArray(new String[0]);
-//
-//        // Clear the arraylist
-//
-//        tokenizedTokens.clear();
+        PreprocessingPipeline preprocessingPipeline = new PreprocessingPipeline("sentence");
+        preprocessingPipeline.setParseText(strSentence);
+
+        // Perform the sentence splitting (which firstly performs a tokenization process)
+
+        List<List<CoreLabel>> sentencesCoreLabels = preprocessingPipeline.performSentenceSplit();
+
+        // Iterate the tokens in the sentence and write the token in the list
+
+        ArrayList<String> tokenizedTokens = new ArrayList();
+
+        List<CoreLabel> sentenceCoreLabel = sentencesCoreLabels.get(0);
+
+        for(CoreLabel token: sentenceCoreLabel)
+        {
+            // Extract the token from the sentence
+
+            String word = strSentence.substring(token.beginPosition(), token.endPosition());
+
+            // Add the token to the list
+
+            tokenizedTokens.add(word);
+        }
+
+        // Convert the arraylist to an array
+
+        tokens = tokenizedTokens.toArray(new String[0]);
+
+        // Clear the arraylist
+
+        tokenizedTokens.clear();
 
         // Return the results
 

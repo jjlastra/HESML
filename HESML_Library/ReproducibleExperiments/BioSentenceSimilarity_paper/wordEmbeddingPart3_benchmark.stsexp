@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
+<SentenceSimilarityExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SentenceSimilarityExperiments.xsd">
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>BIOSSESNormalized.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_CBOW.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_CBOW</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_Glove.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_Glove</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_SkipGramNegSampling.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_SkipGramNegSampling</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed-and-PMC-w2v.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/PyysaloWord2vecPubmedPMC</PretrainedModelDirectory>
+				<Label>PyysaloWord2vecPubmedPMC PubMed-and-PMC-w2v</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+			
+	
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_MedSTSFull.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>MedStsFullNormalized.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_CBOW.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_CBOW</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_Glove.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_Glove</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_SkipGramNegSampling.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_SkipGramNegSampling</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+			
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed-and-PMC-w2v.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/PyysaloWord2vecPubmedPMC</PretrainedModelDirectory>
+				<Label>PyysaloWord2vecPubmedPMC PubMed-and-PMC-w2v</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_CTR.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>CTRNormalized_averagedScore.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+			
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_CBOW.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_CBOW</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_Glove.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_Glove</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed_SkipGramNegSampling.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/Newman_Griffis</PretrainedModelDirectory>
+				<Label>Newman_Griffis PubMed_SkipGramNegSampling</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+				
+			<SWEMMeasure>
+				<Pooling>Max</Pooling>
+				<WordEmbeddingFileFormat>FastTextVecWordEmbedding</WordEmbeddingFileFormat>
+				<PretrainedModelFilename>PubMed-and-PMC-w2v.txt</PretrainedModelFilename>
+				<PretrainedModelDirectory>../WordEmbeddings/PyysaloWord2vecPubmedPMC</PretrainedModelDirectory>
+				<Label>PyysaloWord2vecPubmedPMC PubMed-and-PMC-w2v</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>Biosses2017StopWords.txt</StopWordsFilename>
+					<TokenizerType>BioCNLPTokenizer</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>None</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</SWEMMeasure>
+			
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+</SentenceSimilarityExperiments>

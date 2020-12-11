@@ -363,7 +363,7 @@ public class HESMLSTSclient
             String[] sentences1,
             String[] sentences2) throws IOException, InterruptedException, Exception
     {
-         // Initialize the preprocessing method and measures
+        // Initialize the preprocessing method and measures
         
         IWordProcessing preprocesser = null;
         ISentenceSimilarityMeasure measure = null;
