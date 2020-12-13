@@ -28,6 +28,7 @@ import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.SWEMpoolingMethod;
+import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
@@ -47,6 +48,7 @@ import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -267,6 +269,18 @@ public class SentenceSimBenchmarkFactory
                     case "SWEMMeasure":
                         
                         tempMeasureList.add(readSWEMmeasure(measureNode));
+                        
+                        break;
+                    
+                    case "USEModelMeasure":
+                        
+                        tempMeasureList.add(readUSEmodelSentenceMeasure(measureNode));
+                        
+                        break;
+                        
+                    case "Sent2vecModelMeasure":
+                        
+                        tempMeasureList.add(readSent2vecModelSentenceMeasure(measureNode));
                         
                         break;
                 }
@@ -918,6 +932,96 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (measure);
+    }
+    
+    /**
+     * This function parses a Universal Sentence Embedding model defined in the XML-based experiemnt file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readUSEmodelSentenceMeasure(
+            Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
+    {
+        // We load and register a BERT measure from the XML file 
+
+        String strUSEModelURL = readStringField(measureNode, "PretrainedModelURL");
+        String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
+        String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
+        String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
+
+        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
+                                                readStringField(measureNode, "Label"), 
+                                                convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                                                readWordProcessing(measureNode), 
+                                                strUSEModelURL, 
+                                                strPythonScriptsDirectory + strPythonScript,
+                                                strPythonVirtualEnvironmentDir,
+                                                strPythonScriptsDirectory);
+        
+        // We return the result
+        
+        return (model);
+    }
+    
+    /**
+     * This function parses a Universal Sentence Embedding model defined in the XML-based experiemnt file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readSent2vecModelSentenceMeasure(
+            Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
+    {
+        // We load and register a BERT measure from the XML file 
+
+        String strSent2vecModelDir = readStringField(measureNode, "PretrainedModelDir");
+        String strSent2vecModelFile = readStringField(measureNode, "PretrainedModelFile");
+        String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
+        String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
+        String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
+
+        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
+                                                readStringField(measureNode, "Label"), 
+                                                convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                                                readWordProcessing(measureNode), 
+                                                strSent2vecModelDir + strSent2vecModelFile, 
+                                                strPythonScriptsDirectory + strPythonScript,
+                                                strPythonVirtualEnvironmentDir,
+                                                strPythonScriptsDirectory);
+        
+        // We return the result
+        
+        return (model);
+    }
+    
+    /**
+     * This function converts the input string into a SentenceEmbeddingMethod value.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static SentenceEmbeddingMethod convertToSentenceEmbeddingMethod(
+            String  strEmbeddingMethod)
+    {
+        // We initialize the output
+        
+        SentenceEmbeddingMethod recoveredMethod = SentenceEmbeddingMethod.BERTEmbeddingModel;
+        
+        // We look for the matching value
+        
+        for (SentenceEmbeddingMethod method: SentenceEmbeddingMethod.values())
+        {
+            if (method.toString().equals(strEmbeddingMethod))
+            {
+                recoveredMethod = method;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredMethod);
     }
     
     /**

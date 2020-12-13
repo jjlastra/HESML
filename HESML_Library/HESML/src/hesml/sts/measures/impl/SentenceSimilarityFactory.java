@@ -27,6 +27,7 @@ import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.SWEMpoolingMethod;
+import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
@@ -241,5 +242,79 @@ public class SentenceSimilarityFactory
     {
         return (new SimpleWordEmbeddingModelMeasure(strLabel, poolingMethod,
                 embeddingType, preprocesser, strPretrainedWEFilename));
+    }
+    
+    /**
+     * This function creates a USE sentence embedding method.
+     * 
+     * @param strLabel
+     * @param method
+     * @param wordPreprocessor
+     * @param strModelURL
+     * @param pythonScriptFilename
+     * @param strPythonVirtualEnvironmentDir
+     * @param pythonScriptDir
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.lang.InterruptedException 
+     * @throws org.json.simple.parser.ParseException 
+     */
+    
+    public static ISentenceSimilarityMeasure getUSESentenceEmbeddingMethod(
+            String                  strLabel,
+            SentenceEmbeddingMethod method,
+            IWordProcessing         wordPreprocessor,
+            String                  strModelURL,
+            String                  pythonScriptFilename,
+            String                  strPythonVirtualEnvironmentDir,
+            String                  pythonScriptDir) throws IOException,
+            InterruptedException, org.json.simple.parser.ParseException
+    {  
+        // We initialize the output
+        
+        ISentenceSimilarityMeasure measure = new USEModelMeasure(strLabel,
+                            strModelURL, wordPreprocessor, pythonScriptDir, 
+                        strPythonVirtualEnvironmentDir, pythonScriptFilename);
+        
+        // We return the result
+        
+        return (measure);
+    }
+    
+    /**
+     * This function creates a sent2vec sentence embedding method.
+     * 
+     * @param strLabel
+     * @param method
+     * @param wordPreprocessor
+     * @param strModelPath
+     * @param pythonScriptFilename
+     * @param strPythonVirtualEnvironmentDir
+     * @param pythonScriptDir
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.lang.InterruptedException 
+     * @throws org.json.simple.parser.ParseException 
+     */
+    
+    public static ISentenceSimilarityMeasure getSent2vecMethodMeasure(
+            String                  strLabel,
+            SentenceEmbeddingMethod method,
+            IWordProcessing         wordPreprocessor,
+            String                  strModelPath,
+            String                  pythonScriptFilename,
+            String                  strPythonVirtualEnvironmentDir,
+            String                  pythonScriptDir) throws IOException,
+            InterruptedException, org.json.simple.parser.ParseException
+    {  
+        // We initialize the output
+        
+        ISentenceSimilarityMeasure measure = new Sent2vecModelMeasure(strLabel,
+                            strModelPath, wordPreprocessor, pythonScriptDir, 
+                        strPythonVirtualEnvironmentDir, pythonScriptFilename);
+        
+        // We return the result
+        
+        return (measure);
     }
 }
