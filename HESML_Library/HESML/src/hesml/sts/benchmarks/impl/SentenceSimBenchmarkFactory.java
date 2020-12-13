@@ -283,6 +283,12 @@ public class SentenceSimBenchmarkFactory
                         tempMeasureList.add(readSent2vecModelSentenceMeasure(measureNode));
                         
                         break;
+                    
+                    case "FlairModelMeasure":
+                        
+                        tempMeasureList.add(readFlairmodelSentenceMeasure(measureNode));
+                        
+                        break;
                 }
             }
         }
@@ -935,7 +941,7 @@ public class SentenceSimBenchmarkFactory
     }
     
     /**
-     * This function parses a Universal Sentence Embedding model defined in the XML-based experiemnt file.
+     * This function parses a Universal Sentence Embedding model defined in the XML-based experiment file.
      * @param measureNode
      * @return 
      */
@@ -943,7 +949,7 @@ public class SentenceSimBenchmarkFactory
     private static ISentenceSimilarityMeasure readUSEmodelSentenceMeasure(
             Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
     {
-        // We load and register a BERT measure from the XML file 
+        // We load and register a USE measure from the XML file 
 
         String strUSEModelURL = readStringField(measureNode, "PretrainedModelURL");
         String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
@@ -951,6 +957,36 @@ public class SentenceSimBenchmarkFactory
         String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
 
         ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
+                                                readStringField(measureNode, "Label"), 
+                                                convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                                                readWordProcessing(measureNode), 
+                                                strUSEModelURL, 
+                                                strPythonScriptsDirectory + strPythonScript,
+                                                strPythonVirtualEnvironmentDir,
+                                                strPythonScriptsDirectory);
+        
+        // We return the result
+        
+        return (model);
+    }
+            
+    /**
+     * This function parses a Flair Embedding model defined in the XML-based experiment file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readFlairmodelSentenceMeasure(
+            Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
+    {
+        // We load and register a Flair measure from the XML file 
+
+        String strUSEModelURL = readStringField(measureNode, "PretrainedModelPath");
+        String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
+        String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
+        String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
+
+        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getFlairEmbeddingMethod(
                                                 readStringField(measureNode, "Label"), 
                                                 convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
                                                 readWordProcessing(measureNode), 

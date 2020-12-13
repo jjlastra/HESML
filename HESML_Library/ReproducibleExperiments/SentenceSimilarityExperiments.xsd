@@ -25,6 +25,7 @@
 							<xs:element ref="SWEMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="BertEmbeddingModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="USEModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="FlairModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="WBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="UBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
 							<xs:element ref="Sent2vecModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
@@ -134,6 +135,19 @@
 				<xs:element name="Label" type="xs:string"/>
 				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
 				<xs:element name="PretrainedModelURL" type="xs:string"/>
+				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
+				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FlairModelMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
+				<xs:element name="PretrainedModelPath" type="xs:string"/>
 				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
 				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
 				<xs:element name="PythonScriptFilename" type="xs:string"/>
