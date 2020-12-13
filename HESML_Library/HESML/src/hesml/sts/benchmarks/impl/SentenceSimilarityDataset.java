@@ -48,6 +48,10 @@ class SentenceSimilarityDataset
     
     private final double[]  m_HumanJudgementSimilarity;
     
+    // Dataset label
+    
+    private String m_label;
+    
     /**
      * Constructor
      * @param indexId
@@ -114,6 +118,10 @@ class SentenceSimilarityDataset
                 }
             }
         }
+        
+        // We set the label of the dataset
+        
+        setLabel(strDatasetFilename);
         
         // We release the temp list
         
@@ -199,5 +207,33 @@ class SentenceSimilarityDataset
         // Return the sentences
         
         return (this.m_SecondSentences);
+    }
+    
+    /**
+     * Set the label of the Dataset
+     */
+    
+    public void setLabel(String  strDatasetFilename)
+    {
+        // Initialize the label
+        
+        m_label = "";
+        
+        // Split the file path
+        
+        String[] path = strDatasetFilename.split("/");
+        
+        // Remove the filename extension
+        
+        m_label = path[2].replace(".", "");
+    }
+    
+    /**
+     * Get the label of the Dataset
+     */
+    
+    public String getLabel()
+    {
+        return (m_label);
     }
 }

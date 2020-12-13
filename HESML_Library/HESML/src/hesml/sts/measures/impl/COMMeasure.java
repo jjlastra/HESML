@@ -206,5 +206,24 @@ class COMMeasure extends CombinedSentenceSimilarityMeasure
      * @throws Exception 
      */
     @Override
-    public void prepareForEvaluation() throws Exception {}
+    public void prepareForEvaluation() throws Exception 
+    {
+        m_wbsmMeasure.prepareForEvaluation();
+        m_ubsmMeasure.prepareForEvaluation();
+    }
+    
+    /**
+     * This function is called by any client function before to evaluate
+     * the current sentence similarity measure.
+     * 
+     * In this case, the method will be called by each combined measure.
+     * 
+     * @throws Exception 
+     */
+    
+    @Override
+    public void prepareForEvaluation(String dataset_info) throws Exception {
+        m_wbsmMeasure.prepareForEvaluation(dataset_info);
+        m_ubsmMeasure.prepareForEvaluation(dataset_info);
+    }
 }

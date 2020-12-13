@@ -40,6 +40,10 @@ abstract class SentenceSimilarityMeasure implements ISentenceSimilarityMeasure
     
     protected IWordProcessing m_preprocesser;
     
+    // Dataset info
+    
+    protected String m_datasetInfo;
+    
     /**
      * Constructor with parameters.
      * @param preprocesser 
@@ -51,6 +55,7 @@ abstract class SentenceSimilarityMeasure implements ISentenceSimilarityMeasure
         // Initialize the preprocesser object.
         
         m_preprocesser = preprocesser;
+        m_datasetInfo = "noDataset";
     }
     
     /**
@@ -76,6 +81,19 @@ abstract class SentenceSimilarityMeasure implements ISentenceSimilarityMeasure
     
     @Override
     public void prepareForEvaluation() throws Exception {}
+    
+    /**
+     * This function is called by any client function before to evaluate
+     * the current sentence similarity measure.
+     * 
+     * This function aggregates the dataset information to the object.
+     */
+    
+    @Override
+    public void prepareForEvaluation(String datasetInfo) throws Exception 
+    {
+        m_datasetInfo = datasetInfo;
+    }
     
     /**
      * This function releases all resources used by the measure. Once this

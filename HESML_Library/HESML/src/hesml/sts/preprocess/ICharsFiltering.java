@@ -36,4 +36,11 @@ public interface ICharsFiltering
     
     String filter(
             String strRawSentence);
+    
+    /**
+     * Return Char Filtering type
+     * @return char filtering type
+     */
+    
+    CharFilteringType to_string();
 }

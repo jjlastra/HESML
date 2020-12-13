@@ -38,6 +38,10 @@ class CharsFiltering implements ICharsFiltering
     
     private HashMap<String, String> m_replacingMap;
     
+    // Char filtering type
+    
+    CharFilteringType m_charFilteringType;
+    
     /**
      *  Constructor with parameters.
      *  @param charFilteringType
@@ -49,6 +53,10 @@ class CharsFiltering implements ICharsFiltering
         // We create the replacement mapping
         
         m_replacingMap = new HashMap<>();
+        
+        // We set the variables
+        
+        m_charFilteringType = charFilteringType;
         
         // We set the replcament patterns for each pre-defined method.
         
@@ -166,5 +174,14 @@ class CharsFiltering implements ICharsFiltering
         m_replacingMap.put("!", "");
         m_replacingMap.put("/", "");     
         m_replacingMap.put("-","");
+    }
+    
+    /**
+     * Output the char filtering method
+     */
+    
+    @Override
+    public CharFilteringType to_string() {
+        return (m_charFilteringType);
     }
 }

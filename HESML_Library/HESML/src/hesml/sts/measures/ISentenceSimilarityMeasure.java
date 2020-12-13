@@ -48,6 +48,18 @@ public interface ISentenceSimilarityMeasure
     void prepareForEvaluation() throws Exception;
     
     /**
+     * This function is called by any client function before to evaluate
+     * the current sentence similarity measure. 
+     * The dataset info is used by the Python wrappers for caching purposes.
+     * 
+     *
+     * @param dataset_info 
+     * @throws java.lang.Exception
+     */
+    
+    void prepareForEvaluation(String dataset_info) throws Exception;
+    
+    /**
      * This function returns the label used to identify the measure in
      * a raw matrix results. This string attribute is set by the users
      * to provide the column header name included in all results generated

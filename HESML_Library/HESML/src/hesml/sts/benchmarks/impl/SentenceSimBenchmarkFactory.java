@@ -25,6 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
+import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.SWEMpoolingMethod;
@@ -287,6 +288,12 @@ public class SentenceSimBenchmarkFactory
                     case "FlairModelMeasure":
                         
                         tempMeasureList.add(readFlairmodelSentenceMeasure(measureNode));
+                        
+                        break;
+                    
+                    case "BertEmbeddingModelMeasure":
+                        
+                        tempMeasureList.add(readBERTmodelSentenceMeasure(measureNode));
                         
                         break;
                 }
@@ -1001,6 +1008,49 @@ public class SentenceSimBenchmarkFactory
     }
     
     /**
+     * This function parses a BERT embedding model defined in the XML-based experiemnt file.
+     * @param measureNode
+     * @return 
+     */
+    
+    private static ISentenceSimilarityMeasure readBERTmodelSentenceMeasure(
+            Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
+    {
+        // We load and register a BERT measure from the XML file 
+
+        String strBERTPretrainedModelFilename = readStringField(measureNode, "PretrainedModelName");
+        String strBERTPretrainedModelDir = readStringField(measureNode, "PretrainedModelDirectory");
+        String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
+        String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
+        String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
+        String strPoolingLayers = readStringField(measureNode, "PoolingLayers");
+
+        // Convert the pooling layers to an array splitted by comma's
+
+        String[] poolingLayers = strPoolingLayers.split(",");
+        
+        // We can use a pre-processed sentences files instead of the preprocesser object
+        
+        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getBERTSentenceEmbeddingMethod(
+                                                readStringField(measureNode, "Label"), 
+                                                convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                                                readBERTWordProcessing(measureNode), 
+                                                readBooleanField(measureNode, "PreprocessedSentencesPath"),
+                                                strBERTPretrainedModelDir + strBERTPretrainedModelFilename, 
+                                                strPythonScriptsDirectory, 
+                                                strPythonVirtualEnvironmentDir, 
+                                                strPythonScriptsDirectory + strPythonScript, 
+                                                convertToBERTpoolingMethod(readStringField(measureNode, "Pooling")), 
+                                                poolingLayers,
+                                                containsFieldName(measureNode, "PythonServerPort")?readStringField(measureNode, 
+                                                "PythonServerPort"):"0");
+
+        // We return the result
+        
+        return (model);
+    }
+    
+    /**
      * This function parses a Universal Sentence Embedding model defined in the XML-based experiemnt file.
      * @param measureNode
      * @return 
@@ -1029,6 +1079,79 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (model);
+    }
+    
+    /**
+     * This function parses a word processing object from a XML-based experiment file.
+     * @param measureRootNode
+     * @return 
+     */
+    
+    private static IWordProcessing readBERTWordProcessing(
+            Element measureRootNode) throws IOException
+    {
+        // We get the word processing node
+
+        Element wordProcessingNode = (Element) measureRootNode.getElementsByTagName("WordProcessing").item(0);
+        
+        // We read the word processing attributes
+        
+        String strStopWordsFileDir = readStringField(wordProcessingNode, "StopWordsFileDir");
+        String strStopWordsFilename = readStringField(wordProcessingNode, "StopWordsFilename"); 
+        
+        // We read the Python wrapper data
+        
+        String strBERTPretrainedModelFilename = readStringField(wordProcessingNode, "PretrainedModelFilename");
+        String strBERTPretrainedModelDir = readStringField(wordProcessingNode, "PretrainedModelDirectory");
+        String strPythonScriptsDirectory = readStringField(wordProcessingNode, "PythonScriptsDirectory");
+        String strPythonVirtualEnvironmentDir = readStringField(wordProcessingNode, "PythonVirtualEnvironmentDir");
+        String strPythonScript = readStringField(wordProcessingNode, "PythonWordPieceTokenizerScript");
+
+        // We parse the chracter filtering method
+        
+        IWordProcessing processer = PreprocessingFactory.getWordProcessing(
+                                        strStopWordsFileDir + "/" + strStopWordsFilename,
+                                        convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
+                                        readBooleanField(wordProcessingNode, "LowercaseNormalization"),
+                                        readBooleanField(wordProcessingNode, "ConceptAnnotation"),
+                                        convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")),
+                                        strPythonScriptsDirectory,
+                                        strPythonVirtualEnvironmentDir,
+                                        strPythonScriptsDirectory + strPythonScript,
+                                        strBERTPretrainedModelDir + strBERTPretrainedModelFilename);
+        
+        // We return the result
+        
+        return (processer);
+    }
+    
+    /**
+     * This function converts the input string into a BERTpoolingMethod value.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static BERTpoolingMethod convertToBERTpoolingMethod(
+            String  strPoolingMethod)
+    {
+        // We initialize the output
+        
+        BERTpoolingMethod recoveredPooling = BERTpoolingMethod.REDUCE_MEAN;
+        
+        // We look for the matching value
+        
+        for (BERTpoolingMethod poolingType: BERTpoolingMethod.values())
+        {
+            if (poolingType.toString().equals(strPoolingMethod))
+            {
+                recoveredPooling = poolingType;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredPooling);
     }
     
     /**

@@ -52,4 +52,11 @@ public interface IWordProcessing
     String[] getWordTokens(
             String strRawSentence)  
             throws FileNotFoundException, IOException, InterruptedException, Exception;
+    
+    /**
+     * Dynamically assign a label for a Wordprocessing object using the parameters configuration.
+     * @return label
+     */
+    
+    String getLabel();
 }

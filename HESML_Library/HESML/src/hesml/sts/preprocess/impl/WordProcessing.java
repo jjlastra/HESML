@@ -460,4 +460,51 @@ class WordProcessing implements IWordProcessing
         
         return (annotatedSentence);
     }
+    
+    /**
+     * Dynamically assign a label or name for a Wordprocessing object 
+     * using the parameters configuration.
+     * 
+     * @return label
+     */
+    
+    @Override
+    public String getLabel() 
+    {
+        // Initialize the result filename
+        
+        String label = "";
+        
+        // Add the tokenizer method
+        
+        label = m_tokenizerType.toString();
+        
+        // Add the lowercase info
+        
+        if(m_lowercaseNormalization)
+            label = label + "_lc";
+        
+        // Stop words filename
+        
+        String[] stopwords = m_strStopWordsFileName.split("/");
+        String cleanedStopWordsFilename = stopwords[2].replace(".txt","");
+        label = label + "_" + cleanedStopWordsFilename;
+        
+        // Add the char filtering method
+        
+        label = label + "_" + m_charFilter.to_string();
+        
+        // Add the conceptAnnotationInfo
+        
+        if(m_conceptsAnnotation)
+            label = label + "_ca";
+        
+        // lowercase the result
+        
+        label = label.toLowerCase();
+        
+        // Return the result
+        
+        return (label);
+    }
 }

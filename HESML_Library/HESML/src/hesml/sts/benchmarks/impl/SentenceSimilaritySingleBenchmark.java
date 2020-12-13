@@ -146,6 +146,10 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
 
             strColumnHeaders[iMeasure + 1] = m_Measures[iMeasure].getLabel();
             
+            // We prepare the measure for evaluation
+            
+            m_Measures[iMeasure].prepareForEvaluation(m_Dataset.getLabel());
+            
             // We get an array with the similarity scores for each pair of sentences
             
             double[] similarityScores = m_Measures[iMeasure].getSimilarityValues(

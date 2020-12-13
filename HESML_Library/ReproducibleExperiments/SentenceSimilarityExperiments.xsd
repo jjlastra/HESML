@@ -124,6 +124,7 @@
 				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
 				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
 				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element name="PreprocessedSentencesPath" type="xs:string"/>
 				<xs:element name="PythonServerPort" type="xs:string" minOccurs="0"/>
 				<xs:element ref="WordProcessing"/>
 			</xs:sequence>
