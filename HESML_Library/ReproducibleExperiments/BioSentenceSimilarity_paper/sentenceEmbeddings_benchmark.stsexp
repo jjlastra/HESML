@@ -7,7 +7,7 @@
 		<DatasetFilename>BIOSSESNormalized.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 			
-			<!-- <USEModelMeasure>
+			<USEModelMeasure>
 				<Label>universal-sentence-encoder-4</Label>
 				<Method>USEModel</Method>
 				<PretrainedModelURL>https://tfhub.dev/google/universal-sentence-encoder/4</PretrainedModelURL>
@@ -40,7 +40,9 @@
 					<CharFilteringType>Default</CharFilteringType>
 					<ConceptAnnotation>false</ConceptAnnotation>
 				</WordProcessing>
-			</Sent2vecModelMeasure> -->
+			</Sent2vecModelMeasure> 
+
+
 
 			<FlairModelMeasure>
 				<Label>Flair</Label>
@@ -54,25 +56,8 @@
 					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<CharFilteringType>Default</CharFilteringType>
+					<CharFilteringType>BIOSSES</CharFilteringType>
 					<ConceptAnnotation>false</ConceptAnnotation>
-				</WordProcessing>
-			</FlairModelMeasure>
-
-			<FlairModelMeasure>
-				<Label>Flair</Label>
-				<Method>FlairModel</Method>
-				<PretrainedModelPath>../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt</PretrainedModelPath>
-				<PythonScriptsDirectory>../FlairEmbeddings/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../FlairEmbeddings/venv/bin/python3</PythonVirtualEnvironmentDir>
-				<PythonScriptFilename>extractFlairVectors.py</PythonScriptFilename>
-				<WordProcessing>
-					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
-					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
-					<TokenizerType>WhiteSpace</TokenizerType>
-					<LowercaseNormalization>true</LowercaseNormalization>
-					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>true</ConceptAnnotation>
 				</WordProcessing>
 			</FlairModelMeasure>
 
@@ -89,13 +74,13 @@
 		<DatasetFilename>MedStsFullNormalized.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 			
-			<FlairModelMeasure>
-				<Label>Flair</Label>
-				<Method>FlairModel</Method>
-				<PretrainedModelPath>../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt</PretrainedModelPath>
-				<PythonScriptsDirectory>../FlairEmbeddings/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../FlairEmbeddings/venv/bin/python3</PythonVirtualEnvironmentDir>
-				<PythonScriptFilename>extractFlairVectors.py</PythonScriptFilename>
+			<USEModelMeasure>
+				<Label>universal-sentence-encoder-4</Label>
+				<Method>USEModel</Method>
+				<PretrainedModelURL>https://tfhub.dev/google/universal-sentence-encoder/4</PretrainedModelURL>
+				<PythonScriptsDirectory>../UniversalSentenceEncoderExperiments/</PythonScriptsDirectory>
+				<PythonVirtualEnvironmentDir>../UniversalSentenceEncoderExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonScriptFilename>extractUniversalSentenceEncoderVectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
@@ -104,7 +89,25 @@
 					<CharFilteringType>Default</CharFilteringType>
 					<ConceptAnnotation>false</ConceptAnnotation>
 				</WordProcessing>
-			</FlairModelMeasure>
+			</USEModelMeasure>
+
+			<Sent2vecModelMeasure>
+				<Label>sent2vec BioSentVec</Label>
+				<Method>Sent2vecModel</Method>
+				<PretrainedModelDir>../SentenceEmbeddings/</PretrainedModelDir>
+				<PretrainedModelFile>BioSentVec_PubMed_MIMICIII-bigram_d700.bin</PretrainedModelFile>
+				<PythonScriptsDirectory>../Sent2vecExperiments/</PythonScriptsDirectory>
+				<PythonVirtualEnvironmentDir>../Sent2vecExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonScriptFilename>extractSent2vecvectors.py</PythonScriptFilename>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>Default</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</Sent2vecModelMeasure> 
 
 			<FlairModelMeasure>
 				<Label>Flair</Label>
@@ -118,8 +121,8 @@
 					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
 				</WordProcessing>
 			</FlairModelMeasure>
 
@@ -132,13 +135,13 @@
 		<DatasetFilename>CTRNormalized_averagedScore.tsv</DatasetFilename>
 		<SentenceSimilarityMeasures>
 			
-			<FlairModelMeasure>
-				<Label>Flair</Label>
-				<Method>FlairModel</Method>
-				<PretrainedModelPath>../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt</PretrainedModelPath>
-				<PythonScriptsDirectory>../FlairEmbeddings/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../FlairEmbeddings/venv/bin/python3</PythonVirtualEnvironmentDir>
-				<PythonScriptFilename>extractFlairVectors.py</PythonScriptFilename>
+			<USEModelMeasure>
+				<Label>universal-sentence-encoder-4</Label>
+				<Method>USEModel</Method>
+				<PretrainedModelURL>https://tfhub.dev/google/universal-sentence-encoder/4</PretrainedModelURL>
+				<PythonScriptsDirectory>../UniversalSentenceEncoderExperiments/</PythonScriptsDirectory>
+				<PythonVirtualEnvironmentDir>../UniversalSentenceEncoderExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonScriptFilename>extractUniversalSentenceEncoderVectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
@@ -147,7 +150,25 @@
 					<CharFilteringType>Default</CharFilteringType>
 					<ConceptAnnotation>false</ConceptAnnotation>
 				</WordProcessing>
-			</FlairModelMeasure>
+			</USEModelMeasure>
+
+			<Sent2vecModelMeasure>
+				<Label>sent2vec BioSentVec</Label>
+				<Method>Sent2vecModel</Method>
+				<PretrainedModelDir>../SentenceEmbeddings/</PretrainedModelDir>
+				<PretrainedModelFile>BioSentVec_PubMed_MIMICIII-bigram_d700.bin</PretrainedModelFile>
+				<PythonScriptsDirectory>../Sent2vecExperiments/</PythonScriptsDirectory>
+				<PythonVirtualEnvironmentDir>../Sent2vecExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonScriptFilename>extractSent2vecvectors.py</PythonScriptFilename>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<CharFilteringType>Default</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
+				</WordProcessing>
+			</Sent2vecModelMeasure> 
 
 			<FlairModelMeasure>
 				<Label>Flair</Label>
@@ -161,8 +182,8 @@
 					<StopWordsFilename>NoneStopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<CharFilteringType>BIOSSES</CharFilteringType>
+					<ConceptAnnotation>false</ConceptAnnotation>
 				</WordProcessing>
 			</FlairModelMeasure>
 
