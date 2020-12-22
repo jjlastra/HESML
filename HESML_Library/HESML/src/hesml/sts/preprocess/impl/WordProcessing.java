@@ -499,6 +499,15 @@ class WordProcessing implements IWordProcessing
         if(m_conceptsAnnotation)
             label = label + "_ca";
         
+        // Add the bert vocabulary if exists
+        
+        if(m_modelDirPath != null)
+        {
+            String[] modelDirList = m_modelDirPath.split("/");
+            String modelDir = modelDirList[modelDirList.length-1];
+            label = label + "_" + modelDir;
+        }
+        
         // lowercase the result
         
         label = label.toLowerCase();

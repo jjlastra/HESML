@@ -23,6 +23,7 @@ package hesml.sts.measures.impl;
 
 import hesml.measures.impl.MeasureFactory;
 import hesml.sts.measures.BERTpoolingMethod;
+import hesml.sts.measures.MLPythonLibrary;
 import hesml.sts.measures.SentenceSimilarityFamily;
 import hesml.sts.measures.SentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
@@ -54,6 +55,8 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
     // Path to the BERT pretrained model to evaluate.
     
     private final String m_modelDirPath;
+    private final String m_checkPointFilename;
+    private final String m_TunedModelDir;
     
     // Path to the python executable using the virtual environment (venv directory).
     
@@ -75,16 +78,12 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
     
     private final String m_strLabel;
     
-    // Define the Python server port
+    // Define the BERT model files format (or library)
     
-    private final String m_PythonServerPort;
-    
-    // Define the preprocessed sentences file if exists
-    
-    private final boolean m_usePreexistingPreprocessedSentences;
+    private final MLPythonLibrary m_mlLibrary;
     
     /**
-     * Constructor
+     * Constructor for Tensorflow-based evaluation
      * @param strModelDirPath
      * @param preprocesser 
      */
@@ -92,14 +91,15 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
     BertEmbeddingModelMeasure(
             String              strLabel,
             String              modelDirPath,
+            MLPythonLibrary     mlLibrary,
             IWordProcessing     preprocesser,
-            boolean             usePreexistingPreprocessedSentences,
             String              bertDir,
+            String              strCheckPointFilename,
+            String              strTunedModelDir,
             String              pythonVenvDir,
             String              pythonScriptDir,
             BERTpoolingMethod   poolingStrategy,
-            String[]            poolingLayers,
-            String              PythonServerPort) 
+            String[]            poolingLayers) 
             throws InterruptedException, IOException, 
                 FileNotFoundException, ParseException
     {
@@ -116,11 +116,44 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
         m_poolingStrategy = poolingStrategy;
         m_poolingLayers = poolingLayers;
         m_strLabel = strLabel;
-        m_PythonServerPort = PythonServerPort;
+        m_checkPointFilename = strCheckPointFilename;
+        m_TunedModelDir = strTunedModelDir;
+        m_mlLibrary = mlLibrary;
+    }
+    
+    /**
+     * Constructor for Pytorch-based evaluation
+     * @param strModelDirPath
+     * @param preprocesser 
+     */
+    
+    BertEmbeddingModelMeasure(
+            String              strLabel,
+            String              modelDirPath,
+            MLPythonLibrary     mlLibrary,
+            IWordProcessing     preprocesser,
+            String              bertDir,
+            String              pythonVenvDir,
+            String              pythonScriptDir) 
+            throws InterruptedException, IOException, 
+                FileNotFoundException, ParseException
+    {
+        // We intialize the base class
         
-        // Executes the preprocessing step
+        super(preprocesser);
         
-        m_usePreexistingPreprocessedSentences = usePreexistingPreprocessedSentences;
+        // We initialize main attributes
+        
+        m_modelDirPath = modelDirPath;
+        m_mlLibrary = mlLibrary;
+        m_bertDir = bertDir;
+        m_pythonScriptDir = pythonScriptDir;
+        m_pythonVenvDir = pythonVenvDir;
+        m_strLabel = strLabel;
+        m_checkPointFilename = null;
+        m_TunedModelDir = null;
+        m_poolingStrategy = null;
+        m_poolingLayers = null;
     }
     
     /**
@@ -259,15 +292,9 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
         String absPathTempSentencesFile = tempFileSentences.getCanonicalPath();
         String absPathTempVectorsFile   = tempFileVectors.getCanonicalPath();
         
-        // If we use the preexisting processed sentences, we check if the file exists
-        
-        if(!m_usePreexistingPreprocessedSentences
-                || !tempFileSentences.exists())
-        {
-            // We create a temporal file, remove if previously exists.
+        // We create a temporal file, remove if previously exists.
             
-            tempFileSentences = createTempFile(m_bertDir + getTempFileName() + "_Sents.txt");
-        }
+        tempFileSentences = createTempFile(m_bertDir + getTempFileName() + "_Sents.txt");
         
         // 1. Preprocess the sentences and write the sentences in a temporal file
         
@@ -291,7 +318,7 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
         
         // Remove the temporal files
         
-        if(!m_usePreexistingPreprocessedSentences) tempFileSentences.delete();
+        // tempFileSentences.delete();
         tempFileVectors.delete();
         
         // We traverse the collection of sentence pairs and compute
@@ -434,16 +461,54 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
         
         String python_command = m_pythonVenvDir + " -W ignore" 
                                     + " " + m_pythonScriptDir;
+        
+        // Initialize the Python command
+        
+        String command = "";
+        
+        // Chech the format of the pretrained model (and the library)
+        
+        if(m_mlLibrary == MLPythonLibrary.Pytorch)
+        {
+            // Evaluate a Pytorch-based pretrained model
+            
+            command = python_command + " " 
+                        + m_modelDirPath + " "
+                        + absPathTempSentencesFile + " " 
+                        + absPathTempVectorsFile;
+        }
+        else
+        {
+            // Evaluate a Tensorflow-based pretrained model
+            
+            // First, check if there is a fine-tunned model
+        
+            if("".equals(m_checkPointFilename))
+            {
+                // If it's not a fine-tunned model, the command has less arguments
+                // We fill the command line for the Python call
 
-        // We fill the command line for the Python call
-        
-        String command = python_command + " " 
-                + m_poolingStrategy + " " 
-                + String.join(",", m_poolingLayers) + " " 
-                + m_modelDirPath + " "
-                + absPathTempSentencesFile + " " + absPathTempVectorsFile + " " 
-                + m_PythonServerPort;
-        
+                command = python_command + " " 
+                        + m_poolingStrategy + " " 
+                        + String.join(",", m_poolingLayers) + " " 
+                        + m_modelDirPath + " "
+                        + absPathTempSentencesFile + " " + absPathTempVectorsFile;
+            }
+            else
+            {
+                // If it's a fine-tunned model, we send extra information
+                // We fill the command line for the Python call
+
+                command = python_command + " " 
+                        + m_poolingStrategy + " " 
+                        + String.join(",", m_poolingLayers) + " " 
+                        + m_modelDirPath + " "
+                        + absPathTempSentencesFile + " " + absPathTempVectorsFile + " "
+                        + m_checkPointFilename + " "
+                        + m_TunedModelDir;
+            }
+        }
+
         System.out.print("Python command executed: \n");
         System.out.print(command);
         

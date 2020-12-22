@@ -27,6 +27,7 @@ import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.MLPythonLibrary;
 import hesml.sts.measures.SWEMpoolingMethod;
 import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
@@ -363,39 +364,80 @@ public class SentenceSimilarityFactory
      * 
      * @param strLabel
      * @param method
+     * @param mlLibrary
      * @param wordPreprocessor
-     * @param usePreexistingPreprocessedSentences
+     * @param strBertDir
      * @param strPretrainedModelFilename
-     * @param strPretrainedModelDir
+     * @param pythonScriptDir
+     * @param strPythonVirtualEnvironmentDir
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.lang.InterruptedException 
+     * @throws org.json.simple.parser.ParseException 
+     */
+
+    public static ISentenceSimilarityMeasure getBERTPytorchSentenceEmbeddingMethod(
+            String                  strLabel,
+            SentenceEmbeddingMethod method,
+            MLPythonLibrary         mlLibrary,
+            IWordProcessing         wordPreprocessor,
+            String                  strPretrainedModelFilename,
+            String                  strBertDir,
+            String                  strPythonVirtualEnvironmentDir,
+            String                  pythonScriptDir) throws IOException,
+            InterruptedException, org.json.simple.parser.ParseException
+    { 
+        // We initialize the output
+        
+        ISentenceSimilarityMeasure measure = new BertEmbeddingModelMeasure(
+                        strLabel, strPretrainedModelFilename, mlLibrary, 
+                        wordPreprocessor, strBertDir, strPythonVirtualEnvironmentDir, 
+                        pythonScriptDir);
+
+        // We return the result
+        
+        return (measure);
+    }
+    
+    /**
+     * This function creates a sentence embedding method.
+     * 
+     * @param strLabel
+     * @param method
+     * @param mlLibrary
+     * @param wordPreprocessor
+     * @param strPretrainedModelFilename
+     * @param strCheckPointFilename
+     * @param strBertDir
+     * @param strTunedModelDir
      * @param strPythonVirtualEnvironmentDir
      * @param pythonScriptDir
      * @param poolingStrategy
      * @param poolingLayers
-     * @param PythonServerPort
      * @return 
      * @throws java.io.IOException 
      * @throws java.lang.InterruptedException 
      * @throws org.json.simple.parser.ParseException 
      */
     
-    public static ISentenceSimilarityMeasure getBERTSentenceEmbeddingMethod(
+    public static ISentenceSimilarityMeasure getBERTTensorflowSentenceEmbeddingMethod(
             String                  strLabel,
             SentenceEmbeddingMethod method,
+            MLPythonLibrary         mlLibrary,
             IWordProcessing         wordPreprocessor,
-            boolean                 usePreexistingPreprocessedSentences,
             String                  strPretrainedModelFilename,
-            String                  strPretrainedModelDir,
+            String                  strCheckPointFilename,
+            String                  strTunedModelDir,
+            String                  strBertDir,
             String                  strPythonVirtualEnvironmentDir,
             String                  pythonScriptDir,
             BERTpoolingMethod       poolingStrategy,
-            String[]                poolingLayers,
-            String                  PythonServerPort) throws IOException,
+            String[]                poolingLayers) throws IOException,
             InterruptedException, org.json.simple.parser.ParseException
     {
         // We check the existence of the pre-trained model file
         
-        File pretainedModelFileInfo = new File(strPretrainedModelDir + "/" +
-                                            strPretrainedModelFilename);
+        File pretainedModelFileInfo = new File(strPretrainedModelFilename);
         
         if (!pretainedModelFileInfo.exists())
         {
@@ -405,9 +447,9 @@ public class SentenceSimilarityFactory
         // We initialize the output
         
         ISentenceSimilarityMeasure measure = new BertEmbeddingModelMeasure(
-                        strLabel, strPretrainedModelFilename, wordPreprocessor, usePreexistingPreprocessedSentences,
-                        strPretrainedModelDir, strPythonVirtualEnvironmentDir,
-                        pythonScriptDir, poolingStrategy, poolingLayers, PythonServerPort);
+                        strLabel, strPretrainedModelFilename, mlLibrary, wordPreprocessor,
+                        strBertDir, strCheckPointFilename, strTunedModelDir, strPythonVirtualEnvironmentDir,
+                        pythonScriptDir, poolingStrategy, poolingLayers);
 
         // We return the result
         

@@ -116,9 +116,10 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="MLPythonLibrary" type="MLPythonLibrary"/>
 				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
-				<xs:element name="Pooling" type="BERTpoolingMethod"/>
-				<xs:element name="PoolingLayers" type="xs:string"/>
+				<xs:element name="Pooling" type="BERTpoolingMethod" minOccurs="0"/>
+				<xs:element name="PoolingLayers" type="xs:string" minOccurs="0"/>
 				<xs:element name="PretrainedModelDirectory" type="xs:string"/>
 				<xs:element name="PretrainedModelName" type="xs:string"/>
 				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
@@ -251,6 +252,12 @@
 			<xs:enumeration value="Default"/>
 			<xs:enumeration value="BIOSSES"/>
 			<xs:enumeration value="Blagec2019"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MLPythonLibrary">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Tensorflow"/>
+			<xs:enumeration value="Pytorch"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

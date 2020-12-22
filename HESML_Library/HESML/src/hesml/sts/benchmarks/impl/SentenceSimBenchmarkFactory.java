@@ -28,6 +28,7 @@ import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.MLPythonLibrary;
 import hesml.sts.measures.SWEMpoolingMethod;
 import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
@@ -1016,34 +1017,71 @@ public class SentenceSimBenchmarkFactory
     private static ISentenceSimilarityMeasure readBERTmodelSentenceMeasure(
             Element measureNode) throws IOException, InterruptedException, ParseException, org.json.simple.parser.ParseException
     {
+        // We initialize the result
+        
+        ISentenceSimilarityMeasure model = null;
+                
         // We load and register a BERT measure from the XML file 
-
+        
+        MLPythonLibrary mlPythonLibrary = convertToMLPythonLibrary(readStringField(measureNode, "MLPythonLibrary"));
+        
         String strBERTPretrainedModelFilename = readStringField(measureNode, "PretrainedModelName");
-        String strBERTPretrainedModelDir = readStringField(measureNode, "PretrainedModelDirectory");
+        String strBertDir = "";
         String strPythonScriptsDirectory = readStringField(measureNode, "PythonScriptsDirectory");
         String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
         String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
-        String strPoolingLayers = readStringField(measureNode, "PoolingLayers");
-
-        // Convert the pooling layers to an array splitted by comma's
-
-        String[] poolingLayers = strPoolingLayers.split(",");
         
-        // We can use a pre-processed sentences files instead of the preprocesser object
+        // Check if the model is trained using Tensorflow or Pytorch
         
-        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getBERTSentenceEmbeddingMethod(
-                                                readStringField(measureNode, "Label"), 
-                                                convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
-                                                readBERTWordProcessing(measureNode), 
-                                                readBooleanField(measureNode, "PreprocessedSentencesPath"),
-                                                strBERTPretrainedModelDir + strBERTPretrainedModelFilename, 
-                                                strPythonScriptsDirectory, 
-                                                strPythonVirtualEnvironmentDir, 
-                                                strPythonScriptsDirectory + strPythonScript, 
-                                                convertToBERTpoolingMethod(readStringField(measureNode, "Pooling")), 
-                                                poolingLayers,
-                                                containsFieldName(measureNode, "PythonServerPort")?readStringField(measureNode, 
-                                                "PythonServerPort"):"0");
+        if(mlPythonLibrary == MLPythonLibrary.Pytorch)
+        {
+            // We can use a pre-processed sentences files instead of the preprocesser object
+
+            model = SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
+                            readStringField(measureNode, "Label"), 
+                            convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                            mlPythonLibrary,
+                            readBERTWordProcessing(measureNode), 
+                            strBertDir + strBERTPretrainedModelFilename, 
+                            strPythonScriptsDirectory, 
+                            strPythonVirtualEnvironmentDir, 
+                            strPythonScriptsDirectory + strPythonScript);
+        }
+        else
+        {
+            strBertDir = readStringField(measureNode, "PretrainedModelDirectory");
+            String strPoolingLayers = readStringField(measureNode, "PoolingLayers");
+            String strCheckPointFilename = "";
+            String strTunedModelDir = "";
+
+            // Fine-tunned models can vary the checkpoint Filename
+
+            if(containsFieldName(measureNode, "CheckPointFilename"))
+            {
+                strCheckPointFilename = readStringField(measureNode, "CheckPointFilename");
+                strTunedModelDir = readStringField(measureNode, "TunedModelDir");
+            }
+
+            // Convert the pooling layers to an array splitted by comma's
+
+            String[] poolingLayers = strPoolingLayers.split(",");
+
+            // We can use a pre-processed sentences files instead of the preprocesser object
+
+            model = SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
+                            readStringField(measureNode, "Label"), 
+                            convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
+                            mlPythonLibrary,
+                            readBERTWordProcessing(measureNode), 
+                            strBertDir + strBERTPretrainedModelFilename, 
+                            strCheckPointFilename,
+                            strBertDir + strTunedModelDir,
+                            strPythonScriptsDirectory, 
+                            strPythonVirtualEnvironmentDir, 
+                            strPythonScriptsDirectory + strPythonScript, 
+                            convertToBERTpoolingMethod(readStringField(measureNode, "Pooling")), 
+                            poolingLayers);
+        }
 
         // We return the result
         
@@ -1210,6 +1248,35 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (recoveredPooling);
+    }
+    
+    /**
+     * This function converts the input string into a MLPythonLibrary.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static MLPythonLibrary convertToMLPythonLibrary(
+            String  strPoolingMethod)
+    {
+        // We initialize the output
+        
+        MLPythonLibrary recovered = MLPythonLibrary.Tensorflow;
+        
+        // We look for the matching value
+        
+        for (MLPythonLibrary type: MLPythonLibrary.values())
+        {
+            if (type.toString().equals(strPoolingMethod))
+            {
+                recovered = type;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recovered);
     }
     
     /**
