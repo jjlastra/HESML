@@ -850,11 +850,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // Select the 2018AB database
         
-        myProperties.setProperty("metamaplite.index.directory", "../../public_mm_lite/data/ivf/2018ABascii/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../../public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../../public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../../public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../../public_mm_lite/data/models/en-token.bin");
+        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
+        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
+        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
+        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
+        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
         
         myProperties.setProperty("metamaplite.sourceset", "MSH");
 
