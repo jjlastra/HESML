@@ -27,16 +27,21 @@ import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboConcept;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -54,10 +59,16 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     private ISnomedCtOntology   m_hesmlSnomedOntology;
     
     /**
-     * MeSH ontoogy loaded into HESML
+     * MeSH ontology loaded into HESML
      */
     
     private IMeSHOntology   m_hesmlMeshOntology;
+    
+    /**
+     * OBO ontology
+     */
+    
+    private IOboOntology    m_hesmlOboOntology;
     
     /**
      * Active semantic similarity measure
@@ -71,9 +82,9 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     
     private IVertexList m_hesmlVertexes;
     private ITaxonomy   m_taxonomy;
-    
+       
     /**
-     * Constructor to build the Snomed HESML database
+     * Constructor to load the Snomed ontology
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -104,10 +115,11 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_hesmlMeshOntology = null;
         m_hesmlVertexes = null;
         m_taxonomy = null;
+        m_strOboFilename = "";
     }
 
     /**
-     * Constructor to build the Snomed HESML database
+     * Constructor to load the MeSH ontology
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -133,6 +145,29 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_hesmlSnomedOntology = null;
         m_hesmlMeshOntology = null;
         m_hesmlVertexes = null;
+        m_taxonomy = null;
+        m_strOboFilename = "";
+    }
+    
+    /**
+     * This constructor loads an OBO ontology
+     * @param strObofilename 
+     */
+    
+    HESMLSemanticLibraryWrapper(
+            String  strOboFilename) throws Exception
+    {
+        // We initializa the base class
+        
+        super(strOboFilename);
+        
+        // We initialize the class
+        
+        m_hesmlSimilarityMeasure = null;
+        m_hesmlSnomedOntology = null;
+        m_hesmlMeshOntology = null;
+        m_hesmlVertexes = null;
+        m_hesmlOboOntology = null;
         m_taxonomy = null;
     }
     
@@ -169,21 +204,46 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
 
     /**
      * This function returns the degree of similarity between two CUI concepts.
-     * @param strFirstUmlsCUI
-     * @param strSecondUmlsCUI
+     * @param strFirstConceptId
+     * @param strSecondConceptId
      * @return 
      */
 
     @Override
     public double getSimilarity(
-            String  strFirstUmlsCUI,
-            String  strSecondUmlsCUI) throws Exception
+            String  strFirstConceptId,
+            String  strSecondConceptId) throws Exception
     {
-        // We compute the similarity using SNOMED or MeSH
+        // We initialize the output
         
-        double similarity = (m_hesmlSnomedOntology != null) ?
-                            getSnomedSimilarity(strFirstUmlsCUI, strSecondUmlsCUI) :
-                            getMeSHSimilarity(strFirstUmlsCUI, strSecondUmlsCUI);
+        double similarity = Double.NaN;
+        
+        // We compute the similarity using the active ontology
+        
+        if (m_hesmlSnomedOntology != null)
+        {
+            similarity = getSnomedSimilarity(strFirstConceptId, strSecondConceptId);
+        }
+        else if (m_hesmlMeshOntology != null)
+        {
+            similarity = getMeSHSimilarity(strFirstConceptId, strSecondConceptId);
+        }
+        else if (m_hesmlOboOntology != null)
+        {
+            // We get the OBO concepts
+            
+            IOboConcept concept1 = m_hesmlOboOntology.getConceptById(strFirstConceptId);
+            IOboConcept concept2 = m_hesmlOboOntology.getConceptById(strSecondConceptId);
+            
+            // We check the existence of both concepts
+            
+            if ((concept1 != null) && (concept2 != null))
+            {
+                similarity = m_hesmlSimilarityMeasure.getSimilarity(
+                                m_hesmlVertexes.getById(concept1.getTaxonomyNodeId()),
+                                m_hesmlVertexes.getById(concept2.getTaxonomyNodeId()));
+            }
+        }
         
         // We return the result
         
@@ -208,13 +268,13 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // We get the SNOMED concepts evoked by each CUI
         
-        ISnomedConcept[] firstSnomedConcepts = m_hesmlSnomedOntology.getConceptsForUmlsCUI(strFirstUmlsCUI);
-        ISnomedConcept[] secondSnomedConcepts = m_hesmlSnomedOntology.getConceptsForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_hesmlSnomedOntology.getTaxonomyVertexesForUmlsCUI(strFirstUmlsCUI);
+        IVertex[] secondVertexes = m_hesmlSnomedOntology.getTaxonomyVertexesForUmlsCUI(strSecondUmlsCUI);
         
         // We check the existence oif SNOMED concepts associated to the CUIS
         
-        if ((firstSnomedConcepts.length > 0)
-                && (secondSnomedConcepts.length > 0))
+        if ((firstVertexes.length > 0)
+                && (secondVertexes.length > 0))
         {
             // We initialize the maximum similarity
             
@@ -222,22 +282,15 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             
             // We compare all pairs of evoked SNOMED concepts
             
-            for (int i = 0; i < firstSnomedConcepts.length; i++)
+            for (IVertex vertex1: firstVertexes)
             {
-                Long snomedId1 = firstSnomedConcepts[i].getSnomedId();
-                
-                for (int j = 0; j < secondSnomedConcepts.length; j++)
+                for (IVertex vertex2: secondVertexes)
                 {
-                    Long snomedId2 = secondSnomedConcepts[j].getSnomedId();
-                    
-                    // We evaluate the similarity measure
-        
                     double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
-                                            m_hesmlVertexes.getById(snomedId1),
-                                            m_hesmlVertexes.getById(snomedId2));
-                    
+                                                vertex1, vertex2);
+                
                     // We update the maximum similarity
-                    
+
                     if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
                 }
             }
@@ -270,13 +323,13 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // We get the SNOMED concepts evoked by each CUI
         
-        IMeSHDescriptor[] firstMeshConcepts = m_hesmlMeshOntology.getConceptsForUmlsCUI(strFirstUmlsCUI);
-        IMeSHDescriptor[] secondMeshConcepts = m_hesmlMeshOntology.getConceptsForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_hesmlMeshOntology.getTaxonomyNodesForUmlsCUI(strFirstUmlsCUI);
+        IVertex[] secondVertexes = m_hesmlMeshOntology.getTaxonomyNodesForUmlsCUI(strSecondUmlsCUI);
         
         // We check the existence of MeSH concepts associated to the CUIS
         
-        if ((firstMeshConcepts.length > 0)
-                && (secondMeshConcepts.length > 0))
+        if ((firstVertexes.length > 0)
+                && (secondVertexes.length > 0))
         {
             // We initialize the maximum similarity
             
@@ -288,56 +341,20 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             // that a CUI concept evokes the full merge of all tree nodes
             // evoked by all its evoked MeSH descriptors.
             
-            // We get all tree nodes associated to the first CUI
-            
-            HashSet<Long> firstTreeNodes = new HashSet<>();
-            
-            for (int i = 0; i < firstMeshConcepts.length; i++)
-            {
-                // We get all tree nodes associtaed to the MeSH descriptor
-                
-                Long[] nodeIds1 = firstMeshConcepts[i].getTaxonomyNodesId();
-                
-                // We register all node Ids
-                
-                firstTreeNodes.addAll(Arrays.asList(nodeIds1));
-            }
-
-            // We get all tree nodes associated to the second CUI
-            
-            HashSet<Long> secondTreeNodes = new HashSet<>();
-            
-            for (int i = 0; i < secondMeshConcepts.length; i++)
-            {
-                // We get all tree nodes associtaed to the MeSH descriptor
-                
-                Long[] nodeIds2 = secondMeshConcepts[i].getTaxonomyNodesId();
-                
-                // We register all node Ids
-                
-                secondTreeNodes.addAll(Arrays.asList(nodeIds2));
-            }
-            
             // We compute the similarity for each pair of tree nodes
             
-            for (Long node1: firstTreeNodes)
+            for (IVertex vertex1: firstVertexes)
             {
-                for (Long node2: secondTreeNodes)
+                for (IVertex vertex2: secondVertexes)
                 {
                     double snomedSimilarity = m_hesmlSimilarityMeasure.getSimilarity(
-                                        m_hesmlVertexes.getById(node1),
-                                        m_hesmlVertexes.getById(node2));
+                                                vertex1, vertex2);
                 
                     // We update the maximum similarity
 
                     if (snomedSimilarity > maxSimilarity) maxSimilarity = snomedSimilarity;
                 }
             }
-            
-            // We release the auxiliary sets
-            
-            firstTreeNodes.clear();
-            secondTreeNodes.clear();
             
             // We assign the output similarity value
             
@@ -357,8 +374,8 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      * @return true if the measure is allowed
      */
     
-    @Override
-    public void setSimilarityMeasure(
+        @Override
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
@@ -370,14 +387,19 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         if (measureType != SimilarityMeasureType.Rada)
         {
-            System.out.println("Setting the " + icModel.toString() + " IC model into the SNOMED-CT  taxonomy");
+            System.out.println("Setting the " + icModel.toString() + " IC model into the taxonomy");
             
             ICModelsFactory.getIntrinsicICmodel(icModel).setTaxonomyData(m_taxonomy);
+            m_taxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the Lin similarity measure
         
         m_hesmlSimilarityMeasure = MeasureFactory.getMeasure(m_taxonomy, measureType);
+        
+        // We return the result
+        
+        return (true);
     }
     
     /**
@@ -412,6 +434,15 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             m_taxonomy = m_hesmlMeshOntology.getTaxonomy();
             m_hesmlVertexes = m_taxonomy.getVertexes();
         }
+        
+        // We load the OBO ontology
+        
+        if ((m_strOboFilename != "") && (m_hesmlOboOntology == null))
+        {
+            m_hesmlOboOntology = OboFactory.loadOntology(m_strOboFilename);
+            m_taxonomy = m_hesmlOboOntology.getTaxonomy();
+            m_hesmlVertexes = m_taxonomy.getVertexes();
+        }
     }
     
     /**
@@ -425,5 +456,6 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         if (m_hesmlSnomedOntology != null) m_hesmlSnomedOntology.clear();
         if (m_hesmlMeshOntology != null) m_hesmlMeshOntology.clear();
+        if (m_hesmlOboOntology != null) m_hesmlOboOntology.clear();
     }
 }

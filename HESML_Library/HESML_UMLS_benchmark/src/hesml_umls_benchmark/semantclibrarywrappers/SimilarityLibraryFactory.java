@@ -150,4 +150,46 @@ public class SimilarityLibraryFactory
         
         return (library);
     }
+    
+    /**
+     * Thius function creates an instance of a library wrapper to load
+     * the Gene Ontology (GO).
+     * @param libraryType
+     * @param strOboGeneOntologyFilename
+     * @return 
+     */
+    
+    public static ISemanticLibrary getLibraryForGO(
+            SemanticLibraryType libraryType,
+            String              strOboGeneOntologyFilename) throws Exception
+    {
+        // We initialize the output
+        
+        ISemanticLibrary library = null;
+        
+        // We cretae the warpper for each library being evaliated
+        
+        switch (libraryType)
+        {
+            case HESML:
+                
+                library = new HESMLSemanticLibraryWrapper(strOboGeneOntologyFilename);
+                
+                break;
+                
+            case SML:
+                
+                library = new SMLSemanticLibraryWrapper(strOboGeneOntologyFilename);
+                
+                break;
+                
+            case UMLS_SIMILARITY:
+
+                throw (new UnsupportedOperationException("UMLS_SIMILARITY does not implement GO ontology"));
+        }
+        
+        // We return the result
+        
+        return (library);
+    }
 }

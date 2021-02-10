@@ -185,9 +185,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
             similarity[i][1] = Double.valueOf(data[3]);
         }
         
-        // We close the output script file
+        // We close the output script file and remove the files
         
         csvReader.close();
+        this.clear();
         
         // Return the result
         
@@ -226,17 +227,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         conversionMap.put(SimilarityMeasureType.PekarStaab, "pks");
         conversionMap.put(SimilarityMeasureType.Sanchez2012, "sanchez");
 
-        // We check that the measure is implemented by thius library
-        
-        if (!conversionMap.containsKey(hesmlMeasureType))
-        {
-            throw (new Exception(hesmlMeasureType.toString() +
-                    " is not implemented by UMLS::Similarity"));
-        }
-        
         // We get the output measure tyoe
         
-        String strUMLSimMeasureType = conversionMap.get(hesmlMeasureType);
+        String strUMLSimMeasureType = conversionMap.containsKey(hesmlMeasureType) ?
+                                        conversionMap.get(hesmlMeasureType) : "";
         
         // We release the conversion table
         
@@ -342,14 +336,25 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     @Override
-    public void setSimilarityMeasure(
+    public boolean setSimilarityMeasure(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType) throws Exception
     {
         // We save the new configuration
         
-        m_icModel = icModel;
-        m_measureType = measureType;
+        boolean result = !convertHesmlMeasureTypeToUMLS_Sim(measureType).equals("");
+        
+        // We set the new measure type
+        
+        if (result)
+        {
+            m_icModel = icModel;
+            m_measureType = measureType;
+        }
+        
+        // We return the result
+        
+        return (result);
     }
     
     /**

@@ -31,6 +31,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.semantclibrarywrappers.UMLSSemanticLibraryWrapper;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -171,9 +174,13 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     public void run(
             String  strOutputFilename) throws Exception
     {
+        // We initilizae the number of runs
+        
+        int nRuns = 5;
+        
         // We create the output data matrix and fill the row headers
         
-        String[][] strOutputDataMatrix = new String[2][m_Libraries.length + 1];
+        String[][] strOutputDataMatrix = new String[1 + nRuns][m_Libraries.length + 1];
         
         // We fill the first row header
         
@@ -194,22 +201,37 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             strOutputDataMatrix[0][iLib + 1] = m_Libraries[iLib].getLibraryType().toString()
                                         + "-" + m_MeasureType.toString();
             
-            // We load SNOMED and the resources of the library
+            // We set the output value
             
-            m_Libraries[iLib].loadOntology();
+            double[] runningTimes;
             
             // We set the similarity measure to be used
             
-            m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType);
+            if (m_Libraries[iLib].setSimilarityMeasure(m_icModel, m_MeasureType))
+            {
+                // We load MeSH ontology and the resources of the library
+
+                m_Libraries[iLib].loadOntology();
+
+                // We evaluate the library
+
+                runningTimes = EvaluateLibrary(m_Libraries[iLib], nRuns);
+
+                // We release the database and resources used by the library
+
+                m_Libraries[iLib].unloadOntology();
+            }
+            else
+            {
+                // The library does not implement the measure.
+                // We set the running times to NaN
+                
+                runningTimes = getNullRunningTimes(nRuns);
+            }
             
-            // We evaluate the library
+            // We save the results
             
-            CopyRunningTimesToMatrix(strOutputDataMatrix,
-                EvaluateLibrary(m_Libraries[iLib], 1), iLib + 1);
-            
-            // We release the database and resources used by the library
-            
-            m_Libraries[iLib].unloadOntology();
+            CopyRunningTimesToMatrix(strOutputDataMatrix, runningTimes, iLib + 1);
         }
         
         // We write the output raw data
@@ -271,23 +293,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     
     private double[] EvaluateLibrary(
             ISemanticLibrary    library,
-            int                         nRuns) throws Exception
+            int                 nRuns) throws Exception
     {
         // We initialize the output vector
         
         double[] runningTimes = new double[nRuns];
-        
-        // Becaause of the large running times of the UMLS_SIMILARITY library,
-        // this library is evaluated just one time, whilst the rest of 
-        // libraries are evaluated n times
-        // We compute all valus in one unique query
-        
-        boolean pedersenLib = (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
-        
-        if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
-        {
-            buildCachedSimilarityValues((UMLSSemanticLibraryWrapper) library);
-        }
         
         // We execute multiple times the benchmark to compute a stable running time
 
@@ -295,6 +305,18 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         for (int iRun = 0; iRun < nRuns; iRun++)
         {
+            // Becaause of the large running times of the UMLS_SIMILARITY library,
+            // this library is evaluated just one time, whilst the rest of 
+            // libraries are evaluated n times
+            // We compute all valus in one unique query
+
+            boolean pedersenLib = (library.getLibraryType() == SemanticLibraryType.UMLS_SIMILARITY);
+
+            if (pedersenLib && (m_CachedSimilarityValues.size() == 0))
+            {
+                buildCachedSimilarityValues((UMLSSemanticLibraryWrapper) library);
+            }
+            
             // We initialize the stopwatch
 
             long startTime = System.currentTimeMillis();
@@ -313,7 +335,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             // We accumulate the query time for the UMLS::Similarity library
             // becuase it has bnen pre-calculated before
             
-            if (pedersenLib) runningTimes[iRun] += m_overallCachingTime;
+            if (pedersenLib)
+            {
+                runningTimes[iRun] += m_overallCachingTime;
+                m_CachedSimilarityValues.clear();
+            }
             
             // We accumulate the overall time
             
@@ -850,11 +876,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // Select the 2018AB database
         
-        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
+        myProperties.setProperty("metamaplite.index.directory", "../HESML_UMLS_benchmark/public_mm_lite/data/ivf/2018ABascii/USAbase/");
+        myProperties.setProperty("opennlp.models.directory", "../HESML_UMLS_benchmark/public_mm_lite/data/models/");
+        myProperties.setProperty("opennlp.en-pos.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-pos-maxent.bin");
+        myProperties.setProperty("opennlp.en-sent.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-sent.bin");
+        myProperties.setProperty("opennlp.en-token.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-token.bin");
         
         myProperties.setProperty("metamaplite.sourceset", "MSH");
 

@@ -27,7 +27,7 @@ package hesml_umls_benchmark;
  * @author j.lastra
  */
 
-public interface IUMLSBenchmark
+public interface ISemanticLibBenchmark
 {
     /**
      * This fucntion runs the benchmark and writes the results to the
