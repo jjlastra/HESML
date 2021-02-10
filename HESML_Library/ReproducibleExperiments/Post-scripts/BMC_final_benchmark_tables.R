@@ -43,13 +43,20 @@ rm(list = ls())
 # Unix-like format to be compatible with Windows
 # or Linux-based R distributions.
 
-rootDir = "/home/juan/Paper_UMLS/RawOutput_run1/"
+# First, we get the current file script directory
+
+current_working_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+
+# and we set the working directory for the R project
+
+setwd(current_working_dir)
+
+# We set the input and output directories
+
+rootDir = "../HESMLV1R5_paper/RawOutputFiles/antes/"
 inputDir = rootDir
-outputDir =  paste(rootDir, sep = "/", "ProcessedOutputFiles/")
+outputDir = "../HESMLV1R5_paper/ProcessedOutputFiles/"
 
-dir.create(outputDir)
-
- 
 # ------------------------------------------------------------------------
 # Table 1: Average speed in concepts per second in the SNOMED-CT ontology
 # ------------------------------------------------------------------------
@@ -240,26 +247,85 @@ rawdata_AncSPLCai_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_AncSPLC
 
 # We create the table 5 as reported in the paper [4]
 
-table5 <- matrix(nrow = 3, ncol = 4);
+table5 <- matrix(nrow = 3, ncol = 10);
 
-colnames(table5) <- c("Similarity measure", "AncSPL variant", "Pearson", "Spearman");
+colnames(table5) <- c("Base measure", "AncSPL reformulation", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman");
+
+# We select the number of random rows to be used for each range of results
+
+n_samples_1 <- 50
+n_samples_2 <- 100
+n_samples_3 <- 200
+n_samples_4 <- 1000
+
+# We select the sample tables for each part of the experiment 4
+
+rawdata_AncSPLRada_exp4_sample_rows_1 <- rawdata_AncSPLRada_exp4[sample(nrow(rawdata_AncSPLRada_exp4), n_samples_1), ]
+rawdata_AncSPLRada_exp4_sample_rows_2 <- rawdata_AncSPLRada_exp4[sample(nrow(rawdata_AncSPLRada_exp4), n_samples_2), ]
+rawdata_AncSPLRada_exp4_sample_rows_3 <- rawdata_AncSPLRada_exp4[sample(nrow(rawdata_AncSPLRada_exp4), n_samples_3), ]
+rawdata_AncSPLRada_exp4_sample_rows_4 <- rawdata_AncSPLRada_exp4[sample(nrow(rawdata_AncSPLRada_exp4), n_samples_4), ]
+
+rawdata_AncSPLLeacock_exp4_sample_rows_1 <- rawdata_AncSPLLeacock_exp4[sample(nrow(rawdata_AncSPLLeacock_exp4), n_samples_1), ]
+rawdata_AncSPLLeacock_exp4_sample_rows_2 <- rawdata_AncSPLLeacock_exp4[sample(nrow(rawdata_AncSPLLeacock_exp4), n_samples_2), ]
+rawdata_AncSPLLeacock_exp4_sample_rows_3 <- rawdata_AncSPLLeacock_exp4[sample(nrow(rawdata_AncSPLLeacock_exp4), n_samples_3), ]
+rawdata_AncSPLLeacock_exp4_sample_rows_4 <- rawdata_AncSPLLeacock_exp4[sample(nrow(rawdata_AncSPLLeacock_exp4), n_samples_4), ]
+
+rawdata_AncSPLCosine_exp4_sample_rows_1 <- rawdata_AncSPLCosine_exp4[sample(nrow(rawdata_AncSPLCosine_exp4), n_samples_1), ]
+rawdata_AncSPLCosine_exp4_sample_rows_2 <- rawdata_AncSPLCosine_exp4[sample(nrow(rawdata_AncSPLCosine_exp4), n_samples_2), ]
+rawdata_AncSPLCosine_exp4_sample_rows_3 <- rawdata_AncSPLCosine_exp4[sample(nrow(rawdata_AncSPLCosine_exp4), n_samples_3), ]
+rawdata_AncSPLCosine_exp4_sample_rows_4 <- rawdata_AncSPLCosine_exp4[sample(nrow(rawdata_AncSPLCosine_exp4), n_samples_4), ]
+
+rawdata_AncSPLCai_exp4_sample_rows_1 <- rawdata_AncSPLCai_exp4[sample(nrow(rawdata_AncSPLCai_exp4), n_samples_1), ]
+rawdata_AncSPLCai_exp4_sample_rows_2 <- rawdata_AncSPLCai_exp4[sample(nrow(rawdata_AncSPLCai_exp4), n_samples_2), ]
+rawdata_AncSPLCai_exp4_sample_rows_3 <- rawdata_AncSPLCai_exp4[sample(nrow(rawdata_AncSPLCai_exp4), n_samples_3), ]
+rawdata_AncSPLCai_exp4_sample_rows_4 <- rawdata_AncSPLCai_exp4[sample(nrow(rawdata_AncSPLCai_exp4), n_samples_4), ]
 
 # We fill the row reporting the evaluation of the Rada measure
 
 table5[1,1] = "Rada";
 table5[1,2] = "AnsSPL-Rada";
-table5[1,3] = round(cor(rawdata_AncSPLRada_exp4[,3], rawdata_AncSPLRada_exp4[, 4], method = "pearson"), 4)
-table5[1,4] = round(cor(rawdata_AncSPLRada_exp4[,3], rawdata_AncSPLRada_exp4[, 4], method = "spearman"), 4)
+
+table5[1,3] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_1[,3], rawdata_AncSPLRada_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table5[1,4] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_1[,3], rawdata_AncSPLRada_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table5[1,5] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_2[,3], rawdata_AncSPLRada_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table5[1,6] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_2[,3], rawdata_AncSPLRada_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table5[1,7] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_3[,3], rawdata_AncSPLRada_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table5[1,8] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_3[,3], rawdata_AncSPLRada_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table5[1,9] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_4[,3], rawdata_AncSPLRada_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table5[1,10] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_4[,3], rawdata_AncSPLRada_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 table5[2,1] = "Leacock-Chodorow";
 table5[2,2] = "AnsSPL-Leacock";
-table5[2,3] = round(cor(rawdata_AncSPLLeacock_exp4[,3], rawdata_AncSPLLeacock_exp4[, 4], method = "pearson"), 4)
-table5[2,4] = round(cor(rawdata_AncSPLLeacock_exp4[,3], rawdata_AncSPLLeacock_exp4[, 4], method = "spearman"), 4)
+table5[2,3] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table5[2,4] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table5[2,5] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table5[2,6] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table5[2,7] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table5[2,8] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table5[2,9] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table5[2,10] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 table5[3,1] = "coswJ&C";
 table5[3,2] = "AnsSPL-coswJ&C";
-table5[3,3] = round(cor(rawdata_AncSPLCosine_exp4[,3], rawdata_AncSPLCosine_exp4[, 4], method = "pearson"), 4)
-table5[3,4] = round(cor(rawdata_AncSPLCosine_exp4[,3], rawdata_AncSPLCosine_exp4[, 4], method = "spearman"), 4)
+table5[3,3] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_AncSPLCosine_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table5[3,4] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_AncSPLCosine_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table5[3,5] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_AncSPLCosine_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table5[3,6] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_AncSPLCosine_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table5[3,7] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_AncSPLCosine_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table5[3,8] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_AncSPLCosine_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table5[3,9] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table5[3,10] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table5[4,1] = "Cai";
+table5[4,2] = "AnsSPL-Cai";
+table5[4,3] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_1[,3], rawdata_AncSPLCai_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table5[4,4] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_1[,3], rawdata_AncSPLCai_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table5[4,5] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_2[,3], rawdata_AncSPLCai_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table5[4,6] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_2[,3], rawdata_AncSPLCai_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table5[4,7] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_3[,3], rawdata_AncSPLCai_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table5[4,8] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_3[,3], rawdata_AncSPLCai_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table5[4,9] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_4[,3], rawdata_AncSPLCai_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table5[4,10] = round(cor(rawdata_AncSPLCai_exp4_sample_rows_4[,3], rawdata_AncSPLCai_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 # ------------------------------------------------------------
 # We save all final data tables 
@@ -327,5 +393,55 @@ kable_out <- kable(table5,
 
 readr::write_file(kable_out, "Table5.html")
 browseURL("Table5.html")
+
+
+#############################
+# we export the latex Table 5
+#############################
+
+library(knitr)
+library(readr)
+library(kableExtra)
+library(stringr)
+library(xtable)
+
+# We define the latex table with the data
+
+colnames(table5) <- c("Base measure", "\\makecell[c]{AncSPL \\\\ reformulation}", "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$');
+
+table5[1,1] = "Rada \\cite{Rada1989-cv}";
+table5[2,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}";
+table5[3,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
+table5[3,2] = "AnsSPL-coswJ\\&C";
+
+
+table_latex <- xtable(table5, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$command  <- c('\\hline \\multicolumn{1}{c}{ } & \\multicolumn{1}{c}{} & \\multicolumn{1}{c}{} & \\multicolumn{2}{c}{50 samples} & \\multicolumn{2}{c}{100 samples} & \\multicolumn{2}{c}{200 samples} & \\multicolumn{2}{c}{1000 samples} \\\\ ')
+
+# we define a function for adding \small to all rows
+
+add_small_to_all_rows.allrows <- function(x) {
+  x
+}
+
+#add_small_to_all_rows.allrows <- function(x) {
+#  h <- paste('\\small{',x,'}', sep ='')
+#  h
+#}
+
+# We save the tables in latex and HTML format files. The HTML format is for 
+
+strLatexTables <- print(xtable(table_latex, caption = "iExperimentCaption", label = "tab:ancspl_results", digits=3), caption.placement = 'top',floating.environment = "table*",
+                                                          add.to.row = addtorow, comment=FALSE, table.placement="!h", 
+                                                          sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows)
 
 
