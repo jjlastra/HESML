@@ -266,6 +266,10 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             ArrayList<SnomedConceptPair> group = m_groupedConceptPairs.get(distance);
             
+            // Debug message
+            
+            System.out.println("Evaluating the distance-based group " + distance + "of " + maxPairDistance);
+            
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
             // Thus, we define the minimum number of evaluations in decreasing
@@ -273,8 +277,8 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             double s = (distance - 1) / ((double) (maxPairDistance - 1));
             
-            double maxSamples = 1e06;
-            double minSamples = 1e05;
+            double maxSamples = 1e04;
+            double minSamples = 1e04;
             
             double samples = maxSamples * (1.0 - s) + s * minSamples;
             
@@ -306,10 +310,10 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             long overallpairEvaluations = reps * group.size();
             
-            strOutputMatrix[distance + 1][0] = Integer.toString(distance);
-            strOutputMatrix[distance + 1][1] = Long.toString(overallpairEvaluations);
-            strOutputMatrix[distance + 1][2] = Double.toString(timeEllapsedSecs);
-            strOutputMatrix[distance + 1][2] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
+            strOutputMatrix[distance][0] = Integer.toString(distance);
+            strOutputMatrix[distance][1] = Long.toString(overallpairEvaluations);
+            strOutputMatrix[distance][2] = Double.toString(timeEllapsedSecs);
+            strOutputMatrix[distance][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
         }
     }
 }
