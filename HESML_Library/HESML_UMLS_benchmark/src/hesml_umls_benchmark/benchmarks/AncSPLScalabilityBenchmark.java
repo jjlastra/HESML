@@ -189,7 +189,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // selected depth-based groups.
         
         
-        int overallSamples = 100000;
+        int overallSamples = 1000000;
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -278,15 +278,12 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             double s = (distance - 1) / ((double) (maxPairDistance - 1));
             
-            double maxSamples = 1e04;
             double minSamples = 1e04;
-            
-            double samples = maxSamples * (1.0 - s) + s * minSamples;
             
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
             
-            int reps = Math.max(1, (int)Math.ceil(samples / group.size()));
+            int reps = Math.max(1, (int)Math.ceil(minSamples / group.size()));
             
             // We start the stop watch
             
@@ -316,5 +313,9 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             strOutputMatrix[distance][2] = Double.toString(timeEllapsedSecs);
             strOutputMatrix[distance][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
         }
+        
+        // We write the output file
+        
+        SemanticLibraryBenchmark.writeCSVfile(strOutputMatrix, strOutputRawDataFilename);
     }
 }
