@@ -48,7 +48,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
      * Groups of concept pairs indexed by their AncSPL distance
      */
     
-    private TreeMap<Double, ArrayList<SnomedConceptPair>>  m_groupedConceptPairs;
+    private TreeMap<Integer, ArrayList<SnomedConceptPair>>  m_groupedConceptPairs;
     
     /**
      * This function loads 
@@ -189,7 +189,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // selected depth-based groups.
         
         
-        int overallSamples = 1000000;
+        int overallSamples = 100000;
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -211,7 +211,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             // We evaluate thie AncSPL distance
             
-            double ancSplDistance = source.getFastShortestPathDistanceTo(target, false);
+            int ancSplDistance = (int) source.getFastShortestPathDistanceTo(target, false);
             
             // We retrieve the group for this distance
             
