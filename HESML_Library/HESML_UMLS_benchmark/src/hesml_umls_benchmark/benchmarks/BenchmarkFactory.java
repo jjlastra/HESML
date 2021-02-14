@@ -23,6 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
+import hesml_umls_benchmark.IAncSPLScalabilityBenchmark;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibBenchmark;
@@ -200,6 +201,31 @@ public class BenchmarkFactory
         return (new MeSHSentencesEvalBenchmark(libraries,
                 similarityMeasure, icModel, strDatasetPath, 
                 strMeSHdir, strMeSHXmlConceptFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
+    
+    /**
+     * This fucntion creates an istance of the AncSPL scalability benchmark
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IAncSPLScalabilityBenchmark createAncSPLScalabilityTest(
+            String  strSnomedDir,
+            String  strSnomedDBconceptFileName,
+            String  strSnomedDBRelationshipsFileName,
+            String  strSnomedDBdescriptionFileName,
+            String  strUmlsDir,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLScalabilityBenchmark(strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
 }

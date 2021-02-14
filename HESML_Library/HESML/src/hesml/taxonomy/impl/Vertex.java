@@ -1006,7 +1006,7 @@ class Vertex implements IVertex
      * Length (AnsSPL) and it is introduced by Lastra-Díaz et al. (2020) [1].
      *
      * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
-     * HESML: an efficient semantic measures library for the biomedical domain,
+     * HESML: a real-time semantic measures library for the biomedical domain,
      * Submitted for Publication. (2020).
      * 
      * @param target

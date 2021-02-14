@@ -24,8 +24,6 @@ package hesml_umls_benchmark;
 import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml.taxonomyreaders.obo.IOboOntology;
-import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -141,7 +139,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -149,29 +147,36 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-        RunAncSPLExperiment(strOutputDir);
+        //RunAncSPLExperiment(strOutputDir);
+        
+        /**
+         * Experimetn 5: scalability of the AncSPL algortihm with regards to
+         * the distance between SNOME-CT concepts
+         */
+        
+        RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
          * Experiment 5: we compare the performance of HESML and SML on
          * the Gene Ontoogy (GO).
          */
         
-        RunRandomGOConceptsExperiment(strOutputDir);
+        //RunRandomGOConceptsExperiment(strOutputDir);
         
         /**
-         * Experiment 3: we compare the performance of the HEMSL, SML and
+         * Experiment 6: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         // We show the overalll running time
         
@@ -478,8 +483,7 @@ public class HESML_UMLS_benchmark
 
             for (int j = 0; j < libraries.length; j++)
             {
-                nRandomSamplesPerLibrary[j] = getRandomSamplesCountGO(libraries[j],
-                                                measureTypes[i]);
+                nRandomSamplesPerLibrary[j] = getRandomSamplesCountGO(libraries[j], measureTypes[i]);
             }
         
             // We set the benchmark
@@ -558,6 +562,35 @@ public class HESML_UMLS_benchmark
             sentenceBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
             sentenceBenchmark.clear();
         }
+    }
+    
+    /**
+     * This function runs the scalability experiemnt for AncSPL. We evaluate the average
+     * speed as a function of the SNOMED-CT concept distances..
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunAncSPLScalabilityExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IAncSPLScalabilityBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+        // We compute the groups of concepts
+        
+        benchmark.computeConceptGroups();
+        
+        // We evaluate the avergae speed for each distance-based group of conepts.
+        
+        benchmark.evaluatePairwiseDistanceForAllGroups(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        
+        // Werlease all resources
+        
+        benchmark.clear();
     }
     
     /**

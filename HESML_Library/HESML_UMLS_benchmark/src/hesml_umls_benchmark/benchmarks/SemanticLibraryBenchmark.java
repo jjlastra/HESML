@@ -235,7 +235,7 @@ abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
      * @param strOutputFilename 
      */
     
-    protected void WriteCSVfile(
+    public static void writeCSVfile(
             String[][]  strDataMatrix,
             String      strOutputFilename) throws IOException
     {

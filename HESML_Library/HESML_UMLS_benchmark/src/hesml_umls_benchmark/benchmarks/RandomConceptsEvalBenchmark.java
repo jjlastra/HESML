@@ -250,7 +250,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         
         // We write the output raw data
         
-        WriteCSVfile(strOutputDataMatrix, strOutputFilename);
+        writeCSVfile(strOutputDataMatrix, strOutputFilename);
     }
     
     /**
