@@ -250,13 +250,14 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         
         int maxPairDistance = 30;
         
-        String[][] strOutputMatrix = new String[1 + maxPairDistance][3];
+        String[][] strOutputMatrix = new String[1 + maxPairDistance][4];
         
         // We insert the headers
         
         strOutputMatrix[0][0] = "Distance";
         strOutputMatrix[0][1] = "# pairs";
         strOutputMatrix[0][2] = "Overall time (secs)";
+        strOutputMatrix[0][3] = "Avg speed (concept pairs/secs)";
         
         // We evaluate the AncSPL distance for all vertex pairs with the same distance
         
