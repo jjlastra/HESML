@@ -21,6 +21,7 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.taxonomy.IVertex;
+import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.IAncSPLScalabilityBenchmark;
@@ -172,11 +173,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
     {
         // We create a random number
         
-        Random rand = new Random(1500);
-        
-        // We get hte matrix of vertexes grouped by depth-max value
-        
-        IVertex[][] vertexesGroupedByDepthValue = getVertexesByDepthMax();
+        Random rand = new Random(500);
         
         // We generate random concept pairs to populate the collection of groups
         // In order to generate a more uniform distribution regarding to the
@@ -185,29 +182,20 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // and then, we randomly select two vertexes from two randomly
         // selected depth-based groups.
         
-        int overallSamples = 100000;
+        int overallSamples = 10000000;
+        
+        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
         
         for (int i = 0; i < overallSamples; i++)
         {
-            // We obtain a random source vertex
+            // We obtain a pair of random vertexes
             
-            int sourceDepth = rand.nextInt(vertexesGroupedByDepthValue.length);
-            
-            IVertex[]  sourceVertexes = vertexesGroupedByDepthValue[sourceDepth];
-            
-            IVertex source = sourceVertexes[rand.nextInt(sourceVertexes.length)];
-            
-            // We obtain a random target vertex
-            
-            int targetDepth = rand.nextInt(vertexesGroupedByDepthValue.length);
-            
-            IVertex[]  targetVertexes = vertexesGroupedByDepthValue[targetDepth];
-            
-            IVertex target = targetVertexes[rand.nextInt(targetVertexes.length)];
+            IVertex source = vertexes.getAt(rand.nextInt(vertexes.getCount()));
+            IVertex target = vertexes.getAt(rand.nextInt(vertexes.getCount()));
             
             // We evaluate thie AncSPL distance
             
-            int ancSplDistance = (int) source.getFast2ShortestPathDistanceTo(target, false);
+            int ancSplDistance = (int) source.getFastShortestPathDistanceTo(target, false);
             
             // We retrieve the group for this distance
             
@@ -220,7 +208,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             group.add(new SnomedConceptPair(ancSplDistance, source, target));
             
-            if (i % 100 == 0) System.out.println("Samples = "+ (i + 1) + " / " + overallSamples);
+            if (i % 1000 == 0) System.out.println("Samples = "+ (i + 1) + " / " + overallSamples);
         }
         
         // We read the quantity of data
@@ -292,7 +280,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             {
                 for (SnomedConceptPair pair : group)
                 {
-                    pair.getSourceConceptVertex().getFast2ShortestPathDistanceTo(
+                    pair.getSourceConceptVertex().getFastShortestPathDistanceTo(
                             pair.getTargetConceptVertex(), false);
                 }
             }
