@@ -492,6 +492,84 @@ class Taxonomy implements ITaxonomy
     }
     
     /**
+     * This function retrieves the ancestor set of the seed vertex,
+     * including this later one, and returns the set as an unordered
+     * HashSet, instead of the heavier and ordered IVertexList. This function
+     * only returns the ancestor set until the target vertex.
+     * @param seed Seed vertex whose ancestors set will be visited.
+     * @return The ancestor set.
+     * @throws InterruptedException 
+     */
+    
+    public HashSet<IVertex>  getUnorderedAncestorSetUntilTarget(
+            IVertex seed,
+            IVertex target)
+    {
+        // We create the output ancestor set
+        
+        HashSet<IVertex> ancestorSet = new HashSet<>();
+        
+        // We create the traversal queue
+        
+        LinkedList<IVertex> pending = new LinkedList<>();
+        
+        // We enqueue this vertex to mark all the ancestors
+        
+        pending.add(seed);
+        ancestorSet.add(seed);
+        
+        // We traverse the ancestors of the current vertex
+        
+        while (!pending.isEmpty())
+        {
+            // We get the next vertex to explore
+            
+            IVertex current = pending.remove();
+                    
+            // We enqueue all its parents. We use a direct loop traversal
+            // of the vertex to retrieve its parents, with the aim to
+            // reduce the time spent in the creation of a list whenever
+            // the getParents() emthod is invoked.
+            
+            IHalfEdge firstEdge = current.getFirstOutcomingEdge();
+            IHalfEdge loop = firstEdge;
+            
+            do
+            {
+                // We check if the adjacent vertex is a parent
+                
+                if (loop.getEdgeType() == OrientedEdgeType.SubClassOf)
+                {
+                    IVertex parent = loop.getTarget();
+                    
+                    if (!ancestorSet.contains(parent))
+                    {
+                        pending.add(parent);
+                        ancestorSet.add(parent);
+                        
+                        // We check whther target vertex has been found
+                        
+                        if (parent == target)
+                        {
+                            pending.clear();
+                            break;
+                        }
+                    }
+                }
+                
+                // We move to the next outcoming edge
+                
+                loop = loop.getOpposite().getNext();
+                
+            } while (loop != firstEdge);
+        }
+        
+        // We return the result
+        
+        return (ancestorSet);
+    }
+    
+    /**
      * This function forces the computation and caching of the hyponym set
      * count for each concept in the taxonomy. It is made to accelerate the
      * computation of several IC models using the Hyponym count feature.

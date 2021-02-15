@@ -1041,7 +1041,7 @@ class Vertex implements IVertex
 
             if (isMyDescendant(target))
             {
-                // We compute the shortes-path constrained to the ancestor set
+                // We compute the shortest-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
 
                 Set<IVertex> targetAncestors = cachedAncestors ?
@@ -1094,6 +1094,104 @@ class Vertex implements IVertex
                     sourceAncestors.clear();
                 }
 
+                mergeSubgraph.clear();
+            }
+
+            // We get the shortest distance until the target vertex
+
+            distance = target.getMinDistance();
+        }
+        
+        // We return the result
+        
+        return (distance);
+    }
+    
+    /**
+     * This function computes a fast approximation of the Dijkstra algorithm
+     * using the edge weights assigned to the taxonomy, or a uniform weight = 1
+     * when it is invoked to count the edges between the current and target
+     * vertexes. This novel algortihm is called Ancestor-based Shortest-Path
+     * Length (AnsSPL) and it is introduced by Lastra-Díaz et al. (2020) [1].
+     *
+     * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
+     * HESML: a real-time semantic measures library for the biomedical domain,
+     * Submitted for Publication. (2020).
+     * 
+     * @param target
+     * @return 
+     */
+    
+    @Override
+    public double getFast2ShortestPathDistanceTo(
+            IVertex     target,
+            boolean     weighted) throws Exception
+    {
+        double  distance;    // Returned value
+        
+        // We check for identical target
+        
+        if (target == this)
+        {
+            distance = 0.0;
+        }
+        else if (!weighted && m_Taxonomy.isTreeLike())
+        {
+            distance = getShortestEdgePathOnTrees(target);
+        }
+        else
+        {
+            // We compute a subgraoh containing most of paths between
+            // the current vertex and the target
+
+            if (isMyDescendant(target))
+            {
+                // We compute the shortest-path constrained to the ancestor set
+                // of the target vertex, which includes this vertex
+
+                Set<IVertex> targetAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(target, this);
+
+                computeDistanceFieldOnSubgraph(targetAncestors, weighted);
+
+                // We destroy the ancestor set if it was obtained on-the-fly
+
+                targetAncestors.clear();
+            }
+            else if (target.isMyDescendant(this))
+            {
+                // We compute the shortes-path constrained to the ancestor set
+                // of this vertex, which includes the target vertex
+
+                Set<IVertex> sourceAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(this, target);
+
+                computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
+
+                // We destroy the ancestor set if it was obtained on-the-fly
+
+                sourceAncestors.clear();
+            }
+            else
+            {
+                // We retrieve the Lowest Common Subsummer (LCS) vertex
+                
+                IVertex lcsVertex = m_Taxonomy.getLCS(this, target, false);
+                
+                // We obtain the ancestor set of both vertexes
+
+                Set<IVertex> targetAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(target, lcsVertex);
+                Set<IVertex> sourceAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(this, lcsVertex);
+
+                // We merge both ancestor sets to buld the subgraph
+
+                HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
+                mergeSubgraph.addAll(sourceAncestors);
+
+                computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);
+
+                // // We destroy the ancestor sets if they were obtained on-the-fly
+
+                targetAncestors.clear();
+                sourceAncestors.clear();
                 mergeSubgraph.clear();
             }
 

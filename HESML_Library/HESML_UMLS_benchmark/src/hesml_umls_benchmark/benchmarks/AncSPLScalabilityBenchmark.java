@@ -189,7 +189,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // selected depth-based groups.
         
         
-        int overallSamples = 1000000;
+        int overallSamples = 100;
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -211,7 +211,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             // We evaluate thie AncSPL distance
             
-            int ancSplDistance = (int) source.getFastShortestPathDistanceTo(target, false);
+            int ancSplDistance = (int) source.getFast2ShortestPathDistanceTo(target, false);
             
             // We retrieve the group for this distance
             
@@ -278,7 +278,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             double s = (distance - 1) / ((double) (maxPairDistance - 1));
             
-            double minSamples = 1e04;
+            double minSamples = 1000;
             
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
@@ -295,7 +295,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             {
                 for (SnomedConceptPair pair : group)
                 {
-                    pair.getSourceConceptVertex().getFastShortestPathDistanceTo(
+                    pair.getSourceConceptVertex().getFast2ShortestPathDistanceTo(
                             pair.getTargetConceptVertex(), false);
                 }
             }

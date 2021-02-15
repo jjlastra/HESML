@@ -226,6 +226,20 @@ public interface IVertex extends Comparable<IVertex>
             boolean     weighted) throws Exception;
 
     /**
+     * This function computes a fast approximation of the Dijkstra algorithm
+     * using the edge weights assigned to the taxonomy, or a uniform weight = 1
+     * when it is invoked to count the edges between the current and target
+     * vertexes. This novel algortihm is especially suited for taxonomies
+     * and it is introduced in a paper submitted for publication [1].
+     * @param target
+     * @return 
+     */
+    
+    double getFast2ShortestPathDistanceTo(
+            IVertex     target,
+            boolean     weighted) throws Exception;
+    
+    /**
      * This function computes the distance field from the current vertex
      * using the Dijkstra algorithm and the edge weights
      * assigned to the taxonomy. When the parameter 'weighted' is false, the
