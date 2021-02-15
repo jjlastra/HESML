@@ -905,7 +905,10 @@ class Vertex implements IVertex
         // We create the priority queue and insert the current vertex as source
 
         LinkedList<IVertex> pendingAncestors = new LinkedList<>();
+        HashSet<IVertex> visited = new HashSet<>();
+        
         pendingAncestors.add(this);
+        
         
         // We reset all the minimum distances before to start the method
 
@@ -914,7 +917,9 @@ class Vertex implements IVertex
             // We reset the distance value
             
             IVertex seed = pendingAncestors.remove();
+            
             seed.setMinDistance(Double.POSITIVE_INFINITY);
+            visited.add(seed);
 
             // Wechehck if we have arrived to the target vertex
             
@@ -927,13 +932,19 @@ class Vertex implements IVertex
             // We visit all ancestors
             
             IHalfEdge firstOutEdge = seed.getFirstOutcomingEdge();
-            IHalfEdge loop = m_FirstOutArc;
+            IHalfEdge loop = firstOutEdge;
 
             do
             {
                 if (loop.getEdgeType() == OrientedEdgeType.SubClassOf)
                 {
-                    pendingAncestors.add(loop.getTarget());
+                    IVertex ancestor = loop.getTarget();
+                    
+                    if (!visited.contains(ancestor))
+                    {
+                        pendingAncestors.add(ancestor);
+                        visited.add(ancestor);
+                    }
                 }
 
                 loop = loop.getOpposite().getNext();
@@ -943,6 +954,7 @@ class Vertex implements IVertex
 
         // We set to 0 the distance in the source vertex
 
+        visited.clear();
         m_minDistance = 0.0;
 
         // We create the priority queue and insert the current vertex as source
@@ -959,7 +971,7 @@ class Vertex implements IVertex
             IVertex seed = pending.poll();
             IHalfEdge firstOutEdge = seed.getFirstOutcomingEdge();
 
-            // Visit each edge exiting u
+            // Visit each edge exiting from seed node
 
             IHalfEdge loop = firstOutEdge;
 
@@ -1293,10 +1305,6 @@ class Vertex implements IVertex
                 distance = computeAncestorDistanceFieldOnSubgraph(lcsVertex, weighted);
                            ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(lcsVertex, weighted);
             }
-
-            // We get the shortest distance until the target vertex
-
-            distance = target.getMinDistance();
         }
         
         // We return the result

@@ -58,13 +58,13 @@ public class HESML_UMLS_benchmark
 
     private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
     private static final String m_strMeSHXmlFilename = "desc2019.xml";
-    private static final String m_strUMLSdir = "../UMLS/SNOMED-CT_March_09_2020";
-    private static final String m_strSnomedDir = "../UMLS/SNOMED-CT_March_09_2020";
-    private static final String m_strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20200301.txt";
-    private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20200301.txt";
-    private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20200301.txt";
+    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
+    private static final String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
+    private static final String m_strSNOMED_conceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSNOMED_relationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+    private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";
+    private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";    
     
     /**
      * Main function. This fucntion executes all experiments reported in

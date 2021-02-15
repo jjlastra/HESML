@@ -185,7 +185,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // and then, we randomly select two vertexes from two randomly
         // selected depth-based groups.
         
-        int overallSamples = 10000;
+        int overallSamples = 100000;
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -246,9 +246,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // We create the output file wit the following format
         // Pair distance | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
         
-        int maxPairDistance = 30;
-        
-        String[][] strOutputMatrix = new String[1 + maxPairDistance][4];
+        String[][] strOutputMatrix = new String[1 + m_groupedConceptPairs.size()][4];
         
         // We insert the headers
         
@@ -259,7 +257,9 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         
         // We evaluate the AncSPL distance for all vertex pairs with the same distance
         
-        for (int distance = 1; distance <= maxPairDistance; distance++)
+        int iGroup = 1;
+        
+        for (Integer distance : m_groupedConceptPairs.keySet())
         {
             // We get the group of vertex pairs for the current distance
             
@@ -267,14 +267,13 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             // Debug message
             
-            System.out.println("Evaluating the distance-based group " + distance + "of " + maxPairDistance);
+            System.out.println("Evaluating the distance-based group " + (iGroup + 1)
+                    + "of " + m_groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
             // Thus, we define the minimum number of evaluations in decreasing
             // order regading to the pair distance.
-            
-            double s = (distance - 1) / ((double) (maxPairDistance - 1));
             
             double minSamples = 1000;
             
@@ -306,10 +305,10 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             
             long overallpairEvaluations = reps * group.size();
             
-            strOutputMatrix[distance][0] = Integer.toString(distance);
-            strOutputMatrix[distance][1] = Long.toString(overallpairEvaluations);
-            strOutputMatrix[distance][2] = Double.toString(timeEllapsedSecs);
-            strOutputMatrix[distance][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
+            strOutputMatrix[iGroup][0] = Integer.toString(distance);
+            strOutputMatrix[iGroup][1] = Long.toString(overallpairEvaluations);
+            strOutputMatrix[iGroup][2] = Double.toString(timeEllapsedSecs);
+            strOutputMatrix[iGroup++][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
         }
         
         // We write the output file
