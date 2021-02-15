@@ -885,6 +885,130 @@ class Vertex implements IVertex
     }
 
     /**
+     * This function computes the distance field from the current vertex
+     * to all vertexes in the subgraph using the Dijkstra algorithm
+     * and the edge weights assigned to the taxonomy.
+     * The field is computed in the upward direction.
+     * If the parameter 'weighted' is false, the
+     * function uses the edge length (weight = 1), otherwise
+     * it computes the weighted shortest path distance.
+     * Once the function is executed, the distance from the vertex
+     * to each vertex in the subgraph can be recovered by calling
+     * the getMinDistance() function on each vertex.
+     * @param weighted Flag indicating if the edge weights will be used
+     */
+    
+    private double computeAncestorDistanceFieldOnSubgraph(
+            IVertex ancestorTarget,
+            boolean weighted)
+    {
+        // We create the priority queue and insert the current vertex as source
+
+        LinkedList<IVertex> pendingAncestors = new LinkedList<>();
+        pendingAncestors.add(this);
+        
+        // We reset all the minimum distances before to start the method
+
+        while (!pendingAncestors.isEmpty())
+        {
+            // We reset the distance value
+            
+            IVertex seed = pendingAncestors.remove();
+            seed.setMinDistance(Double.POSITIVE_INFINITY);
+
+            // Wechehck if we have arrived to the target vertex
+            
+            if (seed == ancestorTarget)
+            {
+                pendingAncestors.clear();
+                break;
+            }
+            
+            // We visit all ancestors
+            
+            IHalfEdge firstOutEdge = seed.getFirstOutcomingEdge();
+            IHalfEdge loop = m_FirstOutArc;
+
+            do
+            {
+                if (loop.getEdgeType() == OrientedEdgeType.SubClassOf)
+                {
+                    pendingAncestors.add(loop.getTarget());
+                }
+
+                loop = loop.getOpposite().getNext();
+                
+            } while (loop != firstOutEdge);
+        }
+
+        // We set to 0 the distance in the source vertex
+
+        m_minDistance = 0.0;
+
+        // We create the priority queue and insert the current vertex as source
+
+        PriorityQueue<IVertex> pending = new PriorityQueue<>();
+        pending.add(this);
+
+        // We make a BFS traversal of the taxonomy
+
+        while (!pending.isEmpty())
+        {
+            // We get the current vertex to expolore
+
+            IVertex seed = pending.poll();
+            IHalfEdge firstOutEdge = seed.getFirstOutcomingEdge();
+
+            // Visit each edge exiting u
+
+            IHalfEdge loop = firstOutEdge;
+
+            do
+            {
+                // We get the adjacent vertex and the weight
+
+                if (loop.getEdgeType() == OrientedEdgeType.SubClassOf)
+                {
+                    IVertex adjacent = loop.getTarget();
+                    
+                    // We get the edge weight
+                    
+                    double weight = weighted ? loop.getEdge().getWeight() : 1; 
+
+                    // We compute the novel distance
+
+                    double novelDistance = seed.getMinDistance() + weight;
+
+                    // We check if the novel didstance is lower
+
+                    if (novelDistance < adjacent.getMinDistance())
+                    {
+                        // We update the shortest distance until
+                        // the adjacent vertex
+
+                        adjacent.setMinDistance(novelDistance);
+
+                        // We remove the adjacent from the queue and insert
+                        // it at the end
+
+                        pending.remove(adjacent);
+                        pending.add(adjacent);
+                    }
+                }
+
+                // We get the next outcoming edge
+                
+                loop = loop.getOpposite().getNext();
+
+            } while (loop != firstOutEdge);
+        }     
+        
+        // We return the result
+        
+        return (ancestorTarget.getMinDistance());
+    }
+    
+    /**
      * This function checks if the query vertex is an ancestor node of
      * the current vertex.
      * @param queryVertex
@@ -1149,26 +1273,14 @@ class Vertex implements IVertex
                 // We compute the shortest-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
 
-                Set<IVertex> targetAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(target, this);
-
-                computeDistanceFieldOnSubgraph(targetAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                targetAncestors.clear();
+                distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(this, weighted);
             }
             else if (target.isMyDescendant(this))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
 
-                Set<IVertex> sourceAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(this, target);
-
-                computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                sourceAncestors.clear();
+                distance = computeAncestorDistanceFieldOnSubgraph(target, weighted);
             }
             else
             {
@@ -1178,21 +1290,8 @@ class Vertex implements IVertex
                 
                 // We obtain the ancestor set of both vertexes
 
-                Set<IVertex> targetAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(target, lcsVertex);
-                Set<IVertex> sourceAncestors = m_Taxonomy.getUnorderedAncestorSetUntilTarget(this, lcsVertex);
-
-                // We merge both ancestor sets to buld the subgraph
-
-                HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
-                mergeSubgraph.addAll(sourceAncestors);
-
-                computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);
-
-                // // We destroy the ancestor sets if they were obtained on-the-fly
-
-                targetAncestors.clear();
-                sourceAncestors.clear();
-                mergeSubgraph.clear();
+                distance = computeAncestorDistanceFieldOnSubgraph(lcsVertex, weighted);
+                           ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(lcsVertex, weighted);
             }
 
             // We get the shortest distance until the target vertex

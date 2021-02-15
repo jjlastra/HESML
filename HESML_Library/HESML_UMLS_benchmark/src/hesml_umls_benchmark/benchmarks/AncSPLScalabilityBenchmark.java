@@ -21,15 +21,12 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.taxonomy.IVertex;
-import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.IAncSPLScalabilityBenchmark;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
-import org.apache.commons.lang.time.StopWatch;
-import org.hsqldb.lib.HashSet;
 
 /**
  * Thisclass implements the wcalability benchmark for the AncSPL algorithm.
@@ -188,8 +185,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
         // and then, we randomly select two vertexes from two randomly
         // selected depth-based groups.
         
-        
-        int overallSamples = 100;
+        int overallSamples = 10000;
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -223,6 +219,8 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
             ArrayList<SnomedConceptPair> group = m_groupedConceptPairs.get(ancSplDistance);
             
             group.add(new SnomedConceptPair(ancSplDistance, source, target));
+            
+            if (i % 100 == 0) System.out.println("Samples = "+ (i + 1) + " / " + overallSamples);
         }
         
         // We read the quantity of data
