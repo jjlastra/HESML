@@ -23,7 +23,7 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.IAncSPLScalabilityBenchmark;
+import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibBenchmark;
@@ -216,7 +216,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IAncSPLScalabilityBenchmark createAncSPLScalabilityTest(
+    public static IAncSPLDataBenchmark createAncSPLScalabilityTest(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

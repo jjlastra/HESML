@@ -24,17 +24,17 @@ import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml_umls_benchmark.IAncSPLScalabilityBenchmark;
+import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
 
 /**
- * Thisclass implements the wcalability benchmark for the AncSPL algorithm.
+ * This class implements the wcalability benchmark for the AncSPL algorithm.
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
+class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
 {
     /**
      * SNOMED-CT ontology
@@ -168,8 +168,8 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
      * This function computes a collections of groups of Snomedpairs
      */
     
-    @Override
-    public void computeConceptGroups() throws Exception
+  
+    private void computeConceptGroups() throws Exception
     {
         // We create a random number
         
@@ -228,13 +228,17 @@ class AncSPLScalabilityBenchmark implements IAncSPLScalabilityBenchmark
      */
     
     @Override
-    public void evaluatePairwiseDistanceForAllGroups(
+    public void runExperiment(
         String  strOutputRawDataFilename) throws Exception
     {
         // We create the output file wit the following format
         // Pair distance | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
         
         String[][] strOutputMatrix = new String[1 + m_groupedConceptPairs.size()][4];
+        
+        // We compute the groups of concepts
+        
+        computeConceptGroups();
         
         // We insert the headers
         

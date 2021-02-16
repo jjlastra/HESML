@@ -27,7 +27,7 @@ package hesml_umls_benchmark;
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-public interface IAncSPLScalabilityBenchmark
+public interface IAncSPLDataBenchmark
 {
     /**
      * This function releases all resources used in the experiment
@@ -35,12 +35,7 @@ public interface IAncSPLScalabilityBenchmark
     
     void clear();
     
-    /**
-     * This function computes a collections of groups of Snomedpairs
-     */
-    
-    void computeConceptGroups() throws Exception;
-    
+
     /**
      * This function evaluates the AncSPL for each group of concet pairs
      * and generates the output raw data file containing the overall
@@ -48,6 +43,6 @@ public interface IAncSPLScalabilityBenchmark
      * @param strOutputRawDataFilename 
      */
     
-    void evaluatePairwiseDistanceForAllGroups(
+    void runExperiment(
         String  strOutputRawDataFilename) throws Exception;
 }

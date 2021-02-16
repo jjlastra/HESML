@@ -575,18 +575,40 @@ public class HESML_UMLS_benchmark
     {
         // We create the banchmark
         
-        IAncSPLScalabilityBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
-        // We compute the groups of concepts
-        
-        benchmark.computeConceptGroups();
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
-        benchmark.evaluatePairwiseDistanceForAllGroups(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        
+        // Werlease all resources
+        
+        benchmark.clear();
+    }
+    
+    /**
+     * This function runs the scalability experiemnt for AncSPL. We evaluate the average
+     * speed as a function of the SNOMED-CT concept distances..
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunAncSPLStatisticalBenchmark(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+        // We evaluate the avergae speed for each distance-based group of conepts.
+        
+        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
         
         // Werlease all resources
         
