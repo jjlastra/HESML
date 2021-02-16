@@ -21,8 +21,8 @@
 package hesml_umls_benchmark;
 
 /**
- * This interface defines the API for the becnhmark evaluating
- * the scalabilibility of the AncSPL algorithm with regards to
+ * This interface defines the API for the benchmark evaluating
+ * the scalability of the AncSPL algorithm with regards to
  * the distance between SNOMED-CT concepts. 
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
@@ -37,9 +37,8 @@ public interface IAncSPLDataBenchmark
     
 
     /**
-     * This function evaluates the AncSPL for each group of concet pairs
-     * and generates the output raw data file containing the overall
-     * running time for each distance group.
+     * This function evaluates the AncSPL for each group of concept pairs
+     * and generates the output raw data file.
      * @param strOutputRawDataFilename 
      */
     

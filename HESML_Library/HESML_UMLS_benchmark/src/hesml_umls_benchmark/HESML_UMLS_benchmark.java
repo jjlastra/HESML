@@ -157,21 +157,28 @@ public class HESML_UMLS_benchmark
         //RunAncSPLExperiment(strOutputDir);
         
         /**
-         * Experimetn 5: scalability of the AncSPL algortihm with regards to
+         * Experiment 5: scalability of the AncSPL algortihm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        RunAncSPLScalabilityExperiment(strOutputDir);
+        //RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
-         * Experiment 5: we compare the performance of HESML and SML on
+         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
+         * the distance between SNOME-CT concepts
+         */
+        
+        RunAncSPLStatisticalExperiment(strOutputDir);
+        
+        /**
+         * Experiment 6: we compare the performance of HESML and SML on
          * the Gene Ontoogy (GO).
          */
         
         //RunRandomGOConceptsExperiment(strOutputDir);
         
         /**
-         * Experiment 6: we compare the performance of the HEMSL, SML and
+         * Experiment 7: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
@@ -565,7 +572,7 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the scalability experiemnt for AncSPL. We evaluate the average
+     * This function runs the scalability experiment for AncSPL. We evaluate the average
      * speed as a function of the SNOMED-CT concept distances..
      * @param strRawOutputDir 
      */
@@ -580,7 +587,6 @@ public class HESML_UMLS_benchmark
                                                 m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
-        
         // We evaluate the avergae speed for each distance-based group of conepts.
         
         benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
@@ -591,26 +597,26 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the scalability experiemnt for AncSPL. We evaluate the average
+     * This function runs the scalability experiment for AncSPL. We evaluate the average
      * speed as a function of the SNOMED-CT concept distances..
      * @param strRawOutputDir 
      */
     
-    private static void RunAncSPLStatisticalBenchmark(
+    private static void RunAncSPLStatisticalExperiment(
         String  strRawOutputDir) throws Exception
     {
         // We create the banchmark
         
-        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
-        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
         
-        // Werlease all resources
+        // We release all resources
         
         benchmark.clear();
     }
