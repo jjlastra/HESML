@@ -753,6 +753,52 @@ class Vertex implements IVertex
     }
     
     /**
+     * This function returns the number of nodes making up the ancestor set
+     * subgraph. This subgraph is defined by the collection of ancestor nodes,
+     * including this vertex, and all their adjacent nodes in the taxonomy.
+     * This subgraph is used by the AncSPL algortihm to speed up the computation
+     * of the shortest path between taxonomy nodes.
+     * @return The number of ancestors [0] and the overall number of adjacent nodes [1]
+     */
+    
+    @Override
+    public int[] getAncestorSubgraphCount()
+    {
+        // We initialize the output
+        
+        int[] subgraphCount = new int[2];
+        
+        // We check whether the taxonomy holds the cached ancestor set
+
+        boolean cachedAncestors = (m_CachedAncestorSet != null);
+        
+        // We compute the shortest-path constrained to the ancestor set
+        // of the target vertex, which includes this vertex
+
+        Set<IVertex> ancestors = cachedAncestors ? getCachedAncestorSet()
+                                : m_Taxonomy.getUnorderedAncestorSet(this);
+
+        // We get the number of ancestors
+        
+        subgraphCount[0] = ancestors.size();
+        
+        // We count the number of adjacent nodes for all ancestors
+        
+        for (IVertex ancestor : ancestors)
+        {
+            subgraphCount[1] += ancestor.getAdjacentVertexesCount();
+        }
+        
+        // We release the auxiliary set whether it is not cached
+        
+        if (!cachedAncestors) ancestors.clear();
+        
+        // We treturn the result
+        
+        return (subgraphCount);
+    }
+    
+    /**
      * This function computes the distance field from the current vertex
      * to all vertexes in the ancestors-absed subgraph using the Dijkstra algorithm
      * and the edge weights assigned to the taxonomy.
@@ -766,7 +812,7 @@ class Vertex implements IVertex
      * @param ancestorsSubGraph
      * @param ancestorTarget
      * @param weighted Flag indicating if the edge weights will be used
-     * @return Distance in the upward didrection
+     * @return Distance in the upward direction
      */
     
     public double computeAncestorDistanceField(
@@ -1750,6 +1796,40 @@ class Vertex implements IVertex
         return (nParents);
     }
 
+    /**
+     * This function returns the number of adjacent vertexes to this vertex
+     * reagrdless their type of relationship.
+     * @return Parents count
+     */
+    
+    @Override
+    public int getAdjacentVertexesCount()
+    {
+        // We initialize the output
+        
+        int nAdjacentNodes = 0;
+        
+        // We iterate around the vertex to count all adjacent nodes
+        
+        IHalfEdge   loop = m_FirstOutArc;   // Cursor
+        
+        do
+        {
+            // We count the adjacent node
+            
+            nAdjacentNodes++;
+            
+            // We get the next outcoming arc
+            
+            loop = loop.getOpposite().getNext();
+            
+        } while (loop != m_FirstOutArc);
+
+        // We return the result
+        
+        return (nAdjacentNodes);
+    }
+    
     /**
      * This function returns the number of subsumed leaves
      * including the current vertex

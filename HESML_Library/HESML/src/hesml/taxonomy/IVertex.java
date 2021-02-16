@@ -75,6 +75,25 @@ public interface IVertex extends Comparable<IVertex>
     int getParentsCount();
     
     /**
+     * This function returns the number of adjacent vertexes to this vertex
+     * reagrdless their type of relationship.
+     * @return Parents count
+     */
+    
+    int getAdjacentVertexesCount();
+    
+    /**
+     * This function returns the number of nodes making up the ancestor set
+     * subgraph. This subgraph is defined by the collection of ancestor nodes,
+     * including this vertex, and all their adjacent nodes in the taxonomy.
+     * This subgraph is used by the AncSPL algortihm to speed up the computation
+     * of the shortest path between taxonomy nodes.
+     * @return The number of ancestors [0] and the overall number of adjacent nodes [1]
+     */
+    
+    int[] getAncestorSubgraphCount();
+    
+    /**
      * This function returns the content of the string Tag field
      * @return A user-defined string field
      */
