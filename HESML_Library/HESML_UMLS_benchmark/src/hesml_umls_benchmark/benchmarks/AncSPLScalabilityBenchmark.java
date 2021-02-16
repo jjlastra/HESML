@@ -149,7 +149,6 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
     /**
      * This function computes a collections of groups of Snomedpairs
      */
-    
   
     private TreeMap<Integer, ArrayList<SnomedConceptPair>> computeConceptGroups() throws Exception
     {
@@ -212,7 +211,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
     }
     
     /**
-     * This function evaluates the AncSPL for each group of concet pairs
+     * This function evaluates the AncSPL for each group of SNOMED-CT concept pairs
      * and generates the output raw data file containing the overall
      * running time for each distance group.
      * @param strOutputRawDataFilename 

@@ -20,7 +20,6 @@
 
 package hesml_umls_benchmark.benchmarks;
 
-import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
