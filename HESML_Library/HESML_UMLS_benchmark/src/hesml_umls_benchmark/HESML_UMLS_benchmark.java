@@ -164,21 +164,28 @@ public class HESML_UMLS_benchmark
         //RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
-         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
+         * Experiment 6: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        RunAncSPLStatisticalExperiment(strOutputDir);
+        //RunAncSPLStatisticalExperiment(strOutputDir);
+
+        /**
+         * Experiment 7: statistical benchmark of the AncSPL algorithm with regards to
+         * the distance between SNOME-CT concepts
+         */
+        
+        RunAncSPLComplexityExperiment(strOutputDir);
         
         /**
-         * Experiment 6: we compare the performance of HESML and SML on
+         * Experiment 8: we compare the performance of HESML and SML on
          * the Gene Ontoogy (GO).
          */
         
         //RunRandomGOConceptsExperiment(strOutputDir);
         
         /**
-         * Experiment 7: we compare the performance of the HEMSL, SML and
+         * Experiment 9: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
@@ -640,7 +647,7 @@ public class HESML_UMLS_benchmark
     {
         // We create the banchmark
         
-        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
+        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLComplexityBenchmark(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,

@@ -160,7 +160,7 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
         {
             // We output the progress - debug message
             
-            System.out.println("Computing the distance-based group " + iPair + " of " + overallSamples);
+            System.out.println("Computing the random pair " + iPair + " of " + overallSamples);
             
             // We get the source and target Ids
             

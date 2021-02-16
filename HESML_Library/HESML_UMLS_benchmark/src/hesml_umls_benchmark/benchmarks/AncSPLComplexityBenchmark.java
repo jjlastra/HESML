@@ -26,7 +26,9 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.TreeMap;
 
 /**
  * This class evaluates the scalability of the AncSPL algorithm reagarding the
@@ -79,44 +81,57 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
     }
     
     /**
-     * This function generate a sample list of random concept pairs.
-     * 
-     * @param overallSamples
-     * @return
-     * @throws Exception 
+     * This function computes a collections of groups of vertexes according to
+     * their number of ancestors
      */
-    
-    private ArrayList<SnomedConceptPair> generateRandomPairs(int overallSamples) throws Exception
+  
+    private TreeMap<Integer, HashSet<IVertex>> computeVertexBins() throws Exception
     {
-        // We initialize the result
+        // We initialize the collections of groups
         
-        ArrayList<SnomedConceptPair> group = new ArrayList<>();
+        TreeMap<Integer, HashSet<IVertex>>  binsByAncestorsCount = new TreeMap<>();
         
         // We create a random number
         
         Random rand = new Random(500);
         
-        // We generate random concept pairs to populate the collection of groups
+        // (1) We traverse the whole taxonomy excluding the root to obtain
+        // the minimum and maxium number of ancestorsCount + overall adjacent nodes
         
-        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
+        int maxValue = 0;
+        int minValue = Integer.MAX_VALUE;
         
-        // We fill the randomConceptPairs concept pairs 
-        
-        for (int i = 0; i < overallSamples; i++)
+        for (IVertex vertex : m_snomedOntology.getTaxonomy().getVertexes())
         {
-            // We obtain a pair of random vertexes
+            // We get the ancestor and adjacent node counts
             
-            IVertex source = vertexes.getAt(rand.nextInt(vertexes.getCount()));
-            IVertex target = vertexes.getAt(rand.nextInt(vertexes.getCount()));
-            
-            // We fill the randomConceptPairs concepts
-            
-            group.add(new SnomedConceptPair(0.0, source, target));
+            if (!vertex.isRoot())
+            {
+                int[] ancestorsCount = vertex.getAncestorSubgraphCount();
+                
+                // We sum both values
+                
+                int overallValue = ancestorsCount[0] + ancestorsCount[1];
+                
+                // We compujte the minimum and maximum values
+                
+                minValue = Math.min(minValue, overallValue);
+                maxValue = Math.max(maxValue, overallValue);
+                
+                // We save the vertex into its corresponding bin
+                
+                if (!binsByAncestorsCount.containsKey(overallValue))
+                {
+                    binsByAncestorsCount.put(overallValue, new HashSet<>());
+                }
+                
+                binsByAncestorsCount.get(overallValue).add(vertex);
+            }
         }
         
         // We return the result
         
-        return (group);
+        return (binsByAncestorsCount);
     }
     
     /**
@@ -130,63 +145,85 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
     public void runExperiment(
             String  strOutputRawDataFilename) throws Exception
     {
-        // We define the number of concept pairs that will be evaluated in the experiment
-        
-        int overallSamples = 1000;
-                
         // We generate the renadom concept pairs
         
-        ArrayList<SnomedConceptPair> randomConceptPairs = generateRandomPairs(overallSamples);
+        TreeMap<Integer, HashSet<IVertex>>  binsByAncestorsCount = computeVertexBins();
         
         // We create the output file wit the following format
         // Id source | Id target | Exact distance | AncSPL distance
         
-        String[][] strOutputMatrix = new String[1 + randomConceptPairs.size()][4];
+        String[][] strOutputMatrix = new String[1 + binsByAncestorsCount.size()][3];
         
         // We insert the headers
         
-        strOutputMatrix[0][0] = "Id source";
-        strOutputMatrix[0][1] = "Id target";
-        strOutputMatrix[0][2] = "Exact distance";
-        strOutputMatrix[0][3] = "AncSPL distance";
+        strOutputMatrix[0][0] = "#Overall nodes";
+        strOutputMatrix[0][1] = "Overall time (secs)";
+        strOutputMatrix[0][2] = "Avg speed (adjacent nodes/secs)";
         
-        // We initialize the file row counter
+        // We initialize the file row counter and root vertex
         
-        int iPair = 1;
+        IVertex root = m_snomedOntology.getTaxonomy().getVertexes().getAt(0);
+        
+        int iEntry = 1;
         
         // We compute the exact and ancSPL distance for all vertex pairs in the same randomConceptPairs
         
-        for (SnomedConceptPair pair : randomConceptPairs)
+        for (Integer overallAncestorCount : binsByAncestorsCount.keySet())
         {
             // We output the progress - debug message
             
-            System.out.println("Computing the distance-based group " + iPair + " of " + overallSamples);
+            System.out.println("Computing running time of bin " + (iEntry + 1)
+                    + " of " + binsByAncestorsCount.size());
             
-            // We get the source and target Ids
+            // We get the collection of vertexes for the current bin
             
-            IVertex source = pair.getSourceConceptVertex();
-            IVertex target = pair.getTargetConceptVertex();
+            HashSet<IVertex> bin = binsByAncestorsCount.get(overallAncestorCount);
             
-            // We compute the distances
+            // We compute the minimum number of repetitions to obtain at least
+            // the number of pair evaluation samples 
             
-            double exactDistance = source.getShortestPathDistanceTo(target, false);
-            double ancSPLDistance = source.getAncSPLdistanceTo(target, false);
+            int minSamples = 100;
+            int reps = Math.max(1, (int)Math.ceil(minSamples / bin.size()));
+
+            // We start the stop watch
             
-            // We fill the output matrix
+            long stopWatch = System.currentTimeMillis();
             
-            strOutputMatrix[iPair][0] = Long.toString(source.getID());
-            strOutputMatrix[iPair][1] = Long.toString(target.getID());
-            strOutputMatrix[iPair][2] = Double.toString(exactDistance);
-            strOutputMatrix[iPair][3] = Double.toString(ancSPLDistance);
+            // We evaluate the distance for all vertex pairs in the sam group
+            
+            for (int i = 0; i < reps; i++)
+            {
+                for (IVertex vertex : bin)
+                {
+                    vertex.getAncSPLdistanceTo(root, false);
+                }
+            }
+            
+            // We measure the ellapsed time
+            
+            double timeEllapsedSecs = (System.currentTimeMillis() - stopWatch) / 1000.0;
+            
+            // We register the ellapsed time
+            
+            long overallpairEvaluations = reps * bin.size();
+            
+            strOutputMatrix[iEntry][0] = Integer.toString(overallAncestorCount);
+            strOutputMatrix[iEntry][1] = Double.toString(timeEllapsedSecs);
+            strOutputMatrix[iEntry][2] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
             
             // We increment the matrix row
             
-            iPair++;
+            iEntry++;
         }
         
         // We release the auxiliary resources
         
-        randomConceptPairs.clear();
+        for (HashSet<IVertex> bin : binsByAncestorsCount.values())
+        {
+            bin.clear();
+        }
+        
+        binsByAncestorsCount.clear();
         
         // We write the output file
         
