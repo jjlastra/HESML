@@ -42,11 +42,6 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
     
     private ISnomedCtOntology   m_snomedOntology;
     
-    /**
-     * Groups of concept pairs indexed by their AncSPL distance
-     */
-    
-    private TreeMap<Integer, ArrayList<SnomedConceptPair>>  m_groupedConceptPairs;
     
     /**
      * This function loads 
@@ -71,11 +66,6 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                             strUmlsDir, strSNOMED_CUI_mappingfilename);
-        
-        // We initialize the collections of groups of concept pairs indexed by their
-        // AncSPL distance
-        
-        m_groupedConceptPairs = new TreeMap<>();
     }
     
     /**
@@ -85,16 +75,8 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
     @Override
     public void clear()
     {
-        // We release all groups
-        
-        for (ArrayList<SnomedConceptPair> group : m_groupedConceptPairs.values())
-        {
-            group.clear();
-        }
-        
         // We release all objects
         
-        m_groupedConceptPairs.clear();
         m_snomedOntology.clear();
     }
     
@@ -169,8 +151,13 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
      */
     
   
-    private void computeConceptGroups() throws Exception
+    private TreeMap<Integer, ArrayList<SnomedConceptPair>> computeConceptGroups() throws Exception
     {
+        // We initialize the collections of groups of concept pairs indexed by their
+        // AncSPL distance
+        
+        TreeMap<Integer, ArrayList<SnomedConceptPair>>  groupedConceptPairs = new TreeMap<>();
+        
         // We create a random number
         
         Random rand = new Random(500);
@@ -199,12 +186,12 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
             
             // We retrieve the group for this distance
             
-            if (!m_groupedConceptPairs.containsKey(ancSplDistance))
+            if (!groupedConceptPairs.containsKey(ancSplDistance))
             {
-                m_groupedConceptPairs.put(ancSplDistance, new ArrayList<>());
+                groupedConceptPairs.put(ancSplDistance, new ArrayList<>());
             }
             
-            ArrayList<SnomedConceptPair> group = m_groupedConceptPairs.get(ancSplDistance);
+            ArrayList<SnomedConceptPair> group = groupedConceptPairs.get(ancSplDistance);
             
             group.add(new SnomedConceptPair(ancSplDistance, source, target));
             
@@ -213,11 +200,15 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
         
         // We read the quantity of data
         
-        for (ArrayList<SnomedConceptPair> group : m_groupedConceptPairs.values())
+        for (ArrayList<SnomedConceptPair> group : groupedConceptPairs.values())
         {
             System.out.println("Distance = " + group.get(0).getAncSPLDistance()
                 + " -> count = " + group.size());
         }
+        
+        // We return the result
+        
+        return (groupedConceptPairs);
     }
     
     /**
@@ -231,14 +222,14 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
     public void runExperiment(
         String  strOutputRawDataFilename) throws Exception
     {
+        // We compute the groups of concepts
+        
+        TreeMap<Integer, ArrayList<SnomedConceptPair>>  groupedConceptPairs = computeConceptGroups();
+        
         // We create the output file wit the following format
         // Pair distance | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
         
-        String[][] strOutputMatrix = new String[1 + m_groupedConceptPairs.size()][4];
-        
-        // We compute the groups of concepts
-        
-        computeConceptGroups();
+        String[][] strOutputMatrix = new String[1 + groupedConceptPairs.size()][4];
         
         // We insert the headers
         
@@ -251,16 +242,16 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
         
         int iGroup = 1;
         
-        for (Integer distance : m_groupedConceptPairs.keySet())
+        for (Integer distance : groupedConceptPairs.keySet())
         {
             // We get the group of vertex pairs for the current distance
             
-            ArrayList<SnomedConceptPair> group = m_groupedConceptPairs.get(distance);
+            ArrayList<SnomedConceptPair> group = groupedConceptPairs.get(distance);
             
             // Debug message
             
             System.out.println("Evaluating the distance-based group " + (iGroup + 1)
-                    + "of " + m_groupedConceptPairs.size());
+                    + "of " + groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
@@ -302,6 +293,17 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
             strOutputMatrix[iGroup][2] = Double.toString(timeEllapsedSecs);
             strOutputMatrix[iGroup++][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
         }
+        
+        // We release all groups
+        
+        for (ArrayList<SnomedConceptPair> group : groupedConceptPairs.values())
+        {
+            group.clear();
+        }
+        
+        // We release the object 
+        
+        groupedConceptPairs.clear();
         
         // We write the output file
         
