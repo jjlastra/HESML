@@ -66,7 +66,9 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
     private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";    
-    private static final String m_strMedSTSLargefilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";   
+    private static final String m_strMedSTSLargefilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";  
+    private static final String m_str1millionFilename = "../UMLS_Datasets/1MPairs_NoPreprocess.txt";  
+    
     
     /**
      * Main function. This function executes all experiments reported in
@@ -100,7 +102,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input parameters
         
-        String strOutputDir = "../home/alicia/Desktop/data/HESMLV1R5/HESML_Library/ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
+        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
         
         // We check the input arguments
         
@@ -538,7 +540,7 @@ public class HESML_UMLS_benchmark
                                                     SemanticLibraryType.UMLS_SIMILARITY,
                                                     SemanticLibraryType.SML,
                                                     SemanticLibraryType.HESML};
-
+        
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
@@ -553,7 +555,8 @@ public class HESML_UMLS_benchmark
         
         strDatasetPaths.put(SemanticLibraryType.UMLS_SIMILARITY, m_strMedSTSfilename);
         strDatasetPaths.put(SemanticLibraryType.SML, m_strMedSTSfilename);
-        strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSLargefilename);
+        //strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSLargefilename);
+        strDatasetPaths.put(SemanticLibraryType.HESML, m_str1millionFilename);
                 
         // We build the vector of raw output filenames
         
