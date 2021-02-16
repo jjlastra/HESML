@@ -550,8 +550,9 @@ public class HESML_UMLS_benchmark
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
-         * UMLS::Similarity libraries by evaluating the MedSTS dataset [1].
-         * 
+         * UMLS::Similarity libraries by evaluating 30 sentence pairs
+         * extract from the MedSTS dataset [1], and 1 million sentence pairs
+         * extracted from the BioC corpus.
          * [1] Wang, Yanshan, Naveed Afzal, Sunyang Fu, Liwei Wang, 
          * Feichen Shen, Majid Rastegar-Mojarad, and Hongfang Liu. 2018. 
          * “MedSTS: A Resource for Clinical Semantic Textual Similarity.” 
@@ -572,8 +573,9 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the scalability experiment for AncSPL. We evaluate the average
-     * speed as a function of the SNOMED-CT concept distances..
+     * This function runs the scalability experiment for the AncSPL algorithm.
+     * We evaluate the average speed as a function of the distance between
+     * SNOMED-CT concepts.
      * @param strRawOutputDir 
      */
     
@@ -584,7 +586,8 @@ public class HESML_UMLS_benchmark
         
         IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                                m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
         // We evaluate the avergae speed for each distance-based group of conepts.
@@ -597,8 +600,10 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the scalability experiment for AncSPL. We evaluate the average
-     * speed as a function of the SNOMED-CT concept distances..
+     * This function runs the scalability experiment for the AncSPL algorithm.
+     * This benchmark computes the exact and approximated distance values for
+     * a collection of random concept pairs to allow an statistical analysis
+     * of the approximation quality of the AncSPL algorithm.
      * @param strRawOutputDir 
      */
     
@@ -609,12 +614,41 @@ public class HESML_UMLS_benchmark
         
         IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                                m_strSNOMED_relationshipsFilename, m_strSNOMED_descriptionFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
         benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
+        
+        // We release all resources
+        
+        benchmark.clear();
+    }
+
+    /**
+     * This function runs the complexibility experiment for the AncSPL algorithm. This benchmark
+     * computes the exact and approximated distance values for a collection of random
+     * concept pairs to allow an statistical analysis of the approximation quality
+     * of the AncSPL algorithm.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunAncSPLComplexityExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
+                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+        // We evaluate the avergae speed for each distance-based group of conepts.
+        
+        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_complexity_test.csv");
         
         // We release all resources
         

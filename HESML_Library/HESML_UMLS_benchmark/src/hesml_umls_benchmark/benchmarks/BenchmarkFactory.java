@@ -253,4 +253,29 @@ public class BenchmarkFactory
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
+    
+    /**
+     * This function creates an instance of the AncSPL complexity benchmark.
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IAncSPLDataBenchmark createAncSPLComplexityBenchmark(
+            String  strSnomedDir,
+            String  strSnomedDBconceptFileName,
+            String  strSnomedDBRelationshipsFileName,
+            String  strSnomedDBdescriptionFileName,
+            String  strUmlsDir,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLComplexityBenchmark(strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
 }

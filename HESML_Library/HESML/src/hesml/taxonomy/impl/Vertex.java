@@ -1148,7 +1148,7 @@ class Vertex implements IVertex
                                         ((Vertex)target).getCachedAncestorSet()
                                         : m_Taxonomy.getUnorderedAncestorSet(target);
 
-                //computeDistanceFieldOnSubgraph(targetAncestors, weighted);
+                // We use the fastest ascending AncSPL implementation
                 
                 distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(targetAncestors, this, weighted);
 
@@ -1164,7 +1164,7 @@ class Vertex implements IVertex
                 Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
                                             : m_Taxonomy.getUnorderedAncestorSet(this);
 
-                //computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
+                // We use the fast ascending AncSPL implementation
 
                 distance = computeAncestorDistanceFieldOnSubgraph(sourceAncestors, target, weighted);
                 
@@ -1185,32 +1185,21 @@ class Vertex implements IVertex
                                             : m_Taxonomy.getUnorderedAncestorSet(target);
 
                 Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                        : m_Taxonomy.getUnorderedAncestorSet(this);
+                                            : m_Taxonomy.getUnorderedAncestorSet(this);
 
-                // We merge both ancestor sets to buld the subgraph
+                // We use the fast ascending AncSPL implementation
 
-                /*HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
-                mergeSubgraph.addAll(sourceAncestors);
-
-                computeDistanceFieldOnSubgraph(mergeSubgraph, weighted);*/
-
-                // // We destroy the ancestor sets if they were obtained on-the-fly
+                distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(targetAncestors, lcsVertex, weighted)
+                            + computeAncestorDistanceFieldOnSubgraph(sourceAncestors, lcsVertex, weighted);
+                
+                // We destroy the ancestor sets if they were obtained on-the-fly
 
                 if (!cachedAncestors)
                 {
                     targetAncestors.clear();
                     sourceAncestors.clear();
                 }
-
-                //mergeSubgraph.clear();
-                
-                distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(targetAncestors, lcsVertex, weighted)
-                            + computeAncestorDistanceFieldOnSubgraph(sourceAncestors, lcsVertex, weighted);
             }
-
-            // We get the shortest distance until the target vertex
-
-            //distance = target.getMinDistance();
         }
         
         // We return the result
