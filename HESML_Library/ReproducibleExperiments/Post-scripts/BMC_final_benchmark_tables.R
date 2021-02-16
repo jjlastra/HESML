@@ -53,7 +53,7 @@ setwd(current_working_dir)
 
 # We set the input and output directories
 
-rootDir = "../HESMLV1R5_paper/RawOutputFiles/antes/"
+rootDir = "../HESMLV1R5_paper/RawOutputFiles/"
 inputDir = rootDir
 outputDir = "../HESMLV1R5_paper/ProcessedOutputFiles/"
 
@@ -224,11 +224,6 @@ n_samples_2 <- 100
 n_samples_3 <- 200
 n_samples_4 <- 1000
 
-n_samples_1 <- 10
-n_samples_2 <- 20
-n_samples_3 <- 30
-n_samples_4 <- 50
-
 # We select the sample tables for each part of the experiment 4
 
 rawdata_AncSPLRada_exp4_sample_rows_1 <- head(rawdata_AncSPLRada_exp4,n_samples_1)
@@ -366,7 +361,7 @@ browseURL("Table2.html")
 # We load and browse Table 3 in the paper
 
 kable_out <- kable(table3,
-                   caption = "Table 3. Average speed in GO concept pairs per second obtained for the evaluation of two representative ontology-based semantic similarity measures based on the Gene Ontology (2020-05-02 version) implemented by state-of-the-art SML library and HESML. Best performing values are shown in bold.",
+                   caption = "Table 4. Average speed in sentence pairs per second obtained for the evaluation of the UBSM sentence similarity measure combined with three representative ontology-based similarity measures based on the MeSH ontology (Nov, 2019) in 30 sentence pairs from the MedSTS sentence similarity dataset (1068 sentence pairs). Best performing values are shown in bold. Non-implemented methods (---).",
                    format = "html",
                    align = c('l','l','c','c'))
 
@@ -376,7 +371,7 @@ browseURL("Table3.html")
 # We load and browse Table 4 in the paper
 
 kable_out <- kable(table4,
-                   caption = "Table 4. Average speed in sentence pairs per second obtained for the evaluation of the UBSM sentence similarity measure combined with three representative ontology-based similarity measures based on the MeSH ontology (Nov, 2019) in 30 sentence pairs from the MedSTS sentence similarity dataset (1068 sentence pairs). Best performing values are shown in bold. Non-implemented methods (---).",
+                   caption = "Table 3. Average speed in GO concept pairs per second obtained for the evaluation of two representative ontology-based semantic similarity measures based on the Gene Ontology (2020-05-02 version) implemented by state-of-the-art SML library and HESML. Best performing values are shown in bold.",
                    format = "html",
                    align = c('l','l','c','c','c'))
 
