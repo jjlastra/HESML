@@ -122,7 +122,7 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
     /**
      * This function generates a file containing the exact and approximated
      * distance values between random SNOMED-CT concept pairs returned by
-     * the exact Djikstra and AncSPL algirthms, respectively.
+     * the exact Djikstra and AncSPL algorithms, respectively.
      * @param strOutputRawDataFilename 
      */
     

@@ -27,6 +27,7 @@ import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibBenchmark;
+import java.util.HashMap;
 
 /**
  * This function creates all UMLS benchmarks
@@ -171,17 +172,14 @@ public class BenchmarkFactory
     }   
     
     
-        /**
+    /**
      * This function creates a random concept evaluation.
      * @param libraries
-     * @param vocabulary
      * @param similarityMeasure
      * @param icModel
      * @param strDatasetPath
-     * @param strSnomedDir
-     * @param strSnomedDBconceptFileName
-     * @param strSnomedDBRelationshipsFileName
-     * @param strSnomedDBdescriptionFileName
+     * @param strMeSHdir
+     * @param strMeSHXmlConceptFileName
      * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
      * @return
@@ -189,14 +187,15 @@ public class BenchmarkFactory
      */
 
     public static ISemanticLibBenchmark createMeSHSentenceBenchmark(
-            SemanticLibraryType[]   libraries,
-            SimilarityMeasureType   similarityMeasure,
-            IntrinsicICModelType    icModel,
-            String                  strDatasetPath,
-            String                  strMeSHdir,
-            String                  strMeSHXmlConceptFileName,
-            String                  strUmlsDir,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            SemanticLibraryType[]               libraries,
+            SimilarityMeasureType               similarityMeasure,
+            IntrinsicICModelType                icModel,
+            HashMap<SemanticLibraryType,String> strDatasetPath,
+            String                              strMeSHdir,
+            String                              strMeSHXmlConceptFileName,
+            String                              strUmlsDir,
+            String                              strSNOMED_CUI_mappingfilename) 
+            throws Exception
     {
         return (new MeSHSentencesEvalBenchmark(libraries,
                 similarityMeasure, icModel, strDatasetPath, 

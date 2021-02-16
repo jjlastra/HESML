@@ -47,6 +47,7 @@ import java.util.Properties;
 import java.util.Set;
 import hesml_umls_benchmark.ISemanticLibrary;
 import hesml_umls_benchmark.UMLSOntologyType;
+import java.util.Map;
 
 /**
  * This class implements a benchmark to compare the performance
@@ -80,8 +81,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     /**
      * Path to the input dataset for evaluating sentences
      */
-    
-    protected String[][]    m_dataset;
+    HashMap<ISemanticLibrary, ArrayList<ArrayList<String>>> m_datasets;
     
     /**
      * Metamap Lite instance
@@ -93,7 +93,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      * Cached similarity values between concept pairs
      */
     
-    HashMap<CuiPair, Double>     m_CachedSimilarityValues;
+    HashMap<CuiPair, Double> m_CachedSimilarityValues;
     
     /**
      * Overall running time to get all cached similarity values
@@ -115,14 +115,15 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      */
 
     MeSHSentencesEvalBenchmark(
-            SemanticLibraryType[]   libraries,
-            SimilarityMeasureType   similarityMeasure,
-            IntrinsicICModelType    icModel,
-            String                  strDatasetPath,
-            String                  strMeSHdir,
-            String                  strMeSHXmlConceptFileName,
-            String                  strUmlsDir,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            SemanticLibraryType[]               libraries,
+            SimilarityMeasureType               similarityMeasure,
+            IntrinsicICModelType                icModel,
+            HashMap<SemanticLibraryType,String> strDatasetPaths,
+            String                              strMeSHdir,
+            String                              strMeSHXmlConceptFileName,
+            String                              strUmlsDir,
+            String                              strSNOMED_CUI_mappingfilename) 
+            throws Exception
     {
         // We initialize the base class
         
@@ -133,12 +134,12 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
-        m_dataset = null;
         m_CachedSimilarityValues = new HashMap<>();
+        m_datasets = new HashMap<>();
         
         // We load the dataset
         
-        loadDatasetBenchmark(strDatasetPath);
+        loadDatasetBenchmark(strDatasetPaths);
         
         // We load METAMAP Lite
         
@@ -146,7 +147,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We annotate all CUI ceoncept mentions in all sentences of the dataste
         
-        annotateDataset();
+        annotateDatasets();
     }
     
     /**
@@ -322,10 +323,13 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             long startTime = System.currentTimeMillis();
 
             // We evaluate the random concept pairs
-
-            for (int i = 0; i < m_dataset.length; i++)
+            
+            for (int i = 0; i < m_datasets.get(library).get(0).size(); i++)
             {
-                double similarity = getUBSMsimilarityValue(m_dataset[i][0], m_dataset[i][1], library);
+                double similarity = getUBSMsimilarityValue(
+                        m_datasets.get(library).get(0).get(i), 
+                        m_datasets.get(library).get(1).get(i),
+                        library);
             }
 
             // We compute the elapsed time in seconds
@@ -352,11 +356,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We print the average results
         
-        System.out.println("# UMLS sentence pairs evaluated = " + m_dataset.length);
+        System.out.println("# UMLS sentence pairs evaluated = " + m_datasets.get(library).size());
         
         System.out.println(library.getLibraryType()
                 + " Average speed (#sentence pairs/second) = "
-                + ((double)m_dataset.length / averageRuntime));
+                + ((double)m_datasets.get(library).size() / averageRuntime));
         
         // We return the results
         
@@ -381,12 +385,12 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We analyze all sentences to extract all CUI pairs for each sentences        
         
-        for (int i = 0; i < m_dataset.length; i++)
+        for (int i = 0; i < m_datasets.get(pedersenLib).get(0).size(); i++)
         {
             // Preprocess the sentences and get the tokens for each sentence
 
-            String[] lstWordsSentence1 = m_dataset[i][0].replaceAll("\\p{Punct}", "").split(" ");
-            String[] lstWordsSentence2 = m_dataset[i][1].replaceAll("\\p{Punct}", "").split(" ");
+            String[] lstWordsSentence1 = m_datasets.get(pedersenLib).get(0).get(i).replaceAll("\\p{Punct}", "").split(" ");
+            String[] lstWordsSentence2 = m_datasets.get(pedersenLib).get(1).get(i).replaceAll("\\p{Punct}", "").split(" ");
 
             // 1. We build the joint set of distinct CUI codes from S1 and S2 (dictionary)
 
@@ -752,69 +756,111 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      */
     
     private void loadDatasetBenchmark(
-        String  strDatasetFilename) throws Exception
+        HashMap<SemanticLibraryType,String>  strDatasetFilenames) throws Exception
     {
-        System.out.println("Loading the sentence similarity dataset from path: " + strDatasetFilename);
-               
-        // Initialize the sentences
+        System.out.println("Loading the sentence similarity datasets");
         
-        ArrayList<String> first_sentences = new ArrayList<>();
-        ArrayList<String> second_sentences = new ArrayList<>();
+        // First, we initialize the hashmap m_datasets
         
-        // Read the benchmark CSV 
-        
-        BufferedReader csvReader = new BufferedReader(new FileReader(strDatasetFilename));
-        
-        String strRowLine;
-        
-        while ((strRowLine = csvReader.readLine()) != null) 
+        for(ISemanticLibrary lib : m_Libraries)
         {
-            // Split the line by tab
-            
-            String[] sentencePairs = strRowLine.split("\t");
-            
-            // Fill the matrix with the sentences
-            
-            first_sentences.add(sentencePairs[0]);
-            second_sentences.add(sentencePairs[1]);
+            m_datasets.put(lib, new ArrayList<>());
         }
         
-        // We close the file
+        // We iterate the libraries and load the dataset files per each library
         
-        csvReader.close();
-        
-        // Fill the dataset data
-        
-        m_dataset = new String[first_sentences.size()][2];
-        
-        for (int i = 0; i < first_sentences.size(); i++)
+        for (Map.Entry<ISemanticLibrary, ArrayList<ArrayList<String>>> entry : m_datasets.entrySet())
         {
-            m_dataset[i][0] = first_sentences.get(i);
-            m_dataset[i][1] = second_sentences.get(i);
+            // We get the library and dataset path
+            
+            ISemanticLibrary library = entry.getKey();
+            
+            String strDatasetPath = strDatasetFilenames.get(library.getLibraryType());
+            
+            // Initialize the sentences
+        
+            ArrayList<String> first_sentences = new ArrayList<>();
+            ArrayList<String> second_sentences = new ArrayList<>();
+            
+            // Read the benchmark CSV 
+        
+            BufferedReader csvReader = new BufferedReader(new FileReader(strDatasetPath));
+
+            String strRowLine;
+
+            while ((strRowLine = csvReader.readLine()) != null) 
+            {
+                // Split the line by tab
+
+                String[] sentencePairs = strRowLine.split("\t");
+
+                // Fill the matrix with the sentences
+
+                first_sentences.add(sentencePairs[0]);
+                second_sentences.add(sentencePairs[1]);
+            }
+            
+            // We initialize the array with the pairs of sentences
+            
+            ArrayList<ArrayList<String>> pairs = new ArrayList<>();
+            
+            pairs.add(first_sentences);
+            pairs.add(second_sentences);
+            
+            // We fill the first and second sentences per library
+            
+            m_datasets.put(library, pairs);
+
+            // We close the file
+
+            csvReader.close();
         }
-        
-        // We release the auxiliary lists
-        
-        first_sentences.clear();
-        second_sentences.clear();
     }
     
     /**
      * This function annotates all the sentences with CUI instances.
      */
     
-    private void annotateDataset() throws IOException, Exception
+    private void annotateDatasets() throws IOException, Exception
     {
         // Warning message
         
         System.out.println("Annotating the dataset with Metamap Lite...");
         
-        // We annotate ecach sentence of the dataset
+        // We annotate ecach sentence of the datasets
         
-        for (int i = 0; i < m_dataset.length; i++)
+        for (Map.Entry<ISemanticLibrary, ArrayList<ArrayList<String>>> entry : m_datasets.entrySet()) 
         {
-            m_dataset[i][0] = annotateSentence(m_dataset[i][0]);
-            m_dataset[i][1] = annotateSentence(m_dataset[i][1]);
+            // We get the library and dataset path
+            
+            ISemanticLibrary library = entry.getKey();
+            ArrayList<ArrayList<String>> sentences = entry.getValue();
+            
+            // We create an auxiliary array with the sentence pairs
+            
+            ArrayList<ArrayList<String>> sentencesAnnotated = new ArrayList<>();
+            
+            // We create two auxiliary arrays 
+            
+            ArrayList<String> firstSentencesAnnotated = new ArrayList<>();
+            ArrayList<String> secondSentencesAnnotated = new ArrayList<>();
+            
+            // We annotate all the sentences
+            
+            for (int i = 0; i < sentences.get(0).size(); i++) 
+            { 		      
+                // Annotate the sentences and add to the array
+                
+                firstSentencesAnnotated.add(annotateSentence(sentences.get(0).get(i)));
+                secondSentencesAnnotated.add(annotateSentence(sentences.get(1).get(i)));
+            } 
+            
+            // Add the pairs of sentences to the array
+            
+            sentencesAnnotated.add(firstSentencesAnnotated);
+            sentencesAnnotated.add(secondSentencesAnnotated);
+            
+            m_datasets.put(library, sentencesAnnotated);
         }
     }
     
@@ -876,11 +922,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // Select the 2018AB database
         
-        myProperties.setProperty("metamaplite.index.directory", "../HESML_UMLS_benchmark/public_mm_lite/data/ivf/2018ABascii/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../HESML_UMLS_benchmark/public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../HESML_UMLS_benchmark/public_mm_lite/data/models/en-token.bin");
+        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
+        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
+        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
+        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
+        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
         
         myProperties.setProperty("metamaplite.sourceset", "MSH");
 

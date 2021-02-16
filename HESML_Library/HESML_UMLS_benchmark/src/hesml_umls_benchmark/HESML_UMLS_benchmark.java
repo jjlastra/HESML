@@ -28,6 +28,7 @@ import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;  
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -65,9 +66,10 @@ public class HESML_UMLS_benchmark
     private static final String m_strSNOMED_descriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
     private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";    
+    private static final String m_strMedSTSLargefilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";   
     
     /**
-     * Main function. This fucntion executes all experiments reported in
+     * Main function. This function executes all experiments reported in
      * the HEMSL-UMLS introductory paper [1].
      * 
      * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
@@ -168,14 +170,14 @@ public class HESML_UMLS_benchmark
          * the distance between SNOME-CT concepts
          */
         
-        //RunAncSPLStatisticalExperiment(strOutputDir);
+        RunAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 7: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        RunAncSPLComplexityExperiment(strOutputDir);
+        //RunAncSPLComplexityExperiment(strOutputDir);
         
         /**
          * Experiment 8: we compare the performance of HESML and SML on
@@ -190,7 +192,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
         
         // We show the overalll running time
         
@@ -545,6 +547,14 @@ public class HESML_UMLS_benchmark
                                                     SimilarityMeasureType.AncSPLRada,
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
+        
+        // Create the hashmap with the datasets per library
+        
+        HashMap<SemanticLibraryType,String> strDatasetPaths = new HashMap<>();
+        
+        strDatasetPaths.put(SemanticLibraryType.UMLS_SIMILARITY, m_strMedSTSfilename);
+        strDatasetPaths.put(SemanticLibraryType.SML, m_strMedSTSfilename);
+        strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSLargefilename);
                 
         // We build the vector of raw output filenames
         
@@ -570,7 +580,7 @@ public class HESML_UMLS_benchmark
         {
             ISemanticLibBenchmark sentenceBenchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
-                                        IntrinsicICModelType.Seco, strMedSTSfilename, 
+                                        IntrinsicICModelType.Seco, strDatasetPaths, 
                                         m_strMeSHdir, m_strMeSHXmlFilename,
                                         m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
