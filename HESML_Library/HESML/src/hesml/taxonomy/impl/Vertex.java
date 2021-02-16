@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import javax.naming.ldap.HasControls;
 
 /**
  * This class implements a IVertex object in the half-edge representation
@@ -755,7 +754,7 @@ class Vertex implements IVertex
     
     /**
      * This function computes the distance field from the current vertex
-     * to all vertexes in the subgraph using the Dijkstra algorithm
+     * to all vertexes in the ancestors-absed subgraph using the Dijkstra algorithm
      * and the edge weights assigned to the taxonomy.
      * The field is computed in the upward direction.
      * If the parameter 'weighted' is false, the
@@ -764,12 +763,13 @@ class Vertex implements IVertex
      * Once the function is executed, the distance from the vertex
      * to each vertex in the subgraph can be recovered by calling
      * the getMinDistance() function on each vertex.
-     * @param subGraph
+     * @param ancestorsSubGraph
+     * @param ancestorTarget
      * @param weighted Flag indicating if the edge weights will be used
      * @return Distance in the upward didrection
      */
     
-    public double computeAncestorDistanceFieldOnSubgraph(
+    public double computeAncestorDistanceField(
             Set<IVertex>    ancestorsSubGraph,
             IVertex         ancestorTarget,
             boolean         weighted)
@@ -1114,7 +1114,7 @@ class Vertex implements IVertex
      */
     
     @Override
-    public double getFastShortestPathDistanceTo(
+    public double getAncSPLdistanceTo(
             IVertex     target,
             boolean     weighted) throws Exception
     {
@@ -1150,7 +1150,7 @@ class Vertex implements IVertex
 
                 // We use the fastest ascending AncSPL implementation
                 
-                distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(targetAncestors, this, weighted);
+                distance = ((Vertex)target).computeAncestorDistanceField(targetAncestors, this, weighted);
 
                 // We destroy the ancestor set if it was obtained on-the-fly
 
@@ -1166,7 +1166,7 @@ class Vertex implements IVertex
 
                 // We use the fast ascending AncSPL implementation
 
-                distance = computeAncestorDistanceFieldOnSubgraph(sourceAncestors, target, weighted);
+                distance = computeAncestorDistanceField(sourceAncestors, target, weighted);
                 
                 // We destroy the ancestor set if it was obtained on-the-fly
 
@@ -1189,8 +1189,8 @@ class Vertex implements IVertex
 
                 // We use the fast ascending AncSPL implementation
 
-                distance = ((Vertex)target).computeAncestorDistanceFieldOnSubgraph(targetAncestors, lcsVertex, weighted)
-                            + computeAncestorDistanceFieldOnSubgraph(sourceAncestors, lcsVertex, weighted);
+                distance = ((Vertex)target).computeAncestorDistanceField(targetAncestors, lcsVertex, weighted)
+                            + computeAncestorDistanceField(sourceAncestors, lcsVertex, weighted);
                 
                 // We destroy the ancestor sets if they were obtained on-the-fly
 

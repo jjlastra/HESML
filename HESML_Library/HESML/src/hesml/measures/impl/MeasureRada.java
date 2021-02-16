@@ -108,7 +108,7 @@ class MeasureRada extends SimilaritySemanticMeasure
         
         double distance = !m_useFastShortestPathAlgorithm ?
                 left.getShortestPathDistanceTo(right, false) :
-                left.getFastShortestPathDistanceTo(right, false);
+                left.getAncSPLdistanceTo(right, false);
         
         // We return the result
         

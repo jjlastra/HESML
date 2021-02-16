@@ -134,7 +134,7 @@ class MeasureHao extends SimilaritySemanticMeasure
             
             double dist = !m_useFastShortestPathAlgorithm ? 
                     left.getShortestPathDistanceTo(right, false) :
-                    left.getFastShortestPathDistanceTo(right, false);
+                    left.getAncSPLdistanceTo(right, false);
             
             // We obtain the depth of the LCS vertex defiend as the the
             // length of shortest path from the vertex to the root

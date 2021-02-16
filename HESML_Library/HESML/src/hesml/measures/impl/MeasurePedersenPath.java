@@ -100,7 +100,7 @@ class MeasurePedersenPath extends SimilaritySemanticMeasure
         
         double shortestPathLength = !m_useFastShortestPathAlgorithm ? 
                                 left.getShortestPathDistanceTo(right, false) :
-                                left.getFastShortestPathDistanceTo(right, false);
+                                left.getAncSPLdistanceTo(right, false);
         
         double similarity = 1.0 / (1.0 + shortestPathLength);
         

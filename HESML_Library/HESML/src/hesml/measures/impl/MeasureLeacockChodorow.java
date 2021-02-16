@@ -111,7 +111,7 @@ class MeasureLeacockChodorow extends SimilaritySemanticMeasure
 
         double shortestPathLen = !m_useFastShortestPathAlgorithm ? 
                                 left.getShortestPathDistanceTo(right, false) :
-                                left.getFastShortestPathDistanceTo(right, false);
+                                left.getAncSPLdistanceTo(right, false);
         
         double similarity = -Math.log((1.0 + shortestPathLen)
                             / (2.0 * m_largestDepthMin));

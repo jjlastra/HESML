@@ -123,15 +123,15 @@ class MeasurePekarStaab extends SimilaritySemanticMeasure
 
                 double distLcsRoot = !m_useFastShortestPathAlgorithm ? 
                                 lcsVertex.getShortestPathDistanceTo(root, false) :
-                                lcsVertex.getFastShortestPathDistanceTo(root, false);
+                                lcsVertex.getAncSPLdistanceTo(root, false);
                 
                 double distLeftLcs = !m_useFastShortestPathAlgorithm ? 
                                 left.getShortestPathDistanceTo(lcsVertex, false) :
-                                left.getFastShortestPathDistanceTo(lcsVertex, false);
+                                left.getAncSPLdistanceTo(lcsVertex, false);
                 
                 double distRightLcs = !m_useFastShortestPathAlgorithm ? 
                                 right.getShortestPathDistanceTo(lcsVertex, false) :
-                                right.getFastShortestPathDistanceTo(lcsVertex, false);
+                                right.getAncSPLdistanceTo(lcsVertex, false);
                 
 
                 // We compute the similarity as defined in equation (2) of the paper

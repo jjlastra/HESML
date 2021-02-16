@@ -212,7 +212,8 @@ public interface IVertex extends Comparable<IVertex>
             boolean     weighted) throws Exception;
     
     /**
-     * This function computes a fast approximation of the Dijkstra algorithm
+     * This function computes a fast approximation of the Dijkstra algorithm,
+     * called Ancestors-based Shortest-Path Length (AncSPL),
      * using the edge weights assigned to the taxonomy, or a uniform weight = 1
      * when it is invoked to count the edges between the current and target
      * vertexes. This novel algortihm is especially suited for taxonomies
@@ -221,7 +222,7 @@ public interface IVertex extends Comparable<IVertex>
      * @return 
      */
     
-    double getFastShortestPathDistanceTo(
+    double getAncSPLdistanceTo(
             IVertex     target,
             boolean     weighted) throws Exception;
 

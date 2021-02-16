@@ -170,7 +170,7 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
             // We compute the distances
             
             double exactDistance = source.getShortestPathDistanceTo(target, false);
-            double ancSPLDistance = source.getFastShortestPathDistanceTo(target, false);
+            double ancSPLDistance = source.getAncSPLdistanceTo(target, false);
             
             // We fill the output matrix
             

@@ -121,7 +121,7 @@ class MeasureMeng2014 extends SimilaritySemanticMeasure
 
             double length = !m_useFastShortestPathAlgorithm ? 
                     left.getShortestPathDistanceTo(right, false) :
-                    left.getFastShortestPathDistanceTo(right, false);
+                    left.getAncSPLdistanceTo(right, false);
 
             // We measure the power factor
 

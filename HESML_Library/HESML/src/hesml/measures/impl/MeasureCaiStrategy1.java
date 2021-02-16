@@ -120,7 +120,7 @@ class MeasureCaiStrategy1 extends BaseJiangConrathMeasure
         
         double shortestPathLength = !m_useFastShortestPathAlgorithm ? 
                                     left.getShortestPathDistanceTo(right, false) :
-                                    left.getFastShortestPathDistanceTo(right, false);
+                                    left.getAncSPLdistanceTo(right, false);
         
         double splN = 0.5 * (double) shortestPathLength
                         / (double) left.getTaxonomy().getVertexes().getGreatestDepthMax();
