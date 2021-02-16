@@ -100,7 +100,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input parameters
         
-        String strOutputDir = ".";
+        String strOutputDir = "../home/alicia/Desktop/data/HESMLV1R5/HESML_Library/ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
         
         // We check the input arguments
         
@@ -192,7 +192,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir, m_strMedSTSfilename);
+        RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -528,8 +528,7 @@ public class HESML_UMLS_benchmark
      */
     
     private static void RunSentenceSimilarityExperiment(
-            String  strRawOutputDir,
-            String  strMedSTSfilename) throws Exception
+            String  strRawOutputDir) throws Exception
     {
         /**
          * We set the vector of libraries to be compared

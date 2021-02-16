@@ -356,11 +356,11 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We print the average results
         
-        System.out.println("# UMLS sentence pairs evaluated = " + m_datasets.get(library).size());
+        System.out.println("# UMLS sentence pairs evaluated = " + m_datasets.get(library).get(0).size());
         
         System.out.println(library.getLibraryType()
                 + " Average speed (#sentence pairs/second) = "
-                + ((double)m_datasets.get(library).size() / averageRuntime));
+                + ((double)m_datasets.get(library).get(0).size() / averageRuntime));
         
         // We return the results
         
