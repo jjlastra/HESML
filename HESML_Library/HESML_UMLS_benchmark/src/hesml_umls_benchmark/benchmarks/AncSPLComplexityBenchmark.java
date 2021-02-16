@@ -152,13 +152,14 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
         // We create the output file wit the following format
         // Id source | Id target | Exact distance | AncSPL distance
         
-        String[][] strOutputMatrix = new String[1 + binsByAncestorsCount.size()][3];
+        String[][] strOutputMatrix = new String[1 + binsByAncestorsCount.size()][4];
         
         // We insert the headers
         
         strOutputMatrix[0][0] = "#Overall nodes";
         strOutputMatrix[0][1] = "Overall time (secs)";
-        strOutputMatrix[0][2] = "Avg speed (adjacent nodes/secs)";
+        strOutputMatrix[0][2] = "Overall distance evaluations";
+        strOutputMatrix[0][3] = "Avg speed (evaluations nodes/secs)";
         
         // We initialize the file row counter and root vertex
         
@@ -182,7 +183,7 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
             
-            int minSamples = 100;
+            int minSamples = 10;
             int reps = Math.max(1, (int)Math.ceil(minSamples / bin.size()));
 
             // We start the stop watch
@@ -209,6 +210,7 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
             
             strOutputMatrix[iEntry][0] = Integer.toString(overallAncestorCount);
             strOutputMatrix[iEntry][1] = Double.toString(timeEllapsedSecs);
+            strOutputMatrix[iEntry][1] = Long.toString(overallpairEvaluations);
             strOutputMatrix[iEntry][2] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
             
             // We increment the matrix row
