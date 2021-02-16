@@ -170,7 +170,7 @@ public class HESML_UMLS_benchmark
          * the distance between SNOME-CT concepts
          */
         
-        RunAncSPLStatisticalExperiment(strOutputDir);
+        //RunAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 7: statistical benchmark of the AncSPL algorithm with regards to
@@ -181,7 +181,7 @@ public class HESML_UMLS_benchmark
         
         /**
          * Experiment 8: we compare the performance of HESML and SML on
-         * the Gene Ontoogy (GO).
+         * the Gene Ontology (GO).
          */
         
         //RunRandomGOConceptsExperiment(strOutputDir);

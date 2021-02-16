@@ -151,7 +151,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     }
     
     /**
-     * This function releases the resouurces used by the benchmark.
+     * This function releases the resources used by the benchmark.
      */
     
     @Override
@@ -383,7 +383,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
 
         HashSet<CuiPair> allCuiPairs = new HashSet<>();
         
-        // We analyze all sentences to extract all CUI pairs for each sentences        
+        // We analyze all sentences to extract all CUI pairs for each sentences  
         
         for (int i = 0; i < m_datasets.get(pedersenLib).get(0).size(); i++)
         {
