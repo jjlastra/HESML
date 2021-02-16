@@ -86,11 +86,11 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
      * @throws Exception 
      */
     
-    private ArrayList<SnomedConceptPair> generateRandomPairs(int overallSamples) throws Exception
+    private IVertex[][] generateRandomPairs(int overallSamples) throws Exception
     {
         // We initialize the result
         
-        ArrayList<SnomedConceptPair> group = new ArrayList<>();
+        IVertex[][] randomPairs = new IVertex[overallSamples][2];
         
         // We create a random number
         
@@ -111,12 +111,13 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
             
             // We fill the randomConceptPairs concepts
             
-            group.add(new SnomedConceptPair(0.0, source, target));
+            randomPairs[i][0] = source;
+            randomPairs[i][1] = target;
         }
         
         // We return the result
         
-        return (group);
+        return (randomPairs);
     }
     
     /**
@@ -136,12 +137,12 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
                 
         // We generate the renadom concept pairs
         
-        ArrayList<SnomedConceptPair> randomConceptPairs = generateRandomPairs(overallSamples);
+        IVertex[][] randomConceptPairs = generateRandomPairs(overallSamples);
         
         // We create the output file wit the following format
         // Id source | Id target | Exact distance | AncSPL distance
         
-        String[][] strOutputMatrix = new String[1 + randomConceptPairs.size()][4];
+        String[][] strOutputMatrix = new String[1 + overallSamples][4];
         
         // We insert the headers
         
@@ -150,22 +151,22 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
         strOutputMatrix[0][2] = "Exact distance";
         strOutputMatrix[0][3] = "AncSPL distance";
         
-        // We initialize the file row counter
+        // We generate random concept pairs to populate the collection of groups
         
-        int iPair = 1;
+        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
         
         // We compute the exact and ancSPL distance for all vertex pairs in the same randomConceptPairs
         
-        for (SnomedConceptPair pair : randomConceptPairs)
+        for (int i = 0; i < overallSamples; i++)
         {
             // We output the progress - debug message
             
-            System.out.println("Computing the random pair " + iPair + " of " + overallSamples);
+            System.out.println("Computing the random pair " + (i+1) + " of " + overallSamples);
             
             // We get the source and target Ids
             
-            IVertex source = pair.getSourceConceptVertex();
-            IVertex target = pair.getTargetConceptVertex();
+            IVertex source = randomConceptPairs[i][0];
+            IVertex target = randomConceptPairs[i][1];
             
             // We compute the distances
             
@@ -174,19 +175,11 @@ class AncSPLStatisticalBenchmark implements IAncSPLDataBenchmark
             
             // We fill the output matrix
             
-            strOutputMatrix[iPair][0] = Long.toString(source.getID());
-            strOutputMatrix[iPair][1] = Long.toString(target.getID());
-            strOutputMatrix[iPair][2] = Double.toString(exactDistance);
-            strOutputMatrix[iPair][3] = Double.toString(ancSPLDistance);
-            
-            // We increment the matrix row
-            
-            iPair++;
+            strOutputMatrix[i+1][0] = Long.toString(source.getID());
+            strOutputMatrix[i+1][1] = Long.toString(target.getID());
+            strOutputMatrix[i+1][2] = Double.toString(exactDistance);
+            strOutputMatrix[i+1][3] = Double.toString(ancSPLDistance);
         }
-        
-        // We release the auxiliary resources
-        
-        randomConceptPairs.clear();
         
         // We write the output file
         
