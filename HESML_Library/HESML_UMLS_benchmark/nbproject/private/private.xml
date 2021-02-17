@@ -4,8 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/benchmarks/BenchmarkFactory.java</file>
-            <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/benchmarks/AncSPLComplexityBenchmark.java</file>
+            <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/IBioLibraryExperiment.java</file>
+            <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/benchmarks/LargeGOfileBenchmark.java</file>
             <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/benchmarks/AncSPLScalabilityBenchmark.java</file>
+            <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/benchmarks/AncSPLStatisticalBenchmark.java</file>
             <file>file:/C:/GitHub_HESML/HESML_Library/HESML_UMLS_benchmark/src/hesml_umls_benchmark/HESML_UMLS_benchmark.java</file>
         </group>
     </open-files>

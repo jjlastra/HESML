@@ -92,16 +92,16 @@ public class BenchmarkFactory
      */
 
     public static IBioLibraryExperiment createMeSHConceptBenchmark(
-            SemanticLibraryType[]    libraries,
-            UMLSOntologyType      ontology,
-            SimilarityMeasureType       similarityMeasure,
-            IntrinsicICModelType        icModel,
-            int[]                       nRandomSamplesPerLibrary,
-            int                         nRuns,
-            String                      strMeShDir,
-            String                      strMeSHXmlDescriptionFileName,
-            String                      strUmlsDir,
-            String                      strSNOMED_CUI_mappingfilename) throws Exception
+            SemanticLibraryType[]   libraries,
+            UMLSOntologyType        ontology,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            int[]                   nRandomSamplesPerLibrary,
+            int                     nRuns,
+            String                  strMeShDir,
+            String                  strMeSHXmlDescriptionFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) throws Exception
     {
         return (new RandomConceptsEvalBenchmark(libraries, ontology,
                 similarityMeasure, icModel, nRandomSamplesPerLibrary,
@@ -132,7 +132,26 @@ public class BenchmarkFactory
         return (new RandomConceptsEvalBenchmark(libraries,
                 similarityMeasure, icModel, nRandomSamplesPerLibrary,
                 nRuns, strGoOboFilename));
-    }   
+    }
+
+    /**
+     * This function creates an experiment to compare all proteins
+     * defined in both input files.
+     * @param strGoOboFilename
+     * @param strGoAnnotatedFile1 
+     * @param strGoAnnotatedFile2 
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createLargeGOConceptBenchmark(
+            String  strGoOboFilename,
+            String  strGoAnnotatedFile1,
+            String  strGoAnnotatedFile2) throws Exception
+    {
+        return (new LargeGOfileBenchmark(strGoOboFilename,
+                strGoAnnotatedFile1, strGoAnnotatedFile2));
+    }       
     
     /**
      * This fucntion creates a benchmark to evaluate the approximation quality

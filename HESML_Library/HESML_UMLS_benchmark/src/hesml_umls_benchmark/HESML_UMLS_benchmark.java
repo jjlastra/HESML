@@ -484,7 +484,7 @@ public class HESML_UMLS_benchmark
         int[] nRandomSamplesPerLibrary = new int[libraries.length];
         
         /**
-         * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
+         * We compare the performance of HESML and SML by evaluating
          * different similarity measures on a random sequence of concept pairs.
          */
         
@@ -505,13 +505,9 @@ public class HESML_UMLS_benchmark
                 nRandomSamplesPerLibrary[j] = getRandomSamplesCountGO(libraries[j], measureTypes[i]);
             }
         
-            // We set the benchmark
-            
-            IBioLibraryExperiment benchmark = null;
-            
             // We build the benchmark according tor the underlying ontology
             
-            benchmark = BenchmarkFactory.createGOConceptBenchmark(
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createGOConceptBenchmark(
                             libraries, measureTypes[i], IntrinsicICModelType.Seco,
                             nRandomSamplesPerLibrary, nRuns, "../GeneOntology/go.obo");
         
@@ -613,7 +609,7 @@ public class HESML_UMLS_benchmark
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
-        // We evaluate the avergae speed for each distance-based group of conepts.
+        // We evaluate the average speed for each distance-based group of conepts.
         
         benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
         
@@ -641,7 +637,8 @@ public class HESML_UMLS_benchmark
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
-        // We evaluate the avergae speed for each distance-based group of conepts.
+        // We compute the exact and approximated (AncSPL) distance values between
+        // 1000 random SNOMED-CT concepts
         
         benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
         
@@ -726,6 +723,30 @@ public class HESML_UMLS_benchmark
             benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
             benchmark.clear();
         }
+    }
+    
+    /**
+     * This function runs the large GO experiment which comapres all proteins
+     * of the Homo sapiens and Mus musculus (mouse) organisms contained in two
+     * large GO Annotated Files in GAF file format.
+     * SNOMED-CT concepts.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunLargeGOExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createLargeGOConceptBenchmark(
+                                            "../GeneOntology/go.obo",
+                                            "../GO_datasets/",
+                                            "../GO_datasets/");
+        
+        // We evaluate the experiment
+        
+        benchmark.run(strRawOutputDir + "/" + "raw_largeGO_test.csv");
+        benchmark.clear();
     }
     
     /**

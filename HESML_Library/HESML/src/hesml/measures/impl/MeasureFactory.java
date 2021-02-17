@@ -204,7 +204,7 @@ public class MeasureFactory
         
         IGroupwiseSimilarityMeasure groupwiseMeasure = null;
         
-        // We create the specific groupwise similairty measure
+        // We create the specific groupwise similarity measure
         
         switch (groupwiseMeasureType)
         {
