@@ -155,47 +155,47 @@ public class HESML_UMLS_benchmark
         //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
-         * Experiment 4: we evaluate the approximation quality of the novel
+         * Experiment 3: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
         //RunAncSPLExperiment(strOutputDir);
         
         /**
-         * Experiment 5: scalability of the AncSPL algortihm with regards to
+         * Experiment 4: scalability of the AncSPL algortihm with regards to
          * the distance between SNOME-CT concepts
          */
         
         //RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
-         * Experiment 6: statistical benchmark of the AncSPL algorithm with regards to
+         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
         //RunAncSPLStatisticalExperiment(strOutputDir);
 
         /**
-         * Experiment 7: statistical benchmark of the AncSPL algorithm with regards to
-         * the distance between SNOME-CT concepts
-         */
-        
-        //RunAncSPLComplexityExperiment(strOutputDir);
-        
-        /**
-         * Experiment 8: we compare the performance of HESML and SML on
+         * Experiment 6: we compare the performance of HESML and SML on
          * the Gene Ontology (GO).
          */
         
         //RunRandomGOConceptsExperiment(strOutputDir);
+
+        /**
+         * Experiment 7: comparison of two large GO annotated files describing
+         * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
+         */
+        
+        RunLargeGOExperiment(strOutputDir);
         
         /**
-         * Experiment 9: we compare the performance of the HEMSL, SML and
+         * Experiment 8: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir);
+        //RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -726,8 +726,9 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the large GO experiment which comapres all proteins
-     * of the Homo sapiens and Mus musculus (mouse) organisms contained in two
+     * This function runs the large GO experiment which compares all proteins
+     * of the Homo sapiens (goa_human.gaf) and Canis lupus familiaris (goa_dog.gaf)
+     * organisms contained in two
      * large GO Annotated Files in GAF file format.
      * SNOMED-CT concepts.
      * @param strRawOutputDir 
@@ -740,8 +741,8 @@ public class HESML_UMLS_benchmark
         
         IBioLibraryExperiment benchmark = BenchmarkFactory.createLargeGOConceptBenchmark(
                                             "../GeneOntology/go.obo",
-                                            "../GO_datasets/",
-                                            "../GO_datasets/");
+                                            "../GO_datasets/goa_human.gaf",
+                                            "../GO_datasets/goa_dog.gaf");
         
         // We evaluate the experiment
         

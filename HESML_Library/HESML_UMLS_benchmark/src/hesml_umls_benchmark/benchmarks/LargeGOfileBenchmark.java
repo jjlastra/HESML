@@ -28,11 +28,17 @@ import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
+import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
+import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.obo.IOboConcept;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
+import hesml.taxonomyreaders.obo.impl.OboOntology;
 import hesml_umls_benchmark.IBioLibraryExperiment;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -115,17 +121,20 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         // We compute the overall number of GO-based comparisons
         
-        m_overallGOcomparisons = 0;
+        long firstGoAnnotations = 0;
+        long secondGoAnnotations = 0;
         
         for (Set<IVertex> annotationSet : m_firstProteinsSet.values())
         {
-            m_overallGOcomparisons += annotationSet.size();
+            firstGoAnnotations += annotationSet.size();
         }
         
         for (Set<IVertex> annotationSet : m_secondProteinsSet.values())
         {
-            m_overallGOcomparisons += annotationSet.size();
+            secondGoAnnotations += annotationSet.size();
         }
+        
+        m_overallGOcomparisons = firstGoAnnotations * secondGoAnnotations;
     }
     
     /**
@@ -137,12 +146,67 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
      */
     
     private HashMap<String, Set<IVertex>> loadGoAnnotatedFile(
-            String  strGoAnnotatedFilename)
+            String  strGoAnnotatedFilename) throws IOException
     {
         // We initialize the output
         
-         HashMap<String, Set<IVertex>> indexedProteins = new HashMap<>();
+        HashMap<String, Set<IVertex>> indexedProteins = new HashMap<>();
          
+        // Warning message
+        
+        System.out.println("Loading GO Annotated File = " + strGoAnnotatedFilename);
+        
+        // We create the OBO reader
+        
+        BufferedReader reader = new BufferedReader(new FileReader(strGoAnnotatedFilename));
+        
+        // We get the Go taxonomy
+        
+        IVertexList goVertexes = m_GOontology.getTaxonomy().getVertexes();
+        
+        // We parse the concepts contained in the file
+        
+        String strLine;
+        
+        while ((strLine = reader.readLine()) != null)
+        {
+            // We skip the commented lines
+            
+            if (!strLine.startsWith("!"))
+            {
+                // We recover the tag-separated fields
+                
+                String[] strFields = strLine.split("\t");
+                
+                // We recover the name of the protein and GO annotation
+                
+                String strProteinName = strFields[1].trim();
+                String strGoAnnotation = strFields[4].trim();
+                
+                // We retrieve the collection of annotations of the protein
+                
+                if (!indexedProteins.containsKey(strProteinName))
+                {
+                    indexedProteins.put(strProteinName, new HashSet<>());                            
+                }
+                
+                HashSet<IVertex> goAnnotations = (HashSet) indexedProteins.get(strProteinName);
+                
+                // We save the new Go annotation
+                
+                IOboConcept goConcept = m_GOontology.getConceptById(strGoAnnotation);
+                
+                if (goConcept != null)
+                {
+                    goAnnotations.add(goVertexes.getById(goConcept.getTaxonomyNodeId()));
+                }
+            }
+        }
+        
+        // We close the file
+        
+        reader.close();
+        
          // We return the result
          
          return (indexedProteins);
@@ -171,6 +235,10 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         for (int i = 0; i < m_groupwiseSimMeasures.length; i++)
         {
+            // Warning message
+            
+            System.out.println("Evaluating GO files with " + m_groupwiseSimMeasures[i].toString());
+            
             // We start the stopwatch
             
             long startWatch = System.currentTimeMillis();
@@ -179,7 +247,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
             
             for (Set<IVertex> protein1 : m_firstProteinsSet.values())
             {
-                for (Set<IVertex> protein2 : m_firstProteinsSet.values())
+                for (Set<IVertex> protein2 : m_secondProteinsSet.values())
                 {
                     m_groupwiseSimMeasures[i].getSimilarity(protein1, protein2);
                 }
