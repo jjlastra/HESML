@@ -165,7 +165,7 @@ rawdata_WuPalmer_MedSTS <- read.csv(paste(inputDir, sep = "", "raw_output_WuPalm
 
 # We create the table 4 as reported in the paper [4]
 
-table3 <- matrix(nrow = 4, ncol = 5);
+table3 <- matrix(nrow = 5, ncol = 5);
 
 colnames(table3) <- c("Similarity measure", "Measure type", "UMLS::Sim", "SML", "HESML");
 
@@ -176,27 +176,33 @@ colnames(table3) <- c("Similarity measure", "Measure type", "UMLS::Sim", "SML", 
 
 table3[1,1] = "Rada";
 table3[1,2] = "edge-counting";
-table3[1,3] = round(30 / mean(rawdata_Rada_MedSTS[1:5,2]), digits = 3)
-table3[1,4] = round(30 / rawdata_Rada_MedSTS[1,3], digits = 3)
-table3[1,5] = round(30 / mean(rawdata_Rada_MedSTS[1:5,4]), digits = 3)
+table3[1,3] = round(rawdata_Rada_MedSTS[6,2] / mean(rawdata_Rada_MedSTS[1:5,2]), digits = 3)
+table3[1,4] = round(rawdata_Rada_MedSTS[6,3] / rawdata_Rada_MedSTS[1,3], digits = 3)
+table3[1,5] = round(rawdata_Rada_MedSTS[6,4] / mean(rawdata_Rada_MedSTS[1:5,4]), digits = 3)
 
 table3[2,1] = "AnsSPLRada";
 table3[2,2] = "edge-counting";
 table3[2,3] = "---";
 table3[2,4] = "---";
-table3[2,5] = round(30 / mean(rawdata_AncSPLRada_MedSTS[1:5,4]), digits = 3)
+table3[2,5] = round(rawdata_AncSPLRada_MedSTS[6,4] / mean(rawdata_AncSPLRada_MedSTS[1:5,4]), digits = 3)
 
 table3[3,1] = "Lin";
 table3[3,2] = "IC-based";
-table3[3,3] = round(30 / mean(rawdata_Lin_MedSTS[1:5,2]), digits = 3)
-table3[3,4] = round(30 / mean(rawdata_Lin_MedSTS[1:5,3]), digits = 3)
-table3[3,5] = round(30 / mean(rawdata_Lin_MedSTS[1:5,4]), digits = 3)
+table3[3,3] = round(rawdata_Lin_MedSTS[6,2] / mean(rawdata_Lin_MedSTS[1:5,2]), digits = 3)
+table3[3,4] = round(rawdata_Lin_MedSTS[6,3] / mean(rawdata_Lin_MedSTS[1:5,3]), digits = 3)
+table3[3,5] = round(rawdata_Lin_MedSTS[6,4] / mean(rawdata_Lin_MedSTS[1:5,4]), digits = 3)
 
 table3[4,1] = "Wu-Palmer_fast";
 table3[4,2] = "depth-based";
-table3[4,3] = round(30 / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
+table3[4,3] = round(rawdata_WuPalmer_MedSTS[6,2] / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
 table3[4,4] = "---";
-table3[4,5] = round(30 / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
+table3[4,5] = round(rawdata_WuPalmer_MedSTS[6,4] / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
+
+table3[5,1] = "Total CUI comparisons";
+table3[5,2] = rawdata_Rada_MedSTS[7,2];
+table3[5,3] = rawdata_AncSPLRada_MedSTS[7,2];
+table3[5,4] = rawdata_Lin_MedSTS[7,2];
+table3[5,5] = rawdata_WuPalmer_MedSTS[7,2];
 
 # ------------------------------------------------------------------------
 # Table 4: Pearson and Spearman correlantion between base path-based measures

@@ -68,6 +68,7 @@ public class HESML_UMLS_benchmark
     private static final String m_strMedSTSfilename = "../SentenceSimDatasets/MedSTS_subset30_normalized.tsv";    
     private static final String m_strMedSTSLargefilename = "../SentenceSimDatasets/MedStsFullNormalized.tsv";  
     private static final String m_str1millionFilename = "../UMLS_Datasets/1MPairs_NoPreprocess.txt";  
+    private static final String m_str4pairsTestFilename = "../UMLS_Datasets/4pairsTest.txt";  
     
     
     /**
@@ -556,8 +557,11 @@ public class HESML_UMLS_benchmark
         strDatasetPaths.put(SemanticLibraryType.UMLS_SIMILARITY, m_strMedSTSfilename);
         strDatasetPaths.put(SemanticLibraryType.SML, m_strMedSTSfilename);
         //strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSLargefilename);
-        strDatasetPaths.put(SemanticLibraryType.HESML, m_str1millionFilename);
-                
+        //strDatasetPaths.put(SemanticLibraryType.HESML, m_str1millionFilename);
+        strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSfilename);
+        
+        
+        
         // We build the vector of raw output filenames
         
         String[] strOutputFilenames = new String[measureTypes.length];
