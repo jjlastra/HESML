@@ -21,14 +21,12 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.taxonomy.IVertex;
-import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml_umls_benchmark.IAncSPLDataBenchmark;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.TreeMap;
+import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
  * This class evaluates the scalability of the AncSPL algorithm reagarding the
@@ -37,7 +35,7 @@ import java.util.TreeMap;
  * @author j.lastra
  */
 
-class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
+class AncSPLComplexityBenchmark implements IBioLibraryExperiment
 {
     /**
      * SNOMED-CT ontology
@@ -142,7 +140,7 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
      */
     
     @Override
-    public void runExperiment(
+    public void run(
             String  strOutputRawDataFilename) throws Exception
     {
         // We generate the renadom concept pairs

@@ -23,11 +23,10 @@ package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
-import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
-import hesml_umls_benchmark.ISemanticLibBenchmark;
 import java.util.HashMap;
+import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
  * This function creates all UMLS benchmarks
@@ -53,7 +52,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
 
-    public static ISemanticLibBenchmark createSnomedConceptBenchmark(
+    public static IBioLibraryExperiment createSnomedConceptBenchmark(
             SemanticLibraryType[]    libraries,
             UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
@@ -92,7 +91,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
 
-    public static ISemanticLibBenchmark createMeSHConceptBenchmark(
+    public static IBioLibraryExperiment createMeSHConceptBenchmark(
             SemanticLibraryType[]    libraries,
             UMLSOntologyType      ontology,
             SimilarityMeasureType       similarityMeasure,
@@ -122,7 +121,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static ISemanticLibBenchmark createGOConceptBenchmark(
+    public static IBioLibraryExperiment createGOConceptBenchmark(
             SemanticLibraryType[]   libraries,
             SimilarityMeasureType   similarityMeasure,
             IntrinsicICModelType    icModel,
@@ -153,7 +152,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static ISemanticLibBenchmark createAncSPLBenchmark(
+    public static IBioLibraryExperiment createAncSPLBenchmark(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
@@ -186,7 +185,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
 
-    public static ISemanticLibBenchmark createMeSHSentenceBenchmark(
+    public static IBioLibraryExperiment createMeSHSentenceBenchmark(
             SemanticLibraryType[]               libraries,
             SimilarityMeasureType               similarityMeasure,
             IntrinsicICModelType                icModel,
@@ -215,7 +214,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IAncSPLDataBenchmark createAncSPLScalabilityTest(
+    public static IBioLibraryExperiment createAncSPLScalabilityTest(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
@@ -240,7 +239,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IAncSPLDataBenchmark createAncSPLStatisticalBenchmark(
+    public static IBioLibraryExperiment createAncSPLStatisticalBenchmark(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
@@ -265,7 +264,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IAncSPLDataBenchmark createAncSPLComplexityBenchmark(
+    public static IBioLibraryExperiment createAncSPLComplexityBenchmark(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,

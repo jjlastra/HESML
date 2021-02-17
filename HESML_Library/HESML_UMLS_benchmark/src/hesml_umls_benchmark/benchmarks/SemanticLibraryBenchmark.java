@@ -29,7 +29,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import hesml_umls_benchmark.ISemanticLibrary;
-import hesml_umls_benchmark.ISemanticLibBenchmark;
+import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
  * This class implements the abstract base class for all types of benchmarks
@@ -38,7 +38,7 @@ import hesml_umls_benchmark.ISemanticLibBenchmark;
  * @author j.lastra
  */
 
-abstract class SemanticLibraryBenchmark implements ISemanticLibBenchmark
+abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
 {
     /**
      * Wrappers of the semantic measure libraries being evaluated

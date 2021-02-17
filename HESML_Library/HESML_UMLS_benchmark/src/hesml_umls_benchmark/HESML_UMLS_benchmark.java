@@ -411,7 +411,7 @@ public class HESML_UMLS_benchmark
         
             // We set the benchmark
             
-            ISemanticLibBenchmark benchmark = null;
+            IBioLibraryExperiment benchmark = null;
             
             // We build the benchmark according tor the underlying ontology
             
@@ -507,7 +507,7 @@ public class HESML_UMLS_benchmark
         
             // We set the benchmark
             
-            ISemanticLibBenchmark benchmark = null;
+            IBioLibraryExperiment benchmark = null;
             
             // We build the benchmark according tor the underlying ontology
             
@@ -584,7 +584,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            ISemanticLibBenchmark sentenceBenchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
+            IBioLibraryExperiment sentenceBenchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strDatasetPaths, 
                                         m_strMeSHdir, m_strMeSHXmlFilename,
@@ -607,7 +607,7 @@ public class HESML_UMLS_benchmark
     {
         // We create the banchmark
         
-        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
@@ -615,7 +615,7 @@ public class HESML_UMLS_benchmark
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
-        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
         
         // Werlease all resources
         
@@ -635,7 +635,7 @@ public class HESML_UMLS_benchmark
     {
         // We create the banchmark
         
-        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
@@ -643,7 +643,7 @@ public class HESML_UMLS_benchmark
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
-        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
         
         // We release all resources
         
@@ -663,7 +663,7 @@ public class HESML_UMLS_benchmark
     {
         // We create the banchmark
         
-        IAncSPLDataBenchmark benchmark = BenchmarkFactory.createAncSPLComplexityBenchmark(
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLComplexityBenchmark(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
@@ -671,7 +671,7 @@ public class HESML_UMLS_benchmark
         
         // We evaluate the avergae speed for each distance-based group of conepts.
         
-        benchmark.runExperiment(strRawOutputDir + "/" + "raw_AnsSPL_complexity_test.csv");
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_complexity_test.csv");
         
         // We release all resources
         
@@ -714,7 +714,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            ISemanticLibBenchmark benchmark = BenchmarkFactory.createAncSPLBenchmark(
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],

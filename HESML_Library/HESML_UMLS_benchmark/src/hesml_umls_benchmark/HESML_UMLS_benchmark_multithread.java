@@ -54,10 +54,10 @@ import java.util.logging.Logger;
 
 class HESML_UMLS_benchmark_multithread implements Runnable 
 {
-    ISemanticLibBenchmark m_benchmark;
+    IBioLibraryExperiment m_benchmark;
     String m_outputPath;
 
-    HESML_UMLS_benchmark_multithread(ISemanticLibBenchmark benchmark, String outputPath)
+    HESML_UMLS_benchmark_multithread(IBioLibraryExperiment benchmark, String outputPath)
     {
         m_benchmark = benchmark;
         m_outputPath = outputPath;
@@ -126,7 +126,7 @@ class Multithread
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            ISemanticLibBenchmark benchmark = BenchmarkFactory.createAncSPLBenchmark(
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],

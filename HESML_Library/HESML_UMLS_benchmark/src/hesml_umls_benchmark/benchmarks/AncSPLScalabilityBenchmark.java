@@ -24,17 +24,17 @@ import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml_umls_benchmark.IAncSPLDataBenchmark;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
+import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
  * This class implements the wcalability benchmark for the AncSPL algorithm.
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
+class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
 {
     /**
      * SNOMED-CT ontology
@@ -218,7 +218,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
      */
     
     @Override
-    public void runExperiment(
+    public void run(
         String  strOutputRawDataFilename) throws Exception
     {
         // We compute the groups of concepts
