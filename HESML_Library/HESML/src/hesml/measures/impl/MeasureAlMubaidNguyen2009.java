@@ -120,7 +120,7 @@ class MeasureAlMubaidNguyen2009  extends SimilaritySemanticMeasure
         {
             shortestPathLength = !m_useFastShortestPathAlgorithm ? 
                                 left.getShortestPathDistanceTo(right, false) :
-                                left.getAncSPLdistanceTo(right, false);
+                                left.getFastShortestPathDistanceTo(right, false);
             
             lcsDepth = lcsVertex.getDepthMin();
         }

@@ -132,7 +132,7 @@ class MeasureLi2003Strategy3 extends SimilaritySemanticMeasure
         
         double length = !useFastShortestPathMethod ? 
                     left.getShortestPathDistanceTo(right, false) :
-                    left.getAncSPLdistanceTo(right, false);
+                    left.getFastShortestPathDistanceTo(right, false);
         
         // We compute the similarity
         

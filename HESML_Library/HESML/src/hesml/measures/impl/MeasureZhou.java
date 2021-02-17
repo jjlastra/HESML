@@ -115,7 +115,7 @@ class MeasureZhou extends SimilaritySemanticMeasure
         
         double length = !m_useFastShortestPathAlgorithm ? 
                         left.getShortestPathDistanceTo(right, false) :
-                        left.getAncSPLdistanceTo(right, false);
+                        left.getFastShortestPathDistanceTo(right, false);
         
         // We compute the depth factor
         

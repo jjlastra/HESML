@@ -114,7 +114,7 @@ class MeasureCosineNormWeightedJiangConrath extends BaseJiangConrathMeasure
         
         double distance = !m_useFastShortestPathAlgorithm ? 
                 left.getShortestPathDistanceTo(right, true) :
-                left.getAncSPLdistanceTo(right, true);
+                left.getFastShortestPathDistanceTo(right, true);
         
         // We normalize the distance
         

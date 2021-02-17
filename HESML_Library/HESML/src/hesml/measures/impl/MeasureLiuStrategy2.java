@@ -137,7 +137,7 @@ class MeasureLiuStrategy2 extends SimilaritySemanticMeasure
 
                 double length = !m_useFastShortestPathAlgorithm ? 
                             left.getShortestPathDistanceTo(right, false) :
-                            left.getAncSPLdistanceTo(right, false);
+                            left.getFastShortestPathDistanceTo(right, false);
 
                 // We obtain the depth of the LCS vertex defiend as the the
                 // length of shortest path from the vertex to the root

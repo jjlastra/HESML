@@ -196,7 +196,7 @@ class AncSPLComplexityBenchmark implements IAncSPLDataBenchmark
             {
                 for (IVertex vertex : bin)
                 {
-                    vertex.getAncSPLdistanceTo(root, false);
+                    vertex.getFastShortestPathDistanceTo(root, false);
                 }
             }
             

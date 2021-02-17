@@ -126,7 +126,7 @@ class MeasureGao2015Method3 extends SimilaritySemanticMeasure
 
             double length = !m_useFastShortestPathAlgorithm ? 
                     left.getShortestPathDistanceTo(right, false) :
-                    left.getAncSPLdistanceTo(right, false);
+                    left.getFastShortestPathDistanceTo(right, false);
 
             // We get the IC value of the lowest common ancestor
 

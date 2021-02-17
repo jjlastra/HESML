@@ -241,7 +241,7 @@ public interface IVertex extends Comparable<IVertex>
      * @return 
      */
     
-    double getAncSPLdistanceTo(
+    double getFastShortestPathDistanceTo(
             IVertex     target,
             boolean     weighted) throws Exception;
 

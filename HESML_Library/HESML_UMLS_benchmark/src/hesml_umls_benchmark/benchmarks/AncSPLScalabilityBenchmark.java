@@ -181,7 +181,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
             
             // We evaluate thie AncSPL distance
             
-            int ancSplDistance = (int) source.getAncSPLdistanceTo(target, false);
+            int ancSplDistance = (int) source.getFastShortestPathDistanceTo(target, false);
             
             // We retrieve the group for this distance
             
@@ -274,7 +274,7 @@ class AncSPLScalabilityBenchmark implements IAncSPLDataBenchmark
             {
                 for (SnomedConceptPair pair : group)
                 {
-                    pair.getSourceConceptVertex().getAncSPLdistanceTo(
+                    pair.getSourceConceptVertex().getFastShortestPathDistanceTo(
                             pair.getTargetConceptVertex(), false);
                 }
             }

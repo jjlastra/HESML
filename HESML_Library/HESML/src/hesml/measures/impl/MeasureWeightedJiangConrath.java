@@ -109,7 +109,7 @@ class MeasureWeightedJiangConrath extends BaseJiangConrathMeasure
         
         return (!m_useFastShortestPathAlgorithm ? 
                 left.getShortestPathDistanceTo(right, true):
-                left.getAncSPLdistanceTo(right, true));
+                left.getFastShortestPathDistanceTo(right, true));
     }
     
     /**
