@@ -8,10 +8,13 @@ my $measure = $ARGV[0] or die "Unable to read the measure input [path|upath|wup|
 
 my $vocab   = $ARGV[1] or die "Unable to read the vocabulary input [snomedct_us|msh]\n";
 
+my $inputFile   = $ARGV[2] or die "Unable to read the input file\n";
+
+my $outputFile   = $ARGV[3] or die "Unable to read the output file\n";
 
 # load the csv file with the list of CUIs codes
 
-my $file = "/tmp/tempFile.csv";
+my $file = $inputFile;
 open(my $cuis_csv_codes, '<', $file) or die "Unable to open the file with CUI codes '$file' $!";
 die "Unable to create load CUIS codes." if(!$cuis_csv_codes);
 
@@ -226,7 +229,7 @@ my $csv_write = Text::CSV->new({ binary => 1, auto_diag => 1, eol => "\n"})
         or die "Cannot use CSV: " . Text::CSV->error_diag();
 
 # open in append mode
-open my $fh, ">>", "/tmp/tempFileOutput.csv" or die "Failed to open file: $!";
+open my $fh, ">>", $outputFile or die "Failed to open file: $!";
 
 # Reading the file
 

@@ -167,14 +167,14 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         // Get the measure as Perl script input format
 
         String measure = convertHesmlMeasureTypeToUMLS_Sim(m_measureType);
-
-        // We execute the Perl script
-        
-        executePerlScript(measure, ontology, tempFile);
         
         // Warning message
         
         String strTempOutputFilename = m_PerlTempDir + "/tempFileOutput"+m_uuid+".csv";
+
+        // We execute the Perl script
+        
+        executePerlScript(measure, ontology, tempFile, strTempOutputFilename);
         
         System.out.println("Reading UMLS__Similarity output file -> " + strTempOutputFilename);
         
@@ -264,7 +264,8 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
     private void executePerlScript(
             String              measureType,
             UMLSOntologyType    ontology,
-            String              tempFile) throws InterruptedException, IOException
+            String              inputTempFile,
+            String              outputTempFile) throws InterruptedException, IOException
     {
         // Create the command line for Perl
         
@@ -277,7 +278,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         // We build the command to call the evaluation Perl script
         
         String cmd = perl_path + m_PerlScriptDir + "/umls_similarity_from_cuis.t "
-                    + measureType + " " + strOntology + " " + tempFile;
+                    + measureType + " " + strOntology + " " + inputTempFile + " " + outputTempFile;
         
         System.out.println("Executing the Perl script for calculating UMLS::Similarity with " + ontology);
         System.out.println(cmd);
