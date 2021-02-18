@@ -188,19 +188,19 @@ public class HESML_UMLS_benchmark
         //RunRandomGOConceptsExperiment(strOutputDir);
 
         /**
-         * Experiment 7: comparison of two large GO annotated files describing
-         * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
-         */
-        
-        //RunLargeGOExperiment(strOutputDir);
-        
-        /**
-         * Experiment 8: we compare the performance of the HEMSL, SML and
+         * Experiment 7: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
         
         //RunSentenceSimilarityExperiment(strOutputDir);
+        
+        /**
+         * Experiment 7: comparison of two large GO annotated files describing
+         * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
+         */
+        
+        //RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -462,8 +462,6 @@ public class HESML_UMLS_benchmark
 
         for (int i = 0; i < threads.length; i++)
         {
-            // Start the experiment thread
-            
             threads[i].start();
         }
         
@@ -562,8 +560,6 @@ public class HESML_UMLS_benchmark
 
         for (int i = 0; i < threads.length; i++)
         {
-            // Start the experiment thread
-            
             threads[i].start();
         }
         
@@ -612,11 +608,10 @@ public class HESML_UMLS_benchmark
         
         // Create the array with the datasets per library
         
-        String[] strDatasetPaths = new String[]{
-                                                    m_strMedSTSfilename,
-                                                    m_strMedSTSfilename,
-                                                    m_strMedSTSfilename,
-                                                    m_str1millionFilename};
+        String[] strDatasetPaths = new String[]{m_strMedSTSfilename,
+                                                m_strMedSTSfilename,
+                                                m_strMedSTSfilename,
+                                                m_str1millionFilename};
         
         // We build the vector of raw output filenames
         
@@ -645,10 +640,10 @@ public class HESML_UMLS_benchmark
         for (int i = 0; i < measureTypes.length; i++)
         {
             IBioLibraryExperiment benchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
-                                        libraries, measureTypes[i],
-                                        IntrinsicICModelType.Seco, strDatasetPaths, 
-                                        m_strMeSHdir, m_strMeSHXmlFilename,
-                                        m_strUMLSdir, m_strUmlsCuiMappingFilename);
+                                                libraries, measureTypes[i],
+                                                IntrinsicICModelType.Seco, strDatasetPaths, 
+                                                m_strMeSHdir, m_strMeSHXmlFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
             // We define the output file
             
@@ -738,34 +733,6 @@ public class HESML_UMLS_benchmark
         benchmark.clear();
     }
 
-    /**
-     * This function runs the complexibility experiment for the AncSPL algorithm. This benchmark
-     * computes the exact and approximated distance values for a collection of random
-     * concept pairs to allow an statistical analysis of the approximation quality
-     * of the AncSPL algorithm.
-     * @param strRawOutputDir 
-     */
-    
-    private static void RunAncSPLComplexityExperiment(
-        String  strRawOutputDir) throws Exception
-    {
-        // We create the banchmark
-        
-        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLComplexityBenchmark(
-                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                                m_strSNOMED_relationshipsFilename,
-                                                m_strSNOMED_descriptionFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
-        
-        // We evaluate the avergae speed for each distance-based group of conepts.
-        
-        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_complexity_test.csv");
-        
-        // We release all resources
-        
-        benchmark.clear();
-    }
-    
     /**
      * Experiment 4: we evaluate the approximation quality of the novel
      * Ancestor-based Shortest Path Length (AncSPL) algorithm.
@@ -862,13 +829,16 @@ public class HESML_UMLS_benchmark
         // We set the GO ontology filename
         
         String strGoFilename = "../GeneOntology/go.obo";
+        String strHomoSapiensGafFilename = "../GO_datasets/goa_human.gaf"; 
+        String strDogGafFilename = "../GO_datasets/goa_dog.gaf";
         
         // We build the suffix list for the raw output files
         
         String[] strGroupwiseMeasures = new String[]{GroupwiseSimilarityMeasureType.SimLP.toString(),
                                                 GroupwiseSimilarityMeasureType.SimUI.toString(),
                                                 GroupwiseSimilarityMeasureType.SimGIC.toString(),
-                                                "BMA-Lin-Seco"};
+                                                "BMA-Lin-Seco",
+                                                "AVG-AncSPLRada"};
         
         // We build the vector of raw output filenames
         
@@ -881,20 +851,26 @@ public class HESML_UMLS_benchmark
         
         // We create the benchmark and threads
         
-        IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[4];
+        IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[5];
         
         bioExperiments[0] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimLP,
-                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[1] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimUI,
-                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[2] = BenchmarkFactory.createLargeGOConceptBenchmark(IntrinsicICModelType.Seco,
-                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
-        bioExperiments[3] = BenchmarkFactory.createLargeGOConceptBenchmark(SimilarityMeasureType.Lin,
-                               IntrinsicICModelType.Seco, strGoFilename,
-                               "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+        bioExperiments[3] = BenchmarkFactory.createLargeGOConceptBenchmark(
+                            GroupwiseMetricType.BestMatchAverage, SimilarityMeasureType.Lin,
+                            IntrinsicICModelType.Seco, strGoFilename,
+                            strHomoSapiensGafFilename, strDogGafFilename);
+
+        bioExperiments[4] = BenchmarkFactory.createLargeGOConceptBenchmark(
+                            GroupwiseMetricType.Average, SimilarityMeasureType.AncSPLRada,
+                            IntrinsicICModelType.Seco, strGoFilename,
+                            strHomoSapiensGafFilename, strDogGafFilename);
         
         // We create a list of threads 
         

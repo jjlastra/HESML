@@ -22,6 +22,7 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.GroupwiseMetricType;
 import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
@@ -178,6 +179,7 @@ public class BenchmarkFactory
     /**
      * Constructor for the GO-based benchmark with the BMA groupwise measure
      * using an IN-based measure
+     * @param groupMetricType 
      * @param icModelType 
      * @param strGoOboFilename File containing the GO ontology
      * @param strGoAnnotatedFile1 
@@ -185,13 +187,14 @@ public class BenchmarkFactory
      */
     
     public static IBioLibraryExperiment createLargeGOConceptBenchmark(
+            GroupwiseMetricType     groupMetricType,
             SimilarityMeasureType   nodeSimilarityMeasureType,
             IntrinsicICModelType    icModelType,
             String                  strGoOboFilename,
             String                  strGoAnnotatedFile1,
             String                  strGoAnnotatedFile2) throws Exception
     {
-        return (new LargeGOfileBenchmark(nodeSimilarityMeasureType, icModelType,
+        return (new LargeGOfileBenchmark(groupMetricType, nodeSimilarityMeasureType, icModelType,
                 strGoOboFilename,strGoAnnotatedFile1, strGoAnnotatedFile2));
     }
     

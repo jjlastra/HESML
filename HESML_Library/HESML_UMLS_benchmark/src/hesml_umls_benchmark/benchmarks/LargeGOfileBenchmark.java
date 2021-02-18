@@ -146,6 +146,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
      */
     
     LargeGOfileBenchmark(
+            GroupwiseMetricType     groupMetricType,
             SimilarityMeasureType   nodeSimilarityMeasureType,
             IntrinsicICModelType    icModelType,
             String                  strGoOboFilename,
@@ -165,7 +166,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         // We create the collection of groupwise measures to be evaluated
         
         m_groupwiseSimMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(m_GOontology.getTaxonomy(),
-                                        nodeSimilarityMeasureType, GroupwiseMetricType.BestMatchAverage);
+                                        nodeSimilarityMeasureType, groupMetricType);
         
         // We load both input files
         

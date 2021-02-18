@@ -523,8 +523,8 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      */
     
     private double getUBSMsimilarityValue(
-            String                      strRawSentence1, 
-            String                      strRawSentence2,
+            String              strRawSentence1, 
+            String              strRawSentence2,
             ISemanticLibrary    library) throws IOException,
                                                     InterruptedException, Exception
     {
@@ -637,8 +637,8 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
     
     private double[] buildSemanticVector(
             ISemanticLibrary    similarityLibrary,
-            String[]                    cuiDictionary,
-            String[]                    lstWordsSentence) throws Exception 
+            String[]            cuiDictionary,
+            String[]            lstWordsSentence) throws Exception 
     {
         // Initialize the semantic vector
         
