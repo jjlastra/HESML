@@ -859,59 +859,64 @@ public class HESML_UMLS_benchmark
     private static void RunLargeGOExperiment(
         String  strRawOutputDir) throws Exception
     {
-        // We load the GO ontology
+        // We set the GO ontology filename
         
-        IOboOntology gOontology = OboFactory.loadOntology("../GeneOntology/go.obo");
+        String strGoFilename = "../GeneOntology/go.obo";
         
-        // We create the collection of groupwise measures to be evaluated
+        // We build the suffix list for the raw output files
         
-        IGroupwiseSimilarityMeasure[] m_groupwiseSimMeasures = new IGroupwiseSimilarityMeasure[4];
-        
-        m_groupwiseSimMeasures[0] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimLP);
-        m_groupwiseSimMeasures[1] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimUI);
-        
-        m_groupwiseSimMeasures[2] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
-        m_groupwiseSimMeasures[3] = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(gOontology.getTaxonomy(),
-                                        SimilarityMeasureType.Lin, GroupwiseMetricType.BestMatchAverage);
+        String[] strGroupwiseMeasures = new String[]{GroupwiseSimilarityMeasureType.SimLP.toString(),
+                                                GroupwiseSimilarityMeasureType.SimUI.toString(),
+                                                GroupwiseSimilarityMeasureType.SimGIC.toString(),
+                                                "BMA-Lin-Seco"};
         
         // We build the vector of raw output filenames
         
-        String[] strOutputFilenames = new String[m_groupwiseSimMeasures.length];
+        String[] strOutputFilenames = new String[strGroupwiseMeasures.length];
         
         for (int i = 0; i < strOutputFilenames.length; i++)
         {
-            strOutputFilenames[i] = "raw_output_" + m_groupwiseSimMeasures[i].toString() + "_largeGO_test.csv";
+            strOutputFilenames[i] = "raw_output_" + strGroupwiseMeasures[i] + "_largeGO_test.csv";
         }
+        
+        // We create the benchmark and threads
+        
+        IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[4];
+        
+        bioExperiments[0] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimLP,
+                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+
+        bioExperiments[1] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimUI,
+                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+
+        bioExperiments[2] = BenchmarkFactory.createLargeGOConceptBenchmark(IntrinsicICModelType.Seco,
+                            strGoFilename, "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
+
+        bioExperiments[3] = BenchmarkFactory.createLargeGOConceptBenchmark(SimilarityMeasureType.Lin,
+                               IntrinsicICModelType.Seco, strGoFilename,
+                               "../GO_datasets/goa_human.gaf", "../GO_datasets/goa_dog.gaf");
         
         // We create a list of threads 
         
-        Thread[] threads = new Thread[m_groupwiseSimMeasures.length];
+        Thread[] threads = new Thread[bioExperiments.length];
         
         // We compare create the benchmarks
         
-        for (int i = 0; i < m_groupwiseSimMeasures.length; i++)
+        for (int i = 0; i < bioExperiments.length; i++)
         {
-            IBioLibraryExperiment benchmark = BenchmarkFactory.createLargeGOConceptBenchmark(
-                                            "../GO_datasets/goa_human.gaf",
-                                            "../GO_datasets/goa_dog.gaf",
-                                            m_groupwiseSimMeasures[i],
-                                            gOontology);
-            
             // We define the output file
             
             String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
             
             // We add the new thread to the array 
 
-            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
+            threads[i] = new Thread(new BioBenchmarkThread(bioExperiments[i], outputPath)); 
         }
         
         // We run the experiments
 
         for (int i = 0; i < threads.length; i++)
         {
-            // Start the experiment thread
-            
             threads[i].start();
         }
         

@@ -72,64 +72,110 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
      * Groupwise similarity measures
      */
     
-    private IGroupwiseSimilarityMeasure   m_groupwiseSimMeasure;
+    private IGroupwiseSimilarityMeasure m_groupwiseSimMeasure;
     
     /**
-     * Overall count of GO annotation comparisons.
-     */
-    
-    private long    m_overallGOcomparisons;
-    
-    /**
-     * Constructor for the GO-based benchmark
+     * Constructor for the GO-based benchmark with no-parameter groupwise measures
+     * @param groupwiseType 
      * @param strGoOboFilename File containing the GO ontology
      * @param strGoAnnotatedFile1 
      * @param strGoAnnotatedFile2 
      */
     
     LargeGOfileBenchmark(
-            String                      strGoAnnotatedFile1,
-            String                      strGoAnnotatedFile2,
-            IGroupwiseSimilarityMeasure groupwiseSimilarityMeasure,
-            IOboOntology                gOontology) throws Exception
+            GroupwiseSimilarityMeasureType  groupwiseType,
+            String                          strGoOboFilename,
+            String                          strGoAnnotatedFile1,
+            String                          strGoAnnotatedFile2) throws Exception
     {
         // We load the GO ontology
         
-        m_GOontology = gOontology;
+        m_GOontology = OboFactory.loadOntology(strGoOboFilename);
         
-        // We set the Seco IC model
+        // We create the collection of groupwise measures to be evaluated
         
-        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(IntrinsicICModelType.Seco);
-        
-        icModel.setTaxonomyData(m_GOontology.getTaxonomy());
-        
-        m_groupwiseSimMeasure = groupwiseSimilarityMeasure;
+        m_groupwiseSimMeasure = MeasureFactory.getGroupwiseNoParameterMeasure(groupwiseType);
         
         // We load both input files
         
         m_firstProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile1);
         m_secondProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile2);
+    }
+   
+    /**
+     * Constructor for the GO-based benchmark with the SimGIC groupwise measure
+     * @param icModelType 
+     * @param strGoOboFilename File containing the GO ontology
+     * @param strGoAnnotatedFile1 
+     * @param strGoAnnotatedFile2 
+     */
+    
+    LargeGOfileBenchmark(
+            IntrinsicICModelType    icModelType,
+            String                  strGoOboFilename,
+            String                  strGoAnnotatedFile1,
+            String                  strGoAnnotatedFile2) throws Exception
+    {
+        // We load the GO ontology
         
-        // We compute the overall number of GO-based comparisons
+        m_GOontology = OboFactory.loadOntology(strGoOboFilename);
         
-        long firstGoAnnotations = 0;
-        long secondGoAnnotations = 0;
+        // We set the Seco IC model
         
-        for (Set<IVertex> annotationSet : m_firstProteinsSet.values())
-        {
-            firstGoAnnotations += annotationSet.size();
-        }
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(icModelType);
         
-        for (Set<IVertex> annotationSet : m_secondProteinsSet.values())
-        {
-            secondGoAnnotations += annotationSet.size();
-        }
+        icModel.setTaxonomyData(m_GOontology.getTaxonomy());
         
-        m_overallGOcomparisons = firstGoAnnotations * secondGoAnnotations;
+        // We create the collection of groupwise measures to be evaluated
+        
+        m_groupwiseSimMeasure = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
+        
+        // We load both input files
+        
+        m_firstProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile1);
+        m_secondProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile2);
     }
     
     /**
-     * This functions loads all proteins defined in the input file and returns
+     * Constructor for the GO-based benchmark with the BMA groupwise measure
+     * using an IN-based measure
+     * @param icModelType 
+     * @param strGoOboFilename File containing the GO ontology
+     * @param strGoAnnotatedFile1 
+     * @param strGoAnnotatedFile2 
+     */
+    
+    LargeGOfileBenchmark(
+            SimilarityMeasureType   nodeSimilarityMeasureType,
+            IntrinsicICModelType    icModelType,
+            String                  strGoOboFilename,
+            String                  strGoAnnotatedFile1,
+            String                  strGoAnnotatedFile2) throws Exception
+    {
+        // We load the GO ontology
+        
+        m_GOontology = OboFactory.loadOntology(strGoOboFilename);
+        
+        // We set the Seco IC model
+        
+        ITaxonomyInfoConfigurator icModel = ICModelsFactory.getIntrinsicICmodel(icModelType);
+        
+        icModel.setTaxonomyData(m_GOontology.getTaxonomy());
+        
+        // We create the collection of groupwise measures to be evaluated
+        
+        m_groupwiseSimMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(m_GOontology.getTaxonomy(),
+                                        nodeSimilarityMeasureType, GroupwiseMetricType.BestMatchAverage);
+        
+        // We load both input files
+        
+        m_firstProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile1);
+        m_secondProteinsSet = loadGoAnnotatedFile(strGoAnnotatedFile2);
+    }
+    
+    
+    /**
+     * This functions loads all proteins defiend in the input file and returns
      * an indexed collection of GO-based annotations, one per protein as defined
      * in the input file.
      * @param strGoAnnotatedFilename
@@ -198,9 +244,42 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         reader.close();
         
-         // We return the result
+        // We return the result
          
-         return (indexedProteins);
+        return (indexedProteins);
+    }
+    
+    /**
+     * This computes the overall count of GO-based annotations which will be
+     * evaluated by this experiment.
+     * @return 
+     */
+
+    private long getOverallGoAnnotations()
+    {
+        // We compute the overall number of GO-based comparisons
+        
+        long firstGoAnnotations = 0;
+        
+        for (Set<IVertex> annotationSet : m_firstProteinsSet.values())
+        {
+            firstGoAnnotations += annotationSet.size();
+        }
+        
+        long secondGoAnnotations = 0;
+        
+        for (Set<IVertex> annotationSet : m_secondProteinsSet.values())
+        {
+            secondGoAnnotations += annotationSet.size();
+        }
+        
+        // We compute the overall annotation count
+        
+        long overallAnnotations = firstGoAnnotations * secondGoAnnotations;
+        
+        // We reutnr the result
+        
+        return (overallAnnotations);
     }
     
     /**
@@ -213,7 +292,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
     {
         // We create the output data matrix
         
-        String[][] strOutputMatrix = new String[1][4];
+        String[][] strOutputMatrix = new String[2][4];
         
         // We fill the headers
         
@@ -222,10 +301,8 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         strOutputMatrix[0][2] = "# GO similarity evaluations";
         strOutputMatrix[0][3] = "Overall time (secs)";
         
-        // We evaluate all groupwise measures
-        
         // Warning message
-            
+
         System.out.println("Evaluating GO files with " + m_groupwiseSimMeasure.toString());
 
         // We start the stopwatch
@@ -250,9 +327,8 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
 
         strOutputMatrix[1][0] = m_groupwiseSimMeasure.toString();
         strOutputMatrix[1][1] = Long.toString(m_firstProteinsSet.size() * m_secondProteinsSet.size());
-        strOutputMatrix[1][2] = Long.toString(m_overallGOcomparisons);
+        strOutputMatrix[1][2] = Long.toString(getOverallGoAnnotations());
         strOutputMatrix[1][3] = Double.toString(ellapedTimeSecs);
-        
         
         // We write the results
         
@@ -266,7 +342,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
     @Override
     public void clear()
     {
-        // We release all annotations
+        // We release all GO-based annotations
         
         for (Set<IVertex> annotationSet : m_firstProteinsSet.values())
         {

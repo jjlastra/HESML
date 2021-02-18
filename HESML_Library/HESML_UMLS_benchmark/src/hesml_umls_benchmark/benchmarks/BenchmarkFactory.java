@@ -22,6 +22,7 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.taxonomyreaders.obo.IOboOntology;
@@ -147,14 +148,52 @@ public class BenchmarkFactory
      */
     
     public static IBioLibraryExperiment createLargeGOConceptBenchmark(
-            String                      strGoAnnotatedFile1,
-            String                      strGoAnnotatedFile2,
-            IGroupwiseSimilarityMeasure groupwiseSimilarityMeasure,
-            IOboOntology                gOontology) throws Exception
+            GroupwiseSimilarityMeasureType  groupwiseType,
+            String                          strGoOntologyFilename,
+            String                          strGoAnnotatedFile1,
+            String                          strGoAnnotatedFile2) throws Exception
     {
-        return (new LargeGOfileBenchmark(strGoAnnotatedFile1, strGoAnnotatedFile2,
-                groupwiseSimilarityMeasure, gOontology));
+        return (new LargeGOfileBenchmark(groupwiseType, strGoOntologyFilename,
+                strGoAnnotatedFile1, strGoAnnotatedFile2));
     }       
+    
+    /**
+     * Constructor for the GO-based benchmark with the SimGIC groupwise measure
+     * @param icModelType 
+     * @param strGoOboFilename File containing the GO ontology
+     * @param strGoAnnotatedFile1 
+     * @param strGoAnnotatedFile2 
+     */
+    
+    public static IBioLibraryExperiment createLargeGOConceptBenchmark(
+            IntrinsicICModelType    icModelType,
+            String                  strGoOboFilename,
+            String                  strGoAnnotatedFile1,
+            String                  strGoAnnotatedFile2) throws Exception
+    {
+        return (new LargeGOfileBenchmark(icModelType, strGoOboFilename,
+                strGoAnnotatedFile1, strGoAnnotatedFile2));
+    }
+    
+    /**
+     * Constructor for the GO-based benchmark with the BMA groupwise measure
+     * using an IN-based measure
+     * @param icModelType 
+     * @param strGoOboFilename File containing the GO ontology
+     * @param strGoAnnotatedFile1 
+     * @param strGoAnnotatedFile2 
+     */
+    
+    public static IBioLibraryExperiment createLargeGOConceptBenchmark(
+            SimilarityMeasureType   nodeSimilarityMeasureType,
+            IntrinsicICModelType    icModelType,
+            String                  strGoOboFilename,
+            String                  strGoAnnotatedFile1,
+            String                  strGoAnnotatedFile2) throws Exception
+    {
+        return (new LargeGOfileBenchmark(nodeSimilarityMeasureType, icModelType,
+                strGoOboFilename,strGoAnnotatedFile1, strGoAnnotatedFile2));
+    }
     
     /**
      * This fucntion creates a benchmark to evaluate the approximation quality
