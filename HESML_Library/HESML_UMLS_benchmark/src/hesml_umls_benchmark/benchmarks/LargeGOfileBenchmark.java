@@ -72,7 +72,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
      * Groupwise similarity measures
      */
     
-    private IGroupwiseSimilarityMeasure[]   m_groupwiseSimMeasures;
+    private IGroupwiseSimilarityMeasure   m_groupwiseSimMeasure;
     
     /**
      * Overall count of GO annotation comparisons.
@@ -88,13 +88,14 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
      */
     
     LargeGOfileBenchmark(
-            String  strGoOboFilename,
-            String  strGoAnnotatedFile1,
-            String  strGoAnnotatedFile2) throws Exception
+            String                      strGoAnnotatedFile1,
+            String                      strGoAnnotatedFile2,
+            IGroupwiseSimilarityMeasure groupwiseSimilarityMeasure,
+            IOboOntology                gOontology) throws Exception
     {
         // We load the GO ontology
         
-        m_GOontology = OboFactory.loadOntology(strGoOboFilename);
+        m_GOontology = gOontology;
         
         // We set the Seco IC model
         
@@ -102,15 +103,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         icModel.setTaxonomyData(m_GOontology.getTaxonomy());
         
-        // We create the collection of groupwise measures to be evaluated
-        
-        m_groupwiseSimMeasures = new IGroupwiseSimilarityMeasure[4];
-        
-        m_groupwiseSimMeasures[0] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimLP);
-        m_groupwiseSimMeasures[1] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimUI);
-        m_groupwiseSimMeasures[2] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
-        m_groupwiseSimMeasures[3] = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(m_GOontology.getTaxonomy(),
-                                        SimilarityMeasureType.Lin, GroupwiseMetricType.BestMatchAverage);
+        m_groupwiseSimMeasure = groupwiseSimilarityMeasure;
         
         // We load both input files
         
@@ -136,7 +129,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * This functions loads all proteins defiend in the input file and returns
+     * This functions loads all proteins defined in the input file and returns
      * an indexed collection of GO-based annotations, one per protein as defined
      * in the input file.
      * @param strGoAnnotatedFilename
@@ -220,7 +213,7 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
     {
         // We create the output data matrix
         
-        String[][] strOutputMatrix = new String[1 + m_groupwiseSimMeasures.length][4];
+        String[][] strOutputMatrix = new String[1][4];
         
         // We fill the headers
         
@@ -231,37 +224,35 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         // We evaluate all groupwise measures
         
-        for (int i = 0; i < m_groupwiseSimMeasures.length; i++)
+        // Warning message
+            
+        System.out.println("Evaluating GO files with " + m_groupwiseSimMeasure.toString());
+
+        // We start the stopwatch
+
+        long startWatch = System.currentTimeMillis();
+
+        // We evaluate all protein pairs
+
+        for (Set<IVertex> protein1 : m_firstProteinsSet.values())
         {
-            // Warning message
-            
-            System.out.println("Evaluating GO files with " + m_groupwiseSimMeasures[i].toString());
-            
-            // We start the stopwatch
-            
-            long startWatch = System.currentTimeMillis();
-            
-            // We evaluate all protein pairs
-            
-            for (Set<IVertex> protein1 : m_firstProteinsSet.values())
+            for (Set<IVertex> protein2 : m_secondProteinsSet.values())
             {
-                for (Set<IVertex> protein2 : m_secondProteinsSet.values())
-                {
-                    m_groupwiseSimMeasures[i].getSimilarity(protein1, protein2);
-                }
+                m_groupwiseSimMeasure.getSimilarity(protein1, protein2);
             }
-            
-            // We compute the ellapsed time
-            
-            double ellapedTimeSecs = (System.currentTimeMillis() - startWatch) / 1000.0;
-            
-            // We save the result
-                
-            strOutputMatrix[i + 1][0] = m_groupwiseSimMeasures[i].toString();
-            strOutputMatrix[i + 1][1] = Long.toString(m_firstProteinsSet.size() * m_secondProteinsSet.size());
-            strOutputMatrix[i + 1][2] = Long.toString(m_overallGOcomparisons);
-            strOutputMatrix[i + 1][3] = Double.toString(ellapedTimeSecs);
         }
+
+        // We compute the ellapsed time
+
+        double ellapedTimeSecs = (System.currentTimeMillis() - startWatch) / 1000.0;
+
+        // We save the result
+
+        strOutputMatrix[1][0] = m_groupwiseSimMeasure.toString();
+        strOutputMatrix[1][1] = Long.toString(m_firstProteinsSet.size() * m_secondProteinsSet.size());
+        strOutputMatrix[1][2] = Long.toString(m_overallGOcomparisons);
+        strOutputMatrix[1][3] = Double.toString(ellapedTimeSecs);
+        
         
         // We write the results
         

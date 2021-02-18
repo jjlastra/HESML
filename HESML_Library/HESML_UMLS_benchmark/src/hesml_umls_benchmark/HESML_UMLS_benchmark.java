@@ -23,7 +23,13 @@ package hesml_umls_benchmark;
 
 import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.GroupwiseMetricType;
+import hesml.measures.GroupwiseSimilarityMeasureType;
+import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
+import hesml.measures.impl.MeasureFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -158,7 +164,7 @@ public class HESML_UMLS_benchmark
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-        RunAncSPLExperiment(strOutputDir);
+        //RunAncSPLExperiment(strOutputDir);
         
         /**
          * Experiment 4: scalability of the AncSPL algortihm with regards to
@@ -745,9 +751,11 @@ public class HESML_UMLS_benchmark
             threads[i].join();
         }
         
-        System.out.println("**************************************************");
-        System.out.println("*********** NO DEBERIA LLEGAR AQUI ***************");
-        System.out.println("**************************************************");
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
     }
     
     /**
@@ -762,17 +770,73 @@ public class HESML_UMLS_benchmark
     private static void RunLargeGOExperiment(
         String  strRawOutputDir) throws Exception
     {
-        // We create the banchmark
+        // We load the GO ontology
         
-        IBioLibraryExperiment benchmark = BenchmarkFactory.createLargeGOConceptBenchmark(
-                                            "../GeneOntology/go.obo",
+        IOboOntology gOontology = OboFactory.loadOntology("../GeneOntology/go.obo");
+        
+        // We create the collection of groupwise measures to be evaluated
+        
+        IGroupwiseSimilarityMeasure[] m_groupwiseSimMeasures = new IGroupwiseSimilarityMeasure[4];
+        
+        m_groupwiseSimMeasures[0] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimLP);
+        m_groupwiseSimMeasures[1] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimUI);
+        m_groupwiseSimMeasures[2] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
+        m_groupwiseSimMeasures[3] = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(gOontology.getTaxonomy(),
+                                        SimilarityMeasureType.Lin, GroupwiseMetricType.BestMatchAverage);
+        
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[m_groupwiseSimMeasures.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_" + m_groupwiseSimMeasures[i].toString() + "_largeGO_test.csv";
+        }
+        
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[m_groupwiseSimMeasures.length];
+        
+        // We compare create the benchmarks
+        
+        for (int i = 0; i < m_groupwiseSimMeasures.length; i++)
+        {
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createLargeGOConceptBenchmark(
                                             "../GO_datasets/goa_human.gaf",
-                                            "../GO_datasets/goa_dog.gaf");
+                                            "../GO_datasets/goa_dog.gaf",
+                                            m_groupwiseSimMeasures[i],
+                                            gOontology);
+            
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
+        }
         
-        // We evaluate the experiment
+        // We run the experiments
+
+        for (int i = 0; i < threads.length; i++)
+        {
+            // Start the experiment thread
+            
+            threads[i].start();
+        }
         
-        benchmark.run(strRawOutputDir + "/" + "raw_largeGO_test.csv");
-        benchmark.clear();
+        // We wait until other threads have finished their execution
+        
+        for (int i = 0; i < threads.length; i++)
+        {
+            threads[i].join();
+        }
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
     }
     
     /**

@@ -22,7 +22,9 @@
 package hesml_umls_benchmark.benchmarks;
 
 import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
+import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
 import java.util.HashMap;
@@ -137,20 +139,22 @@ public class BenchmarkFactory
     /**
      * This function creates an experiment to compare all proteins
      * defined in both input files.
-     * @param strGoOboFilename
      * @param strGoAnnotatedFile1 
+     * @param groupwiseSimilarityMeasure 
+     * @param gOontology 
      * @param strGoAnnotatedFile2 
      * @return
      * @throws Exception 
      */
     
     public static IBioLibraryExperiment createLargeGOConceptBenchmark(
-            String  strGoOboFilename,
-            String  strGoAnnotatedFile1,
-            String  strGoAnnotatedFile2) throws Exception
+            String                      strGoAnnotatedFile1,
+            String                      strGoAnnotatedFile2,
+            IGroupwiseSimilarityMeasure groupwiseSimilarityMeasure,
+            IOboOntology                gOontology) throws Exception
     {
-        return (new LargeGOfileBenchmark(strGoOboFilename,
-                strGoAnnotatedFile1, strGoAnnotatedFile2));
+        return (new LargeGOfileBenchmark(strGoAnnotatedFile1, strGoAnnotatedFile2,
+                groupwiseSimilarityMeasure, gOontology));
     }       
     
     /**
