@@ -167,7 +167,7 @@ public class HESML_UMLS_benchmark
         //RunAncSPLExperiment(strOutputDir);
         
         /**
-         * Experiment 4: scalability of the AncSPL algortihm with regards to
+         * Experiment 4: scalability of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
@@ -869,6 +869,7 @@ public class HESML_UMLS_benchmark
         
         m_groupwiseSimMeasures[0] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimLP);
         m_groupwiseSimMeasures[1] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimUI);
+        
         m_groupwiseSimMeasures[2] = MeasureFactory.getGroupwiseNoParameterMeasure(GroupwiseSimilarityMeasureType.SimGIC);
         m_groupwiseSimMeasures[3] = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(gOontology.getTaxonomy(),
                                         SimilarityMeasureType.Lin, GroupwiseMetricType.BestMatchAverage);

@@ -79,14 +79,13 @@ public class BenchmarkFactory
     /**
      * This function creates a random concept evaluation on MeSH ontology.
      * @param libraries
+     * @param ontology
      * @param similarityMeasure
      * @param icModel
      * @param nRandomSamplesPerLibrary
      * @param nRuns
-     * @param strSnomedDir
-     * @param strSnomedDBconceptFileName
-     * @param strSnomedDBRelationshipsFileName
-     * @param strSnomedDBdescriptionFileName
+     * @param strMeShDir
+     * @param strMeSHXmlDescriptionFileName
      * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
      * @return

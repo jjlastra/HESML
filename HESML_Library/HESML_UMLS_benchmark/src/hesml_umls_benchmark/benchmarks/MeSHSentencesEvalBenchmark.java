@@ -885,6 +885,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             
             for (int i = 0; i < sentences.get(0).size(); i++) 
             { 		      
+                // Debug info
+                
+                //System.out.println("Annotating " + i + " of " + sentences.get(0).size() + " sentences");
+                
                 // Annotate the sentences and add to the array
                 
                 firstSentencesAnnotated.add(annotateSentence(sentences.get(0).get(i)));
