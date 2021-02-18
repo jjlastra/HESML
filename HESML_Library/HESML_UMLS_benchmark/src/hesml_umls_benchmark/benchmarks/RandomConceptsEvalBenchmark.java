@@ -297,7 +297,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         double[] runningTimes;
         
         // We set the similarity measure to be used. SML library does not provide
-        // practical running times for te Rada measure, thus we detect this case
+        // practical running times for the Rada measure, thus we detect this case
         // and skip its evaluation.
 
         if (conceptIdPairsPerRun.get(0).length > 0) library.setSimilarityMeasure(m_icModel, m_MeasureType);

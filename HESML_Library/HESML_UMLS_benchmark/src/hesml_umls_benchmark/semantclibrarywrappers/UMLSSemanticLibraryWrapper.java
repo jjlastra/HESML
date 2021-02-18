@@ -33,7 +33,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import hesml_umls_benchmark.ISemanticLibrary;
 import hesml_umls_benchmark.UMLSOntologyType;
@@ -235,6 +234,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         conversionMap.put(SimilarityMeasureType.WuPalmer, "wup");
         conversionMap.put(SimilarityMeasureType.WuPalmerFast, "wup");
         conversionMap.put(SimilarityMeasureType.Rada, "cdist");
+        conversionMap.put(SimilarityMeasureType.AncSPLRada, "cdist");
         conversionMap.put(SimilarityMeasureType.LeacockChodorow, "lch");
         conversionMap.put(SimilarityMeasureType.PedersenPath, "path");
         conversionMap.put(SimilarityMeasureType.PekarStaab, "pks");
