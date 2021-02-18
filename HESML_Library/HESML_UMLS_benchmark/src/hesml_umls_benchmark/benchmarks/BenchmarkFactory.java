@@ -205,14 +205,14 @@ public class BenchmarkFactory
      */
 
     public static IBioLibraryExperiment createMeSHSentenceBenchmark(
-            SemanticLibraryType[]               libraries,
-            SimilarityMeasureType               similarityMeasure,
-            IntrinsicICModelType                icModel,
-            HashMap<SemanticLibraryType,String> strDatasetPath,
-            String                              strMeSHdir,
-            String                              strMeSHXmlConceptFileName,
-            String                              strUmlsDir,
-            String                              strSNOMED_CUI_mappingfilename) 
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            String[]                strDatasetPath,
+            String                  strMeSHdir,
+            String                  strMeSHXmlConceptFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) 
             throws Exception
     {
         return (new MeSHSentencesEvalBenchmark(libraries,

@@ -118,14 +118,14 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      */
 
     MeSHSentencesEvalBenchmark(
-            SemanticLibraryType[]               libraries,
-            SimilarityMeasureType               similarityMeasure,
-            IntrinsicICModelType                icModel,
-            HashMap<SemanticLibraryType,String> strDatasetPaths,
-            String                              strMeSHdir,
-            String                              strMeSHXmlConceptFileName,
-            String                              strUmlsDir,
-            String                              strSNOMED_CUI_mappingfilename) 
+            SemanticLibraryType[]   libraries,
+            SimilarityMeasureType   similarityMeasure,
+            IntrinsicICModelType    icModel,
+            String[]                strDatasetPaths,
+            String                  strMeSHdir,
+            String                  strMeSHXmlConceptFileName,
+            String                  strUmlsDir,
+            String                  strSNOMED_CUI_mappingfilename) 
             throws Exception
     {
         // We initialize the base class
@@ -782,7 +782,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      */
     
     private void loadDatasetBenchmark(
-        HashMap<SemanticLibraryType,String>  strDatasetFilenames) throws Exception
+        String[]  strDatasetFilenames) throws Exception
     {
         System.out.println("Loading the sentence similarity datasets");
         
@@ -793,6 +793,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             m_datasets.put(lib, new ArrayList<>());
         }
         
+        // Create a counter for the dataset paths
+        
+        int i = 0;
+        
         // We iterate the libraries and load the dataset files per each library
         
         for (Map.Entry<ISemanticLibrary, ArrayList<ArrayList<String>>> entry : m_datasets.entrySet())
@@ -801,7 +805,9 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             
             ISemanticLibrary library = entry.getKey();
             
-            String strDatasetPath = strDatasetFilenames.get(library.getLibraryType());
+            // We get the path to the input dataset
+            
+            String strDatasetPath = strDatasetFilenames[i];
             
             // Initialize the sentences
         
@@ -840,6 +846,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             // We close the file
 
             csvReader.close();
+            
+            // Update the counter
+            
+            i++;
         }
     }
     

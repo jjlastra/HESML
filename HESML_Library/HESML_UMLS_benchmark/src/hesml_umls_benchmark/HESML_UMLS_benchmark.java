@@ -187,7 +187,7 @@ public class HESML_UMLS_benchmark
          * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
          */
         
-        RunLargeGOExperiment(strOutputDir);
+        //RunLargeGOExperiment(strOutputDir);
         
         /**
          * Experiment 8: we compare the performance of the HEMSL, SML and
@@ -195,7 +195,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir);
+        RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -536,6 +536,7 @@ public class HESML_UMLS_benchmark
         SemanticLibraryType[] libraries = new SemanticLibraryType[]{
                                                     SemanticLibraryType.UMLS_SIMILARITY,
                                                     SemanticLibraryType.SML,
+                                                    SemanticLibraryType.HESML,
                                                     SemanticLibraryType.HESML};
         
         // We set the measures being evaluated
@@ -546,17 +547,13 @@ public class HESML_UMLS_benchmark
                                                     SimilarityMeasureType.Lin,
                                                     SimilarityMeasureType.WuPalmerFast};
         
-        // Create the hashmap with the datasets per library
+        // Create the array with the datasets per library
         
-        HashMap<SemanticLibraryType,String> strDatasetPaths = new HashMap<>();
-        
-        strDatasetPaths.put(SemanticLibraryType.UMLS_SIMILARITY, m_strMedSTSfilename);
-        strDatasetPaths.put(SemanticLibraryType.SML, m_strMedSTSfilename);
-        //strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSLargefilename);
-        //strDatasetPaths.put(SemanticLibraryType.HESML, m_str1millionFilename);
-        strDatasetPaths.put(SemanticLibraryType.HESML, m_strMedSTSfilename);
-        
-        
+        String[] strDatasetPaths = new String[]{
+                                                    m_strMedSTSfilename,
+                                                    m_strMedSTSfilename,
+                                                    m_strMedSTSfilename,
+                                                    m_str1millionFilename};
         
         // We build the vector of raw output filenames
         
