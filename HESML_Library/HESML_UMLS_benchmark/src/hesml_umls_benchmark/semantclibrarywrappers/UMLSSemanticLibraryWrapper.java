@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import hesml_umls_benchmark.ISemanticLibrary;
 import hesml_umls_benchmark.UMLSOntologyType;
+import java.util.UUID;
 
 /**
  * * This class implements the SNOMED similarity library based on UMLS::Similarity.
@@ -60,6 +61,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
     
     private final String    m_PerlScriptDir;
     private final String    m_PerlTempDir;
+    
+    // Random string for naming the temporal filenames
+    
+    String m_uuid;
     
     /**
      * Constructor to build the Snomed HESML database
@@ -93,6 +98,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         // We obtain the directory for temporary files
         
         m_PerlTempDir = System.getProperty("java.io.tmpdir");
+        
+        // Generate a random string for defining the filenames
+        
+        m_uuid = UUID.randomUUID().toString();
     }
     
     /**
@@ -122,6 +131,10 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         // We obtain the directory for temporary files
         
         m_PerlTempDir = System.getProperty("java.io.tmpdir");
+        
+        // Generate a random string for defining the filenames
+        
+        m_uuid = UUID.randomUUID().toString();
     }
     
     /**
@@ -146,7 +159,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // We write the temporal file with all the CUI pairs
         
-        String tempFile = m_PerlTempDir + "/tempFile.csv";
+        String tempFile = m_PerlTempDir + "/tempFile"+m_uuid+".csv";
         
         // We write the input file for the Perl script
         
@@ -162,7 +175,7 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
         
         // Warning message
         
-        String strTempOutputFilename = m_PerlTempDir + "/tempFileOutput.csv";
+        String strTempOutputFilename = m_PerlTempDir + "/tempFileOutput"+m_uuid+".csv";
         
         System.out.println("Reading UMLS__Similarity output file -> " + strTempOutputFilename);
         
@@ -312,8 +325,8 @@ public class UMLSSemanticLibraryWrapper extends SimilarityLibraryWrapper
     {
         // Remove temporary files
         
-        this.removeFile(m_PerlTempDir + "/tempFile.csv");
-        this.removeFile(m_PerlTempDir + "/tempFileOutput.csv");
+        this.removeFile(m_PerlTempDir + "/tempFile"+m_uuid+".csv");
+        this.removeFile(m_PerlTempDir + "/tempFileOutput"+m_uuid+".csv");
     }
 
     /**
