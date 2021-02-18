@@ -28,12 +28,11 @@ import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;  
-import java.util.HashMap;
 import java.util.HashSet;
 
 /**
  * This class implements the benchmark application used to compare
- * the performance of th HESML-UMLS library with the UMLS::Similairty [2]
+ * the performance of the HESML-UMLS library with the UMLS::Similarity [2]
  * and SML [3] Libraries.
  * 
  * [1] HESML-UMLS paper.
@@ -159,7 +158,7 @@ public class HESML_UMLS_benchmark
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
 
-        //RunAncSPLExperiment(strOutputDir);
+        RunAncSPLExperiment(strOutputDir);
         
         /**
          * Experiment 4: scalability of the AncSPL algortihm with regards to
@@ -195,7 +194,7 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        RunSentenceSimilarityExperiment(strOutputDir);
+        //RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -684,7 +683,7 @@ public class HESML_UMLS_benchmark
     {
         // We set the measures being evaluated
                                                     
-        SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[4][2];
+        SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
         
         measureTypes[0][0] = SimilarityMeasureType.Rada;
         measureTypes[0][1] = SimilarityMeasureType.AncSPLRada;
@@ -692,8 +691,6 @@ public class HESML_UMLS_benchmark
         measureTypes[1][1] = SimilarityMeasureType.AncSPLLeacockChodorow;
         measureTypes[2][0] = SimilarityMeasureType.CosineNormWeightedJiangConrath;
         measureTypes[2][1] = SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath;
-        measureTypes[3][0] = SimilarityMeasureType.CaiStrategy1;
-        measureTypes[3][1] = SimilarityMeasureType.AncSPLCaiStrategy1;
         
         // We build the vector of raw output filenames
         
@@ -703,23 +700,54 @@ public class HESML_UMLS_benchmark
         {
             strOutputFilenames[i] = "raw_output_" + measureTypes[i][1] + "_exp4.csv";
         }
+        
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[measureTypes.length];
 
         // We compare the correlation between two measures
         
         for (int i = 0; i < measureTypes.length; i++)
         {
+            // We create the benchmark
+            
             IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                50, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                5, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
             
-            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
-            benchmark.clear();
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
         }
+        
+        // We run the experiments
+
+        for (int i = 0; i < threads.length; i++)
+        {
+            // Start the experiment thread
+            
+            threads[i].start();
+        }
+        
+        // We wait until other threads have finished their execution
+        
+        for (int i = 0; i < threads.length; i++)
+        {
+            threads[i].join();
+        }
+        
+        System.out.println("**************************************************");
+        System.out.println("*********** NO DEBERIA LLEGAR AQUI ***************");
+        System.out.println("**************************************************");
     }
     
     /**
