@@ -52,17 +52,40 @@ import java.util.logging.Logger;
  * @author j.lastra and alicia lc
  */
 
+/**
+ * Multithreading version of the HESML UMLS benchmarks.
+ * 
+ * 
+ * 
+ * @author root
+ */
 class HESML_UMLS_benchmark_multithread implements Runnable 
 {
+    //  Benchmark object
+    
     IBioLibraryExperiment m_benchmark;
+    
+    // Output path to the directory
+    
     String m_outputPath;
 
+    /**
+     * Constructor with parameters
+     * @param benchmark
+     * @param outputPath 
+     */
+    
     HESML_UMLS_benchmark_multithread(IBioLibraryExperiment benchmark, String outputPath)
     {
+        // We initialize the objects
+        
         m_benchmark = benchmark;
         m_outputPath = outputPath;
     }
     
+    /**
+     * Runnable object
+     */
     
     @Override
     public void run() {
@@ -75,10 +98,14 @@ class HESML_UMLS_benchmark_multithread implements Runnable
     }
 }
 
-// Main Class 
+/**
+ * This class define the threads of the experiments
+ * 
+ * @author alicia
+ */
+
 class Multithread 
 { 
-    
     /**
     * Filenames and directories of the SNOMD-CT files and UMLS CUI file
     */
@@ -95,7 +122,6 @@ class Multithread
        
     public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception 
     { 
-       
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[4][2];
@@ -137,14 +163,10 @@ class Multithread
             
             String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
             
+            // Each instance of a benchmark is executed by one thread.
+            
             Thread object = new Thread(new HESML_UMLS_benchmark_multithread(benchmark, outputPath)); 
             object.start(); 
-            
-            
         }
     } 
-    
-    
-} 
-
-
+}
