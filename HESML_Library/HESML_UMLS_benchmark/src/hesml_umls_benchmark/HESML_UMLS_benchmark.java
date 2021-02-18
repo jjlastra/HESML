@@ -149,7 +149,7 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -391,6 +391,10 @@ public class HESML_UMLS_benchmark
 
         int[] nRandomSamplesPerLibrary = new int[libraries.length];
         
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[measureTypes.length];
+        
         /**
          * We compare the performance of HESML, SML and UMLS::Similarity by evaluating
          * different similarity measures on a random sequence of concept pairs.
@@ -444,12 +448,37 @@ public class HESML_UMLS_benchmark
                     
                     break;
             }
-        
-            // We run and destroy the benchmark
             
-            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
-            benchmark.clear();
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
         }
+        
+        // We run the experiments
+
+        for (int i = 0; i < threads.length; i++)
+        {
+            // Start the experiment thread
+            
+            threads[i].start();
+        }
+        
+        // We wait until other threads have finished their execution
+        
+        for (int i = 0; i < threads.length; i++)
+        {
+            threads[i].join();
+        }
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
     }
     
     /**
@@ -488,6 +517,10 @@ public class HESML_UMLS_benchmark
 
         int[] nRandomSamplesPerLibrary = new int[libraries.length];
         
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[measureTypes.length];
+        
         /**
          * We compare the performance of HESML and SML by evaluating
          * different similarity measures on a random sequence of concept pairs.
@@ -516,11 +549,36 @@ public class HESML_UMLS_benchmark
                             libraries, measureTypes[i], IntrinsicICModelType.Seco,
                             nRandomSamplesPerLibrary, nRuns, "../GeneOntology/go.obo");
         
-            // We run and destroy the benchmark
+            // We define the output file
             
-            benchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
-            benchmark.clear();
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
         }
+        
+        // We run the experiments
+
+        for (int i = 0; i < threads.length; i++)
+        {
+            // Start the experiment thread
+            
+            threads[i].start();
+        }
+        
+        // We wait until other threads have finished their execution
+        
+        for (int i = 0; i < threads.length; i++)
+        {
+            threads[i].join();
+        }
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
     }
     
     /**
@@ -569,6 +627,10 @@ public class HESML_UMLS_benchmark
             strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_MedSTS.csv";
         }
         
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[measureTypes.length];
+        
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity libraries by evaluating 30 sentence pairs
@@ -582,15 +644,42 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
-            IBioLibraryExperiment sentenceBenchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createMeSHSentenceBenchmark(
                                         libraries, measureTypes[i],
                                         IntrinsicICModelType.Seco, strDatasetPaths, 
                                         m_strMeSHdir, m_strMeSHXmlFilename,
                                         m_strUMLSdir, m_strUmlsCuiMappingFilename);
 
-            sentenceBenchmark.run(strRawOutputDir + "/" + strOutputFilenames[i]);
-            sentenceBenchmark.clear();
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
         }
+        
+        // We run the experiments
+
+        for (int i = 0; i < threads.length; i++)
+        {
+            // Start the experiment thread
+            
+            threads[i].start();
+        }
+        
+        // We wait until other threads have finished their execution
+        
+        for (int i = 0; i < threads.length; i++)
+        {
+            threads[i].join();
+        }
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
     }
     
     /**
