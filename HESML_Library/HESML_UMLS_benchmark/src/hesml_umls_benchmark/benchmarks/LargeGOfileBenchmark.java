@@ -278,13 +278,13 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         
         long overallAnnotations = firstGoAnnotations * secondGoAnnotations;
         
-        // We reutnr the result
+        // We return the result
         
         return (overallAnnotations);
     }
     
     /**
-     * This fucntion runs the benchmark and writes the results to the
+     * This function runs the benchmark and writes the results to the
      * output file.
      */
     

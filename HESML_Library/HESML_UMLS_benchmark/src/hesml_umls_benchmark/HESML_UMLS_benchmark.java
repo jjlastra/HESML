@@ -149,6 +149,12 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunRandomConceptsExperiment---\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
         RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
@@ -157,35 +163,65 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        //RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunRandomConceptsExperiment2--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 3: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
+        
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunAncSPLExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
 
-        //RunAncSPLExperiment(strOutputDir);
+        RunAncSPLExperiment(strOutputDir);
         
         /**
          * Experiment 4: scalability of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        //RunAncSPLScalabilityExperiment(strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunAncSPLScalabilityExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
          * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        //RunAncSPLStatisticalExperiment(strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunAncSPLStatisticalExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 6: we compare the performance of HESML and SML on
          * the Gene Ontology (GO).
          */
         
-        //RunRandomGOConceptsExperiment(strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunRandomGOConceptsExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunRandomGOConceptsExperiment(strOutputDir);
 
         /**
          * Experiment 7: we compare the performance of the HEMSL, SML and
@@ -193,26 +229,38 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        //RunSentenceSimilarityExperiment(strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunSentenceSimilarityExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunSentenceSimilarityExperiment(strOutputDir);
         
         /**
-         * Experiment 7: comparison of two large GO annotated files describing
+         * Experiment 8: comparison of two large GO annotated files describing
          * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
          */
         
-        //RunLargeGOExperiment(strOutputDir);
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunLargeGOExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
         long stoptime = System.currentTimeMillis();
         
-        System.out.println("Overall running time (secons) = "
+        System.out.println("Overall running time (seconds) = "
             + ((stoptime - startTime) / 1000.0));
     }
 
     /**
-     * This funtion returns the number of random samples used to evaluate
-     * a library on a specific ontology a similairty measure wit the aim
+     * This function returns the number of random samples used to evaluate
+     * a library on a specific ontology a similarity measure wit the aim
      * of setting reasonable running times. It is needed becasue the large
      * difference in performance of the libraries being evañuated.
      * @param library
@@ -777,7 +825,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                5, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                1000, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
