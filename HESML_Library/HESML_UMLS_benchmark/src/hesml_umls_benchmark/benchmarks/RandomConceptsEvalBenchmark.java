@@ -118,7 +118,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
         m_ontologyType = ontology;
-        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary.clone();
         m_nRuns = nRuns;
     }
     
@@ -159,7 +159,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
         m_ontologyType = ontology;
-        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary.clone();
         m_nRuns = nRuns;
     }
     
@@ -191,7 +191,7 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         m_MeasureType = similarityMeasure;
         m_icModel = icModel;
         //m_ontologyType = ontology;
-        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary;
+        m_nRandomSamplesPerLibrary = nRandomSamplesPerLibrary.clone();
         m_nRuns = nRuns;
     }
     

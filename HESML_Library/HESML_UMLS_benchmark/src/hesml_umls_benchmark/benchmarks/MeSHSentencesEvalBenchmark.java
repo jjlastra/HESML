@@ -149,7 +149,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         loadMetamapLite();
         
-        // We annotate all CUI ceoncept mentions in all sentences of the dataste
+        // We annotate all CUI concept mentions in all sentences of the dataset
         
         annotateDatasets();
     }
@@ -887,11 +887,18 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             { 		      
                 // Debug info
                 
-                //System.out.println("Annotating " + i + " of " + sentences.get(0).size() + " sentences");
+//                System.out.println(i);
                 
                 // Annotate the sentences and add to the array
                 
                 firstSentencesAnnotated.add(annotateSentence(sentences.get(0).get(i)));
+                
+                // Debug info
+                
+//                System.out.println(i + " : " + sentences.get(1).get(i));
+                
+                // Annotate the sentences and add to the array
+                
                 secondSentencesAnnotated.add(annotateSentence(sentences.get(1).get(i)));
             } 
             

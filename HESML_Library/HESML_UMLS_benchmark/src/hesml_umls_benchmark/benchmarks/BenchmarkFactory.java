@@ -24,12 +24,9 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.GroupwiseMetricType;
 import hesml.measures.GroupwiseSimilarityMeasureType;
-import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
-import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml_umls_benchmark.UMLSOntologyType;
 import hesml_umls_benchmark.SemanticLibraryType;
-import java.util.HashMap;
 import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**

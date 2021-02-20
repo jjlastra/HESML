@@ -435,10 +435,6 @@ public class HESML_UMLS_benchmark
             strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_" + ontologyType + ".csv";
         }
 
-        // We create the running-time vector
-
-        int[] nRandomSamplesPerLibrary = new int[libraries.length];
-        
         // We create a list of threads 
         
         Thread[] threads = new Thread[measureTypes.length];
@@ -452,6 +448,10 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
+            // We create the running-time vector
+
+            int[] nRandomSamplesPerLibrary = new int[libraries.length];
+            
             /**
              * We set the number of random concept pairs evaluated by each library
              * with the aim of computing the average running times. Because of the
@@ -507,17 +507,19 @@ public class HESML_UMLS_benchmark
         }
         
         // We run the experiments
-
-        for (int i = 0; i < threads.length; i++)
+        
+        for (Thread thread : threads) 
         {
-            threads[i].start();
+            // Start the experiment thread
+            
+            thread.start();
         }
         
         // We wait until other threads have finished their execution
         
-        for (int i = 0; i < threads.length; i++)
+        for (Thread thread : threads) 
         {
-            threads[i].join();
+            thread.join();
         }
         
         // Debug information - This message should not appear before the termination of all threads
@@ -559,10 +561,6 @@ public class HESML_UMLS_benchmark
             strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_" + "GO.csv";
         }
 
-        // We create the running-time vector
-
-        int[] nRandomSamplesPerLibrary = new int[libraries.length];
-        
         // We create a list of threads 
         
         Thread[] threads = new Thread[measureTypes.length];
@@ -576,6 +574,10 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < measureTypes.length; i++)
         {
+            // We create the running-time vector
+
+            int[] nRandomSamplesPerLibrary = new int[libraries.length];
+        
             /**
              * We set the number of random concept pairs evaluated by each library
              * with the aim of computing the average running times. Because of the
@@ -605,17 +607,19 @@ public class HESML_UMLS_benchmark
         }
         
         // We run the experiments
-
-        for (int i = 0; i < threads.length; i++)
+        
+        for (Thread thread : threads) 
         {
-            threads[i].start();
+            // Start the experiment thread
+            
+            thread.start();
         }
         
         // We wait until other threads have finished their execution
         
-        for (int i = 0; i < threads.length; i++)
+        for (Thread thread : threads) 
         {
-            threads[i].join();
+            thread.join();
         }
         
         // Debug information - This message should not appear before the termination of all threads
@@ -626,7 +630,7 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function executes the benchamrk which evaluates the similarity of
+     * This function executes the benchmark which evaluates the similarity of
      * the sentence pairs in the MedSTS dataset.
      * @param strRawOutputDir
      * @param ontologyType
@@ -703,19 +707,19 @@ public class HESML_UMLS_benchmark
         }
         
         // We run the experiments
-
-        for (int i = 0; i < threads.length; i++)
+        
+        for (Thread thread : threads) 
         {
             // Start the experiment thread
             
-            threads[i].start();
+            thread.start();
         }
         
         // We wait until other threads have finished their execution
         
-        for (int i = 0; i < threads.length; i++)
+        for (Thread thread : threads) 
         {
-            threads[i].join();
+            thread.join();
         }
         
         // Debug information - This message should not appear before the termination of all threads
@@ -840,19 +844,19 @@ public class HESML_UMLS_benchmark
         }
         
         // We run the experiments
-
-        for (int i = 0; i < threads.length; i++)
+        
+        for (Thread thread : threads) 
         {
             // Start the experiment thread
             
-            threads[i].start();
+            thread.start();
         }
         
         // We wait until other threads have finished their execution
         
-        for (int i = 0; i < threads.length; i++)
+        for (Thread thread : threads) 
         {
-            threads[i].join();
+            thread.join();
         }
         
         // Debug information - This message should not appear before the termination of all threads
@@ -938,17 +942,19 @@ public class HESML_UMLS_benchmark
         }
         
         // We run the experiments
-
-        for (int i = 0; i < threads.length; i++)
+        
+        for (Thread thread : threads) 
         {
-            threads[i].start();
+            // Start the experiment thread
+            
+            thread.start();
         }
         
         // We wait until other threads have finished their execution
         
-        for (int i = 0; i < threads.length; i++)
+        for (Thread thread : threads) 
         {
-            threads[i].join();
+            thread.join();
         }
         
         // Debug information - This message should not appear before the termination of all threads
