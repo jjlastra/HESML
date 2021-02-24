@@ -20,6 +20,7 @@
 
 package hesml_umls_benchmark.benchmarks;
 
+import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
@@ -40,6 +41,18 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
      */
     
     private ISnomedCtOntology   m_snomedOntology;
+    
+    /**
+     * Taxonomy of the
+     */
+    
+    private ITaxonomy   m_taxonomy;
+    
+    /**
+     * Number of random concept pairs used to evaluate the Cumulative Distance Function
+     */
+    
+    private int m_nRandomPairs;
     
     /**
      * This function loads 
@@ -64,6 +77,11 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                             strUmlsDir, strSNOMED_CUI_mappingfilename);
+        
+        // We set the taxonomy and number of random samples
+        
+        m_taxonomy = m_snomedOntology.getTaxonomy();
+        m_nRandomPairs = 1000;
     }
     
     /**
@@ -78,9 +96,8 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     
     /**
      * This function generate a sample list of random concept pairs.
-     * 
      * @param overallSamples
-     * @return
+     * @return A matrix of random vertex pairs
      * @throws Exception 
      */
     
@@ -96,7 +113,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         // We generate random concept pairs to populate the collection of groups
         
-        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
+        IVertexList vertexes = m_taxonomy.getVertexes();
         
         // We fill the randomConceptPairs concept pairs 
         
@@ -104,13 +121,8 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         {
             // We obtain a pair of random vertexes
             
-            IVertex source = vertexes.getAt(rand.nextInt(vertexes.getCount()));
-            IVertex target = vertexes.getAt(rand.nextInt(vertexes.getCount()));
-            
-            // We fill the randomConceptPairs concepts
-            
-            randomPairs[i][0] = source;
-            randomPairs[i][1] = target;
+            randomPairs[i][0] = vertexes.getAt(rand.nextInt(vertexes.getCount()));
+            randomPairs[i][1] = vertexes.getAt(rand.nextInt(vertexes.getCount()));
         }
         
         // We return the result
@@ -129,18 +141,14 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     public void run(
             String  strOutputRawDataFilename) throws Exception
     {
-        // We define the number of concept pairs that will be evaluated in the experiment
-        
-        int overallSamples = 1000;
-                
         // We generate the renadom concept pairs
         
-        IVertex[][] randomConceptPairs = generateRandomPairs(overallSamples);
+        IVertex[][] randomConceptPairs = generateRandomPairs(m_nRandomPairs);
         
         // We create the output file wit the following format
         // Id source | Id target | Exact distance | AncSPL distance
         
-        String[][] strOutputMatrix = new String[1 + overallSamples][4];
+        String[][] strOutputMatrix = new String[1 + m_nRandomPairs][4];
         
         // We insert the headers
         
@@ -151,15 +159,15 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         // We generate random concept pairs to populate the collection of groups
         
-        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
+        IVertexList vertexes = m_taxonomy.getVertexes();
         
         // We compute the exact and ancSPL distance for all vertex pairs in the same randomConceptPairs
         
-        for (int i = 0; i < overallSamples; i++)
+        for (int i = 0; i < m_nRandomPairs; i++)
         {
             // We output the progress - debug message
             
-            System.out.println("Computing the random pair " + (i+1) + " of " + overallSamples);
+            System.out.println("Computing the random pair " + (i+1) + " of " + m_nRandomPairs);
             
             // We get the source and target Ids
             
