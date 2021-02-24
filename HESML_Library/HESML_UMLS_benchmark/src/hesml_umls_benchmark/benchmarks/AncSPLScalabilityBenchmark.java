@@ -20,6 +20,7 @@
 
 package hesml_umls_benchmark.benchmarks;
 
+import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
@@ -42,6 +43,11 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     
     private ISnomedCtOntology   m_snomedOntology;
     
+    /**
+     * HESML taxonomy representing the ontology
+     */
+    
+    private ITaxonomy   m_taxonomy;
     
     /**
      * This function loads 
@@ -66,6 +72,10 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                             strUmlsDir, strSNOMED_CUI_mappingfilename);
+        
+        // We retrieve the taxonomy
+        
+        m_taxonomy = m_snomedOntology.getTaxonomy();
     }
     
     /**
@@ -75,8 +85,6 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     @Override
     public void clear()
     {
-        // We release all objects
-        
         m_snomedOntology.clear();
     }
     
@@ -94,7 +102,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         // We traverse the SNOMED-CT taxonomy
         
-        for (IVertex vertex : m_snomedOntology.getTaxonomy().getVertexes())
+        for (IVertex vertex : m_taxonomy.getVertexes())
         {
             // We get the depth-max value
             
@@ -170,7 +178,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         int overallSamples = 10000000;
         
-        IVertexList vertexes = m_snomedOntology.getTaxonomy().getVertexes();
+        IVertexList vertexes = m_taxonomy.getVertexes();
         
         for (int i = 0; i < overallSamples; i++)
         {

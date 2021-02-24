@@ -102,6 +102,36 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     }
     
     /**
+     * Constructor for the GO ontology
+     * @param strOboOntologyFile
+     * @param icModelMetric
+     * @param measureType1
+     * @param measureType2
+     * @param nRandomSamples
+     * @throws Exception 
+     */
+    
+    AncSPLBenchmark(
+            String                  strOboOntologyFile,
+            IntrinsicICModelType    icModelMetric,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
+            int                     nRandomSamples) throws Exception
+    {
+        // We initialize the base class to load the HESML library
+        
+        super(new SemanticLibraryType[]{SemanticLibraryType.HESML},
+                strOboOntologyFile);
+                
+        // We save the number of random concept pairs to be evaluated
+        
+        m_nRandomSamples = nRandomSamples;
+        m_icModelMetric = icModelMetric;
+        m_measureType1 = measureType1;
+        m_measureType2 = measureType2;
+    }
+    
+    /**
      * This function executes the benchmark and saves the raw results into
      * the output file.
      */
@@ -123,55 +153,58 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
                    
         // We get the SNOMED taxonomy instanced by HESML
         
-        ITaxonomy snomedTaxonomy = ((HESMLSemanticLibraryWrapper) m_Libraries[0]).getTaxonomy();
+        ITaxonomy taxonomy = ((HESMLSemanticLibraryWrapper) m_Libraries[0]).getTaxonomy();
         
         // We set the intrinsic IC model for the weighted case
         
-        ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(snomedTaxonomy);
+        ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(taxonomy);
         
         // We get the vector of random concept pairs
 
-        IVertex[][] snomedNodepairs = getRandomSnomedNodePairs(snomedTaxonomy, m_nRandomSamples);
+        IVertex[][] randomVertexPairs = getRandomNodePairs(taxonomy, m_nRandomSamples);
         
         // We get the two similairty measures
         
-        ISimilarityMeasure measure1 = MeasureFactory.getMeasure(snomedTaxonomy, m_measureType1);
-        ISimilarityMeasure measure2 = MeasureFactory.getMeasure(snomedTaxonomy, m_measureType2);
+        ISimilarityMeasure measure1 = MeasureFactory.getMeasure(taxonomy, m_measureType1);
+        ISimilarityMeasure measure2 = MeasureFactory.getMeasure(taxonomy, m_measureType2);
         
         // We create the output data matrix and fill the row headers
         // SNOMED ID1 | SNOMED ID2 | Exact Dijkstra distance | AncSPL distance
         
-        String[][] strOutputDataMatrix = new String[snomedNodepairs.length + 1][4];
+        String[][] strOutputDataMatrix = new String[randomVertexPairs.length + 1][4];
         
         // We fill the first row headers
         
-        strOutputDataMatrix[0][0] = "SNOMED Id1";
-        strOutputDataMatrix[0][1] = "SNOMED Id2";
+        strOutputDataMatrix[0][0] = m_strOboFilename.equals("") ? "SNOMED Id1" : "GO Id1";
+        strOutputDataMatrix[0][1] = m_strOboFilename.equals("") ? "SNOMED Id1" : "GO Id1";
         strOutputDataMatrix[0][2] = m_measureType1.toString();
         strOutputDataMatrix[0][3] = m_measureType2.toString();
         
-        // We evaluate the performance of the HESML library
+        // We evaluate the performance of the HESML library on the SNOMED-CT or GO ontologies
         
-        for (int iPair = 0; iPair < snomedNodepairs.length; iPair++)
+        for (int iPair = 0; iPair < randomVertexPairs.length; iPair++)
         {
             // We fill the values for the current concept pair
             
-            strOutputDataMatrix[iPair + 1][0] = Long.toString(snomedNodepairs[iPair][0].getID());
-            strOutputDataMatrix[iPair + 1][1] = Long.toString(snomedNodepairs[iPair][1].getID());
+            strOutputDataMatrix[iPair + 1][0] = m_strOboFilename.equals("") ? Long.toString(randomVertexPairs[iPair][0].getID())
+                                                : randomVertexPairs[iPair][0].getStringTag();
+            
+            strOutputDataMatrix[iPair + 1][1] = m_strOboFilename.equals("") ? Long.toString(randomVertexPairs[iPair][1].getID())
+                                                : randomVertexPairs[iPair][1].getStringTag();
 
             // We get the SNOMED taxonomy vertexes
             
-            IVertex snomed1 = snomedNodepairs[iPair][0];
-            IVertex snomed2 = snomedNodepairs[iPair][1];
+            IVertex vertex1 = randomVertexPairs[iPair][0];
+            IVertex vertex2 = randomVertexPairs[iPair][1];
             
             // We evaluate the Dijsktra distance
             
-            strOutputDataMatrix[iPair + 1][2] = Double.toString(measure1.getSimilarity(snomed1, snomed2));
-            strOutputDataMatrix[iPair + 1][3] = Double.toString(measure2.getSimilarity(snomed1, snomed2));
+            strOutputDataMatrix[iPair + 1][2] = Double.toString(measure1.getSimilarity(vertex1, vertex2));
+            strOutputDataMatrix[iPair + 1][3] = Double.toString(measure2.getSimilarity(vertex1, vertex2));
             
             // We show the progress
             
-            System.out.println((iPair + 1) + " of " + Integer.toString(snomedNodepairs.length) + " pairs)");
+            System.out.println((iPair + 1) + " of " + Integer.toString(randomVertexPairs.length) + " pairs)");
         }
         
         // We unload SNOMED taxonomy
@@ -184,20 +217,20 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     }    
     
     /**
-     * This function generates a vector of random SNOMED-CT concept pairs which
+     * This function generates a vector of random concept pairs which
      * will be used to evaluate the performance of the libraeries.
-     * @param snomedTaxonomy
+     * @param taxonomy
      * @param nPairs
      * @return 
      */
     
-    private IVertex[][] getRandomSnomedNodePairs(
-            ITaxonomy   snomedTaxonomy,
-            int         nPairs) throws FileNotFoundException 
+    private IVertex[][] getRandomNodePairs(
+            ITaxonomy   taxonomy,
+            int         nPairs)
     {
         // We create the random SNOMED pairs
         
-        IVertex[][] snomedNodePairs = new IVertex[nPairs][2];
+        IVertex[][] randomPairs = new IVertex[nPairs][2];
         
         // We create a ranodm number
         
@@ -205,7 +238,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We get the number of concepts in the SNOMED taxonomy
         
-        double nSnomedConcepts = snomedTaxonomy.getVertexes().getCount();
+        int nSnomedConcepts = taxonomy.getVertexes().getCount();
         
         // We generate the ranomdon node pairs
         
@@ -213,18 +246,12 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         {
             for (int j = 0; j < 2; j++)
             {
-                // We generate a random index in the overall vertex coleccion
-                
-                int randomIndex = (int)(rand.nextDouble() * (nSnomedConcepts - 1));
-                
-                // We retrieve the vertexes at the index position
-                
-                snomedNodePairs[i][j] = snomedTaxonomy.getVertexes().getAt(randomIndex);
+                randomPairs[i][j] = taxonomy.getVertexes().getAt(rand.nextInt(nSnomedConcepts));
             }
         }
         
         // We return the output
         
-        return (snomedNodePairs);
+        return (randomPairs);
     }
 }

@@ -25,11 +25,7 @@ import hesml.HESMLversion;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.GroupwiseMetricType;
 import hesml.measures.GroupwiseSimilarityMeasureType;
-import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
-import hesml.measures.impl.MeasureFactory;
-import hesml.taxonomyreaders.obo.IOboOntology;
-import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -62,6 +58,7 @@ public class HESML_UMLS_benchmark
      * Filenames and directories of the SNOMD-CT files and UMLS CUI file
      */
 
+    private static final String m_strGoOntologyFilename = "../GeneOntology/go.obo";
     private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
     private static final String m_strMeSHXmlFilename = "desc2019.xml";
     private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";
@@ -178,11 +175,24 @@ public class HESML_UMLS_benchmark
         
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunAncSPLExperiment--\n");
+        System.out.println("------Starting RunSnomedAncSPLCorrelationExperiment--\n");
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
 
-        RunAncSPLExperiment(strOutputDir);
+        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+
+        /**
+         * Experiment 4: we evaluate the approximation quality of the novel
+         * Ancestor-based Shortest Path Length (AncSPL) algorithm.
+         */
+        
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunGoAncSPLCorrelationExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+
+        RunGoAncSPLCorrelationExperiment(strOutputDir);
         
         /**
          * Experiment 4: scalability of the AncSPL algorithm with regards to
@@ -608,7 +618,7 @@ public class HESML_UMLS_benchmark
             
             IBioLibraryExperiment benchmark = BenchmarkFactory.createGOConceptBenchmark(
                             libraries, measureTypes[i], IntrinsicICModelType.Seco,
-                            nRandomSamplesPerLibrary, nRuns, "../GeneOntology/go.obo");
+                            nRandomSamplesPerLibrary, nRuns, m_strGoOntologyFilename);
         
             // We define the output file
             
@@ -812,7 +822,7 @@ public class HESML_UMLS_benchmark
         // We create the banchmark
         
         IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
-                                                "../GeneOntology/go.obo");
+                                                m_strGoOntologyFilename);
         
         // We compute the exact and approximated (AncSPL) distance values between
         // 1000 random SNOMED-CT concepts
@@ -826,12 +836,13 @@ public class HESML_UMLS_benchmark
 
     /**
      * Experiment 4: we evaluate the approximation quality of the novel
-     * Ancestor-based Shortest Path Length (AncSPL) algorithm.
+     * Ancestor-based Shortest Path Length (AncSPL) algorithm in the SNOMED-CT
+     * ontology.
      * @param strRawOutputDir
      * @param strMedSTSfilename
      */
     
-    private static void RunAncSPLExperiment(
+    private static void RunSnomedAncSPLCorrelationExperiment(
             String  strRawOutputDir) throws Exception
     {
         // We set the measures being evaluated
@@ -851,7 +862,7 @@ public class HESML_UMLS_benchmark
         
         for (int i = 0; i < strOutputFilenames.length; i++)
         {
-            strOutputFilenames[i] = "raw_output_" + measureTypes[i][1] + "_exp4.csv";
+            strOutputFilenames[i] = "raw_output_SNOMED_" + measureTypes[i][1] + "_exp4.csv";
         }
         
         // We create a list of threads 
@@ -864,7 +875,7 @@ public class HESML_UMLS_benchmark
         {
             // We create the benchmark
             
-            IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLBenchmark(
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createSnomedAncSPLBenchmark(
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
@@ -886,8 +897,83 @@ public class HESML_UMLS_benchmark
         
         for (Thread thread : threads) 
         {
-            // Start the experiment thread
+            thread.start();
+        }
+        
+        // We wait until other threads have finished their execution
+        
+        for (Thread thread : threads) 
+        {
+            thread.join();
+        }
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
+    }
+    
+    /**
+     * Experiment 4: we evaluate the approximation quality of the novel
+     * Ancestor-based Shortest Path Length (AncSPL) algorithm in the GO
+     * ontology.
+     * @param strRawOutputDir
+     * @param strMedSTSfilename
+     */
+    
+    private static void RunGoAncSPLCorrelationExperiment(
+            String  strRawOutputDir) throws Exception
+    {
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
+        
+        measureTypes[0][0] = SimilarityMeasureType.Rada;
+        measureTypes[0][1] = SimilarityMeasureType.AncSPLRada;
+        measureTypes[1][0] = SimilarityMeasureType.LeacockChodorow;
+        measureTypes[1][1] = SimilarityMeasureType.AncSPLLeacockChodorow;
+        measureTypes[2][0] = SimilarityMeasureType.CosineNormWeightedJiangConrath;
+        measureTypes[2][1] = SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath;
+        
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_GO_" + measureTypes[i][1] + "_exp4.csv";
+        }
+        
+        // We create a list of threads 
+        
+        Thread[] threads = new Thread[measureTypes.length];
+
+        // We compare the correlation between two path-based measures
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            // We create the benchmark
             
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createGoAncSPLBenchmark(
+                                                IntrinsicICModelType.Seco,
+                                                measureTypes[i][0],
+                                                measureTypes[i][1],
+                                                10000, m_strGoOntologyFilename);
+            
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
+        }
+        
+        // We run the experiments
+        
+        for (Thread thread : threads) 
+        {
             thread.start();
         }
         
@@ -919,7 +1005,6 @@ public class HESML_UMLS_benchmark
     {
         // We set the GO ontology filename
         
-        String strGoFilename = "../GeneOntology/go.obo";
         String strHomoSapiensGafFilename = "../GO_datasets/goa_human.gaf"; 
         String strDogGafFilename = "../GO_datasets/goa_dog.gaf";
         
@@ -945,22 +1030,22 @@ public class HESML_UMLS_benchmark
         IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[5];
         
         bioExperiments[0] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimLP,
-                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
+                            m_strGoOntologyFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[1] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimUI,
-                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
+                            m_strGoOntologyFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[2] = BenchmarkFactory.createLargeGOConceptBenchmark(IntrinsicICModelType.Seco,
-                            strGoFilename, strHomoSapiensGafFilename, strDogGafFilename);
+                            m_strGoOntologyFilename, strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[3] = BenchmarkFactory.createLargeGOConceptBenchmark(
                             GroupwiseMetricType.BestMatchAverage, SimilarityMeasureType.Lin,
-                            IntrinsicICModelType.Seco, strGoFilename,
+                            IntrinsicICModelType.Seco, m_strGoOntologyFilename,
                             strHomoSapiensGafFilename, strDogGafFilename);
 
         bioExperiments[4] = BenchmarkFactory.createLargeGOConceptBenchmark(
                             GroupwiseMetricType.Average, SimilarityMeasureType.AncSPLRada,
-                            IntrinsicICModelType.Seco, strGoFilename,
+                            IntrinsicICModelType.Seco, m_strGoOntologyFilename,
                             strHomoSapiensGafFilename, strDogGafFilename);
         
         // We create a list of threads 
@@ -983,9 +1068,7 @@ public class HESML_UMLS_benchmark
         // We run the experiments
         
         for (Thread thread : threads) 
-        {
-            // Start the experiment thread
-            
+        {           
             thread.start();
         }
         

@@ -197,7 +197,7 @@ public class BenchmarkFactory
     
     /**
      * This fucntion creates a benchmark to evaluate the approximation quality
-     * of the AncSPL algorithm.
+     * of the AncSPL algorithm in the SNOMED-CT ontology.
      * @param icModel
      * @param measureType1
      * @param measureType2
@@ -213,7 +213,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IBioLibraryExperiment createAncSPLBenchmark(
+    public static IBioLibraryExperiment createSnomedAncSPLBenchmark(
             IntrinsicICModelType    icModel,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
@@ -231,6 +231,28 @@ public class BenchmarkFactory
                 measureType1, measureType2, nRandomSamples));
     }   
     
+    /**
+     * This fucntion creates a benchmark to evaluate the approximation quality
+     * of the AncSPL algorithm in the GO ontology.
+     * @param icModel
+     * @param measureType1
+     * @param measureType2
+     * @param nRandomSamples
+     * @param strOboOntologyFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createGoAncSPLBenchmark(
+            IntrinsicICModelType    icModel,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
+            int                     nRandomSamples,
+            String                  strOboOntologyFilename) throws Exception
+    {
+        return (new AncSPLBenchmark(strOboOntologyFilename, icModel, 
+                measureType1, measureType2, nRandomSamples));
+    }   
     
     /**
      * This function creates a random concept evaluation.
