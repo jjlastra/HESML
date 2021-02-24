@@ -23,6 +23,8 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.util.Random;
@@ -41,6 +43,12 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
      */
     
     private ISnomedCtOntology   m_snomedOntology;
+    
+    /**
+     * GO ontology
+     */
+    
+    private IOboOntology    m_goOntology;
     
     /**
      * Taxonomy of the
@@ -74,6 +82,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     {
         // We load the SNOMED-CT ontology
         
+        m_goOntology = null;
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                             strUmlsDir, strSNOMED_CUI_mappingfilename);
@@ -85,13 +94,33 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     }
     
     /**
+     * Constructor for the GO ontology
+     * @param stroboOntology 
+     */
+
+    AncSPLStatisticalBenchmark(
+            String  strOboOntology) throws Exception
+    {
+        // We load the SNOMED-CT ontology
+        
+        m_snomedOntology = null;
+        m_goOntology = OboFactory.loadOntology(strOboOntology);
+        
+        // We set the taxonomy and number of random samples
+        
+        m_taxonomy = m_snomedOntology.getTaxonomy();
+        m_nRandomPairs = 10000;
+    }
+    
+    /**
      * This function releases all resources used in the experiment
      */
     
     @Override
     public void clear()
     {
-        m_snomedOntology.clear();
+        if (m_snomedOntology != null) m_snomedOntology.clear();
+        if (m_goOntology != null) m_goOntology.clear();
     }
     
     /**
@@ -179,10 +208,10 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
             double exactDistance = source.getShortestPathDistanceTo(target, false);
             double ancSPLDistance = source.getFastShortestPathDistanceTo(target, false);
             
-            // We fill the output matrix
+            // We fill the output matrix. We retriev the SNOMED ID or the GO ID
             
-            strOutputMatrix[i+1][0] = Long.toString(source.getID());
-            strOutputMatrix[i+1][1] = Long.toString(target.getID());
+            strOutputMatrix[i+1][0] = (m_snomedOntology != null) ? Long.toString(source.getID()) : source.getStringTag();
+            strOutputMatrix[i+1][1] = (m_snomedOntology != null) ? Long.toString(target.getID()) : target.getStringTag();
             strOutputMatrix[i+1][2] = Double.toString(exactDistance);
             strOutputMatrix[i+1][3] = Double.toString(ancSPLDistance);
         }

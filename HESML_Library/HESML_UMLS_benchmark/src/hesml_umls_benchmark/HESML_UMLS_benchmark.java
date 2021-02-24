@@ -204,12 +204,25 @@ public class HESML_UMLS_benchmark
         
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunAncSPLStatisticalExperiment--\n");
+        System.out.println("------Starting RunSnomedAncSPLStatisticalExperiment--\n");
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-        RunAncSPLStatisticalExperiment(strOutputDir);
+        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
 
+        /**
+         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
+         * the distance between SNOME-CT concepts
+         */
+        
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("------Starting RunGoAncSPLStatisticalExperiment--\n");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------\n");
+        
+        RunGoAncSPLStatisticalExperiment(strOutputDir);
+        
         /**
          * Experiment 6: we compare the performance of HESML and SML on
          * the Gene Ontology (GO).
@@ -757,14 +770,14 @@ public class HESML_UMLS_benchmark
     }
     
     /**
-     * This function runs the scalability experiment for the AncSPL algorithm.
+     * This function runs the statistical experiment for the AncSPL algorithm.
      * This benchmark computes the exact and approximated distance values for
      * a collection of random concept pairs to allow an statistical analysis
      * of the approximation quality of the AncSPL algorithm.
      * @param strRawOutputDir 
      */
     
-    private static void RunAncSPLStatisticalExperiment(
+    private static void RunSnomedAncSPLStatisticalExperiment(
         String  strRawOutputDir) throws Exception
     {
         // We create the banchmark
@@ -778,7 +791,33 @@ public class HESML_UMLS_benchmark
         // We compute the exact and approximated (AncSPL) distance values between
         // 1000 random SNOMED-CT concepts
         
-        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_statisticalData_test.csv");
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_SNOMED_statisticalData_test.csv");
+        
+        // We release all resources
+        
+        benchmark.clear();
+    }
+    
+    /**
+     * This function runs the statistical experiment for the AncSPL algorithm.
+     * This benchmark computes the exact and approximated distance values for
+     * a collection of random concept pairs to allow an statistical analysis
+     * of the approximation quality of the AncSPL algorithm.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunGoAncSPLStatisticalExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
+                                                "../GeneOntology/go.obo");
+        
+        // We compute the exact and approximated (AncSPL) distance values between
+        // 1000 random SNOMED-CT concepts
+        
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_GO_statisticalData_test.csv");
         
         // We release all resources
         

@@ -290,6 +290,7 @@ public class BenchmarkFactory
     
     /**
      * This function creates an instance of the AncSPL statistical benchmark
+     * for the SNOMED-CT ontology
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -311,6 +312,20 @@ public class BenchmarkFactory
         return (new AncSPLStatisticalBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
+
+    /**
+     * This function creates an instance of the AncSPL benchmark for the
+     * GO ontology.
+     * @param strOboOntology
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createAncSPLStatisticalBenchmark(
+            String  strOboOntology) throws Exception
+    {
+        return (new AncSPLStatisticalBenchmark(strOboOntology));
     }
     
     /**
