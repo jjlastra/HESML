@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -286,7 +286,7 @@ public class BenchmarkFactory
     }
     
     /**
-     * This fucntion creates an istance of the AncSPL scalability benchmark
+     * This fucntion creates an istance of the AncSPL scalability benchmark for SNOMED-CT
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -297,7 +297,7 @@ public class BenchmarkFactory
      * @throws Exception 
      */
     
-    public static IBioLibraryExperiment createAncSPLScalabilityTest(
+    public static IBioLibraryExperiment createSnomedAncSPLScalabilityTest(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
@@ -308,6 +308,34 @@ public class BenchmarkFactory
         return (new AncSPLScalabilityBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
+    
+    /**
+     * This funcion creates an istance of the AncSPL scalability benchmark for MeSH
+     * @param strXmlMSHfilename 
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createMeSHAncSPLScalabilityTest(
+            String  strXmlMSHfilename,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLScalabilityBenchmark(strXmlMSHfilename, strSNOMED_CUI_mappingfilename));
+    }
+    
+    /**
+     * This function an istance of the AncSPL scalability benchmark for GO
+     * @param strGoOntologyFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createGoAncSPLScalabilityTest(
+            String  strGoOntologyFilename) throws Exception
+    {
+        return (new AncSPLScalabilityBenchmark(strGoOntologyFilename));
     }
     
     /**

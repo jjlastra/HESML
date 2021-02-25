@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -128,13 +128,13 @@ public class HESML_UMLS_benchmark
         // We show the execution mode
         
         String executionModeMessage = m_multithreading? "multithreading":"sequential";
-        System.out.println("*** Executing the experiments in " + executionModeMessage + " ***");
+        System.out.println("*** Executing the experiments in " + executionModeMessage + " mode ***");
 
         
         // We show the input arguments
         
         System.out.println("\nOutput directory for raw experimental data = \"" + strOutputDir + "\"");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
         
         // We check if the UMLS database is correctly installed.
         
@@ -152,11 +152,11 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunRandomConceptsExperiment---\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("------Starting RunRandomConceptsExperiment---");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
@@ -166,116 +166,142 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunRandomConceptsExperiment2--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("------Starting RunRandomConceptsExperiment2--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
-         * Experiment 3: we evaluate the approximation quality of the novel
+         * Experiment 4: we compare the performance of HESML and SML on
+         * the Gene Ontology (GO).
+         */
+        
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("----Starting RunRandomGOConceptsExperiment---");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        
+        RunRandomGOConceptsExperiment(strOutputDir);
+        
+        /**
+         * Experiment 5: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunSnomedAncSPLCorrelationExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("Starting RunSnomedAncSPLCorrelationExperiment");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
 
         RunSnomedAncSPLCorrelationExperiment(strOutputDir);
 
         /**
-         * Experiment 4: we evaluate the approximation quality of the novel
+         * Experiment 6: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunGoAncSPLCorrelationExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("--Starting RunGoAncSPLCorrelationExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
 
         RunGoAncSPLCorrelationExperiment(strOutputDir);
         
         /**
-         * Experiment 4: scalability of the AncSPL algorithm with regards to
+         * Experiment 7: scalability of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunAncSPLScalabilityExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("Starting RunSnomedAncSPLScalabilityExperiment");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
-        RunAncSPLScalabilityExperiment(strOutputDir);
+        RunSnomedAncSPLScalabilityExperiment(strOutputDir);
+
+        /**
+         * Experiment 8: scalability of the AncSPL algorithm with regards to
+         * the distance between MeSH concepts
+         */
+        
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("Starting RunMeSHAncSPLScalabilityExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        
+        RunMeSHAncSPLScalabilityExperiment(strOutputDir);
+
+        /**
+         * Experiment 9: scalability of the AncSPL algorithm with regards to
+         * the distance between GO concepts
+         */
+        
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("--Starting RunGoAncSPLScalabilityExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        
+        RunGoAncSPLScalabilityExperiment(strOutputDir);
         
         /**
-         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
+         * Experiment 10: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunSnomedAncSPLStatisticalExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("Starting RunSnomedAncSPLStatisticalExperiment");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunSnomedAncSPLStatisticalExperiment(strOutputDir);
 
         /**
-         * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
+         * Experiment 11: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunGoAncSPLStatisticalExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("--Starting RunGoAncSPLStatisticalExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunGoAncSPLStatisticalExperiment(strOutputDir);
         
         /**
-         * Experiment 6: we compare the performance of HESML and SML on
-         * the Gene Ontology (GO).
-         */
-        
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunRandomGOConceptsExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        
-        RunRandomGOConceptsExperiment(strOutputDir);
-
-        /**
-         * Experiment 7: we compare the performance of the HEMSL, SML and
+         * Experiment 12: we compare the performance of the HEMSL, SML and
          * UMLS::Similarity by evaluating the MedSTS sentence similarity
          * dataset.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunSentenceSimilarityExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("---Starting RunSentenceSimilarityExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunSentenceSimilarityExperiment(strOutputDir);
         
         /**
-         * Experiment 8: comparison of two large GO annotated files describing
+         * Experiment 13: comparison of two large GO annotated files describing
          * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
          */
         
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("------Starting RunLargeGOExperiment--\n");
-        System.out.println("---------------------------------------------\n");
-        System.out.println("---------------------------------------------\n");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("------Starting RunLargeGOExperiment----------");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         
         RunLargeGOExperiment(strOutputDir);
         
@@ -753,12 +779,12 @@ public class HESML_UMLS_benchmark
      * @param strRawOutputDir 
      */
     
-    private static void RunAncSPLScalabilityExperiment(
+    private static void RunSnomedAncSPLScalabilityExperiment(
         String  strRawOutputDir) throws Exception
     {
         // We create the banchmark
         
-        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLScalabilityTest(
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createSnomedAncSPLScalabilityTest(
                                                 m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
@@ -766,7 +792,56 @@ public class HESML_UMLS_benchmark
         
         // We evaluate the average speed for each distance-based group of conepts.
         
-        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_scalabilitiy_test.csv");
+        benchmark.run(strRawOutputDir + "/" + "raw_SNOMED_AnsSPL_path_groups.csv");
+        
+        // Werlease all resources
+        
+        benchmark.clear();
+    }
+    
+    /**
+     * This function runs the scalability experiment for the AncSPL algorithm.
+     * We evaluate the average speed as a function of the distance between
+     * GO concepts.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunGoAncSPLScalabilityExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createGoAncSPLScalabilityTest(
+                                            m_strGoOntologyFilename);
+        
+        // We evaluate the average speed for each distance-based group of conepts.
+        
+        benchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_path_groups.csv");
+        
+        // Werlease all resources
+        
+        benchmark.clear();
+    }
+    
+    /**
+     * This function runs the scalability experiment for the AncSPL algorithm.
+     * We evaluate the average speed as a function of the distance between
+     * MeSH concepts.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunMeSHAncSPLScalabilityExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createMeSHAncSPLScalabilityTest(
+                                                m_strMeSHdir + "/" + m_strMeSHXmlFilename,
+                                                m_strUmlsCuiMappingFilename);
+        
+        // We evaluate the average speed for each distance-based group of conepts.
+        
+        benchmark.run(strRawOutputDir + "/" + "raw_MeSH_AnsSPL_path_groups.csv");
         
         // Werlease all resources
         
@@ -1141,5 +1216,3 @@ public class HESML_UMLS_benchmark
         }
     }
 }
-
-

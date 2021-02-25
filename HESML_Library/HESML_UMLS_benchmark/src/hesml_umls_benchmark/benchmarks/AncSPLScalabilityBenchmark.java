@@ -23,6 +23,10 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import java.util.ArrayList;
@@ -44,13 +48,25 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     private ISnomedCtOntology   m_snomedOntology;
     
     /**
+     * Go ontology
+     */
+    
+    private IOboOntology    m_goOntology;
+    
+    /**
+     * MeSH ontology
+     */
+    
+    private IMeSHOntology   m_meshOntology;
+    
+    /**
      * HESML taxonomy representing the ontology
      */
     
     private ITaxonomy   m_taxonomy;
     
     /**
-     * This function loads 
+     * Constructor for SNOMED-CT
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
@@ -67,6 +83,11 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
             String  strUmlsDir,
             String  strSNOMED_CUI_mappingfilename) throws Exception
     {
+        // We init the unused ontologies
+        
+        m_meshOntology = null;
+        m_goOntology = null;
+        
         // We load the SNOMED-CT ontology
         
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
@@ -79,13 +100,66 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     }
     
     /**
+     * Constructor for SNOMED-CT
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename 
+     */
+    
+    AncSPLScalabilityBenchmark(
+            String  strMeSHXmlFilename,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        // We init the unused ontologies
+        
+        m_goOntology = null;
+        m_snomedOntology = null;
+        
+        // We load the SNOMED-CT ontology
+        
+        m_meshOntology = MeSHFactory.loadMeSHOntology(strMeSHXmlFilename,
+                            strSNOMED_CUI_mappingfilename);
+        
+        // We retrieve the taxonomy
+        
+        m_taxonomy = m_snomedOntology.getTaxonomy();
+    }
+    
+    /**
+     * Constructor for SNOMED-CT
+     * @param strGoOntologyFilename 
+     */
+    
+    AncSPLScalabilityBenchmark(
+            String  strGoOntologyFilename) throws Exception
+    {
+        // We init the unused ontologies
+        
+        m_meshOntology = null;
+        m_snomedOntology = null;
+        
+        // We load the SNOMED-CT ontology
+        
+        m_goOntology = OboFactory.loadOntology(strGoOntologyFilename);
+        
+        // We retrieve the taxonomy
+        
+        m_taxonomy = m_goOntology.getTaxonomy();
+    }
+        
+    /**
      * This function releases all resources used in the experiment
      */
     
     @Override
     public void clear()
     {
-        m_snomedOntology.clear();
+        if (m_snomedOntology != null) m_snomedOntology.clear();
+        if (m_goOntology != null) m_goOntology.clear();
+        if (m_meshOntology != null) m_meshOntology.clear();
     }
     
     /**
@@ -169,6 +243,10 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         Random rand = new Random(500);
         
+        // We get the vertex list
+        
+        IVertexList vertexes = m_taxonomy.getVertexes();
+        
         // We generate random concept pairs to populate the collection of groups
         // In order to generate a more uniform distribution regarding to the
         // distance between vertex pairs (SNOMED-CT concePTS), first we group
@@ -177,8 +255,6 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         // selected depth-based groups.
         
         int overallSamples = 10000000;
-        
-        IVertexList vertexes = m_taxonomy.getVertexes();
         
         for (int i = 0; i < overallSamples; i++)
         {
@@ -201,16 +277,6 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
             ArrayList<SnomedConceptPair> group = groupedConceptPairs.get(ancSplDistance);
             
             group.add(new SnomedConceptPair(ancSplDistance, source, target));
-            
-            if (i % 1000 == 0) System.out.println("Samples = "+ (i + 1) + " / " + overallSamples);
-        }
-        
-        // We read the quantity of data
-        
-        for (ArrayList<SnomedConceptPair> group : groupedConceptPairs.values())
-        {
-            System.out.println("Distance = " + group.get(0).getAncSPLDistance()
-                + " -> count = " + group.size());
         }
         
         // We return the result
