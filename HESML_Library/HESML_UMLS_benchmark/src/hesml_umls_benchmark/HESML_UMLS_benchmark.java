@@ -118,30 +118,18 @@ public class HESML_UMLS_benchmark
         
         // We check the input arguments
 
-        boolean errorMessage = (args.length != 1);
-
-        if (!errorMessage)
-        {
-            // We check the input argument is correct
-            
-            String using_multithreads = args[0];
-            if(!"multithreading".equals(using_multithreads) 
-                    && !"sequential".equals(using_multithreads))
-                errorMessage = true;
-            
+        if (args.length == 1)
+        {          
             // We set the multithreading option
             
-            m_multithreading = "multithreading".equals(using_multithreads);
+            m_multithreading = "multithreading".equals(args[0]);
         }
         
-        // We exit showing the error message
+        // We show the execution mode
         
-        if (errorMessage)
-        {
-            System.err.println("\nCall this program as detailed below:\n");
-            System.err.println("java -jar -Xms4096m dist/HESML_UMLS_benchmark.java [multithreading|sequential]");
-            System.exit(0);
-        }
+        String executionModeMessage = m_multithreading? "multithreading":"sequential";
+        System.out.println("*** Executing the experiments in " + executionModeMessage + " ***");
+
         
         // We show the input arguments
         
