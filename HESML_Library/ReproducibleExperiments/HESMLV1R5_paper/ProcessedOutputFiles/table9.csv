@@ -1,0 +1,6 @@
+"","Similarity measure","Measure type","UMLS::Sim","SML","HESML"
+"1","Rada","edge-counting",NA,NA,NA
+"2","AnsSPLRada","edge-counting","---","---",NA
+"3","Lin","IC-based",NA,NA,NA
+"4","Wu-Palmer_fast","depth-based",NA,"---",NA
+"5","Total CUI comparisons",NA,NA,NA,NA
