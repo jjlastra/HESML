@@ -110,8 +110,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input parameters
         
-//        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
-        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/";
+        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
         
         // We set the multithreading or sequential execution
         
@@ -171,7 +170,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -185,7 +184,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 3: we evaluate the approximation quality of the novel
@@ -198,7 +197,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
 
-//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
 
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
@@ -211,7 +210,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
 
-//        RunGoAncSPLCorrelationExperiment(strOutputDir);
+        RunGoAncSPLCorrelationExperiment(strOutputDir);
         
         /**
          * Experiment 4: scalability of the AncSPL algorithm with regards to
@@ -224,7 +223,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunAncSPLScalabilityExperiment(strOutputDir);
+        RunAncSPLScalabilityExperiment(strOutputDir);
         
         /**
          * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
@@ -237,7 +236,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 5: statistical benchmark of the AncSPL algorithm with regards to
@@ -250,7 +249,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunGoAncSPLStatisticalExperiment(strOutputDir);
+        RunGoAncSPLStatisticalExperiment(strOutputDir);
         
         /**
          * Experiment 6: we compare the performance of HESML and SML on
@@ -263,7 +262,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------\n");
         System.out.println("---------------------------------------------\n");
         
-//        RunRandomGOConceptsExperiment(strOutputDir);
+        RunRandomGOConceptsExperiment(strOutputDir);
 
         /**
          * Experiment 7: we compare the performance of the HEMSL, SML and
