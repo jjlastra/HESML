@@ -72,6 +72,11 @@ public class HESML_UMLS_benchmark
     private static final String m_str1millionFilename = "../UMLS_Datasets/1MPairs_NoPreprocess.txt";  
     private static final String m_str4pairsTestFilename = "../UMLS_Datasets/4pairsTest.txt";  
     
+    /**
+     * Variable for multi-threading or sequential execution
+     */
+    
+    private static boolean m_multithreading;
     
     /**
      * Main function. This function executes all experiments reported in
@@ -107,15 +112,26 @@ public class HESML_UMLS_benchmark
         
         String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
         
-        // We check the input arguments
+        // We set the multithreading or sequential execution
         
-        boolean errorMessage = (args.length > 1);
+        m_multithreading = false;
+        
+        // We check the input arguments
 
-        if (!errorMessage && (args.length == 1))
+        boolean errorMessage = (args.length != 1);
+
+        if (!errorMessage)
         {
-            strOutputDir = args[0];
-            errorMessage = !Files.exists(Paths.get(strOutputDir));
-            if (errorMessage) System.out.println(strOutputDir + " directory does not exist");
+            // We check the input argument is correct
+            
+            String using_multithreads = args[0];
+            if(!"multithreading".equals(using_multithreads) 
+                    && !"sequential".equals(using_multithreads))
+                errorMessage = true;
+            
+            // We set the multithreading option
+            
+            m_multithreading = "multithreading".equals(using_multithreads);
         }
         
         // We exit showing the error message
@@ -123,7 +139,7 @@ public class HESML_UMLS_benchmark
         if (errorMessage)
         {
             System.out.println("\nCall this program as detailed below:\n");
-            System.out.println("HESML_UMLS_benchmark [outputdir]");
+            System.out.println("java -jar -Xms4096m dist/HESML_UMLS_benchmark.java [multithreading|sequential]");
             System.exit(0);
         }
         
@@ -135,6 +151,8 @@ public class HESML_UMLS_benchmark
         // We check if the UMLS database is correctly installed.
         
         testDbConnection();
+        
+        
         
         // We intialize the stopwatch
         
@@ -440,7 +458,7 @@ public class HESML_UMLS_benchmark
                                                     SemanticLibraryType.UMLS_SIMILARITY,
                                                     SemanticLibraryType.HESML,
                                                     SemanticLibraryType.SML};
-
+        
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[] measureTypes = new SimilarityMeasureType[]{
@@ -457,7 +475,7 @@ public class HESML_UMLS_benchmark
         {
             strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_" + ontologyType + ".csv";
         }
-
+        
         // We create a list of threads 
         
         Thread[] threads = new Thread[measureTypes.length];
@@ -531,19 +549,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {
-            // Start the experiment thread
-            
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -631,19 +637,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {
-            // Start the experiment thread
-            
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -731,19 +725,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {
-            // Start the experiment thread
-            
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -895,17 +877,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -972,17 +944,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -1067,17 +1029,7 @@ public class HESML_UMLS_benchmark
         
         // We run the experiments
         
-        for (Thread thread : threads) 
-        {           
-            thread.start();
-        }
-        
-        // We wait until other threads have finished their execution
-        
-        for (Thread thread : threads) 
-        {
-            thread.join();
-        }
+        execute_experiments(threads);
         
         // Debug information - This message should not appear before the termination of all threads
         
@@ -1131,6 +1083,53 @@ public class HESML_UMLS_benchmark
             System.out.println(e);
         }  
         
+    }
+    
+    /**
+     * This function starts and wait the experiment threads
+     * 
+     * If multithreading mode, this function starts all the threads 
+     * and then waits until all the threads have finished.
+     * 
+     * If sequential mode, start and wait until finish each thread.
+     * 
+     * @param threads 
+     */
+    private static void execute_experiments(Thread[] threads) throws InterruptedException
+    {
+        // We run the experiments
+        
+        if(m_multithreading)
+        {
+            // If multithreading, first we start all the threads
+            
+            for (Thread thread : threads) 
+            {
+                // Start the experiment thread
+
+                thread.start();
+            }
+
+            // We wait until other threads have finished their execution
+
+            for (Thread thread : threads) 
+            {
+                thread.join();
+            }
+        }
+        else
+        {
+            // If sequential mode, we start and wait until finish each thread
+            
+            for (Thread thread : threads) 
+            {
+                // Start the experiment thread and wait until finish
+
+                thread.start();
+                thread.join();
+            }
+
+        }
     }
 }
 
