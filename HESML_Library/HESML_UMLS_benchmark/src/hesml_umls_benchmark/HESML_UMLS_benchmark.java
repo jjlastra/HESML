@@ -138,8 +138,8 @@ public class HESML_UMLS_benchmark
         
         if (errorMessage)
         {
-            System.out.println("\nCall this program as detailed below:\n");
-            System.out.println("java -jar -Xms4096m dist/HESML_UMLS_benchmark.java [multithreading|sequential]");
+            System.err.println("\nCall this program as detailed below:\n");
+            System.err.println("java -jar -Xms4096m dist/HESML_UMLS_benchmark.java [multithreading|sequential]");
             System.exit(0);
         }
         
@@ -1048,6 +1048,8 @@ public class HESML_UMLS_benchmark
     
     public static void testDbConnection() throws ClassNotFoundException, SQLException
     {
+        // We check if the UMLS:Sim MySQL database is working
+        
         try{
             System.out.println("Initializing UMLS database test...");
             
@@ -1059,11 +1061,6 @@ public class HESML_UMLS_benchmark
             Connection con=DriverManager.getConnection(  
             "jdbc:mysql://localhost:3306/umls","root","");  
             System.out.println("Ok");
-
-            /*System.out.println("Checking MySQL connection...");
-            Connection con=DriverManager.getConnection(  
-            "jdbc:mysql://localhost:3306/umls","xrdpuser","root");  
-            System.out.println("Ok");*/
             
             System.out.println("Execute testing query...");
             Statement stmt=con.createStatement();  
@@ -1080,7 +1077,8 @@ public class HESML_UMLS_benchmark
         } 
         catch(ClassNotFoundException | SQLException e)
         { 
-            System.out.println(e);
+            // If the MySQL database is not working, it's not possible to evaluate UMLS:Sim experiments
+            System.err.println(e);
         }  
         
     }
@@ -1088,7 +1086,7 @@ public class HESML_UMLS_benchmark
     /**
      * This function starts and wait the experiment threads
      * 
-     * If multithreading mode, this function starts all the threads 
+     * If multi-threading mode, this function starts all the threads 
      * and then waits until all the threads have finished.
      * 
      * If sequential mode, start and wait until finish each thread.
@@ -1128,7 +1126,6 @@ public class HESML_UMLS_benchmark
                 thread.start();
                 thread.join();
             }
-
         }
     }
 }
