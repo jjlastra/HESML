@@ -220,4 +220,16 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         SemanticLibraryBenchmark.writeCSVfile(strOutputMatrix, strOutputRawDataFilename);
     }
+    
+    /**
+     * This benchmark does not support annotation process.
+     * 
+     * @throws Exception 
+     */
+    
+    @Override
+    public void annotateDatasets() throws Exception 
+    {
+        throw new UnsupportedOperationException("This benchmark does not support annotation process."); 
+    }
 }

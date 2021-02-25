@@ -41,7 +41,7 @@ import javax.xml.stream.XMLStreamException;
 /**
  * This class implements a benchmark to compare the performance
  * of the UMLS similarity libraries in the evaluation of the degree
- * of similairty between randdom concept pairs in SNOMED-CT.
+ * of similarity between random concept pairs in SNOMED-CT.
  * @author j.lastra
  */
 
@@ -562,5 +562,17 @@ class RandomConceptsEvalBenchmark extends SemanticLibraryBenchmark
         // We return the output
         
         return (pairsPerRun);
+    }
+
+    /**
+     * This benchmark does not support annotation process.
+     * 
+     * @throws Exception 
+     */
+    
+    @Override
+    public void annotateDatasets() throws Exception 
+    {
+        throw new UnsupportedOperationException("This benchmark does not support annotation process."); 
     }
 }

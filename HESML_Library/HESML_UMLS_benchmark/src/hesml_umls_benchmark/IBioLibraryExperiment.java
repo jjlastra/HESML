@@ -41,4 +41,10 @@ public interface IBioLibraryExperiment
      */
     
     void clear();        
+    
+    /**
+     * This function runs the annotation process for sentences.
+     */
+    
+    void annotateDatasets() throws Exception;
 }

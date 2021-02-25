@@ -39,6 +39,11 @@ class BioBenchmarkThread implements Runnable
     // Output path to the directory
     
     String m_outputPath;
+    
+    // In some experiments, it is necessary to perform a dataset annotation 
+    // before executing the experiments
+    
+    boolean m_annotateDataset;
 
     /**
      * Constructor with parameters
@@ -52,6 +57,22 @@ class BioBenchmarkThread implements Runnable
         
         m_benchmark = benchmark;
         m_outputPath = outputPath;
+        m_annotateDataset = false;
+    }
+    
+    /**
+     * Constructor with parameters
+     * @param benchmark
+     * @param outputPath 
+     */
+    
+    BioBenchmarkThread(IBioLibraryExperiment benchmark)
+    {
+        // We initialize the objects
+        
+        m_benchmark = benchmark;
+        m_outputPath = "";
+        m_annotateDataset = true;
     }
     
     /**
@@ -61,21 +82,39 @@ class BioBenchmarkThread implements Runnable
     @Override
     public void run() 
     {
-        // Execute the experiment
+        // If the threads are used for the annotation of the dataset
         
-        try 
+        if(m_annotateDataset)
         {
-            // Execute 
-            
-            m_benchmark.run(m_outputPath);
-        } 
-        catch (Exception ex) 
-        {
-            Logger.getLogger(BioBenchmarkThread.class.getName()).log(Level.SEVERE, null, ex);
+            try 
+            {
+                // Annotate the dataset
+                
+                m_benchmark.annotateDatasets();
+            } 
+            catch (Exception ex) 
+            {
+                Logger.getLogger(BioBenchmarkThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
-        // Clear the benchmark
-        
-        m_benchmark.clear();
+        else
+        {
+            // Execute the experiment
+
+            try 
+            {
+                // Execute 
+
+                m_benchmark.run(m_outputPath);
+            } 
+            catch (Exception ex) 
+            {
+                Logger.getLogger(BioBenchmarkThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            // Clear the benchmark
+
+            m_benchmark.clear();
+        }
     }
 }

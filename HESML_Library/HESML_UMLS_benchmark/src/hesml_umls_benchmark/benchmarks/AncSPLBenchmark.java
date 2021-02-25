@@ -254,4 +254,16 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         return (randomPairs);
     }
+    
+    /**
+     * This benchmark does not support annotation process.
+     * 
+     * @throws Exception 
+     */
+    
+    @Override
+    public void annotateDatasets() throws Exception 
+    {
+        throw new UnsupportedOperationException("This benchmark does not support annotation process."); 
+    }
 }

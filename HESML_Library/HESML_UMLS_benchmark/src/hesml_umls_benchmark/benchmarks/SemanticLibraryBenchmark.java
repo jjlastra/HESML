@@ -207,12 +207,21 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * This fucntion runs the benchmark and writes the results to the
+     * This function runs the benchmark and writes the results to the
      * output file.
      */
     
     @Override
     public abstract void run(String strOutputFilename) throws Exception;
+    
+    /**
+     * This benchmark does not support annotation process.
+     * 
+     * @throws Exception 
+     */
+    
+    @Override
+    public abstract void annotateDatasets() throws Exception;
     
     /**
      * This function releases the resouurces used by the benchmark.

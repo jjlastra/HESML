@@ -72,7 +72,7 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      * Setup parameters of the semantic similarity measure
      */
     
-    private SimilarityMeasureType           m_MeasureType;
+    private final SimilarityMeasureType     m_MeasureType;
     private final IntrinsicICModelType      m_icModel;
 
     /**
@@ -148,10 +148,6 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         // We load METAMAP Lite
         
         loadMetamapLite();
-        
-        // We annotate all CUI concept mentions in all sentences of the dataset
-        
-        annotateDatasets();
     }
     
     /**
@@ -857,7 +853,8 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
      * This function annotates all the sentences with CUI instances.
      */
     
-    private void annotateDatasets() throws IOException, Exception
+    @Override
+    public void annotateDatasets() throws IOException, Exception
     {
         // Warning message
         
@@ -884,18 +881,10 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
             // We annotate all the sentences
             
             for (int i = 0; i < sentences.get(0).size(); i++) 
-            { 		      
-                // Debug info
-                
-//                System.out.println(i);
-                
+            { 		                      
                 // Annotate the sentences and add to the array
                 
                 firstSentencesAnnotated.add(annotateSentence(sentences.get(0).get(i)));
-                
-                // Debug info
-                
-//                System.out.println(i + " : " + sentences.get(1).get(i));
                 
                 // Annotate the sentences and add to the array
                 
