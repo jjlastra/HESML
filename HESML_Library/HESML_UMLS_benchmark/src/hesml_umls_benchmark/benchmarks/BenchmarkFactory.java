@@ -313,6 +313,7 @@ public class BenchmarkFactory
     /**
      * This funcion creates an istance of the AncSPL scalability benchmark for MeSH
      * @param strXmlMSHfilename 
+     * @param strUmlsDir 
      * @param strSNOMED_CUI_mappingfilename
      * @return
      * @throws Exception 
@@ -320,9 +321,10 @@ public class BenchmarkFactory
     
     public static IBioLibraryExperiment createMeSHAncSPLScalabilityTest(
             String  strXmlMSHfilename,
+            String  strUmlsDir,
             String  strSNOMED_CUI_mappingfilename) throws Exception
     {
-        return (new AncSPLScalabilityBenchmark(strXmlMSHfilename, strSNOMED_CUI_mappingfilename));
+        return (new AncSPLScalabilityBenchmark(strXmlMSHfilename, strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
     
     /**

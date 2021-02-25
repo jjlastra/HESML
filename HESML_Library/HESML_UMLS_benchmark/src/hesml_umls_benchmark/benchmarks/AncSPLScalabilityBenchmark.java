@@ -35,7 +35,7 @@ import java.util.TreeMap;
 import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
- * This class implements the wcalability benchmark for the AncSPL algorithm.
+ * This class implements the scalability benchmark for the AncSPL algorithm.
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
@@ -111,6 +111,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     
     AncSPLScalabilityBenchmark(
             String  strMeSHXmlFilename,
+            String  strUmlsDir,
             String  strSNOMED_CUI_mappingfilename) throws Exception
     {
         // We init the unused ontologies
@@ -121,11 +122,11 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         // We load the SNOMED-CT ontology
         
         m_meshOntology = MeSHFactory.loadMeSHOntology(strMeSHXmlFilename,
-                            strSNOMED_CUI_mappingfilename);
+                            strUmlsDir+"/"+strSNOMED_CUI_mappingfilename);
         
         // We retrieve the taxonomy
         
-        m_taxonomy = m_snomedOntology.getTaxonomy();
+        m_taxonomy = m_meshOntology.getTaxonomy();
     }
     
     /**

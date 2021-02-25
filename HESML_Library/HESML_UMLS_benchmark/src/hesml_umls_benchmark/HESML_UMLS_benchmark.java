@@ -110,7 +110,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input parameters
         
-        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
+        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles/newMeasures";
         
         // We set the multithreading or sequential execution
         
@@ -158,7 +158,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -172,7 +172,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
 
         /**
          * Experiment 4: we compare the performance of HESML and SML on
@@ -185,7 +185,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomGOConceptsExperiment(strOutputDir);
+//        RunRandomGOConceptsExperiment(strOutputDir);
         
         /**
          * Experiment 5: we evaluate the approximation quality of the novel
@@ -198,7 +198,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
 
         /**
          * Experiment 6: we evaluate the approximation quality of the novel
@@ -211,7 +211,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunGoAncSPLCorrelationExperiment(strOutputDir);
+//        RunGoAncSPLCorrelationExperiment(strOutputDir);
         
         /**
          * Experiment 7: scalability of the AncSPL algorithm with regards to
@@ -224,7 +224,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSnomedAncSPLScalabilityExperiment(strOutputDir);
+//        RunSnomedAncSPLScalabilityExperiment(strOutputDir);
 
         /**
          * Experiment 8: scalability of the AncSPL algorithm with regards to
@@ -237,7 +237,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunMeSHAncSPLScalabilityExperiment(strOutputDir);
+//        RunMeSHAncSPLScalabilityExperiment(strOutputDir);
 
         /**
          * Experiment 9: scalability of the AncSPL algorithm with regards to
@@ -250,7 +250,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunGoAncSPLScalabilityExperiment(strOutputDir);
+//        RunGoAncSPLScalabilityExperiment(strOutputDir);
         
         /**
          * Experiment 10: statistical benchmark of the AncSPL algorithm with regards to
@@ -263,7 +263,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 11: statistical benchmark of the AncSPL algorithm with regards to
@@ -290,7 +290,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSentenceSimilarityExperiment(strOutputDir);
+//        RunSentenceSimilarityExperiment(strOutputDir);
         
         /**
          * Experiment 13: comparison of two large GO annotated files describing
@@ -303,7 +303,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunLargeGOExperiment(strOutputDir);
+//        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -837,7 +837,7 @@ public class HESML_UMLS_benchmark
         
         IBioLibraryExperiment benchmark = BenchmarkFactory.createMeSHAncSPLScalabilityTest(
                                                 m_strMeSHdir + "/" + m_strMeSHXmlFilename,
-                                                m_strUmlsCuiMappingFilename);
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
         
         // We evaluate the average speed for each distance-based group of conepts.
         

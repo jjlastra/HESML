@@ -108,7 +108,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         // We set the taxonomy and number of random samples
         
-        m_taxonomy = m_snomedOntology.getTaxonomy();
+        m_taxonomy = m_goOntology.getTaxonomy();
         m_nRandomPairs = 10000;
     }
     
