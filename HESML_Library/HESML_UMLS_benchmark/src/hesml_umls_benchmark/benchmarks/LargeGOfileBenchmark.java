@@ -361,16 +361,4 @@ class LargeGOfileBenchmark implements IBioLibraryExperiment
         m_firstProteinsSet.clear();
         m_secondProteinsSet.clear();
     }
-    
-    /**
-     * This benchmark does not support annotation process.
-     * 
-     * @throws Exception 
-     */
-    
-    @Override
-    public void annotateDatasets() throws Exception 
-    {
-        throw new UnsupportedOperationException("This benchmark does not support annotation process."); 
-    }
 }

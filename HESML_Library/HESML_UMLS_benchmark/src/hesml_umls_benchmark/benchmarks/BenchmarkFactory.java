@@ -264,6 +264,7 @@ public class BenchmarkFactory
      * @param strMeSHXmlConceptFileName
      * @param strUmlsDir
      * @param strSNOMED_CUI_mappingfilename
+     * @param annotatedDataset
      * @return
      * @throws Exception 
      */
@@ -276,13 +277,14 @@ public class BenchmarkFactory
             String                  strMeSHdir,
             String                  strMeSHXmlConceptFileName,
             String                  strUmlsDir,
-            String                  strSNOMED_CUI_mappingfilename) 
+            String                  strSNOMED_CUI_mappingfilename,
+            AnnotateDataset         annotatedDataset) 
             throws Exception
     {
         return (new MeSHSentencesEvalBenchmark(libraries,
                 similarityMeasure, icModel, strDatasetPath, 
                 strMeSHdir, strMeSHXmlConceptFileName,
-                strUmlsDir, strSNOMED_CUI_mappingfilename));
+                strUmlsDir, strSNOMED_CUI_mappingfilename, annotatedDataset));
     }
     
     /**

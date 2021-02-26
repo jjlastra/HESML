@@ -26,11 +26,14 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.GroupwiseMetricType;
 import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.SimilarityMeasureType;
+import hesml_umls_benchmark.benchmarks.AnnotateDataset;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;  
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * This class implements the benchmark application used to compare
@@ -110,7 +113,7 @@ public class HESML_UMLS_benchmark
         
         // We initialize the input parameters
         
-        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles/newMeasures";
+        String strOutputDir = "../ReproducibleExperiments/HESMLV1R5_paper/RawOutputFiles";
         
         // We set the multithreading or sequential execution
         
@@ -139,8 +142,6 @@ public class HESML_UMLS_benchmark
         // We check if the UMLS database is correctly installed.
         
         testDbConnection();
-        
-        
         
         // We intialize the stopwatch
         
@@ -276,7 +277,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunGoAncSPLStatisticalExperiment(strOutputDir);
+//        RunGoAncSPLStatisticalExperiment(strOutputDir);
         
         /**
          * Experiment 12: we compare the performance of the HEMSL, SML and
@@ -290,7 +291,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunSentenceSimilarityExperiment(strOutputDir);
+        RunSentenceSimilarityExperiment(strOutputDir);
         
         /**
          * Experiment 13: comparison of two large GO annotated files describing
@@ -316,8 +317,8 @@ public class HESML_UMLS_benchmark
     /**
      * This function returns the number of random samples used to evaluate
      * a library on a specific ontology a similarity measure wit the aim
-     * of setting reasonable running times. It is needed becasue the large
-     * difference in performance of the libraries being evañuated.
+     * of setting reasonable running times. It is needed because the large
+     * difference in performance of the libraries being evaluated.
      * @param library
      * @param measureType
      * @param ontology
@@ -709,9 +710,18 @@ public class HESML_UMLS_benchmark
         
         Thread[] threads = new Thread[measureTypes.length];
         
-        // We create a list of threads for the benchmark initialization
+        // We initialize the annotation object
         
-        Thread[] threads_annotation = new Thread[measureTypes.length];
+        AnnotateDataset annotateDatasets = new AnnotateDataset(strDatasetPaths);
+        
+        // We iterate the datasets and annotate them
+        
+        for (String strDatasetPath : strDatasetPaths)
+        {          
+            // We annotate the dataset
+            
+            annotateDatasets.annotate(strDatasetPath);
+        }
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -730,35 +740,16 @@ public class HESML_UMLS_benchmark
                                                 libraries, measureTypes[i],
                                                 IntrinsicICModelType.Seco, strDatasetPaths, 
                                                 m_strMeSHdir, m_strMeSHXmlFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename,
+                                                annotateDatasets);
 
             // We define the output file
             
             String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
             
-            // We create the threads for the annotation of the datasets
-            
-            threads_annotation[i] = new Thread(new BioBenchmarkThread(benchmark));
-            
             // We add the new thread to the array 
 
             threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
-        }
-        
-        // If multithreading, first we start all the threads for annotating the datasets
-            
-        for (Thread thread : threads_annotation) 
-        {
-            // Start the experiment thread
-
-            thread.start();
-        }
-
-        // We wait until other threads have finished their execution
-
-        for (Thread thread : threads_annotation) 
-        {
-            thread.join();
         }
         
         // We run the experiments
@@ -1062,8 +1053,9 @@ public class HESML_UMLS_benchmark
         String[] strGroupwiseMeasures = new String[]{GroupwiseSimilarityMeasureType.SimLP.toString(),
                                                 GroupwiseSimilarityMeasureType.SimUI.toString(),
                                                 GroupwiseSimilarityMeasureType.SimGIC.toString(),
-                                                "BMA-Lin-Seco",
-                                                "AVG-AncSPLRada"};
+                                                "BMA-Lin-Seco"
+//                                                "AVG-AncSPLRada"
+        };
         
         // We build the vector of raw output filenames
         
@@ -1092,10 +1084,10 @@ public class HESML_UMLS_benchmark
                             IntrinsicICModelType.Seco, m_strGoOntologyFilename,
                             strHomoSapiensGafFilename, strDogGafFilename);
 
-        bioExperiments[4] = BenchmarkFactory.createLargeGOConceptBenchmark(
-                            GroupwiseMetricType.Average, SimilarityMeasureType.AncSPLRada,
-                            IntrinsicICModelType.Seco, m_strGoOntologyFilename,
-                            strHomoSapiensGafFilename, strDogGafFilename);
+//        bioExperiments[4] = BenchmarkFactory.createLargeGOConceptBenchmark(
+//                            GroupwiseMetricType.Average, SimilarityMeasureType.AncSPLRada,
+//                            IntrinsicICModelType.Seco, m_strGoOntologyFilename,
+//                            strHomoSapiensGafFilename, strDogGafFilename);
         
         // We create a list of threads 
         

@@ -215,15 +215,6 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
     public abstract void run(String strOutputFilename) throws Exception;
     
     /**
-     * This benchmark does not support annotation process.
-     * 
-     * @throws Exception 
-     */
-    
-    @Override
-    public abstract void annotateDatasets() throws Exception;
-    
-    /**
      * This function releases the resouurces used by the benchmark.
      */
     
