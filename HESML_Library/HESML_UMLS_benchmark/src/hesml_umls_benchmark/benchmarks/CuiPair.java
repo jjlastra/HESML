@@ -69,7 +69,7 @@ public class CuiPair
     }
     
     /**
-     * This fucntion checks if both objects are equal
+     * This function checks if both objects are equal
      * @param obj
      * @return 
      */

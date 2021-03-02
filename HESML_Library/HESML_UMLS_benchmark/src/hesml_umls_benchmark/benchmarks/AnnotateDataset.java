@@ -32,7 +32,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +47,7 @@ public class AnnotateDataset
      * Metamap Lite instance
      */
     
-    protected MetaMapLite m_metaMapLiteInst;
+    protected HashMap<String,MetaMapLite> m_metaMapLiteInstances;
     
     /**
      * HashMap with the path of each dataset and the non-annotated pair of sentences
@@ -73,20 +72,8 @@ public class AnnotateDataset
         // Initialize the variables
         
         m_datasets = new HashMap<>();
-        m_metaMapLiteInst = null;
+        m_metaMapLiteInstances = new HashMap<>();
         m_annotatedDatasets = new HashMap<>();
-        
-        // We load the Metamap Lite instance
-                
-        try {
-            // We load METAMAP Lite
-
-            loadMetamapLite();
-        } catch (ClassNotFoundException | InstantiationException 
-                | NoSuchMethodException | IllegalAccessException 
-                | IOException ex) {
-            Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         // We load the dataset
         
@@ -130,10 +117,10 @@ public class AnnotateDataset
         for(String strDatasetPath : strDatasetFilenames)
         {
             // Initialize the sentences
-        
+            
             ArrayList<String> first_sentences = new ArrayList<>();
             ArrayList<String> second_sentences = new ArrayList<>();
-            
+    
             // Read the benchmark CSV 
         
             BufferedReader csvReader = new BufferedReader(new FileReader(strDatasetPath));
@@ -159,65 +146,72 @@ public class AnnotateDataset
             pairs.add(first_sentences);
             pairs.add(second_sentences);
             
+            // We initialize the array with the pairs of empty sentences
+            
+            ArrayList<ArrayList<String>> ann_pairs = new ArrayList<>();
+            
+            ann_pairs.add(new ArrayList<>());
+            ann_pairs.add(new ArrayList<>());
+            
             // We close the file
 
             csvReader.close();
             
             m_datasets.put(strDatasetPath, pairs);
-            m_annotatedDatasets.put(strDatasetPath, new ArrayList<>());
+            m_annotatedDatasets.put(strDatasetPath, ann_pairs);
         }
     }
     
     /**
      * This function annotates all the sentences with CUI instances.
      * @param strDatasetPath
+     * @param posSentence
      * @throws java.io.IOException
      */
     
-    public void annotate(String strDatasetPath) throws IOException, Exception
+    public void annotate(String strDatasetPath, String posSentence) throws IOException, Exception
     {
+        // We load the Metamap Lite instance
+                
+        try {
+            // We load METAMAP Lite
+
+            loadMetamapLite(posSentence);
+        } catch (ClassNotFoundException | InstantiationException 
+                | NoSuchMethodException | IllegalAccessException 
+                | IOException ex) {
+            Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         // If the annotation has not been performed yet, annotate
         
-        if(m_annotatedDatasets.get(strDatasetPath).isEmpty())
+        if(("firstSentence".equals(posSentence) && m_annotatedDatasets.get(strDatasetPath).get(0).isEmpty()) ||
+           ("secondSentence".equals(posSentence) && m_annotatedDatasets.get(strDatasetPath).get(1).isEmpty()))
         { 
+            // If the position is first sentence, the position in dataset is 0
+            // If the position is second sentence, the position in dataset is 1
+            
+            int k= ("firstSentence".equals(posSentence)) ? 0: 1;
+            
             // Warning message
         
             System.out.println("Annotating the dataset with Metamap Lite...");
         
             // We get the dataset path
 
-            ArrayList<ArrayList<String>> sentences = m_datasets.get(strDatasetPath);
-
-            // We create an auxiliary array with the sentence pairs
-
-            ArrayList<ArrayList<String>> sentencesAnnotated = new ArrayList<>();
-
-            // We create two auxiliary arrays 
-
-            ArrayList<String> firstSentencesAnnotated = new ArrayList<>();
-            ArrayList<String> secondSentencesAnnotated = new ArrayList<>();
+            ArrayList<String> sentences = m_datasets.get(strDatasetPath).get(k);
 
             // We annotate all the sentences
 
-            for (int i = 0; i < sentences.get(0).size(); i++) 
+            for (int i = 0; i < sentences.size(); i++) 
             { 	
-                //System.out.println("Annotating sentence: " + i + " from dataset: " + strDatasetPath);
+                if(i%1000 == 0)
+                    System.out.println("Annotating sentence: " + i + " pos: " + posSentence + " from dataset: " + strDatasetPath);
                 
                 // Annotate the sentences and add to the array
-
-                firstSentencesAnnotated.add(annotateSentence(sentences.get(0).get(i)));
-
-                // Annotate the sentences and add to the array
-
-                secondSentencesAnnotated.add(annotateSentence(sentences.get(1).get(i)));
+                
+                m_annotatedDatasets.get(strDatasetPath).get(k).add(annotateSentence(sentences.get(i),posSentence));
             } 
-
-            // Add the pairs of sentences to the array
-
-            sentencesAnnotated.add(firstSentencesAnnotated);
-            sentencesAnnotated.add(secondSentencesAnnotated);
-
-            m_annotatedDatasets.put(strDatasetPath, sentencesAnnotated);
         }
         else
         {
@@ -228,13 +222,46 @@ public class AnnotateDataset
     }
     
     /**
+     * Join the annotated sentence pairs into a dataset 
+     * 
+     * @param strDatasetPath 
+     * @throws java.lang.Exception 
+     */
+    
+    public void joinAnnotatedDatasets(String strDatasetPath) throws Exception
+    {
+        // Check the annotated sentences are correct
+        
+        if(!m_annotatedDatasets.get(strDatasetPath).get(0).isEmpty() && 
+           !m_annotatedDatasets.get(strDatasetPath).get(0).isEmpty() &&
+           m_annotatedDatasets.get(strDatasetPath).get(0).size() == m_annotatedDatasets.get(strDatasetPath).get(1).size())
+        {
+            // We create an auxiliary array with the sentence pairs
+
+            ArrayList<ArrayList<String>> sentencesAnnotated = new ArrayList<>();
+
+            // Add the pairs of sentences to the array
+
+            sentencesAnnotated.add(m_annotatedDatasets.get(strDatasetPath).get(0));
+            sentencesAnnotated.add(m_annotatedDatasets.get(strDatasetPath).get(1));
+
+            m_annotatedDatasets.put(strDatasetPath, sentencesAnnotated);
+        }
+        else
+        {
+            throw new Exception("ERROR: Wrong annotated sentences size");
+        }
+    }
+    
+    /**
      * This function annotates a sentence with CUI codes replacing 
      * keywords with codes in the same sentence.
      * @return 
      */
     
     private String annotateSentence(
-            String sentence) throws InvocationTargetException, IOException, Exception
+            String sentence,
+            String posSentence) throws InvocationTargetException, IOException, Exception
     {
         // Initialize the result
         
@@ -252,7 +279,7 @@ public class AnnotateDataset
         
             // Proccess the document with Metamap
 
-            List<Entity> entityList = m_metaMapLiteInst.processDocument(document);
+            List<Entity> entityList = m_metaMapLiteInstances.get(posSentence).processDocument(document);
 
             // For each keyphrase, select the first CUI candidate and replace in text.
 
@@ -276,30 +303,34 @@ public class AnnotateDataset
      * This function loads the Metamap Lite instance before executing the queries.
      */
     
-    private void loadMetamapLite() throws ClassNotFoundException, 
+    private void loadMetamapLite(String  posSentence) 
+                                    throws ClassNotFoundException, 
                                     InstantiationException, NoSuchMethodException, 
                                     IllegalAccessException, IOException
     {
-        // Warning message
+        if(!m_metaMapLiteInstances.containsKey(posSentence))
+        {
+            // Warning message
         
-        System.out.println("Loading the Metamap Lite Instance...");
+            System.out.println("Loading the Metamap Lite Instances...");
 
-        // Initialization Section
-        
-        Properties myProperties = new Properties();
-        
-        // Select the 2018AB database
-        
-        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
-        
-        myProperties.setProperty("metamaplite.sourceset", "MSH");
+            // Initialization Section
 
-        // We create the METAMAP maname
-        
-        m_metaMapLiteInst = new MetaMapLite(myProperties);
+            Properties myProperties = new Properties();
+
+            // Select the 2018AB database
+
+            myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
+            myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
+            myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
+            myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
+            myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
+
+            myProperties.setProperty("metamaplite.sourceset", "MSH");
+
+            // We create the METAMAP maname
+
+            m_metaMapLiteInstances.put(posSentence, new MetaMapLite(myProperties));
+        }
     }
 }

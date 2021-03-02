@@ -785,19 +785,15 @@ class MeSHSentencesEvalBenchmark extends SemanticLibraryBenchmark
         
         // We iterate the libraries and load the dataset files per each library
         
-        for (Map.Entry<ISemanticLibrary, ArrayList<ArrayList<String>>> entry : m_datasets.entrySet())
+        for (ISemanticLibrary lib : m_Libraries)
         {
-            // We get the library and dataset path
-            
-            ISemanticLibrary library = entry.getKey();
-            
             // We get the path to the input dataset
             
             String strDatasetPath = strDatasetFilenames[i];
             
             // We fill the first and second sentences per library
             
-            m_datasets.put(library, m_annotatedDataset.getAnnotatedDatasets(strDatasetPath));
+            m_datasets.put(lib, m_annotatedDataset.getAnnotatedDatasets(strDatasetPath));
             
             // Update the counter
             

@@ -28,12 +28,8 @@ import hesml.measures.GroupwiseSimilarityMeasureType;
 import hesml.measures.SimilarityMeasureType;
 import hesml_umls_benchmark.benchmarks.AnnotateDataset;
 import hesml_umls_benchmark.benchmarks.BenchmarkFactory;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.*;  
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 
 /**
  * This class implements the benchmark application used to compare
@@ -351,10 +347,20 @@ public class HESML_UMLS_benchmark
         switch (library)
         {
             case HESML:
-                
-                randomSamples = ((ontology == UMLSOntologyType.SNOMEDCT_US)
-                                && slowMeasures.contains(measureType)) ?
-                                15 : 1000000;
+                if((ontology == UMLSOntologyType.SNOMEDCT_US)
+                                && slowMeasures.contains(measureType))
+                {
+                    randomSamples = 15;
+                }
+                else if((ontology == UMLSOntologyType.SNOMEDCT_US)
+                                && measureType == SimilarityMeasureType.AncSPLRada)
+                {
+                    randomSamples = 10000000;
+                }
+                else
+                {
+                    randomSamples = 100000000;
+                }
                 
                 break;
                 
@@ -366,7 +372,7 @@ public class HESML_UMLS_benchmark
                 }
                 else if (!slowMeasures.contains(measureType))
                 {
-                    randomSamples = 1000000;
+                    randomSamples = 100000000;
                 }
                 else
                 {
@@ -430,7 +436,7 @@ public class HESML_UMLS_benchmark
         {
             case HESML:
                 
-                randomSamples = pathMeasures.contains(measureType) ? 20 : 1000000;
+                randomSamples = pathMeasures.contains(measureType) ? 20 : 100000000;
                 
                 break;
                 
@@ -442,7 +448,7 @@ public class HESML_UMLS_benchmark
                 }
                 else
                 {
-                    randomSamples = pathMeasures.contains(measureType) ? 20 : 1000000;                
+                    randomSamples = pathMeasures.contains(measureType) ? 20 : 100000000;                
                 }
                 
                 break;
@@ -696,7 +702,7 @@ public class HESML_UMLS_benchmark
                                                 m_strMedSTSfilename,
                                                 m_strMedSTSfilename,
                                                 m_str1millionFilename};
-        
+
         // We build the vector of raw output filenames
         
         String[] strOutputFilenames = new String[measureTypes.length];
@@ -705,10 +711,6 @@ public class HESML_UMLS_benchmark
         {
             strOutputFilenames[i] = "raw_output_" + measureTypes[i] + "_MedSTS.csv";
         }
-        
-        // We create a list of threads for the experiments execution
-        
-        Thread[] threads = new Thread[measureTypes.length];
         
         // We initialize the annotation object
         
@@ -719,9 +721,29 @@ public class HESML_UMLS_benchmark
         for (String strDatasetPath : strDatasetPaths)
         {          
             // We annotate the dataset
+
+            Thread annotateFirstSentences = new Thread(new BioAnnotationThread(annotateDatasets, strDatasetPath, "firstSentence")); 
+            Thread annotateSecondSentences = new Thread(new BioAnnotationThread(annotateDatasets, strDatasetPath, "secondSentence")); 
             
-            annotateDatasets.annotate(strDatasetPath);
+            // We start both threads
+            
+            annotateFirstSentences.start();
+            
+            annotateSecondSentences.start();
+            
+            // We wait until both threads have finished
+            
+            annotateFirstSentences.join();
+            annotateSecondSentences.join();
+            
+            // We join the pairs of sentences
+            
+            annotateDatasets.joinAnnotatedDatasets(strDatasetPath);
         }
+        
+        // We create a list of threads for the experiments execution
+        
+        Thread[] threads = new Thread[measureTypes.length];
         
         /**
          * Experiment 3: we compare the performance of the HEMSL, SML and
@@ -1182,6 +1204,8 @@ public class HESML_UMLS_benchmark
             
             for (Thread thread : threads) 
             {
+                System.out.println("Starting thread " + thread.toString());
+                        
                 // Start the experiment thread
 
                 thread.start();

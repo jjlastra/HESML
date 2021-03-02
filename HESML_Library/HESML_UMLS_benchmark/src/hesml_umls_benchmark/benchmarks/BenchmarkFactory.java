@@ -288,7 +288,7 @@ public class BenchmarkFactory
     }
     
     /**
-     * This fucntion creates an istance of the AncSPL scalability benchmark for SNOMED-CT
+     * This fucntion creates an instance of the AncSPL scalability benchmark for SNOMED-CT
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
