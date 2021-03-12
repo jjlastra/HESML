@@ -1,0 +1,14 @@
+\begin{table}[h!]
+\centering
+\caption{Average speed in GO concept pairs per second for the evaluation of two representative ontology-based similarity measures based on the Gene Ontology \cite{Ashburner2000-nu, The_Gene_Ontology_Consortium2019-hp} (2020-05-02 version) implemented by state-of-the-art SML \cite{Harispe2014-cw} library and HESML. Best performing values are shown in bold.  \hl{The number of random GO concept pairs evaluated to measure each value is shown between parentheses.}} 
+\label{tab:go_results}
+\begin{tabular}{lp{1.4cm}p{1.4cm}p{1.5cm}}
+  \hline \multicolumn{2}{l}{\makecell[l]{Evaluation of random concept \\ pairs using GO (\hl{44509} nodes)}} & \underline{SML}  & \underline{HESML} \\ \hline
+Similarity measure & Measure type & \makecell[c]{Avg. speed \\ (pairs/sec)} & \makecell[c]{Avg. speed \\ (pairs/sec)} \\ 
+  \hline
+Rada \cite{Rada1989-cv} & edge-counting & \hl{0.062} (20) & \hl{\textbf{2.234}} (20) \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & edge-counting & --- & \hl{\textbf{50164}}$(10^7)$ \\ 
+  \makecell[l]{Lin-Seco \cite{Lin1998-pm, Seco2004-fd} \\ IC model} & IC-based & \hl{332615}$(10^7)$ & \hl{\textbf{1035475}}$(10^7)$ \\ 
+   \hline
+\end{tabular}
+\end{table}

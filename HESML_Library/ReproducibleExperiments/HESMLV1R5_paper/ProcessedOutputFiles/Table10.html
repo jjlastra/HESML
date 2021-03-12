@@ -1,5 +1,5 @@
 <table>
-<caption>This table shows the Pearson \hl{(r)} and Spearman \hl{($\rho$)} correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm \hl{for a sequence of 1000} random concept pairs in SNOMED-CT 2019AB \hl{and GO ontologies}. \hl{We show the results obtained in the evaluation of the first 50, 100, 200, and 1000 random concept pairs}. All similarity measures are implemented in HESML V1R5 \cite{Lastra-Diaz2020-xv}. CoswJ\&C \cite{Lastra-Diaz2015-ct} sets the current state-of-the-art in the family of ontology-based semantic similarity measures based on WordNet \cite{Lastra-Diaz2019-kg}. \hl{Note: the evaluation of any AncSPL-based measure in any tree-like taxonomy as MeSH will always report Pearson, and Spearman correlation metrics equal to 1, because AncSPL is exact in this case}.</caption>
+<caption>This table shows the Pearson \hl{(r)} and Spearman \hl{($\rho$)} correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm \hl{for a sequence of 1000} random CUI pairs in SNOMED-CT 2019AB. \hl{We show the results obtained in the evaluation of the first 50, 100, 200, and 1000 random CUI pairs}. All similarity measures are implemented in HESML V1R5 \cite{Lastra-Diaz2020-xv}. CoswJ\&C \cite{Lastra-Diaz2015-ct} sets the current state-of-the-art in the family of ontology-based semantic similarity measures based on WordNet \cite{Lastra-Diaz2019-kg}. \hl{Note: the evaluation of any AncSPL-based measure in any tree-like taxonomy as MeSH will always report Pearson, and Spearman correlation metrics equal to 1, regardless of the number of CUI pairs, because AncSPL is exact in this case}.</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> Base measure </th>
@@ -18,38 +18,38 @@
   <tr>
    <td style="text-align:left;"> Rada </td>
    <td style="text-align:left;"> AnsSPL-Rada </td>
-   <td style="text-align:left;"> 0.9214 </td>
-   <td style="text-align:left;"> 0.9412 </td>
-   <td style="text-align:left;"> 0.9413 </td>
-   <td style="text-align:left;"> 0.9444 </td>
-   <td style="text-align:left;"> 0.9357 </td>
-   <td style="text-align:left;"> 0.9352 </td>
-   <td style="text-align:left;"> 0.9231 </td>
-   <td style="text-align:left;"> 0.9217 </td>
+   <td style="text-align:left;"> 0.8452 </td>
+   <td style="text-align:left;"> 0.8582 </td>
+   <td style="text-align:left;"> 0.8726 </td>
+   <td style="text-align:left;"> 0.8783 </td>
+   <td style="text-align:left;"> 0.9026 </td>
+   <td style="text-align:left;"> 0.9096 </td>
+   <td style="text-align:left;"> 0.913 </td>
+   <td style="text-align:left;"> 0.9138 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Leacock-Chodorow </td>
    <td style="text-align:left;"> AnsSPL-Leacock </td>
-   <td style="text-align:left;"> 0.9409 </td>
-   <td style="text-align:left;"> 0.9412 </td>
-   <td style="text-align:left;"> 0.9479 </td>
-   <td style="text-align:left;"> 0.9444 </td>
-   <td style="text-align:left;"> 0.9422 </td>
-   <td style="text-align:left;"> 0.9352 </td>
-   <td style="text-align:left;"> 0.9217 </td>
-   <td style="text-align:left;"> 0.9217 </td>
+   <td style="text-align:left;"> 0.8604 </td>
+   <td style="text-align:left;"> 0.8582 </td>
+   <td style="text-align:left;"> 0.8541 </td>
+   <td style="text-align:left;"> 0.8783 </td>
+   <td style="text-align:left;"> 0.8913 </td>
+   <td style="text-align:left;"> 0.9096 </td>
+   <td style="text-align:left;"> 0.9089 </td>
+   <td style="text-align:left;"> 0.9138 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> coswJ&amp;C </td>
    <td style="text-align:left;"> AnsSPL-coswJ&amp;C </td>
-   <td style="text-align:left;"> 0.9136 </td>
-   <td style="text-align:left;"> 0.9506 </td>
-   <td style="text-align:left;"> 0.9583 </td>
-   <td style="text-align:left;"> 0.9747 </td>
-   <td style="text-align:left;"> 0.9761 </td>
-   <td style="text-align:left;"> 0.9775 </td>
-   <td style="text-align:left;"> 0.941 </td>
-   <td style="text-align:left;"> 0.9714 </td>
+   <td style="text-align:left;"> 0.9754 </td>
+   <td style="text-align:left;"> 0.9423 </td>
+   <td style="text-align:left;"> 0.9908 </td>
+   <td style="text-align:left;"> 0.9681 </td>
+   <td style="text-align:left;"> 0.9438 </td>
+   <td style="text-align:left;"> 0.9827 </td>
+   <td style="text-align:left;"> 0.9434 </td>
+   <td style="text-align:left;"> 0.9812 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Rada </td>

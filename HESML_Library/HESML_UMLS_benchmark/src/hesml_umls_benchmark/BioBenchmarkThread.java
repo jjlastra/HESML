@@ -21,7 +21,6 @@
 
 package hesml_umls_benchmark;
 
-import hesml_umls_benchmark.benchmarks.AnnotateDataset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,14 +68,14 @@ class BioBenchmarkThread implements Runnable
             // Execute 
 
             m_benchmark.run(m_outputPath);
+            
+            // Clear the benchmark
+
+            m_benchmark.clear();
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(BioBenchmarkThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Clear the benchmark
-
-        m_benchmark.clear();
     }
 }

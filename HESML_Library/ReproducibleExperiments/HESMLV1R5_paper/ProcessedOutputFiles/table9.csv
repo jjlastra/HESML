@@ -1,6 +1,5 @@
-"","Similarity measure","Measure type","UMLS::Sim","SML","HESML"
-"1","Rada","edge-counting",NA,NA,NA
-"2","AnsSPLRada","edge-counting","---","---",NA
-"3","Lin","IC-based",NA,NA,NA
-"4","Wu-Palmer_fast","depth-based",NA,"---",NA
-"5","Total CUI comparisons",NA,NA,NA,NA
+"","Similarity measure","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}"
+"1","Rada","0.446","37.038","0.131","10.901","2727.273","226454.545","8381.836","354757.312"
+"2","AnsSPLRada","0.447","37.14","---","---","3260.87","270760.87","8196.869","346928.666"
+"3","Lin","0.794","65.901","3333.333","276777.778","3333.333","276777.778","8489.051","359295.12"
+"4","Wu-Palmer_fast","0.186","15.435","---","---","3260.87","270760.87","8226.174","348168.969"

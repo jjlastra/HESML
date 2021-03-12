@@ -1,4 +1,4 @@
 "","Similarity measure","Measure type","SML","HESML"
-"1","Rada","edge-counting","0.069","3.908"
-"2","AnsSPLRada","edge-counting","---","46863.87"
-"3","Lin","IC-based","279158.059","1089324.619"
+"1","Rada","edge-counting","0.062","2.234"
+"2","AnsSPLRada","edge-counting","---","50164.338"
+"3","Lin","IC-based","332614.885","1035475.387"

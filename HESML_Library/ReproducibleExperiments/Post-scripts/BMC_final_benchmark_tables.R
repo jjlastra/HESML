@@ -189,7 +189,7 @@ table8[3,4] = round(rawdata_Lin_GO[1,4] / mean(rawdata_Lin_GO[2:6,5]), digits = 
 
 
 # ------------------------------------------------------------------------
-# Table 9 (in the paper), Experiment 7 in HESML_UMLS_benchmark.java: Average speed in the evaluation of the semantic simialirity
+# Table 9 (in the paper), Experiment 7 in HESML_UMLS_benchmark.java: Average speed in the evaluation of the semantic similarity
 # between sentence pairs of the MedSTS [1] dataset with the the MeSH
 # ontology and a collection of 1M of sentence pairs from the BioC corpus.
 #
@@ -210,9 +210,17 @@ rawdata_WuPalmer_MedSTS <- read.csv(paste(inputDir, sep = "", "raw_output_WuPalm
 
 # We create the table 4 as reported in the paper [4]
 
-table9 <- matrix(nrow = 5, ncol = 5);
+table9 <- matrix(nrow = 4, ncol = 9);
 
-colnames(table9) <- c("Similarity measure", "Measure type", "UMLS::Sim", "SML", "HESML");
+colnames(table9) <- c("Similarity measure", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}",
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}");
 
 # SML library uses caching to store the similarity values. For this reason,
 # we only consider the first value for a fair comparison.
@@ -220,38 +228,70 @@ colnames(table9) <- c("Similarity measure", "Measure type", "UMLS::Sim", "SML", 
 # We fill the row reporting the evaluation of the Rada measure
 
 table9[1,1] = "Rada";
-table9[1,2] = "edge-counting";
-table9[1,3] = round(rawdata_Rada_MedSTS[6,2] / mean(rawdata_Rada_MedSTS[1:5,2]), digits = 3)
-table9[1,4] = round(rawdata_Rada_MedSTS[6,3] / mean(rawdata_Rada_MedSTS[1,3]), digits = 3)
-table9[1,5] = round(rawdata_Rada_MedSTS[6,4] / mean(rawdata_Rada_MedSTS[1:5,4]), digits = 3)
-table9[1,6] = round(rawdata_Rada_MedSTS[6,5] / mean(rawdata_Rada_MedSTS[1:5,5]), digits = 3)
+# table9[1,2] = "edge-counting";
+
+table9[1,2] = round(rawdata_Rada_MedSTS[6,2] / mean(rawdata_Rada_MedSTS[1:5,2]), digits = 3) # num_sent/mean(times)
+table9[1,3] = round(rawdata_Rada_MedSTS[7,2] / mean(rawdata_Rada_MedSTS[1:5,2]), digits = 3) # num_cuis/mean(times)
+
+table9[1,4] = round(rawdata_Rada_MedSTS[6,3] / mean(rawdata_Rada_MedSTS[1:5,3]), digits = 3)
+table9[1,5] = round(rawdata_Rada_MedSTS[7,3] / mean(rawdata_Rada_MedSTS[1:5,3]), digits = 3)
+
+table9[1,6] = round(rawdata_Rada_MedSTS[6,4] / mean(rawdata_Rada_MedSTS[1:5,4]), digits = 3)
+table9[1,7] = round(rawdata_Rada_MedSTS[7,4] / mean(rawdata_Rada_MedSTS[1:5,4]), digits = 3)
+
+table9[1,8] = round(rawdata_Rada_MedSTS[6,5] / mean(rawdata_Rada_MedSTS[1:5,5]), digits = 3)
+table9[1,9] = round(rawdata_Rada_MedSTS[7,5] / mean(rawdata_Rada_MedSTS[1:5,5]), digits = 3)
 
 table9[2,1] = "AnsSPLRada";
-table9[2,2] = "edge-counting";
-table9[2,3] = "---";
+# table9[2,2] = "edge-counting";
+
+table9[2,2] = round(rawdata_AncSPLRada_MedSTS[6,2] / mean(rawdata_AncSPLRada_MedSTS[1:5,2]), digits = 3)
+table9[2,3] = round(rawdata_AncSPLRada_MedSTS[7,2] / mean(rawdata_AncSPLRada_MedSTS[1:5,2]), digits = 3)
+
 table9[2,4] = "---";
-table9[2,5] = round(rawdata_AncSPLRada_MedSTS[6,4] / mean(rawdata_AncSPLRada_MedSTS[1:5,4]), digits = 3)
-table9[2,5] = round(rawdata_AncSPLRada_MedSTS[6,5] / mean(rawdata_AncSPLRada_MedSTS[1:5,5]), digits = 3)
+table9[2,5] = "---";
+
+table9[2,6] = round(rawdata_AncSPLRada_MedSTS[6,4] / mean(rawdata_AncSPLRada_MedSTS[1:5,4]), digits = 3)
+table9[2,7] = round(rawdata_AncSPLRada_MedSTS[7,4] / mean(rawdata_AncSPLRada_MedSTS[1:5,4]), digits = 3)
+
+table9[2,8] = round(rawdata_AncSPLRada_MedSTS[6,5] / mean(rawdata_AncSPLRada_MedSTS[1:5,5]), digits = 3)
+table9[2,9] = round(rawdata_AncSPLRada_MedSTS[7,5] / mean(rawdata_AncSPLRada_MedSTS[1:5,5]), digits = 3)
+
 
 table9[3,1] = "Lin";
-table9[3,2] = "IC-based";
-table9[3,3] = round(rawdata_Lin_MedSTS[6,2] / mean(rawdata_Lin_MedSTS[1:5,2]), digits = 3)
+# table9[3,2] = "IC-based";
+
+table9[3,2] = round(rawdata_Lin_MedSTS[6,2] / mean(rawdata_Lin_MedSTS[1:5,2]), digits = 3)
+table9[3,3] = round(rawdata_Lin_MedSTS[7,2] / mean(rawdata_Lin_MedSTS[1:5,2]), digits = 3)
+
 table9[3,4] = round(rawdata_Lin_MedSTS[6,3] / mean(rawdata_Lin_MedSTS[1:5,3]), digits = 3)
-table9[3,5] = round(rawdata_Lin_MedSTS[6,4] / mean(rawdata_Lin_MedSTS[1:5,4]), digits = 3)
-table9[3,6] = round(rawdata_Lin_MedSTS[6,5] / mean(rawdata_Lin_MedSTS[1:5,5]), digits = 3)
+table9[3,5] = round(rawdata_Lin_MedSTS[7,3] / mean(rawdata_Lin_MedSTS[1:5,3]), digits = 3)
+
+table9[3,6] = round(rawdata_Lin_MedSTS[6,4] / mean(rawdata_Lin_MedSTS[1:5,4]), digits = 3)
+table9[3,7] = round(rawdata_Lin_MedSTS[7,4] / mean(rawdata_Lin_MedSTS[1:5,4]), digits = 3)
+
+table9[3,8] = round(rawdata_Lin_MedSTS[6,5] / mean(rawdata_Lin_MedSTS[1:5,5]), digits = 3)
+table9[3,9] = round(rawdata_Lin_MedSTS[7,5] / mean(rawdata_Lin_MedSTS[1:5,5]), digits = 3)
 
 table9[4,1] = "Wu-Palmer_fast";
-table9[4,2] = "depth-based";
-table9[4,3] = round(rawdata_WuPalmer_MedSTS[6,2] / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
-table9[4,4] = "---";
-table9[4,5] = round(rawdata_WuPalmer_MedSTS[6,4] / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
-table9[4,6] = round(rawdata_WuPalmer_MedSTS[6,5] / mean(rawdata_WuPalmer_MedSTS[1:5,5]), digits = 3)
+# table9[4,2] = "depth-based";
+table9[4,2] = round(rawdata_WuPalmer_MedSTS[6,2] / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
+table9[4,3] = round(rawdata_WuPalmer_MedSTS[7,2] / mean(rawdata_WuPalmer_MedSTS[1:5,2]), digits = 3)
 
-table9[5,1] = "Total CUI comparisons";
-table9[5,2] = rawdata_Rada_MedSTS[7,2];
-table9[5,3] = rawdata_AncSPLRada_MedSTS[7,2];
-table9[5,4] = rawdata_Lin_MedSTS[7,2];
-table9[5,5] = rawdata_WuPalmer_MedSTS[7,2];
+table9[4,4] = "---";
+table9[4,5] = "---";
+
+table9[4,6] = round(rawdata_WuPalmer_MedSTS[6,4] / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
+table9[4,7] = round(rawdata_WuPalmer_MedSTS[7,4] / mean(rawdata_WuPalmer_MedSTS[1:5,4]), digits = 3)
+
+table9[4,8] = round(rawdata_WuPalmer_MedSTS[6,5] / mean(rawdata_WuPalmer_MedSTS[1:5,5]), digits = 3)
+table9[4,9] = round(rawdata_WuPalmer_MedSTS[7,5] / mean(rawdata_WuPalmer_MedSTS[1:5,5]), digits = 3)
+
+# table9[5,1] = "Total CUI comparisons";
+# table9[5,2] = rawdata_Rada_MedSTS[7,2];
+# table9[5,3] = rawdata_AncSPLRada_MedSTS[7,3];
+# table9[5,4] = rawdata_Lin_MedSTS[7,4];
+# table9[5,5] = rawdata_WuPalmer_MedSTS[7,5];
 
 
 # ------------------------------------------------------------------------
@@ -275,7 +315,7 @@ rawdata_GO_AncSPLCosine_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_G
 
 # We create the table 5 as reported in the paper [4]
 
-table10 <- matrix(nrow = 3, ncol = 10);
+table10 <- matrix(nrow = 6, ncol = 10);
 
 colnames(table10) <- c("Base measure", "AncSPL reformulation", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman");
 
@@ -288,55 +328,145 @@ n_samples_4 <- 1000
 
 # We select the sample tables for each part of the experiment 4
 
-rawdata_AncSPLRada_exp4_sample_rows_1 <- head(rawdata_AncSPLRada_exp4,n_samples_1)
-rawdata_AncSPLRada_exp4_sample_rows_2 <- head(rawdata_AncSPLRada_exp4,n_samples_2)
-rawdata_AncSPLRada_exp4_sample_rows_3 <- head(rawdata_AncSPLRada_exp4,n_samples_3)
-rawdata_AncSPLRada_exp4_sample_rows_4 <- head(rawdata_AncSPLRada_exp4,n_samples_4)
+rawdata_SNOMED_AncSPLRada_exp4_sample_rows_1 <- head(rawdata_SNOMED_AncSPLRada_exp4,n_samples_1)
+rawdata_SNOMED_AncSPLRada_exp4_sample_rows_2 <- head(rawdata_SNOMED_AncSPLRada_exp4,n_samples_2)
+rawdata_SNOMED_AncSPLRada_exp4_sample_rows_3 <- head(rawdata_SNOMED_AncSPLRada_exp4,n_samples_3)
+rawdata_SNOMED_AncSPLRada_exp4_sample_rows_4 <- head(rawdata_SNOMED_AncSPLRada_exp4,n_samples_4)
 
-rawdata_AncSPLLeacock_exp4_sample_rows_1 <- head(rawdata_AncSPLLeacock_exp4,n_samples_1)
-rawdata_AncSPLLeacock_exp4_sample_rows_2 <- head(rawdata_AncSPLLeacock_exp4,n_samples_2)
-rawdata_AncSPLLeacock_exp4_sample_rows_3 <- head(rawdata_AncSPLLeacock_exp4,n_samples_3)
-rawdata_AncSPLLeacock_exp4_sample_rows_4 <- head(rawdata_AncSPLLeacock_exp4,n_samples_4)
+rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_1 <- head(rawdata_SNOMED_AncSPLLeacock_exp4,n_samples_1)
+rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_2 <- head(rawdata_SNOMED_AncSPLLeacock_exp4,n_samples_2)
+rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_3 <- head(rawdata_SNOMED_AncSPLLeacock_exp4,n_samples_3)
+rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_4 <- head(rawdata_SNOMED_AncSPLLeacock_exp4,n_samples_4)
 
-rawdata_AncSPLCosine_exp4_sample_rows_1 <- head(rawdata_AncSPLCosine_exp4,n_samples_1)
-rawdata_AncSPLCosine_exp4_sample_rows_2 <- head(rawdata_AncSPLCosine_exp4,n_samples_2)
-rawdata_AncSPLCosine_exp4_sample_rows_3 <- head(rawdata_AncSPLCosine_exp4,n_samples_3)
-rawdata_AncSPLCosine_exp4_sample_rows_4 <- head(rawdata_AncSPLCosine_exp4,n_samples_4)
+rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_1 <- head(rawdata_SNOMED_AncSPLCosine_exp4,n_samples_1)
+rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_2 <- head(rawdata_SNOMED_AncSPLCosine_exp4,n_samples_2)
+rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_3 <- head(rawdata_SNOMED_AncSPLCosine_exp4,n_samples_3)
+rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_4 <- head(rawdata_SNOMED_AncSPLCosine_exp4,n_samples_4)
+
+rawdata_GO_AncSPLRada_exp4_sample_rows_1 <- head(rawdata_GO_AncSPLRada_exp4,n_samples_1)
+rawdata_GO_AncSPLRada_exp4_sample_rows_2 <- head(rawdata_GO_AncSPLRada_exp4,n_samples_2)
+rawdata_GO_AncSPLRada_exp4_sample_rows_3 <- head(rawdata_GO_AncSPLRada_exp4,n_samples_3)
+rawdata_GO_AncSPLRada_exp4_sample_rows_4 <- head(rawdata_GO_AncSPLRada_exp4,n_samples_4)
+
+rawdata_GO_AncSPLLeacock_exp4_sample_rows_1 <- head(rawdata_GO_AncSPLLeacock_exp4,n_samples_1)
+rawdata_GO_AncSPLLeacock_exp4_sample_rows_2 <- head(rawdata_GO_AncSPLLeacock_exp4,n_samples_2)
+rawdata_GO_AncSPLLeacock_exp4_sample_rows_3 <- head(rawdata_GO_AncSPLLeacock_exp4,n_samples_3)
+rawdata_GO_AncSPLLeacock_exp4_sample_rows_4 <- head(rawdata_GO_AncSPLLeacock_exp4,n_samples_4)
+
+rawdata_GO_AncSPLCosine_exp4_sample_rows_1 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_1)
+rawdata_GO_AncSPLCosine_exp4_sample_rows_2 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_2)
+rawdata_GO_AncSPLCosine_exp4_sample_rows_3 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_3)
+rawdata_GO_AncSPLCosine_exp4_sample_rows_4 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_4)
 
 # We fill the row reporting the evaluation of the Rada measure
 
+
 table10[1,1] = "Rada";
 table10[1,2] = "AnsSPL-Rada";
-table10[1,3] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_1[,3], rawdata_AncSPLRada_exp4_sample_rows_1[, 4], method = "pearson"), 4)
-table10[1,4] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_1[,3], rawdata_AncSPLRada_exp4_sample_rows_1[, 4], method = "spearman"), 4)
-table10[1,5] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_2[,3], rawdata_AncSPLRada_exp4_sample_rows_2[, 4], method = "pearson"), 4)
-table10[1,6] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_2[,3], rawdata_AncSPLRada_exp4_sample_rows_2[, 4], method = "spearman"), 4)
-table10[1,7] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_3[,3], rawdata_AncSPLRada_exp4_sample_rows_3[, 4], method = "pearson"), 4)
-table10[1,8] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_3[,3], rawdata_AncSPLRada_exp4_sample_rows_3[, 4], method = "spearman"), 4)
-table10[1,9] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_4[,3], rawdata_AncSPLRada_exp4_sample_rows_4[, 4], method = "pearson"), 4)
-table10[1,10] = round(cor(rawdata_AncSPLRada_exp4_sample_rows_4[,3], rawdata_AncSPLRada_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+table10[1,3] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[1,4] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[1,5] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[1,6] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[1,7] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[1,8] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[1,9] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[1,10] = round(cor(rawdata_SNOMED_AncSPLRada_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLRada_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 table10[2,1] = "Leacock-Chodorow";
 table10[2,2] = "AnsSPL-Leacock";
-table10[2,3] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "pearson"), 4)
-table10[2,4] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "spearman"), 4)
-table10[2,5] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "pearson"), 4)
-table10[2,6] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "spearman"), 4)
-table10[2,7] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "pearson"), 4)
-table10[2,8] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "spearman"), 4)
-table10[2,9] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "pearson"), 4)
-table10[2,10] = round(cor(rawdata_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+table10[2,3] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[2,4] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[2,5] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[2,6] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[2,7] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[2,8] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[2,9] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[2,10] = round(cor(rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 table10[3,1] = "coswJ&C";
 table10[3,2] = "AnsSPL-coswJ&C";
-table10[3,3] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_AncSPLCosine_exp4_sample_rows_1[, 4], method = "pearson"), 4)
-table10[3,4] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_AncSPLCosine_exp4_sample_rows_1[, 4], method = "spearman"), 4)
-table10[3,5] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_AncSPLCosine_exp4_sample_rows_2[, 4], method = "pearson"), 4)
-table10[3,6] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_AncSPLCosine_exp4_sample_rows_2[, 4], method = "spearman"), 4)
-table10[3,7] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_AncSPLCosine_exp4_sample_rows_3[, 4], method = "pearson"), 4)
-table10[3,8] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_AncSPLCosine_exp4_sample_rows_3[, 4], method = "spearman"), 4)
-table10[3,9] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
-table10[3,10] = round(cor(rawdata_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+table10[3,3] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[3,4] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[3,5] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[3,6] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[3,7] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[3,8] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[3,9] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[3,10] = round(cor(rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_SNOMED_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table10[4,1] = "Rada";
+table10[4,2] = "AnsSPL-Rada";
+table10[4,3] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_1[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[4,4] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_1[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[4,5] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_2[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[4,6] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_2[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[4,7] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_3[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[4,8] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_3[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[4,9] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_4[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[4,10] = round(cor(rawdata_GO_AncSPLRada_exp4_sample_rows_4[,3], rawdata_GO_AncSPLRada_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table10[5,1] = "Leacock-Chodorow";
+table10[5,2] = "AnsSPL-Leacock";
+table10[5,3] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[5,4] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[5,5] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[5,6] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[5,7] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[5,8] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[5,9] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[5,10] = round(cor(rawdata_GO_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_GO_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table10[6,1] = "coswJ&C";
+table10[6,2] = "AnsSPL-coswJ&C";
+table10[6,3] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[6,4] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[6,5] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[6,6] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[6,7] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[6,8] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[6,9] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[6,10] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+
+# ------------------------------------------------------------------------
+# Table 11 (in the paper), Experiment 13 in HESML_UMLS_benchmark.java: comparison of two large GO annotated files describing
+# the proteins of the Homo Sapiens and Mus  MUsculus organisms.
+#
+# ------------------------------------------------------------------------
+
+caption_table11 = '\\hl{Running time in seconds obtained by four groupwise GO-based similarity measures (GO (44509 nodes), 2020-05-02 version) implemented by HESML in the pairwise protein comparison of the Homo Sapiens and Canis lupus familiaris organisms. We used the 542193 and 120720 GO annotations for both organisms provided by the ``goa\\_human.gaf" and ``go\\_dog.gaf" files, respectively.}'
+
+# Input raw CSV files generated by the reproducible experiments detailed
+# in the supplementary appendix
+
+raw_output_SimLP_largeGO <- read.csv(paste(inputDir, sep = "", "raw_output_SimLP_largeGO_test.csv"), dec = ".", sep = ';')
+raw_output_SimUI_largeGO <- read.csv(paste(inputDir, sep = "", "raw_output_SimUI_largeGO_test.csv"), dec = ".", sep = ';')
+raw_output_SimGIC_largeGO <- read.csv(paste(inputDir, sep = "", "raw_output_SimGIC_largeGO_test.csv"), dec = ".", sep = ';')
+raw_output_BMA_Lin_Seco_largeGO <- read.csv(paste(inputDir, sep = "", "raw_output_BMA-Lin-Seco_largeGO_test.csv"), dec = ".", sep = ';')
+
+# We create the table 1 as reported in the paper [4]
+
+table11 <- matrix(nrow = 4, ncol = 3);
+
+colnames(table11) <- c("", "", "", "");
+
+# We fill the row reporting the evaluation of the Rada measure
+
+table11[1,1] = "SimLP \\cite{Gentleman2009-dc}";
+table11[1,2] = "\\makecell[l]{Common \\\\ ancestors ratio}";
+table11[1,3] = raw_output_SimLP_largeGO[1,4];
+
+table11[2,1] = "SimUI \\cite{Gentleman2009-dc}";
+table11[2,2] = "\\makecell[l]{Common \\\\ ancestor \\\\ max depth}";
+table11[2,3] = raw_output_SimUI_largeGO[1,4];
+
+table11[3,1] = "SimGIC-Seco \\cite{Pesquita2007-pv, Seco2004-fd}";
+table11[3,2] = "IC-based";
+table11[3,3] = raw_output_SimGIC_largeGO[1,4];
+
+table11[4,1] = "BMA-Lin-Seco \\cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}";
+table11[4,2] = "IC-based";
+table11[4,3] = raw_output_BMA_Lin_Seco_largeGO[1,4];
 
 # ------------------------------------------------------------
 # We save all final data tables 
@@ -347,7 +477,7 @@ write.csv(table7, file = paste(outputDir, sep="","table7.csv"))
 write.csv(table8, file = paste(outputDir, sep="","table8.csv"))
 write.csv(table9, file = paste(outputDir, sep="","table9.csv"))
 write.csv(table10, file = paste(outputDir, sep="","table10.csv"))
-
+write.csv(table10, file = paste(outputDir, sep="","table11.csv"))
 #-------------------------------
 # HTML report generation
 #-------------------------------
@@ -400,6 +530,12 @@ kable_out <- kable(table10,
 readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
 # browseURL(paste(outputDir, sep="","Table10.html"))
 
+kable_out <- kable(table11,
+                   caption = caption_table11,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
+# browseURL(paste(outputDir, sep="","Table11.html"))
 
 #############################
 # we export the latex tables
@@ -412,182 +548,37 @@ library(stringr)
 library(xtable)
 
 
-# #############################
-# # Table 6
-# #############################
-# 
-# # We define the latex table with the data
-# 
-# colnames(table6) <- c("Similarity measure", 
-#                       "\\makecell[c]{\\underline{UMLS::Sim} \\\\ Avg. speed \\\\ (pairs/sec)}", 
-#                       "\\makecell[c]{\\underline{SML} \\\\ Avg. speed \\\\ (pairs/sec)}", 
-#                       "\\makecell[c]{\\underline{HESML} \\\\ Avg. speed \\\\ (pairs/sec)}");
-# 
-# # Format the table modifying the fields
-# 
-# table6[1,1] = "Rada \\cite{Rada1989-cv}";
-# table6[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
-# table6[3,1] = "Lin-Seco \\cite{Lin1998-pm, Seco2004-fd}";
-# table6[4,1] = "Wu-Palmer$_{fast}$ \\cite{Wu1994-hh}";
-# 
-# table6[1,2] = paste0("\\hl{\\textbf{",table6[1,2],"}} (",rawdata_Rada_SNOMEDCT_US[1,2],")")
-# table6[1,4] = paste0("\\hl{",table6[1,4],"} (",rawdata_Rada_SNOMEDCT_US[1,4],")")
-# 
-# table6[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[2,4],decimal=0)),"}}",str_replace(rawdata_AncSPLRada_SNOMEDCT_US[1,4],"1000000","$(10^6)$"))
-# 
-# table6[3,2] = paste0("\\hl{",table6[3,2],"} (",rawdata_Lin_SNOMEDCT_US[1,2],")")
-# table6[3,3] = paste0("\\hl{",round(as.numeric(table6[3,3],decimal=0)),"}",str_replace(rawdata_Lin_SNOMEDCT_US[1,6],"1000000","$(10^6)$"))
-# table6[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[3,4],decimal=0)),"}}",str_replace(rawdata_Lin_SNOMEDCT_US[1,4],"1000000","$(10^6)$"))
-# 
-# table6[4,2] = paste0("\\hl{",table6[4,2],"} (",rawdata_WuPalmer_SNOMEDCT_US[1,2],")")
-# table6[4,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[4,4],decimal=0)),"}}",str_replace(rawdata_WuPalmer_SNOMEDCT_US[1,4],"1000000","$(10^6)$"))
-# 
-# table_latex <- xtable(table6, type = "latex", digits=4, method = "compact")
-# 
-# # We add extra rows to the table before printing it
-# 
-# addtorow      <- list()
-# addtorow$pos  <- list()
-# 
-# # We add an extra header with the dataset groups
-# 
-# addtorow$pos[[1]] <- -1
-# addtorow$command  <- c('')
-# 
-# # we define a function for adding \small to all rows. 
-# 
-# add_small_to_all_rows.allrows <- function(x) {
-#   x
-# }
-# 
-# # We save the tables in latex and HTML format files. The HTML format is for 
-# 
-# strLatexTables <- print(xtable(table_latex, caption = caption_table6, label = "tab:uno", digits=3, align ="llp{1.5cm}p{1.4cm}p{1.4cm}"), caption.placement = 'top',floating.environment = "table",
-#                         comment=FALSE, table.placement="h!", include.rownames=FALSE,
-#                         sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows)
-# 
-# 
-# #############################
-# # Table 7
-# #############################
-# 
-# # We define the latex table with the data
-# 
-# colnames(table7) <- c("Similarity measure", 
-#                       "\\makecell[c]{\\underline{UMLS::Sim} \\\\ Avg. speed \\\\ (pairs/sec)}", 
-#                       "\\makecell[c]{\\underline{SML} \\\\ Avg. speed \\\\ (pairs/sec)}", 
-#                       "\\makecell[c]{\\underline{HESML} \\\\ Avg. speed \\\\ (pairs/sec)}");
-# 
-# # Format the table modifying the fields
-# 
-# table7[1,1] = "Rada \\cite{Rada1989-cv}";
-# table7[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
-# table7[3,1] = "Lin-Seco \\cite{Lin1998-pm, Seco2004-fd}";
-# table7[4,1] = "Wu-Palmer$_{fast}$ \\cite{Wu1994-hh}";
-# 
-# table7[1,2] = paste0("\\hl{",round(as.numeric(table7[1,2]),digits=2),"} (",rawdata_Rada_MeSH[1,2],")")
-# table7[1,3] = paste0("\\hl{",table7[1,3],"} (",rawdata_Rada_MeSH[1,6],")")
-# table7[1,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[1,4]),digits=0),"}}",str_replace(rawdata_Rada_MeSH[1,4],"1000000","$(10^6)$"))
-# 
-# table7[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[2,4]),digits=0),"}}",str_replace(rawdata_AncSPLRada_MeSH[1,4],"1000000","$(10^6)$"))
-# 
-# table7[3,2] = paste0("\\hl{",round(as.numeric(table7[3,2]),digits=2),"} (",rawdata_Lin_MeSH[1,2],")")
-# table7[3,3] = paste0("\\hl{",round(as.numeric(table7[3,3]),digits=0),"}",str_replace(rawdata_Lin_MeSH[1,6],"1000000","$(10^6)$"))
-# table7[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[3,4]),digits=0),"}}",str_replace(rawdata_Lin_MeSH[1,4],"1000000","$(10^6)$"))
-# 
-# table7[4,2] = paste0("\\hl{",round(as.numeric(table7[4,2]),digits=2),"} (",rawdata_WuPalmer_MeSH[1,2],")")
-# table7[4,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[4,4]),digits=0),"}}",str_replace(rawdata_WuPalmer_MeSH[1,4],"1000000","$(10^6)$"))
-# 
-# table_latex <- xtable(table7, type = "latex", digits=4, method = "compact")
-# 
-# # We add extra rows to the table before printing it
-# 
-# addtorow      <- list()
-# addtorow$pos  <- list()
-# 
-# # We add an extra header with the dataset groups
-# 
-# addtorow$pos[[1]] <- -1
-# addtorow$command  <- c('')
-# 
-# # we define a function for adding \small to all rows. 
-# 
-# add_small_to_all_rows.allrows <- function(x) {
-#   x
-# }
-# 
-# # We save the tables in latex and HTML format files. The HTML format is for 
-# 
-# strLatexTables <- print(xtable(table_latex, caption = caption_table7, label = "tab:mesh_results", digits=3, align ="llp{1.6cm}p{1.4cm}p{1.5cm}"), caption.placement = 'top',floating.environment = "table",
-#                         comment=FALSE, table.placement="h!", include.rownames=FALSE,
-#                         sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows)
-# 
-# 
-# #############################
-# # Table 8
-# #############################
-# 
-# # We define the latex table with the data
-# 
-# colnames(table8) <- c("Similarity measure","Measure type", 
-#                       "\\makecell[c]{Avg. speed \\\\ (pairs/sec)}", 
-#                       "\\makecell[c]{Avg. speed \\\\ (pairs/sec)}");
-# 
-# # Format the table modifying the fields
-# 
-# table8[1,1] = "Rada \\cite{Rada1989-cv}";
-# table8[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
-# table8[3,1] = "\\makecell[l]{Lin-Seco \\cite{Lin1998-pm, Seco2004-fd} \\\\ IC model}";
-# 
-# table8[1,3] = paste0("\\hl{",table8[1,3],"} (",rawdata_Rada_GO[1,2],")")
-# table8[1,4] = paste0("\\hl{\\textbf{",table8[1,4],"}} (",rawdata_Rada_GO[1,4],")")
-# 
-# table8[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table8[2,4]),digits=0),"}}",str_replace(rawdata_AncSPLRada_GO[1,4],"1000000","$(10^6)$"))
-# 
-# table8[3,3] = paste0("\\hl{",round(as.numeric(table8[3,3]),digits=0),"}",str_replace(rawdata_Lin_GO[1,4],"1000000","$(10^6)$"))
-# table8[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table8[3,4]),digits=0),"}}",str_replace(rawdata_Lin_GO[1,4],"1000000","$(10^6)$"))
-# 
-# table_latex <- xtable(table8, type = "latex", digits=4, method = "compact")
-# 
-# # We add extra rows to the table before printing it
-# 
-# addtorow      <- list()
-# addtorow$pos  <- list()
-# 
-# # We add an extra header with the dataset groups
-# 
-# addtorow$pos[[1]] <- -1
-# addtorow$command  <- c('\\hline \\multicolumn{2}{l}{\\makecell[l]{Evaluation of random concept \\\\ pairs using GO (\\hl{44509} nodes)}} & \\underline{SML}  & \\underline{HESML} \\\\')
-# 
-# # we define a function for adding \small to all rows. 
-# 
-# add_small_to_all_rows.allrows <- function(x) {
-#   x
-# }
-# 
-# # We save the tables in latex and HTML format files. The HTML format is for 
-# 
-# strLatexTables <- print(xtable(table_latex, caption = caption_table8, label = "tab:go_results", digits=3, align ="llp{1.4cm}p{1.4cm}p{1.5cm}"), caption.placement = 'top',floating.environment = "table",
-#                         comment=FALSE, table.placement="h!", include.rownames=FALSE,add.to.row = addtorow,
-#                         sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows)
-
-
-
 #############################
-# Table 11
+# Table 6
 #############################
 
 # We define the latex table with the data
 
-colnames(table10) <- c("Base measure", "\\makecell[c]{AncSPL \\\\ reformulation}", "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$');
+colnames(table6) <- c("Similarity measure",
+                      "\\makecell[c]{\\underline{UMLS::Sim} \\\\ Avg. speed \\\\ (pairs/sec)}",
+                      "\\makecell[c]{\\underline{SML} \\\\ Avg. speed \\\\ (pairs/sec)}",
+                      "\\makecell[c]{\\underline{HESML} \\\\ Avg. speed \\\\ (pairs/sec)}");
 
-table10[1,1] = "Rada \\cite{Rada1989-cv}";
-table10[2,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}";
-table10[3,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
-table10[3,2] = "AnsSPL-coswJ\\&C";
+# Format the table modifying the fields
 
+table6[1,1] = "Rada \\cite{Rada1989-cv}";
+table6[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
+table6[3,1] = "Lin-Seco \\cite{Lin1998-pm, Seco2004-fd}";
+table6[4,1] = "Wu-Palmer$_{fast}$ \\cite{Wu1994-hh}";
 
-table_latex <- xtable(table10, type = "latex", digits=4, method = "compact")
+table6[1,2] = paste0("\\hl{\\textbf{",table6[1,2],"}} (",rawdata_Rada_SNOMEDCT_US[1,2],")")
+table6[1,4] = paste0("\\hl{",table6[1,4],"} (",rawdata_Rada_SNOMEDCT_US[1,4],")")
+
+table6[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[2,4],decimal=0)),"}}",str_replace(rawdata_AncSPLRada_SNOMEDCT_US[1,4],"10000000","$(10^7)$"))
+
+table6[3,2] = paste0("\\hl{",table6[3,2],"} (",rawdata_Lin_SNOMEDCT_US[1,2],")")
+table6[3,3] = paste0("\\hl{",round(as.numeric(table6[3,3],decimal=0)),"}",str_replace(rawdata_Lin_SNOMEDCT_US[1,6],"10000000","$(10^7)$"))
+table6[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[3,4],decimal=0)),"}}",str_replace(rawdata_Lin_SNOMEDCT_US[1,4],"10000000","$(10^7)$"))
+
+table6[4,2] = paste0("\\hl{",table6[4,2],"} (",rawdata_WuPalmer_SNOMEDCT_US[1,2],")")
+table6[4,4] = paste0("\\hl{\\textbf{",round(as.numeric(table6[4,4],decimal=0)),"}}",str_replace(rawdata_WuPalmer_SNOMEDCT_US[1,4],"10000000","$(10^7)$"))
+
+table_latex <- xtable(table6, type = "latex", digits=4, method = "compact")
 
 # We add extra rows to the table before printing it
 
@@ -597,7 +588,171 @@ addtorow$pos  <- list()
 # We add an extra header with the dataset groups
 
 addtorow$pos[[1]] <- -1
-addtorow$command  <- c('\\hline \\multicolumn{1}{c}{} & \\multicolumn{1}{c}{} & \\multicolumn{2}{c}{\\underline{50 samples} & \\multicolumn{2}{c}{\\underline{100 samples} & \\multicolumn{2}{c}{\\underline{200 samples} & \\multicolumn{2}{c}{\\underline{1000 samples} \\\\ ')
+addtorow$command  <- c('')
+
+# we define a function for adding \small to all rows.
+
+add_small_to_all_rows.allrows <- function(x) {
+  x
+}
+
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table6.txt")
+
+strLatexTables <- print(xtable(table_latex, caption = caption_table6, label = "tab:snomed_results", digits=3, align ="llp{1.5cm}p{1.4cm}p{1.4cm}"), caption.placement = 'top',floating.environment = "table",
+                        comment=FALSE, table.placement="h!", include.rownames=FALSE,
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table6.txt"))
+
+#############################
+# Table 7
+#############################
+
+# We define the latex table with the data
+
+colnames(table7) <- c("Similarity measure",
+                      "\\makecell[c]{\\underline{UMLS::Sim} \\\\ Avg. speed \\\\ (pairs/sec)}",
+                      "\\makecell[c]{\\underline{SML} \\\\ Avg. speed \\\\ (pairs/sec)}",
+                      "\\makecell[c]{\\underline{HESML} \\\\ Avg. speed \\\\ (pairs/sec)}");
+
+# Format the table modifying the fields
+
+table7[1,1] = "Rada \\cite{Rada1989-cv}";
+table7[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
+table7[3,1] = "Lin-Seco \\cite{Lin1998-pm, Seco2004-fd}";
+table7[4,1] = "Wu-Palmer$_{fast}$ \\cite{Wu1994-hh}";
+
+table7[1,2] = paste0("\\hl{",round(as.numeric(table7[1,2]),digits=2),"} (",rawdata_Rada_MeSH[1,2],")")
+table7[1,3] = paste0("\\hl{",table7[1,3],"} (",rawdata_Rada_MeSH[1,6],")")
+table7[1,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[1,4]),digits=0),"}}",str_replace(rawdata_Rada_MeSH[1,4],"10000000","$(10^7)$"))
+
+table7[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[2,4]),digits=0),"}}",str_replace(rawdata_AncSPLRada_MeSH[1,4],"10000000","$(10^7)$"))
+
+table7[3,2] = paste0("\\hl{",round(as.numeric(table7[3,2]),digits=2),"} (",rawdata_Lin_MeSH[1,2],")")
+table7[3,3] = paste0("\\hl{",round(as.numeric(table7[3,3]),digits=0),"}",str_replace(rawdata_Lin_MeSH[1,6],"10000000","$(10^7)$"))
+table7[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[3,4]),digits=0),"}}",str_replace(rawdata_Lin_MeSH[1,4],"10000000","$(10^7)$"))
+
+table7[4,2] = paste0("\\hl{",round(as.numeric(table7[4,2]),digits=2),"} (",rawdata_WuPalmer_MeSH[1,2],")")
+table7[4,4] = paste0("\\hl{\\textbf{",round(as.numeric(table7[4,4]),digits=0),"}}",str_replace(rawdata_WuPalmer_MeSH[1,4],"10000000","$(10^7)$"))
+
+table_latex <- xtable(table7, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$command  <- c('')
+
+# we define a function for adding \small to all rows.
+
+add_small_to_all_rows.allrows <- function(x) {
+  x
+}
+
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table7.txt")
+
+strLatexTables <- print(xtable(table_latex, caption = caption_table7, label = "tab:mesh_results", digits=3, align ="llp{1.6cm}p{1.4cm}p{1.5cm}"), caption.placement = 'top',floating.environment = "table",
+                        comment=FALSE, table.placement="h!", include.rownames=FALSE,
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table7.txt"))
+
+#############################
+# Table 8
+#############################
+
+# We define the latex table with the data
+
+colnames(table8) <- c("Similarity measure","Measure type",
+                      "\\makecell[c]{Avg. speed \\\\ (pairs/sec)}",
+                      "\\makecell[c]{Avg. speed \\\\ (pairs/sec)}");
+
+# Format the table modifying the fields
+
+table8[1,1] = "Rada \\cite{Rada1989-cv}";
+table8[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
+table8[3,1] = "\\makecell[l]{Lin-Seco \\cite{Lin1998-pm, Seco2004-fd} \\\\ IC model}";
+
+table8[1,3] = paste0("\\hl{",table8[1,3],"} (",rawdata_Rada_GO[1,2],")")
+table8[1,4] = paste0("\\hl{\\textbf{",table8[1,4],"}} (",rawdata_Rada_GO[1,4],")")
+
+table8[2,4] = paste0("\\hl{\\textbf{",round(as.numeric(table8[2,4]),digits=0),"}}",str_replace(rawdata_AncSPLRada_GO[1,4],"10000000","$(10^7)$"))
+
+table8[3,3] = paste0("\\hl{",round(as.numeric(table8[3,3]),digits=0),"}",str_replace(rawdata_Lin_GO[1,4],"10000000","$(10^7)$"))
+table8[3,4] = paste0("\\hl{\\textbf{",round(as.numeric(table8[3,4]),digits=0),"}}",str_replace(rawdata_Lin_GO[1,4],"10000000","$(10^7)$"))
+
+table_latex <- xtable(table8, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$command  <- c('\\hline \\multicolumn{2}{l}{\\makecell[l]{Evaluation of random concept \\\\ pairs using GO (\\hl{44509} nodes)}} & \\underline{SML}  & \\underline{HESML} \\\\')
+
+# we define a function for adding \small to all rows.
+
+add_small_to_all_rows.allrows <- function(x) {
+  x
+}
+
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table8.txt")
+
+strLatexTables <- print(xtable(table_latex, caption = caption_table8, label = "tab:go_results", digits=3, align ="llp{1.4cm}p{1.4cm}p{1.5cm}"), caption.placement = 'top',floating.environment = "table",
+                        comment=FALSE, table.placement="h!", include.rownames=FALSE,add.to.row = addtorow,
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table8.txt"))
+
+#############################
+# Table 9
+#############################
+
+# We define the latex table with the data
+
+table9_b <- table9
+
+# colnames(table9) <- c("Similarity measure", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}");
+
+table9[1,1] = "Rada et al. \\cite{Rada1989-cv}";
+table9[2,1] = "\\makecell[l]{AncSPL-Rada \\\\ (this work)}";
+table9[3,1] = "Lin-Seco \\cite{Lin1998-pm, Seco2004-fd}";
+table9[4,1] = "Wu-Palmer$_{fast}$\\cite{Wu1994-hh}";
+
+table9[1,6] = paste0("\\textbf{",table9[1,6],"}");
+table9[2,6] = paste0("\\textbf{",table9[2,6],"}");
+table9[3,6] = paste0("\\textbf{",table9[3,6],"}");
+table9[4,6] = paste0("\\textbf{",table9[4,6],"}");
+table9[3,4] = paste0("\\textbf{",table9[3,4],"}");
+
+
+table_latex <- xtable(table9, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$command  <- c(
+  '\\hline \\makecell[l]{Pairwise sentence \\\\ comparison based \\\\ on MeSH} & \\multicolumn{2}{c}{\\underline{UMLS::Sim (30 pairs)}} & \\multicolumn{2}{c}{\\underline{SML (30 pairs)}} & \\multicolumn{2}{c}{\\underline{HESML (30 pairs)}} & \\multicolumn{2}{c}{\\underline{HESML ($10^6$ pairs)}} \\\\ ')
+
+
 
 # we define a function for adding \small to all rows.
 
@@ -614,11 +769,223 @@ add_small_to_all_rows.allrows <- function(x) {
 
 align(table_latex) <- "llcccccccc"
 
-# We save the tables in latex and HTML format files. The HTML format is for
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table9.txt")
+
+strLatexTables <- print(xtable(table_latex, caption = caption_table9, label = "tab:medsts_results", digits=3), caption.placement = 'top',floating.environment = "table*",
+                        add.to.row = addtorow, comment=FALSE, table.placement="h!", include.rownames=FALSE,
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table9.txt"))
+
+
+#############################
+# Table 10
+#############################
+
+# We define the latex table with the data
+
+colnames(table10) <- c("Base measure", "\\makecell[c]{AncSPL \\\\ reformulation}", "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$');
+
+table10[1,1] = "Rada \\cite{Rada1989-cv}";
+table10[2,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}";
+table10[3,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
+table10[3,2] = "AnsSPL-coswJ\\&C";
+
+table10[4,1] = "Rada \\cite{Rada1989-cv}";
+table10[5,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}";
+table10[6,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
+table10[6,2] = "AnsSPL-coswJ\\&C";
+
+
+table_latex <- xtable(table10, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$pos[[2]] <- 3
+addtorow$pos[[3]] <- 3
+addtorow$command  <- c(
+  '\\hline \\multicolumn{2}{l}{\\hl{Correlation values in SNOMED-CT}} & \\multicolumn{2}{c}{\\underline{50 samples}} & \\multicolumn{2}{c}{\\underline{100 samples}} & \\multicolumn{2}{c}{\\underline{200 samples}} & \\multicolumn{2}{c}{\\underline{1000 samples}} \\\\ ',
+  '\\hline \\multicolumn{2}{l}{\\hl{Correlation values in GO}} & \\multicolumn{2}{c}{\\underline{50 samples}} & \\multicolumn{2}{c}{\\underline{100 samples}} & \\multicolumn{2}{c}{\\underline{200 samples}} & \\multicolumn{2}{c}{\\underline{1000 samples}} \\\\ ',
+  'Base measure & \\makecell[c]{AncSPL \\\\ reformulation} & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ \\\\ \\hline ')
+
+
+
+# we define a function for adding \small to all rows.
+
+add_small_to_all_rows.allrows <- function(x) {
+  x # this function returns the same input value, only for tests
+}
+
+#add_small_to_all_rows.allrows <- function(x) {
+#  h <- paste('\\small{',x,'}', sep ='')
+#  h
+#}
+
+# We align the table
+
+align(table_latex) <- "llccccccccc"
+
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table10.txt")
 
 strLatexTables <- print(xtable(table_latex, caption = caption_table10, label = "tab:ancspl_results", digits=3), caption.placement = 'top',floating.environment = "table*",
                         add.to.row = addtorow, comment=FALSE, table.placement="h!", include.rownames=FALSE,
-                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows)
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table10.txt"))
+
+
+#############################
+# Table 11
+#############################
+
+# We define the latex table with the data
+
+colnames(table11) <- c("Groupwise measure", "Measure type", "\\makecell[c]{\\underline{HESML} \\\\ Time (secs)}");
+
+table_latex <- xtable(table11, type = "latex", digits=4, method = "compact")
+
+# We add extra rows to the table before printing it
+
+addtorow      <- list()
+addtorow$pos  <- list()
+
+# We add an extra header with the dataset groups
+
+addtorow$pos[[1]] <- -1
+addtorow$command  <- c(
+  ' \\hline \\multicolumn{3}{l}{\\makecell[l]{Pairwise protein comparison between two large organisms \\\\ ($\\approx 65.5 \\times 10^9$ GO concept pairs)}} \\\\ ')
 
 
 
+# we define a function for adding \small to all rows.
+
+add_small_to_all_rows.allrows <- function(x) {
+  x # this function returns the same input value, only for tests
+}
+
+# We align the table
+
+align(table_latex) <- "lllc"
+
+# We save the tables in latex and LATEX format files. 
+
+output_dir_latex <- paste(outputDir, sep="","table11.txt")
+
+strLatexTables <- print(xtable(table_latex, caption = caption_table11, label = "tab:large_go_results", digits=3), caption.placement = 'top',floating.environment = "table",
+                        add.to.row = addtorow, comment=FALSE, table.placement="h!", include.rownames=FALSE,
+                        sanitize.colnames.function = identity, sanitize.text.function =  add_small_to_all_rows.allrows, file = output_dir_latex)
+
+browseURL(paste(outputDir, sep="","table11.txt"))
+
+
+#############################
+# Figures 2, 3 and 4
+#############################
+
+# We load the library
+
+library(EnvStats)
+
+# We load the data
+
+raw_SNOMED_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_path_groups.csv"), sep=';', dec='.');
+raw_MeSH_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_MeSH_AnsSPL_path_groups.csv"), sep=';', dec='.');
+raw_GO_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_path_groups.csv"), sep=';', dec='.');
+
+# We define a variable with the available ontologies for the experiment
+
+ontologies <- c("SNOMED", "MeSH", "GO")
+
+# We extract the columns information 
+
+distances <- list(raw_SNOMED_AnsSPL_path_groups[,1], raw_MeSH_AnsSPL_path_groups[,1], raw_GO_AnsSPL_path_groups[,1])
+pairs <- list(raw_SNOMED_AnsSPL_path_groups[,2], raw_MeSH_AnsSPL_path_groups[,2], raw_GO_AnsSPL_path_groups[,2])
+overall_speeds <- list(raw_SNOMED_AnsSPL_path_groups[,3], raw_MeSH_AnsSPL_path_groups[,3], raw_GO_AnsSPL_path_groups[,3])
+average_speeds <- list(raw_SNOMED_AnsSPL_path_groups[,4], raw_MeSH_AnsSPL_path_groups[,4], raw_GO_AnsSPL_path_groups[,4])
+
+# We create a counter
+
+counter <- 1
+
+# We create the figures for each type of experiment
+
+for (ontology in ontologies) 
+{
+    # We plot the average speed / distance
+    d <- distances$counter
+    d <- distances[[counter]]
+    setEPS()
+    postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
+    plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
+         ylab="Average speed",
+         xlab="Distance between MeSH nodes",
+         main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
+    
+    grid(NULL,NULL,lty=6)
+    dev.off()
+    
+    # We plot the overall time / distance
+    
+    setEPS()
+    postscript(paste(outputDir,"figure_", ontology, "_overall_scal.eps", sep=""))
+    plot(distances[[counter]], overall_speeds[[counter]], type="l", lwd=1,
+         ylab="Overall running time",
+         xlab="Distance between MeSH nodes",
+         main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
+    grid(NULL,NULL,lty=6)
+    dev.off()
+    
+    counter <- counter + 1
+}
+
+#############################
+# Figures 5 and 6
+#############################
+
+# We load the data
+
+raw_AnsSPL_SNOMED_statisticalData <- read.csv(paste(inputDir, sep = "", "raw_AnsSPL_SNOMED_statisticalData_test.csv"), sep=';', dec='.');
+raw_AnsSPL_GO_statisticalData <- read.csv(paste(inputDir, sep = "", "raw_AnsSPL_GO_statisticalData_test.csv"), sep=';', dec='.');
+
+# We compute the AncSPL distance error function
+
+error_SNOMED <- raw_AnsSPL_SNOMED_statisticalData[,4]-raw_AnsSPL_SNOMED_statisticalData[,3];
+error_GO <- raw_AnsSPL_GO_statisticalData[,4]-raw_AnsSPL_GO_statisticalData[,3];
+
+# We plot the Empirical Cumulative Distribution Function
+# and save it into a EPS file
+
+setEPS()
+postscript(paste(outputDir, sep="","figure_SNOMED_stat.eps"))
+
+ecdfPlot(error_SNOMED, discrete=TRUE, axes=FALSE,
+         xlab="Signed AncSPL length error in number of edges (1000 random samples)",
+         main="Cumulative Distribution Function for the AncSPL error in SNOMED-CT")
+
+axis(side = 1,at = 0:max(error_SNOMED))
+axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
+grid(NULL,NULL,lty=6)
+dev.off()
+
+
+setEPS()
+postscript(paste(outputDir, sep="","figure_GO_stat.eps"))
+
+ecdfPlot(error_GO, discrete=TRUE, axes=FALSE,
+         xlab="Signed AncSPL length error in number of edges (1000 random samples)",
+         main="Cumulative Distribution Function for the AncSPL error in GO")
+
+axis(side = 1,at = 0:max(error_GO))
+axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
+grid(NULL,NULL,lty=6)
+dev.off()

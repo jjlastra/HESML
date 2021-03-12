@@ -1,0 +1,15 @@
+\begin{table}[h!]
+\centering
+\caption{Average speed in CUI concept pairs per second for the evaluation of random CUI pairs with three representative ontology-based similarity measures based on the MeSH ontology (Nov, 2019. 59747 nodes) implemented by the three UMLS-based semantic measures libraries reported in the literature. Best performing values are shown in bold. Non-implemented methods (---). \hl{The number of random CUI pairs evaluated to measure each value is shown between parentheses.}} 
+\label{tab:mesh_results}
+\begin{tabular}{lp{1.6cm}p{1.4cm}p{1.5cm}}
+  \hline
+Similarity measure & \makecell[c]{\underline{UMLS::Sim} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{SML} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{HESML} \\ Avg. speed \\ (pairs/sec)} \\ 
+  \hline
+Rada \cite{Rada1989-cv} & \hl{28.76} (15) & \hl{0.094} (15) & \hl{\textbf{418361}}$(10^7)$ \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & --- & --- & \hl{\textbf{471311}}$(10^7)$ \\ 
+  Lin-Seco \cite{Lin1998-pm, Seco2004-fd} & \hl{131.58} (500) & \hl{388815}$(10^7)$ & \hl{\textbf{562189}}$(10^7)$ \\ 
+  Wu-Palmer$_{fast}$ \cite{Wu1994-hh} & \hl{20.25} (15) & --- & \hl{\textbf{489966}}$(10^7)$ \\ 
+   \hline
+\end{tabular}
+\end{table}
