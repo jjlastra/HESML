@@ -245,8 +245,8 @@ table9[1,9] = round(rawdata_Rada_MedSTS[7,5] / mean(rawdata_Rada_MedSTS[1:5,5]),
 table9[2,1] = "AnsSPLRada";
 # table9[2,2] = "edge-counting";
 
-table9[2,2] = round(rawdata_AncSPLRada_MedSTS[6,2] / mean(rawdata_AncSPLRada_MedSTS[1:5,2]), digits = 3)
-table9[2,3] = round(rawdata_AncSPLRada_MedSTS[7,2] / mean(rawdata_AncSPLRada_MedSTS[1:5,2]), digits = 3)
+table9[2,2] = "---";
+table9[2,3] = "---";
 
 table9[2,4] = "---";
 table9[2,5] = "---";
