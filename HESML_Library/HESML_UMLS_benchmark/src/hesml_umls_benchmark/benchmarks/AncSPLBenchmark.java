@@ -218,7 +218,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     
     /**
      * This function generates a vector of random concept pairs which
-     * will be used to evaluate the performance of the libraeries.
+     * will be used to evaluate the performance of the libraries.
      * @param taxonomy
      * @param nPairs
      * @return 
@@ -230,7 +230,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     {
         // We create the random SNOMED pairs
         
-        IVertex[][] randomPairs = new IVertex[nPairs][2];
+        IVertex[][] snomedNodePairs = new IVertex[nPairs][2];
         
         // We create a ranodm number
         
@@ -238,7 +238,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We get the number of concepts in the SNOMED taxonomy
         
-        int nSnomedConcepts = taxonomy.getVertexes().getCount();
+        double nSnomedConcepts = taxonomy.getVertexes().getCount();
         
         // We generate the ranomdon node pairs
         
@@ -246,12 +246,18 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         {
             for (int j = 0; j < 2; j++)
             {
-                randomPairs[i][j] = taxonomy.getVertexes().getAt(rand.nextInt(nSnomedConcepts));
+                // We generate a random index in the overall vertex coleccion
+                
+                int randomIndex = (int)(rand.nextDouble() * (nSnomedConcepts - 1));
+                
+                // We retrieve the vertexes at the index position
+                
+                snomedNodePairs[i][j] = taxonomy.getVertexes().getAt(randomIndex);
             }
         }
         
         // We return the output
         
-        return (randomPairs);
+        return (snomedNodePairs);
     }
 }
