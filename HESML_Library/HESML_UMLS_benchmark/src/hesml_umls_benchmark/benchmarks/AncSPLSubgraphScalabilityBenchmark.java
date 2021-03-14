@@ -29,17 +29,18 @@ import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml_umls_benchmark.IBioLibraryExperiment;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
-import hesml_umls_benchmark.IBioLibraryExperiment;
 
 /**
- * This class implements the scalability benchmark for the AncSPL algorithm.
+ * This class implements an experiment to evaluate the scalability of the AncSPL algortihm
+ * with regards to the number of ancestor nodes used by the AncSPL algorithm
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
+class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
 {
     /**
      * SNOMED-CT ontology
@@ -75,7 +76,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
      * @param strSNOMED_CUI_mappingfilename 
      */
     
-    AncSPLScalabilityBenchmark(
+    AncSPLSubgraphScalabilityBenchmark(
             String  strSnomedDir,
             String  strSnomedDBconceptFileName,
             String  strSnomedDBRelationshipsFileName,
@@ -109,7 +110,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
      * @param strSNOMED_CUI_mappingfilename 
      */
     
-    AncSPLScalabilityBenchmark(
+    AncSPLSubgraphScalabilityBenchmark(
             String  strMeSHXmlFilename,
             String  strUmlsDir,
             String  strSNOMED_CUI_mappingfilename) throws Exception
@@ -134,7 +135,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
      * @param strGoOntologyFilename 
      */
     
-    AncSPLScalabilityBenchmark(
+    AncSPLSubgraphScalabilityBenchmark(
             String  strGoOntologyFilename) throws Exception
     {
         // We init the unused ontologies
@@ -150,7 +151,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         m_taxonomy = m_goOntology.getTaxonomy();
     }
-        
+    
     /**
      * This function releases all resources used in the experiment
      */
@@ -164,76 +165,12 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * This function builds a matrix of vertexes ordered by their depth max value.
-     * Each row contains all vertexes with the same depth-max value
-     * @return 
-     */
-    
-    private IVertex[][] getVertexesByDepthMax() throws Exception
-    {
-        // We create the collection sorted by depth-max value
-        
-        TreeMap<Integer, ArrayList<IVertex>>  vertexGroupsByDepthMaxValue = new TreeMap<>();
-        
-        // We traverse the SNOMED-CT taxonomy
-        
-        for (IVertex vertex : m_taxonomy.getVertexes())
-        {
-            // We get the depth-max value
-            
-            int depthMax = vertex.getDepthMax();
-            
-            // We retrieve the collection of vertexes with the same depth-max value
-            
-            if (!vertexGroupsByDepthMaxValue.containsKey(depthMax))
-            {
-                vertexGroupsByDepthMaxValue.put(depthMax, new ArrayList<>());
-            }
-            
-            ArrayList<IVertex> vertexes = vertexGroupsByDepthMaxValue.get(depthMax);
-            
-            // We register the vertex in the list of its corresponding group
-            
-            vertexes.add(vertex);
-        }
-        
-        // We create the output matrix
-        
-        IVertex[][] depthVertexGroups = new IVertex[vertexGroupsByDepthMaxValue.size()][];
-        
-        // We copy the vertexes to the matrix
-        
-        int i = 0;
-        
-        for (Integer depthMaxvalue : vertexGroupsByDepthMaxValue.keySet())
-        {
-            // We get the vertex list for the current depth-max value
-            
-            ArrayList<IVertex> vertexes = vertexGroupsByDepthMaxValue.get(depthMaxvalue);
-            
-            // We copy the vertexes to the array
-            
-            depthVertexGroups[i++] = vertexes.toArray(new IVertex[vertexes.size()]);
-            
-            // We release the vertex list
-            
-            vertexes.clear();
-        }
-        
-        // We release the sorted list
-        
-        vertexGroupsByDepthMaxValue.clear();
-        
-        // We return the result
-        
-        return (depthVertexGroups);
-    }
-    
-    /**
-     * This function computes a collections of groups of Snomedpairs
+     * This function generates a large collection of vertex pairs grouped b the number
+     * of ancestor nodes used by the AncSPL algorithm.
      */
   
-    private TreeMap<Integer, ArrayList<VertexPair>> computeConceptGroups() throws Exception
+    private TreeMap<Integer, ArrayList<VertexPair>> computeConceptGroups(
+        int overallSamples) throws Exception
     {
         // We initialize the collections of groups of concept pairs indexed by their
         // AncSPL distance
@@ -248,6 +185,10 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         IVertexList vertexes = m_taxonomy.getVertexes();
         
+        // We get the overall number of vertexes in the taxonomy
+        
+        int nVertexes = vertexes.getCount();
+        
         // We generate random concept pairs to populate the collection of groups
         // In order to generate a more uniform distribution regarding to the
         // distance between vertex pairs (SNOMED-CT concePTS), first we group
@@ -255,29 +196,30 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         // and then, we randomly select two vertexes from two randomly
         // selected depth-based groups.
         
-        int overallSamples = 10000000;
-        
         for (int i = 0; i < overallSamples; i++)
         {
             // We obtain a pair of random vertexes
             
-            IVertex source = vertexes.getAt(rand.nextInt(vertexes.getCount()));
-            IVertex target = vertexes.getAt(rand.nextInt(vertexes.getCount()));
+            IVertex source = vertexes.getAt(rand.nextInt(nVertexes));
+            IVertex target = vertexes.getAt(rand.nextInt(nVertexes));
             
-            // We evaluate thie AncSPL distance
+            // We evaluate the dimension of the subgraph used by the AncSPL algorithm
             
-            int ancSplDistance = (int) source.getFastShortestPathDistanceTo(target, false);
+            int ancSplSubgraphDimension = (int) source.getAncSPLSubgraphDimension(target);
             
             // We retrieve the group for this distance
             
-            if (!groupedConceptPairs.containsKey(ancSplDistance))
+            if (ancSplSubgraphDimension > 0)
             {
-                groupedConceptPairs.put(ancSplDistance, new ArrayList<>());
+                if (!groupedConceptPairs.containsKey(ancSplSubgraphDimension))
+                {
+                    groupedConceptPairs.put(ancSplSubgraphDimension, new ArrayList<>());
+                }
+
+                ArrayList<VertexPair> group = groupedConceptPairs.get(ancSplSubgraphDimension);
+
+                group.add(new VertexPair(ancSplSubgraphDimension, source, target));
             }
-            
-            ArrayList<VertexPair> group = groupedConceptPairs.get(ancSplDistance);
-            
-            group.add(new VertexPair(ancSplDistance, source, target));
         }
         
         // We return the result
@@ -286,9 +228,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * This function evaluates the AncSPL for each group of SNOMED-CT concept pairs
-     * and generates the output raw data file containing the overall
-     * running time for each distance group.
+     * This function runs the experiment.
      * @param strOutputRawDataFilename 
      */
     
@@ -298,7 +238,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
     {
         // We compute the groups of concepts
         
-        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups();
+        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(50000000);
         
         // We create the output file wit the following format
         // Pair distance | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
@@ -307,7 +247,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
         
         // We insert the headers
         
-        strOutputMatrix[0][0] = "Distance";
+        strOutputMatrix[0][0] = "# Ancestors nodes";
         strOutputMatrix[0][1] = "# pairs";
         strOutputMatrix[0][2] = "Overall time (secs)";
         strOutputMatrix[0][3] = "Avg speed (concept pairs/secs)";
@@ -325,14 +265,14 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
             // Debug message
             
             System.out.println("Evaluating the distance-based group " + (iGroup + 1)
-                    + "of " + groupedConceptPairs.size());
+                    + " of " + groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
             // Thus, we define the minimum number of evaluations in decreasing
             // order regading to the pair distance.
             
-            double minSamples = 1000;
+            double minSamples = 200000;
             
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
@@ -343,7 +283,7 @@ class AncSPLScalabilityBenchmark implements IBioLibraryExperiment
             
             long stopWatch = System.currentTimeMillis();
             
-            // We evaluate the distance for all vertex pairs in the sam group
+            // We evaluate the distance for all vertex pairs in the same group
             
             for (int i = 0; i < reps; i++)
             {

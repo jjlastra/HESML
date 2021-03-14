@@ -311,6 +311,61 @@ public class BenchmarkFactory
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
+
+    /**
+     * This function creates an instance of the AncSPL subgraph scalability benchmark for SNOMED-CT
+     * @param strSnomedDir
+     * @param strSnomedDBconceptFileName
+     * @param strSnomedDBRelationshipsFileName
+     * @param strSnomedDBdescriptionFileName
+     * @param strUmlsDir
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createSnomedAncSPLSubgraphScalabilityBenchmark(
+            String  strSnomedDir,
+            String  strSnomedDBconceptFileName,
+            String  strSnomedDBRelationshipsFileName,
+            String  strSnomedDBdescriptionFileName,
+            String  strUmlsDir,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLSubgraphScalabilityBenchmark(strSnomedDir, strSnomedDBconceptFileName,
+                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
+                strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
+    
+    /**
+     * This function creates an instance of the AncSPL subgraph scalability benchmark for MeSH
+     * @param strXmlMSHfilename 
+     * @param strUmlsDir 
+     * @param strSNOMED_CUI_mappingfilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createMeSHAncSPLSubgraphScalabilityBenchmark(
+            String  strXmlMSHfilename,
+            String  strUmlsDir,
+            String  strSNOMED_CUI_mappingfilename) throws Exception
+    {
+        return (new AncSPLSubgraphScalabilityBenchmark(strXmlMSHfilename, strUmlsDir, strSNOMED_CUI_mappingfilename));
+    }
+    
+    /**
+     * This function creates an instance of the AncSPL subgraph scalability benchmark for GO
+     * @param strGoOntologyFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createGoAncSPLSubgraphScalabilityTest(
+            String  strGoOntologyFilename) throws Exception
+    {
+        return (new AncSPLScalabilityBenchmark(strGoOntologyFilename));
+    }
     
     /**
      * This funcion creates an istance of the AncSPL scalability benchmark for MeSH
@@ -380,30 +435,5 @@ public class BenchmarkFactory
             String  strOboOntology) throws Exception
     {
         return (new AncSPLStatisticalBenchmark(strOboOntology));
-    }
-    
-    /**
-     * This function creates an instance of the AncSPL complexity benchmark.
-     * @param strSnomedDir
-     * @param strSnomedDBconceptFileName
-     * @param strSnomedDBRelationshipsFileName
-     * @param strSnomedDBdescriptionFileName
-     * @param strUmlsDir
-     * @param strSNOMED_CUI_mappingfilename
-     * @return
-     * @throws Exception 
-     */
-    
-    public static IBioLibraryExperiment createAncSPLComplexityBenchmark(
-            String  strSnomedDir,
-            String  strSnomedDBconceptFileName,
-            String  strSnomedDBRelationshipsFileName,
-            String  strSnomedDBdescriptionFileName,
-            String  strUmlsDir,
-            String  strSNOMED_CUI_mappingfilename) throws Exception
-    {
-        return (new AncSPLComplexityBenchmark(strSnomedDir, strSnomedDBconceptFileName,
-                strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
-                strUmlsDir, strSNOMED_CUI_mappingfilename));
     }
 }

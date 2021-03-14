@@ -23,12 +23,13 @@ package hesml_umls_benchmark.benchmarks;
 import hesml.taxonomy.IVertex;
 
 /**
- * This inteface represents a pair of SNOMED-CT concepts which are
- * separated a specific distance value obtaned by the AncSPL algorithm
+ * This inteface represents a pair of vertex corresponding to rwo
+ * concepts which are separated a specific distance value, o
+ * subgraph dimension
  * @author Juan J. Lastra-Díaz (jlastra@invi.uned.es)
  */
 
-class SnomedConceptPair
+class VertexPair
 {
     /**
      * Distance between source and target concept
@@ -50,7 +51,7 @@ class SnomedConceptPair
      * @param targteConceptId 
      */
     
-    SnomedConceptPair(
+    VertexPair(
             double  ancSplDistance,
             IVertex sourceConceptVertex,
             IVertex targetConceptVertex)

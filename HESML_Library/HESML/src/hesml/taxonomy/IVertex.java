@@ -244,6 +244,17 @@ public interface IVertex extends Comparable<IVertex>
     double getFastShortestPathDistanceTo(
             IVertex     target,
             boolean     weighted) throws Exception;
+    
+    /**
+     * This function returns the number of taxonomy nodes used by the AncSPL
+     * algortihm in the computation of the shortest-path between this node
+     * and the target node.
+     * @param target
+     * @return 
+     */
+    
+    int getAncSPLSubgraphDimension(
+            IVertex target) throws Exception;
 
     /**
      * This function computes the distance field from the current vertex
