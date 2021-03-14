@@ -173,7 +173,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         int overallSamples) throws Exception
     {
         // We initialize the collections of groups of concept pairs indexed by their
-        // AncSPL distance
+        // AncSPL subgraphDimension
         
         TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = new TreeMap<>();
         
@@ -191,7 +191,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         // We generate random concept pairs to populate the collection of groups
         // In order to generate a more uniform distribution regarding to the
-        // distance between vertex pairs (SNOMED-CT concePTS), first we group
+        // subgraphDimension between vertex pairs (SNOMED-CT concePTS), first we group
         // all ontology vertxes into collections with the same depth-max value,
         // and then, we randomly select two vertexes from two randomly
         // selected depth-based groups.
@@ -207,7 +207,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             int ancSplSubgraphDimension = (int) source.getAncSPLSubgraphDimension(target);
             
-            // We retrieve the group for this distance
+            // We retrieve the group for this subgraphDimension
             
             if (ancSplSubgraphDimension > 0)
             {
@@ -241,38 +241,38 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(50000000);
         
         // We create the output file wit the following format
-        // Pair distance | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
+        // Pair subgraphDimension | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
         
         String[][] strOutputMatrix = new String[1 + groupedConceptPairs.size()][4];
         
         // We insert the headers
         
-        strOutputMatrix[0][0] = "# Ancestors nodes";
-        strOutputMatrix[0][1] = "# pairs";
+        strOutputMatrix[0][0] = "# Subgraph dimension";
+        strOutputMatrix[0][1] = "# concept pairs";
         strOutputMatrix[0][2] = "Overall time (secs)";
-        strOutputMatrix[0][3] = "Avg speed (concept pairs/secs)";
+        strOutputMatrix[0][3] = "Avg time (time/concept pair)";
         
-        // We evaluate the AncSPL distance for all vertex pairs with the same distance
+        // We evaluate the AncSPL subgraphDimension for all vertex pairs with the same subgraphDimension
         
         int iGroup = 1;
         
-        for (Integer distance : groupedConceptPairs.keySet())
+        for (Integer subgraphDimension : groupedConceptPairs.keySet())
         {
-            // We get the group of vertex pairs for the current distance
+            // We get the group of vertex pairs for the current subgraphDimension
             
-            ArrayList<VertexPair> group = groupedConceptPairs.get(distance);
+            ArrayList<VertexPair> group = groupedConceptPairs.get(subgraphDimension);
             
             // Debug message
             
-            System.out.println("Evaluating the distance-based group " + (iGroup + 1)
+            System.out.println("Evaluating the subgraph-based group " + (iGroup + 1)
                     + " of " + groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
-            // Thus, we define the minimum number of evaluations in decreasing
-            // order regading to the pair distance.
+            // Thus, we define the minumum number of evaluations regarding to
+            // the dimension of the subgraph
             
-            double minSamples = 200000;
+            double minSamples = 10e06 / (double) subgraphDimension;
             
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
@@ -283,7 +283,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             long stopWatch = System.currentTimeMillis();
             
-            // We evaluate the distance for all vertex pairs in the same group
+            // We evaluate the subgraphDimension for all vertex pairs in the same group
             
             for (int i = 0; i < reps; i++)
             {
@@ -302,10 +302,10 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             long overallpairEvaluations = reps * group.size();
             
-            strOutputMatrix[iGroup][0] = Integer.toString(distance);
+            strOutputMatrix[iGroup][0] = Integer.toString(subgraphDimension);
             strOutputMatrix[iGroup][1] = Long.toString(overallpairEvaluations);
             strOutputMatrix[iGroup][2] = Double.toString(timeEllapsedSecs);
-            strOutputMatrix[iGroup++][3] = Double.toString(overallpairEvaluations / timeEllapsedSecs);
+            strOutputMatrix[iGroup++][3] = Double.toString(timeEllapsedSecs / overallpairEvaluations);
         }
         
         // We release all groups
