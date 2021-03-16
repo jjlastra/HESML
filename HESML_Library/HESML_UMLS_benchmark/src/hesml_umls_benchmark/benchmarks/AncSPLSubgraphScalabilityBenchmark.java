@@ -209,7 +209,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             // We retrieve the group for this subgraphDimension
             
-            if (ancSplSubgraphDimension > 0)
+            if ((ancSplSubgraphDimension > 0) && (ancSplSubgraphDimension <= 100))
             {
                 if (!groupedConceptPairs.containsKey(ancSplSubgraphDimension))
                 {
@@ -238,7 +238,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     {
         // We compute the groups of concepts
         
-        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(100000000);
+        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(50000000);
         
         // We create the output file wit the following format
         // Pair subgraphDimension | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
@@ -337,8 +337,8 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         // We set the minimum samples count
         
         if (m_meshOntology != null) minSamples = 1e09;
-        else if (m_snomedOntology != null) minSamples = 1e06;
-        else minSamples = 1e07;
+        else if (m_snomedOntology != null) minSamples = 200000;
+        else minSamples = 300000;
         
         // We return the result
         

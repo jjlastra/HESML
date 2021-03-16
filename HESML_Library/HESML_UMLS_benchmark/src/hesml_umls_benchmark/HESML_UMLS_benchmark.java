@@ -763,16 +763,6 @@ public class HESML_UMLS_benchmark
     private static void RunAncSPLSubgraphScalabilityExperiments(
         String  strRawOutputDir) throws Exception
     {
-        // We create and evaluate the banchmark for MeSH
-        
-        IBioLibraryExperiment meshBenchmark = BenchmarkFactory.createMeSHAncSPLSubgraphScalabilityBenchmark(
-                                                m_strMeSHdir + "/" + m_strMeSHXmlFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
-        
-        
-        meshBenchmark.run(strRawOutputDir + "/" + "raw_MeSH_AnsSPL_subgraph_groups.csv");
-        meshBenchmark.clear();
-        
         // We create and evaluate the banchmark for SNOMED-CT
         
         IBioLibraryExperiment snomedBenchmark = BenchmarkFactory.createSnomedAncSPLSubgraphScalabilityBenchmark(

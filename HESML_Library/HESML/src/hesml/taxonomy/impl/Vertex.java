@@ -1063,7 +1063,9 @@ class Vertex implements IVertex
             IVertex     target,
             boolean     weighted) throws Exception
     {
-        double  distance;    // Returned value
+        // We initialize the output
+        
+        double  distance = Double.POSITIVE_INFINITY;
         
         // We check for identical target
         
@@ -1081,49 +1083,34 @@ class Vertex implements IVertex
 
             boolean cachedAncestors = (m_CachedAncestorSet != null);
 
+            // We obtain the ancestor set of both vertexes
+
+            Set<IVertex> targetAncestors = cachedAncestors ?
+                                        ((Vertex)target).getCachedAncestorSet()
+                                        : m_Taxonomy.getUnorderedAncestorSet(target);
+
+            Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                                        : m_Taxonomy.getUnorderedAncestorSet(this);
+            
             // We compute a subgraoh containing most of paths between
             // the current vertex and the target
 
-            if (isMyDescendant(target))
+            if (targetAncestors.contains(this))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
 
-                Set<IVertex> targetAncestors = cachedAncestors ?
-                                        ((Vertex)target).getCachedAncestorSet()
-                                        : m_Taxonomy.getUnorderedAncestorSet(target);
-
                 computeDistanceFieldOnSubgraph(targetAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                if (!cachedAncestors) targetAncestors.clear();
             }
-            else if (target.isMyDescendant(this))
+            else if (sourceAncestors.contains(target))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
 
-                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(this);
-
                 computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                if (!cachedAncestors) sourceAncestors.clear();
             }
             else
             {
-                // We obtain the ancestor set of both vertexes
-
-                Set<IVertex> targetAncestors = cachedAncestors ?
-                                            ((Vertex)target).getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(target);
-
-                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(this);
-
                 // We merge both ancestor sets to buld the subgraph
 
                 HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
@@ -1133,18 +1120,20 @@ class Vertex implements IVertex
 
                 // // We destroy the ancestor sets if they were obtained on-the-fly
 
-                if (!cachedAncestors)
-                {
-                    targetAncestors.clear();
-                    sourceAncestors.clear();
-                }
-
                 mergeSubgraph.clear();
             }
 
             // We get the shortest distance until the target vertex
 
             distance = target.getMinDistance();
+            
+            // We destroy the ancestor set if it was obtained on-the-fly
+
+            if (!cachedAncestors)
+            {
+                sourceAncestors.clear();
+                targetAncestors.clear();
+            }
         }
         
         // We return the result
@@ -1176,81 +1165,36 @@ class Vertex implements IVertex
 
             boolean cachedAncestors = (m_CachedAncestorSet != null);
             
+            // We retrieve the inclusive and unordered ancestor sets
+            // of the input vertexes
+
+            Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(this);
+
+            Set<IVertex> targetAncestors = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(target);
+
             // We check if the taxonomy is a tree, in whose case AncSPL will use the LCS node
             
             if (m_Taxonomy.isTreeLike())
             {
-                // We retrieve the inclusive and unordered ancestor sets
-                // of the input vertexes
-
-                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                                : m_Taxonomy.getUnorderedAncestorSet(this);
-
-                Set<IVertex> targetAncestors = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
-                                                : m_Taxonomy.getUnorderedAncestorSet(target);
-
-                // We obtain the dimension of the subgraph
-
                 subgraphCount = targetAncestors.size() * sourceAncestors.size();
-                
-                // We reset the visited sets
-
-                if (!cachedAncestors)
-                {
-                    sourceAncestors.clear();
-                    targetAncestors.clear();
-                }
             }
             else
             {
-
                 // We compute a subgraoh containing most of paths between
                 // the current vertex and the target
 
-                if (isMyDescendant(target))
+                if (targetAncestors.contains(this))
                 {
-                    // We compute the shortes-path constrained to the ancestor set
-                    // of the target vertex, which includes this vertex
-
-                    Set<IVertex> targetAncestors = cachedAncestors ?
-                                            ((Vertex)target).getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(target);
-
-                    // We obtain the dimension of the subgraph
-
                     subgraphCount = targetAncestors.size();
-
-                    // We destroy the ancestor set if it was obtained on-the-fly
-
-                    if (!cachedAncestors) targetAncestors.clear();
                 }
-                else if (target.isMyDescendant(this))
+                else if (sourceAncestors.contains(target))
                 {
-                    // We compute the shortes-path constrained to the ancestor set
-                    // of this vertex, which includes the target vertex
-
-                    Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                                : m_Taxonomy.getUnorderedAncestorSet(this);
-
-                    // We obtain the dimension of the subgraph
-
                     subgraphCount = sourceAncestors.size();
-
-                    // We destroy the ancestor set if it was obtained on-the-fly
-
-                    if (!cachedAncestors) sourceAncestors.clear();
                 }
                 else
                 {
-                    // We obtain the ancestor set of both vertexes
-
-                    Set<IVertex> targetAncestors = cachedAncestors ?
-                                                ((Vertex)target).getCachedAncestorSet()
-                                                : m_Taxonomy.getUnorderedAncestorSet(target);
-
-                    Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                                : m_Taxonomy.getUnorderedAncestorSet(this);
-
                     // We merge both ancestor sets to buld the subgraph
 
                     HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
@@ -1260,16 +1204,18 @@ class Vertex implements IVertex
 
                     subgraphCount = mergeSubgraph.size();
 
-                    // // We destroy the ancestor sets if they were obtained on-the-fly
-
-                    if (!cachedAncestors)
-                    {
-                        targetAncestors.clear();
-                        sourceAncestors.clear();
-                    }
+                    // We destroy the ancestor merged set if they were obtained on-the-fly
 
                     mergeSubgraph.clear();
                 }
+            }
+            
+            // We reset the visited sets
+
+            if (!cachedAncestors)
+            {
+                sourceAncestors.clear();
+                targetAncestors.clear();
             }
         }
         
