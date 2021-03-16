@@ -238,7 +238,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     {
         // We compute the groups of concepts
         
-        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(50000000);
+        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(100000000);
         
         // We create the output file wit the following format
         // Pair subgraphDimension | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
@@ -264,15 +264,15 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             // Debug message
             
-            System.out.println("Evaluating the subgraph-based group " + (iGroup + 1)
-                    + " of " + groupedConceptPairs.size());
+            System.out.println(getOntologyName() + " evaluating the subgraph-based group "
+                    + iGroup + " of " + groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
             // we adjust the number of pairs to be evaluated to the expexcted performance.
             // Thus, we define the minumum number of evaluations regarding to
             // the dimension of the subgraph
             
-            double minSamples = 10e06 / (double) subgraphDimension;
+            double minSamples = getMinSamplesPerOntology();
             
             // We compute the minimum number of repetitions to obtain at least
             // the number of pair evaluation samples 
@@ -322,5 +322,48 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         // We write the output file
         
         SemanticLibraryBenchmark.writeCSVfile(strOutputMatrix, strOutputRawDataFilename);
+    }
+    
+    /**
+     * Thisfucntion computes the minimum number of samples regarding the ontology
+     * being evaluated to set a prpoer time span for each time measurement.
+     * @return 
+     */
+    
+    private double getMinSamplesPerOntology()
+    {
+        double minSamples = 1e06;   // Output value
+        
+        // We set the minimum samples count
+        
+        if (m_meshOntology != null) minSamples = 1e09;
+        else if (m_snomedOntology != null) minSamples = 1e06;
+        else minSamples = 1e07;
+        
+        // We return the result
+        
+        return (minSamples);
+    }
+    
+    /**
+     * This function returns the name of the onotlogy being evaluated
+     * @return 
+     */
+    
+    private String getOntologyName()
+    {
+        // We initializae the output
+        
+        String strOntologyName = "";
+        
+        // We set the minimum samples count
+        
+        if (m_meshOntology != null) strOntologyName = "MeSH";
+        else if (m_snomedOntology != null) strOntologyName = "SNOMED-CT";
+        else strOntologyName = "GO";
+        
+        // We return the result
+        
+        return (strOntologyName);
     }
 }
