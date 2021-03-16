@@ -364,7 +364,7 @@ public class BenchmarkFactory
     public static IBioLibraryExperiment createGoAncSPLSubgraphScalabilityTest(
             String  strGoOntologyFilename) throws Exception
     {
-        return (new AncSPLScalabilityBenchmark(strGoOntologyFilename));
+        return (new AncSPLSubgraphScalabilityBenchmark(strGoOntologyFilename));
     }
     
     /**
