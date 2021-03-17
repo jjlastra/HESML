@@ -783,6 +783,17 @@ public class HESML_UMLS_benchmark
         
         goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
         goBenchmark.clear();
+        
+        // We create and evaluate the banchmark for MeSH
+        
+        IBioLibraryExperiment meshBenchmark = BenchmarkFactory.createMeSHAncSPLSubgraphScalabilityBenchmark(
+                                                m_strMeSHdir + "/" + m_strMeSHXmlFilename, 
+                                                m_strUMLSdir, 
+                                                m_strUmlsCuiMappingFilename);
+        
+        
+        meshBenchmark.run(strRawOutputDir + "/" + "raw_MeSH_AnsSPL_subgraph_groups.csv");
+        meshBenchmark.clear();
     }
             
     /**
