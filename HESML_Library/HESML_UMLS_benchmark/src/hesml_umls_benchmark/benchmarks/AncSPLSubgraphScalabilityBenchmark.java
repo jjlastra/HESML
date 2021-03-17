@@ -337,8 +337,8 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         // We set the minimum samples count
         
         if (m_meshOntology != null) minSamples = 1e09;
-        else if (m_snomedOntology != null) minSamples = 200000;
-        else minSamples = 300000;
+        else if (m_snomedOntology != null) minSamples = 50000;
+        else minSamples = 50000;
         
         // We return the result
         
