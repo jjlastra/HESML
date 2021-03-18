@@ -325,8 +325,8 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * Thisfucntion computes the minimum number of samples regarding the ontology
-     * being evaluated to set a prpoer time span for each time measurement.
+     * This function computes the minimum number of samples regarding the ontology
+     * being evaluated to set a proper time span for each time measurement.
      * @return 
      */
     
@@ -337,8 +337,8 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         // We set the minimum samples count
         
         if (m_meshOntology != null) minSamples = 1e08;
-        else if (m_snomedOntology != null) minSamples = 100000;
-        else minSamples = 100000;
+        else if (m_snomedOntology != null) minSamples = 500000;
+        else minSamples = 500000;
         
         // We return the result
         
@@ -346,7 +346,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     }
     
     /**
-     * This function returns the name of the onotlogy being evaluated
+     * This function returns the name of the ontology being evaluated
      * @return 
      */
     

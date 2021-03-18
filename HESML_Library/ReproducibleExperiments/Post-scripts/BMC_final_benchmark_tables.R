@@ -898,14 +898,16 @@ library(EnvStats)
 
 # We load the data
 
-raw_SNOMED_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_path_groups.csv"), sep=';', dec='.');
-raw_MeSH_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_MeSH_AnsSPL_path_groups.csv"), sep=';', dec='.');
-raw_GO_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_path_groups.csv"), sep=';', dec='.');
+raw_SNOMED_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
+raw_MeSH_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_MeSH_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
+raw_GO_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 
 # We define a variable with the available ontologies for the experiment
 
 ontologies <- c("SNOMED", "MeSH", "GO")
 
+raw_MeSH_AnsSPL_path_groups <- raw_SNOMED_AnsSPL_path_groups
+  
 # We extract the columns information 
 
 distances <- list(raw_SNOMED_AnsSPL_path_groups[,1], raw_MeSH_AnsSPL_path_groups[,1], raw_GO_AnsSPL_path_groups[,1])
@@ -921,9 +923,10 @@ counter <- 1
 
 for (ontology in ontologies) 
 {
+    average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
+    
     # We plot the average speed / distance
-    d <- distances$counter
-    d <- distances[[counter]]
+    
     setEPS()
     postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
     plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
@@ -936,14 +939,14 @@ for (ontology in ontologies)
     
     # We plot the overall time / distance
     
-    setEPS()
-    postscript(paste(outputDir,"figure_", ontology, "_overall_scal.eps", sep=""))
-    plot(distances[[counter]], overall_speeds[[counter]], type="l", lwd=1,
-         ylab="Overall running time",
-         xlab="Distance between MeSH nodes",
-         main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
-    grid(NULL,NULL,lty=6)
-    dev.off()
+    # setEPS()
+    # postscript(paste(outputDir,"figure_", ontology, "_overall_scal.eps", sep=""))
+    # plot(distances[[counter]], overall_speeds[[counter]], type="l", lwd=1,
+    #      ylab="Overall running time",
+    #      xlab="Distance between MeSH nodes",
+    #      main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
+    # grid(NULL,NULL,lty=6)
+    # dev.off()
     
     counter <- counter + 1
 }
