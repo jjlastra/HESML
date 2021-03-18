@@ -142,6 +142,7 @@ public class HESML_UMLS_benchmark
         // We intialize the stopwatch
         
         long startTime = System.currentTimeMillis();
+        long stoptime = 0L;
         
         /**
          * Experiment 1: we compare the performance of the `HESML, SML and
@@ -149,13 +150,20 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the SNOMED-CT US ontology.
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("------Starting RunRandomConceptsExperiment---");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);*/
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 1 = "
+            + ((stoptime - startTime) / 1000.0));
 
         /**
          * Experiment 2: we compare the performance of the HEMSL, SML and
@@ -163,52 +171,80 @@ public class HESML_UMLS_benchmark
          * of randomly generated UMLS concept pairs using the MeSH ontology.
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("------Starting RunRandomConceptsExperiment2--");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);*/
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 2 = "
+            + ((stoptime - startTime) / 1000.0));
 
         /**
          * Experiment 3: we compare the performance of HESML and SML on
          * the Gene Ontology (GO).
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("----Starting RunRandomGOConceptsExperiment---");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomGOConceptsExperiment(strOutputDir);*/
+//        RunRandomGOConceptsExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 3 = "
+            + ((stoptime - startTime) / 1000.0));
         
         /**
          * Experiment 4: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("Starting RunSnomedAncSPLCorrelationExperiment");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunSnomedAncSPLCorrelationExperiment(strOutputDir);*/
+//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 4 = "
+            + ((stoptime - startTime) / 1000.0));
 
         /**
          * Experiment 5: we evaluate the approximation quality of the novel
          * Ancestor-based Shortest Path Length (AncSPL) algorithm.
          */
         
-/*        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("--Starting RunGoAncSPLCorrelationExperiment--");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunGoAncSPLCorrelationExperiment(strOutputDir);*/
+//        RunGoAncSPLCorrelationExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 5 = "
+            + ((stoptime - startTime) / 1000.0));
         
         /**
          * Experiment 6: scalability of the AncSPL algorithm with regards to
@@ -221,33 +257,54 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
+//        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 6 = "
+            + ((stoptime - startTime) / 1000.0));
 
         /**
          * Experiment 7: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("Starting RunSnomedAncSPLStatisticalExperiment");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSnomedAncSPLStatisticalExperiment(strOutputDir);*/
+//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 7 = "
+            + ((stoptime - startTime) / 1000.0));
 
         /**
          * Experiment 8: statistical benchmark of the AncSPL algorithm with regards to
          * the distance between SNOME-CT concepts
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("--Starting RunGoAncSPLStatisticalExperiment--");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunGoAncSPLStatisticalExperiment(strOutputDir);*/
+//        RunGoAncSPLStatisticalExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 8 = "
+            + ((stoptime - startTime) / 1000.0));
         
         /**
          * Experiment 9: we compare the performance of the HEMSL, SML and
@@ -255,30 +312,37 @@ public class HESML_UMLS_benchmark
          * dataset.
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("---Starting RunSentenceSimilarityExperiment--");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSentenceSimilarityExperiment(strOutputDir);*/
+        RunSentenceSimilarityExperiment(strOutputDir);
+        
+        // We show the overalll running time
+        
+        stoptime = System.currentTimeMillis();
+        
+        System.out.println("Overall running time (seconds) Experiment 9 = "
+            + ((stoptime - startTime) / 1000.0));
         
         /**
          * Experiment 10: comparison of two large GO annotated files describing
          * the proteins of the Homo Sapiens and Mus  MUsculus organisms.
          */
         
-        /*System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         System.out.println("------Starting RunLargeGOExperiment----------");
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunLargeGOExperiment(strOutputDir);*/
+//        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
-        long stoptime = System.currentTimeMillis();
+        stoptime = System.currentTimeMillis();
         
         System.out.println("Overall running time (seconds) = "
             + ((stoptime - startTime) / 1000.0));
@@ -784,7 +848,7 @@ public class HESML_UMLS_benchmark
         goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
         goBenchmark.clear();
     }
-            
+    
     /**
      * This function runs the statistical experiment for the AncSPL algorithm.
      * This benchmark computes the exact and approximated distance values for
@@ -871,10 +935,10 @@ public class HESML_UMLS_benchmark
             strOutputFilenames[i] = "raw_output_SNOMED_" + measureTypes[i][1] + "_exp4.csv";
         }
         
-        // We create a list of threads 
+        // We create a list of threads
         
         Thread[] threads = new Thread[measureTypes.length];
-
+        
         // We compare the correlation between two measures
         
         for (int i = 0; i < measureTypes.length; i++)
@@ -885,7 +949,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                1000, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                50, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);

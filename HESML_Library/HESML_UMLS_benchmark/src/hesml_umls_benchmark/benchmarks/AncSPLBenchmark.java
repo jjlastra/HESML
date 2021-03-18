@@ -204,7 +204,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
             
             // We show the progress
             
-            System.out.println((iPair + 1) + " of " + Integer.toString(randomVertexPairs.length) + " pairs)");
+            System.out.println((iPair + 1) + " of " + Integer.toString(randomVertexPairs.length) + " pairs.");
         }
         
         // We unload SNOMED taxonomy
