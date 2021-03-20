@@ -156,7 +156,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
         
         // We show the overalll running time
         
@@ -177,7 +177,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
         
         // We show the overalll running time
         
@@ -197,7 +197,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomGOConceptsExperiment(strOutputDir);
+        RunRandomGOConceptsExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -217,7 +217,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -237,7 +237,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-//        RunGoAncSPLCorrelationExperiment(strOutputDir);
+        RunGoAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -257,7 +257,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
+        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
         
         // We show the overalll running time
         
@@ -277,7 +277,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -297,7 +297,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunGoAncSPLStatisticalExperiment(strOutputDir);
+        RunGoAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -338,7 +338,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunLargeGOExperiment(strOutputDir);
+        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -949,7 +949,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                50, m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                1000, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);

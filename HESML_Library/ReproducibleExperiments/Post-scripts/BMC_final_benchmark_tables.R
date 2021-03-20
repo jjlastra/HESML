@@ -889,7 +889,7 @@ browseURL(paste(outputDir, sep="","table11.txt"))
 
 
 #############################
-# Figures 2, 3 and 4
+# Figures 2 and 3
 #############################
 
 # We load the library
@@ -898,22 +898,19 @@ library(EnvStats)
 
 # We load the data
 
-raw_SNOMED_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
-raw_MeSH_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_MeSH_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
-raw_GO_AnsSPL_path_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
+raw_SNOMED_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
+raw_GO_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 
 # We define a variable with the available ontologies for the experiment
 
-ontologies <- c("SNOMED", "MeSH", "GO")
-
-raw_MeSH_AnsSPL_path_groups <- raw_SNOMED_AnsSPL_path_groups
+ontologies <- c("SNOMED", "GO")
   
 # We extract the columns information 
 
-distances <- list(raw_SNOMED_AnsSPL_path_groups[,1], raw_MeSH_AnsSPL_path_groups[,1], raw_GO_AnsSPL_path_groups[,1])
-pairs <- list(raw_SNOMED_AnsSPL_path_groups[,2], raw_MeSH_AnsSPL_path_groups[,2], raw_GO_AnsSPL_path_groups[,2])
-overall_speeds <- list(raw_SNOMED_AnsSPL_path_groups[,3], raw_MeSH_AnsSPL_path_groups[,3], raw_GO_AnsSPL_path_groups[,3])
-average_speeds <- list(raw_SNOMED_AnsSPL_path_groups[,4], raw_MeSH_AnsSPL_path_groups[,4], raw_GO_AnsSPL_path_groups[,4])
+distances <- list(raw_SNOMED_AnsSPL_subgraph_groups[,1], raw_GO_AnsSPL_subgraph_groups[,1])
+pairs <- list(raw_SNOMED_AnsSPL_subgraph_groups[,2], raw_GO_AnsSPL_subgraph_groups[,2])
+overall_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,3], raw_GO_AnsSPL_subgraph_groups[,3])
+average_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,4], raw_GO_AnsSPL_subgraph_groups[,4])
 
 # We create a counter
 
@@ -923,6 +920,8 @@ counter <- 1
 
 for (ontology in ontologies) 
 {
+    # We calculate the average speeds in microseconds (*10e6)
+  
     average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
     
     # We plot the average speed / distance
@@ -930,29 +929,18 @@ for (ontology in ontologies)
     setEPS()
     postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
     plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
-         ylab="Average speed",
-         xlab="Distance between MeSH nodes",
-         main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
+         ylab="Average running time of AncSPL (microseconds)",
+         xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
+         main="AncSPL running time regarding the dimension of the subgraph.")
     
     grid(NULL,NULL,lty=6)
     dev.off()
-    
-    # We plot the overall time / distance
-    
-    # setEPS()
-    # postscript(paste(outputDir,"figure_", ontology, "_overall_scal.eps", sep=""))
-    # plot(distances[[counter]], overall_speeds[[counter]], type="l", lwd=1,
-    #      ylab="Overall running time",
-    #      xlab="Distance between MeSH nodes",
-    #      main=paste("Scalability experiment for the AncSPL algorithm between ", ontology, " concepts", sep=""))
-    # grid(NULL,NULL,lty=6)
-    # dev.off()
     
     counter <- counter + 1
 }
 
 #############################
-# Figures 5 and 6
+# Figures 4 and 5
 #############################
 
 # We load the data
@@ -992,3 +980,4 @@ axis(side = 1,at = 0:max(error_GO))
 axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
 grid(NULL,NULL,lty=6)
 dev.off()
+
