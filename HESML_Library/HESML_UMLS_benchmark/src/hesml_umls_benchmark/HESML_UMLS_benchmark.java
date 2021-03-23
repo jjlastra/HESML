@@ -1078,7 +1078,7 @@ public class HESML_UMLS_benchmark
         
         // We create the benchmark and threads
         
-        IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[5];
+        IBioLibraryExperiment[] bioExperiments = new IBioLibraryExperiment[4];
         
         bioExperiments[0] = BenchmarkFactory.createLargeGOConceptBenchmark(GroupwiseSimilarityMeasureType.SimLP,
                             m_strGoOntologyFilename, strHomoSapiensGafFilename, strDogGafFilename);

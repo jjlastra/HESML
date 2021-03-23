@@ -205,7 +205,7 @@ public class AnnotateDataset
 
             for (int i = 0; i < sentences.size(); i++) 
             { 	
-                if(i%1000 == 0)
+                if(i%1000 == 0 || i < 500)
                     System.out.println("Annotating sentence: " + i + " pos: " + posSentence + " from dataset: " + strDatasetPath);
                 
                 // Annotate the sentences and add to the array
