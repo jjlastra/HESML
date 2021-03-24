@@ -1,0 +1,15 @@
+\begin{table}[h!]
+\centering
+\caption{\hl{Overall running time in seconds and average speed in protein pairs per second obtained by four groupwise GO-based similarity measures (GO (44509 nodes), 2020-05-02 version) implemented by HESML in the evaluation of the pairwise protein similarity between the Homo Sapiens and Canis lupus familiaris organisms. We used the 542193 and 120720 GO annotations for both organisms provided by the ``goa\_human.gaf" and ``go\_dog.gaf" files, respectively. Approximately $340 \times 10^6$ protein pairs and $33.5 \times 10^9$ GO-annotation pairs are compared.}} 
+\label{tab:large_go_results}
+\begin{tabular}{llll}
+   \hline \multicolumn{4}{l}{Pairwise protein comparison between two large organisms} \\  \hline
+Groupwise measure & Measure type & \makecell[c]{\underline{HESML} \\ Time (secs)} & \makecell[l]{Avg. speed \\ (prot. pairs/sec)} \\ 
+  \hline
+SimLP \cite{Gentleman2009-dc} & \makecell[l]{Common \\ ancestors \\ ratio} & 28243 & 12038 \\ 
+  SimUI \cite{Gentleman2009-dc} & \makecell[l]{Common \\ ancestor \\ max depth} & 31922 & 10651 \\ 
+  \makecell[l]{SimGIC-Seco \\ \cite{Pesquita2007-pv, Seco2004-fd}} & IC-based & 30754 & 11055 \\ 
+  \makecell[l]{BMA-Lin-Seco \\ \cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}} & IC-based & 7614 & 44655 \\ 
+   \hline
+\end{tabular}
+\end{table}

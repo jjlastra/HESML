@@ -1,0 +1,15 @@
+\begin{table}[h!]
+\centering
+\caption{Average speed in CUI concept pairs per second for the evaluation of random CUI pairs with three representative ontology-based similarity measures based on the SNOMED-CT US 2019AB ontology (357406 nodes) implemented by the three UMLS-based semantic measures libraries reported in the literature. Best performing values are shown in bold. Non-implemented methods (---) or more than 1 hour/pair (xxx). UMLS::Similarity uses caching for the shortest path computations. \hl{The number of random CUI pairs evaluated to measure each value is shown between parentheses.}} 
+\label{tab:snomed_results}
+\begin{tabular}{lp{1.5cm}p{1.4cm}p{1.4cm}}
+  \hline
+Similarity measure & \makecell[c]{\underline{UMLS::Sim} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{SML} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{HESML} \\ Avg. speed \\ (pairs/sec)} \\ 
+  \hline
+Rada \cite{Rada1989-cv} & \hl{\textbf{0.118}} (15) & xxx & \hl{0.032} (15) \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & --- & --- & \hl{\textbf{13318}}$(10^7)$ \\ 
+  Lin-Seco \cite{Lin1998-pm, Seco2004-fd} & \hl{0.72} (500) & \hl{181635}$(10^7)$ & \hl{\textbf{531756}}$(10^7)$ \\ 
+  Wu-Palmer$_{fast}$ \cite{Wu1994-hh} & \hl{0.034} (15) & --- & \hl{\textbf{479428}}$(10^7)$ \\ 
+   \hline
+\end{tabular}
+\end{table}
