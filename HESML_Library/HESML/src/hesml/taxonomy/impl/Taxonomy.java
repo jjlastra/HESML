@@ -198,6 +198,70 @@ class Taxonomy implements ITaxonomy
     }
     
     /**
+     * This fucntion returns the number of vertexes with more than one parent
+     * vertex in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public int getNumberOfVertexesWithMulitpleParents()
+    {
+        // We initialize the output
+        
+        int vertexesWithMultipleParents = 0;
+        
+        // We traverse the collection of vertexes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            if (vertex.getParentsCount() > 1) vertexesWithMultipleParents++;
+        }
+        
+        // We return the result
+        
+        return (vertexesWithMultipleParents);
+    }
+    
+    /**
+     * This function returns the size of the largest ancestor set for
+     * all vertexes in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public int getSizeOfLargestAncestorSet()
+    {
+        // We initialize the output
+        
+        int largestSize = 0;
+        
+        // We traverse the collection of vertexes searching for the
+        // largest ancestor set
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            // We check whether the taxonomy holds the cached ancestor set
+
+            Set<IVertex> ancestors = ((Vertex)vertex).getCachedAncestorSet();
+            
+            boolean cachedAncestors = (ancestors != null);
+
+            if (!cachedAncestors) ancestors = getUnorderedAncestorSet(vertex);
+
+            // We update the largest size
+            
+            largestSize = Math.max(largestSize, ancestors.size());
+            
+            // We release the ancestor set
+            
+            if (cachedAncestors) ancestors.clear();
+        }
+        
+        // We return the result
+        
+        return (largestSize);
+    }
+    /**
      * Remove all the objects and destroys the taxonomy.
      */
     

@@ -47,6 +47,22 @@ public interface ITaxonomy
     boolean isTreeLike();
     
     /**
+     * This function returns the size of the largest ancestor set for
+     * all vertexes in the taxonomy.
+     * @return 
+     */
+    
+    int getSizeOfLargestAncestorSet();
+    
+    /**
+     * This fucntion returns the number of vertexes with more than one parent
+     * vertex in the taxonomy.
+     * @return 
+     */
+    
+    int getNumberOfVertexesWithMulitpleParents();
+    
+    /**
      * This function returns the sum of the probability for
      * the leaf nodes.
      * @return The overall probability for the leaf nodes.
