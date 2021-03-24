@@ -496,7 +496,7 @@ kable_out <- kable(table6,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table6.html"))
-# browseURL(paste(outputDir, sep="","Table6.html"))
+browseURL(paste(outputDir, sep="","Table6.html"))
 
 # We load and browse Table 7 in the paper
 
@@ -505,7 +505,7 @@ kable_out <- kable(table7,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table7.html"))
-# browseURL(paste(outputDir, sep="","Table7.html"))
+browseURL(paste(outputDir, sep="","Table7.html"))
 
 # We load and browse Table 8 in the paper
 
@@ -514,7 +514,7 @@ kable_out <- kable(table8,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table8.html"))
-# browseURL(paste(outputDir, sep="","Table8.html"))
+browseURL(paste(outputDir, sep="","Table8.html"))
 
 # We load and browse Table 9 in the paper
 
@@ -523,7 +523,7 @@ kable_out <- kable(table9,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table9.html"))
-# browseURL(paste(outputDir, sep="","Table9.html"))
+browseURL(paste(outputDir, sep="","Table9.html"))
 
 # We load and browse Table 10 in the paper
 
@@ -532,14 +532,14 @@ kable_out <- kable(table10,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
-# browseURL(paste(outputDir, sep="","Table10.html"))
+browseURL(paste(outputDir, sep="","Table10.html"))
 
 kable_out <- kable(table11,
                    caption = caption_table11,
                    format = "html")
 
 readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
-# browseURL(paste(outputDir, sep="","Table11.html"))
+browseURL(paste(outputDir, sep="","Table11.html"))
 
 #############################
 # we export the latex tables
