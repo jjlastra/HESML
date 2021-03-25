@@ -29,20 +29,17 @@ import hesml.measures.impl.MeasureFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
-import hesml.taxonomyreaders.mesh.IMeSHDescriptor;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
 import hesml.taxonomyreaders.obo.IOboConcept;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
-import hesml.taxonomyreaders.snomed.ISnomedConcept;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import hesml_umls_benchmark.SemanticLibraryType;
 import hesml_umls_benchmark.ISemanticLibrary;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * This class implements the SNOMED similarity library based on HESML.
@@ -69,6 +66,19 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
      */
     
     private IOboOntology    m_hesmlOboOntology;
+    
+    /**
+     * WordNet DB
+     */
+    
+    private IWordNetDB  m_wordnet;   
+    
+    /**
+     * WordNet filename and the selected namespace (taxonomy)
+     */
+    
+    private String    m_strBaseDir;
+    private String    m_strWordNet3_0_Dir;
     
     /**
      * Active semantic similarity measure
@@ -115,7 +125,10 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_hesmlMeshOntology = null;
         m_hesmlVertexes = null;
         m_taxonomy = null;
+        m_wordnet = null;
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
     }
 
     /**
@@ -144,9 +157,13 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_hesmlSimilarityMeasure = null;
         m_hesmlSnomedOntology = null;
         m_hesmlMeshOntology = null;
+        m_hesmlOboOntology = null;
         m_hesmlVertexes = null;
         m_taxonomy = null;
+        m_wordnet = null;
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
     }
     
     /**
@@ -169,6 +186,35 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         m_hesmlVertexes = null;
         m_hesmlOboOntology = null;
         m_taxonomy = null;
+        m_wordnet = null;
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
+    }
+    
+    /**
+     * This constructor loads an OBO ontology
+     * @param strObofilename 
+     */
+    
+    HESMLSemanticLibraryWrapper(
+            String  strBaseDir,
+            String  strWordNet3_0_Dir) throws Exception
+    {
+        // We initializa the base class
+        
+        super(strBaseDir, strWordNet3_0_Dir);
+        
+        // We initialize the class
+        
+        m_hesmlSimilarityMeasure = null;
+        m_hesmlSnomedOntology = null;
+        m_hesmlMeshOntology = null;
+        m_hesmlVertexes = null;
+        m_hesmlOboOntology = null;
+        m_taxonomy = null;
+        m_wordnet = null;
+        m_strBaseDir = strBaseDir;
+        m_strWordNet3_0_Dir = strWordNet3_0_Dir;
     }
     
     /**
@@ -227,6 +273,10 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         else if (m_hesmlMeshOntology != null)
         {
             similarity = getMeSHSimilarity(strFirstConceptId, strSecondConceptId);
+        }
+        else if (m_wordnet != null)
+        {
+            similarity = getWordNetSimilarity(strFirstConceptId, strSecondConceptId);
         }
         else if (m_hesmlOboOntology != null)
         {
@@ -367,6 +417,29 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
     }
     
     /**
+     * This function returns the degree of similarity between two CUI concepts
+     * evaluated on MeSH.
+     * @param strFirstUmlsCUI
+     * @param strSecondUmlsCUI
+     * @return 
+     */
+
+    private double getWordNetSimilarity(
+            String  strFirstUmlsCUI,
+            String  strSecondUmlsCUI) throws Exception
+    {
+        // We initilizae the output
+        
+        double similarity = 0.0;
+        
+        
+        
+        // We return the result
+        
+        return (similarity);
+    }
+    
+    /**
      * This function sets the active semantic measure used by the library
      * to compute the semantic similarity between concepts.
      * @param icModel
@@ -443,6 +516,15 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
             m_taxonomy = m_hesmlOboOntology.getTaxonomy();
             m_hesmlVertexes = m_taxonomy.getVertexes();
         }
+        
+        // We load the WordNet ontology
+        
+        if ((m_strWordNet3_0_Dir != "") && (m_wordnet == null))
+        {
+            m_wordnet = WordNetFactory.loadWordNetDatabase(m_strBaseDir + m_strWordNet3_0_Dir, "data.noun");
+            m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
+            m_hesmlVertexes = m_taxonomy.getVertexes();
+        }
     }
     
     /**
@@ -457,5 +539,6 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         if (m_hesmlSnomedOntology != null) m_hesmlSnomedOntology.clear();
         if (m_hesmlMeshOntology != null) m_hesmlMeshOntology.clear();
         if (m_hesmlOboOntology != null) m_hesmlOboOntology.clear();
+        if (m_wordnet != null) m_wordnet.clear();
     }
 }

@@ -130,6 +130,37 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         m_measureType1 = measureType1;
         m_measureType2 = measureType2;
     }
+            
+    /**
+     * Constructor for the GO ontology
+     * @param strOboOntologyFile
+     * @param icModelMetric
+     * @param measureType1
+     * @param measureType2
+     * @param nRandomSamples
+     * @throws Exception 
+     */
+    
+    AncSPLBenchmark(
+            String                  strBaseDir,
+            String                  strWordNet3_0_Dir,
+            IntrinsicICModelType    icModelMetric,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
+            int                     nRandomSamples) throws Exception
+    {
+        // We initialize the base class to load the HESML library
+        
+        super(new SemanticLibraryType[]{SemanticLibraryType.HESML},
+                strBaseDir, strWordNet3_0_Dir);
+                
+        // We save the number of random concept pairs to be evaluated
+        
+        m_nRandomSamples = nRandomSamples;
+        m_icModelMetric = icModelMetric;
+        m_measureType1 = measureType1;
+        m_measureType2 = measureType2;
+    }
     
     /**
      * This function executes the benchmark and saves the raw results into
@@ -175,8 +206,22 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We fill the first row headers
         
-        strOutputDataMatrix[0][0] = m_strOboFilename.equals("") ? "SNOMED Id1" : "GO Id1";
-        strOutputDataMatrix[0][1] = m_strOboFilename.equals("") ? "SNOMED Id1" : "GO Id1";
+        if(!m_strSnomedDBconceptFileName.equals(""))
+        {
+            strOutputDataMatrix[0][0] = "SNOMED Id1";
+            strOutputDataMatrix[0][1] = "SNOMED Id1";
+        }
+        else if(!m_strOboFilename.equals(""))
+        {
+            strOutputDataMatrix[0][0] = "GO Id1";
+            strOutputDataMatrix[0][1] = "GO Id1";
+        }
+        else
+        {
+            strOutputDataMatrix[0][0] = "WordNet Id1";
+            strOutputDataMatrix[0][1] = "WordNet Id1";
+        }
+        
         strOutputDataMatrix[0][2] = m_measureType1.toString();
         strOutputDataMatrix[0][3] = m_measureType2.toString();
         
@@ -186,11 +231,22 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         {
             // We fill the values for the current concept pair
             
-            strOutputDataMatrix[iPair + 1][0] = m_strOboFilename.equals("") ? Long.toString(randomVertexPairs[iPair][0].getID())
-                                                : randomVertexPairs[iPair][0].getStringTag();
+            if(!m_strSnomedDBconceptFileName.equals(""))
+            {
+                strOutputDataMatrix[iPair + 1][0] = Long.toString(randomVertexPairs[iPair][0].getID());
+                strOutputDataMatrix[iPair + 1][1] = Long.toString(randomVertexPairs[iPair][1].getID());
+            }
+            else if(!m_strOboFilename.equals(""))
+            {
+                strOutputDataMatrix[iPair + 1][0] = randomVertexPairs[iPair][0].getStringTag();
+                strOutputDataMatrix[iPair + 1][1] = randomVertexPairs[iPair][1].getStringTag();
+            }
+            else
+            {
+                strOutputDataMatrix[iPair + 1][0] = Long.toString(randomVertexPairs[iPair][0].getID());
+                strOutputDataMatrix[iPair + 1][1] = Long.toString(randomVertexPairs[iPair][1].getID());
+            }
             
-            strOutputDataMatrix[iPair + 1][1] = m_strOboFilename.equals("") ? Long.toString(randomVertexPairs[iPair][1].getID())
-                                                : randomVertexPairs[iPair][1].getStringTag();
 
             // We get the SNOMED taxonomy vertexes
             

@@ -32,7 +32,7 @@ import hesml_umls_benchmark.ISemanticLibrary;
 public class SimilarityLibraryFactory
 {
     /**
-     * This fucntion creates a specific library wrapper to load SNOMED-CT ontology
+     * This function creates a specific library wrapper to load SNOMED-CT ontology
      * @param library
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
@@ -152,7 +152,7 @@ public class SimilarityLibraryFactory
     }
     
     /**
-     * Thius function creates an instance of a library wrapper to load
+     * This function creates an instance of a library wrapper to load
      * the Gene Ontology (GO).
      * @param libraryType
      * @param strOboGeneOntologyFilename
@@ -182,6 +182,49 @@ public class SimilarityLibraryFactory
                 library = new SMLSemanticLibraryWrapper(strOboGeneOntologyFilename);
                 
                 break;
+                
+            case UMLS_SIMILARITY:
+
+                throw (new UnsupportedOperationException("UMLS_SIMILARITY does not implement GO ontology"));
+        }
+        
+        // We return the result
+        
+        return (library);
+    }
+    
+    /**
+     * This function creates an instance of a library wrapper to load
+     * the Gene Ontology (GO).
+     * @param libraryType
+     * @param strBaseDir
+     * @param strWordNet3_0_Dir
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    
+    public static ISemanticLibrary getLibraryForWordNet(
+            SemanticLibraryType     libraryType,
+            String                  strBaseDir,
+            String                  strWordNet3_0_Dir) throws Exception
+    {
+        // We initialize the output
+        
+        ISemanticLibrary library = null;
+        
+        // We cretae the warpper for each library being evaliated
+        
+        switch (libraryType)
+        {
+            case HESML:
+                
+                library = new HESMLSemanticLibraryWrapper(strBaseDir, strWordNet3_0_Dir);
+                
+                break;
+                
+            case SML:
+                
+                throw (new UnsupportedOperationException("SML does not implement WordNet ontology"));
                 
             case UMLS_SIMILARITY:
 

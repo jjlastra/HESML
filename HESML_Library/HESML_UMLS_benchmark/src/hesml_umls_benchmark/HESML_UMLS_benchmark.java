@@ -72,6 +72,17 @@ public class HESML_UMLS_benchmark
     private static final String m_str4pairsTestFilename = "../UMLS_Datasets/4pairsTest.txt";  
     
     /**
+     * Resources directories for WordNet
+     * 
+     * m_strBaseDir: the base directory with the resources
+     * m_strWordNetDatasetsDir: Subdirectory with all the WordNet datasets
+     * m_strWordNet3_0_Dir: Subdirectory with WordNet v3.0 dictionary
+     */
+    
+    private static final String  m_strBaseDir = "../";
+    private static final String  m_strWordNet3_0_Dir = "Wordnet-3.0/dict";
+    
+    /**
      * Variable for multi-threading or sequential execution
      */
     
@@ -156,7 +167,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
         
         // We show the overalll running time
         
@@ -177,7 +188,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
         
         // We show the overalll running time
         
@@ -197,7 +208,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunRandomGOConceptsExperiment(strOutputDir);
+//        RunRandomGOConceptsExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -217,7 +228,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -237,7 +248,20 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunGoAncSPLCorrelationExperiment(strOutputDir);
+//        RunGoAncSPLCorrelationExperiment(strOutputDir);
+
+        /**
+         * Experiment 5.1: we evaluate the approximation quality of the novel
+         * Ancestor-based Shortest Path Length (AncSPL) algorithm.
+         */
+        
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+        System.out.println("--Starting RunWordNetAncSPLCorrelationExperiment--");
+        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------");
+
+        RunWordNetAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -257,7 +281,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
+//        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
         
         // We show the overalll running time
         
@@ -277,7 +301,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -297,7 +321,20 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunGoAncSPLStatisticalExperiment(strOutputDir);
+//        RunGoAncSPLStatisticalExperiment(strOutputDir);
+
+        /**
+         * Experiment 8.1: statistical benchmark of the AncSPL algorithm with regards to
+         * the distance between WordNet concepts
+         */
+        
+        System.out.println("----------------------------------------------");
+        System.out.println("----------------------------------------------");
+        System.out.println("Starting RunWordNetAncSPLStatisticalExperiment");
+        System.out.println("----------------------------------------------");
+        System.out.println("----------------------------------------------");
+        
+//        RunWordNetAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -318,7 +355,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunSentenceSimilarityExperiment(strOutputDir);
+//        RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -338,7 +375,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-        RunLargeGOExperiment(strOutputDir);
+//        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -903,6 +940,33 @@ public class HESML_UMLS_benchmark
         
         benchmark.clear();
     }
+    
+    /**
+     * This function runs the statistical experiment for the AncSPL algorithm.
+     * This benchmark computes the exact and approximated distance values for
+     * a collection of random concept pairs to allow an statistical analysis
+     * of the approximation quality of the AncSPL algorithm.
+     * @param strRawOutputDir 
+     */
+    
+    private static void RunWordNetAncSPLStatisticalExperiment(
+        String  strRawOutputDir) throws Exception
+    {
+        // We create the banchmark
+        
+        IBioLibraryExperiment benchmark = BenchmarkFactory.createAncSPLStatisticalBenchmark(
+                                                m_strBaseDir, 
+                                                m_strWordNet3_0_Dir);
+        
+        // We compute the exact and approximated (AncSPL) distance values between
+        // 1000 random SNOMED-CT concepts
+        
+        benchmark.run(strRawOutputDir + "/" + "raw_AnsSPL_WordNet_statisticalData_test.csv");
+        
+        // We release all resources
+        
+        benchmark.clear();
+    }
 
     /**
      * Experiment 4: we evaluate the approximation quality of the novel
@@ -953,6 +1017,73 @@ public class HESML_UMLS_benchmark
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
                                                 m_strUMLSdir, m_strUmlsCuiMappingFilename);
+            
+            // We define the output file
+            
+            String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
+            
+            // We add the new thread to the array 
+
+            threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
+        }
+        
+        // We run the experiments
+        
+        execute_experiments(threads);
+        
+        // Debug information - This message should not appear before the termination of all threads
+        
+        System.out.println("****************************************************************************");
+        System.out.println("*********** Finished executing all the threads in experiment ***************");
+        System.out.println("****************************************************************************");
+    }
+    
+    /**
+     * Experiment 4.1: we evaluate the approximation quality of the novel
+     * Ancestor-based Shortest Path Length (AncSPL) algorithm in the WordNet
+     * ontology.
+     * @param strRawOutputDir
+     * @param strMedSTSfilename
+     */
+    
+    private static void RunWordNetAncSPLCorrelationExperiment(
+            String  strRawOutputDir) throws Exception
+    {
+        // We set the measures being evaluated
+                                                    
+        SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
+        
+        measureTypes[0][0] = SimilarityMeasureType.Rada;
+        measureTypes[0][1] = SimilarityMeasureType.AncSPLRada;
+        measureTypes[1][0] = SimilarityMeasureType.LeacockChodorow;
+        measureTypes[1][1] = SimilarityMeasureType.AncSPLLeacockChodorow;
+        measureTypes[2][0] = SimilarityMeasureType.CosineNormWeightedJiangConrath;
+        measureTypes[2][1] = SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath;
+        
+        // We build the vector of raw output filenames
+        
+        String[] strOutputFilenames = new String[measureTypes.length];
+        
+        for (int i = 0; i < strOutputFilenames.length; i++)
+        {
+            strOutputFilenames[i] = "raw_output_WordNet_" + measureTypes[i][1] + "_exp4.csv";
+        }
+        
+        // We create a list of threads
+        
+        Thread[] threads = new Thread[measureTypes.length];
+        
+        // We compare the correlation between two measures
+        
+        for (int i = 0; i < measureTypes.length; i++)
+        {
+            // We create the benchmark
+            
+            IBioLibraryExperiment benchmark = BenchmarkFactory.createWordNetAncSPLBenchmark(
+                                                IntrinsicICModelType.Seco,
+                                                measureTypes[i][0],
+                                                measureTypes[i][1],
+                                                1000, m_strBaseDir, m_strWordNet3_0_Dir);
             
             // We define the output file
             

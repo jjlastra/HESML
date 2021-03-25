@@ -27,6 +27,8 @@ import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.util.Random;
 import hesml_umls_benchmark.IBioLibraryExperiment;
 
@@ -51,7 +53,13 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     private IOboOntology    m_goOntology;
     
     /**
-     * Taxonomy of the
+     * WordNet DB
+     */
+    
+    private IWordNetDB  m_wordnet;            
+    
+    /**
+     * Taxonomy 
      */
     
     private ITaxonomy   m_taxonomy;
@@ -83,6 +91,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         // We load the SNOMED-CT ontology
         
         m_goOntology = null;
+        m_wordnet = null;
         m_snomedOntology = SnomedCtFactory.loadSnomedDatabase(strSnomedDir, strSnomedDBconceptFileName,
                             strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                             strUmlsDir, strSNOMED_CUI_mappingfilename);
@@ -104,11 +113,44 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         // We load the SNOMED-CT ontology
         
         m_snomedOntology = null;
+        m_wordnet = null;
         m_goOntology = OboFactory.loadOntology(strOboOntology);
         
         // We set the taxonomy and number of random samples
         
         m_taxonomy = m_goOntology.getTaxonomy();
+        m_nRandomPairs = 10000;
+    }
+    
+    /**
+     * Constructor for the WordNet ontology
+     * @param stroboOntology 
+     */
+
+    AncSPLStatisticalBenchmark(
+            String  strWordNetDatasetsDir,
+            String  strWordNet3_0_Dir
+            ) throws Exception
+    {
+        // We load the SNOMED-CT ontology
+        
+        m_snomedOntology = null;
+        m_goOntology = null;
+        m_wordnet = WordNetFactory.loadWordNetDatabase(strWordNetDatasetsDir+strWordNet3_0_Dir, "data.noun");
+        
+        // We set the taxonomy
+        
+        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
+        
+        // We pre-process the taxonomy to compute all the parameters
+        // used by the intrinsic IC-computation methods
+        
+        System.out.println("Pre-processing the WordNet taxonomy");
+        
+        m_taxonomy.computesCachedAttributes();
+        
+        // We set number of random samples
+        
         m_nRandomPairs = 10000;
     }
     
@@ -121,6 +163,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
     {
         if (m_snomedOntology != null) m_snomedOntology.clear();
         if (m_goOntology != null) m_goOntology.clear();
+        if (m_wordnet != null) m_wordnet.clear();
     }
     
     /**
@@ -208,10 +251,24 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
             double exactDistance = source.getShortestPathDistanceTo(target, false);
             double ancSPLDistance = source.getFastShortestPathDistanceTo(target, false);
             
-            // We fill the output matrix. We retriev the SNOMED ID or the GO ID
+            // We fill the output matrix. We retriev the SNOMED ID, GO ID or WordNet ID
             
-            strOutputMatrix[i+1][0] = (m_snomedOntology != null) ? Long.toString(source.getID()) : source.getStringTag();
-            strOutputMatrix[i+1][1] = (m_snomedOntology != null) ? Long.toString(target.getID()) : target.getStringTag();
+            if(m_snomedOntology != null)
+            {
+                strOutputMatrix[i+1][0] = Long.toString(source.getID());
+                strOutputMatrix[i+1][1] = Long.toString(target.getID());
+            }
+            else if(m_goOntology != null)
+            {
+                strOutputMatrix[i+1][0] = source.getStringTag();
+                strOutputMatrix[i+1][1] = target.getStringTag();
+            }
+            else
+            {
+                strOutputMatrix[i+1][0] = Long.toString(source.getID());
+                strOutputMatrix[i+1][1] = Long.toString(target.getID());
+            }
+
             strOutputMatrix[i+1][2] = Double.toString(exactDistance);
             strOutputMatrix[i+1][3] = Double.toString(ancSPLDistance);
         }

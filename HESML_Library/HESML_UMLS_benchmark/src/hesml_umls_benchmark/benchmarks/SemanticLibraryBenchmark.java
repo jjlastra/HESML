@@ -58,6 +58,9 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
     protected String    m_strSnomedDBdescriptionFileName;   
     protected String    m_strMeSHdescriptionFileName;   
     protected String    m_strSNOMED_CUI_mappingfilename;
+    
+    protected String    m_strBaseDir;
+    protected String    m_strWordNet3_0_Dir;
    
     /**
      * Gene Ontology filename
@@ -95,6 +98,8 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
         m_strSnomedDBdescriptionFileName = strSnomedDBdescriptionFileName;
         m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
         
         // We load the SNOMED database and build its HESML taxonomy
 
@@ -135,6 +140,8 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
         m_strMeSHdescriptionFileName = strMeSHXmlFileName;
         m_strSNOMED_CUI_mappingfilename = strSNOMED_CUI_mappingfilename;
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
         
         // We load the MeSH ontology and build
 
@@ -170,6 +177,8 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
         m_strSnomedDBRelationshipsFileName = "";
         m_strSnomedDBconceptFileName = "";
         m_strSnomedDBdescriptionFileName = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
         
         // We load the MeSH ontology and build
 
@@ -179,6 +188,42 @@ abstract class SemanticLibraryBenchmark implements IBioLibraryExperiment
         {
             m_Libraries[i] = SimilarityLibraryFactory.getLibraryForGO(
                                     libraries[i], strOboFilename);
+        }
+    }
+    
+    /**
+     * Constructor for WordNet-based benchmarks
+     * @param libraries
+     * @param strOboFilename
+     * @throws Exception 
+     */
+    
+    SemanticLibraryBenchmark(
+            SemanticLibraryType[]   libraries,
+            String                  strBaseDir,
+            String                  strWordNet3_0_Dir) throws Exception
+    {
+        // We initialize the class
+        
+        m_strOboFilename = "";
+        m_strMeShDir = "";
+        m_strUmlsDir = "";
+        m_strMeSHdescriptionFileName = "";
+        m_strSNOMED_CUI_mappingfilename = "";
+        m_strSnomedDBRelationshipsFileName = "";
+        m_strSnomedDBconceptFileName = "";
+        m_strSnomedDBdescriptionFileName = "";
+        m_strBaseDir = strBaseDir;
+        m_strWordNet3_0_Dir = strWordNet3_0_Dir;
+        
+        // We load the MeSH ontology and build
+
+        m_Libraries = new ISemanticLibrary[libraries.length];
+        
+        for (int i = 0; i < libraries.length; i++)
+        {
+            m_Libraries[i] = SimilarityLibraryFactory.getLibraryForWordNet(
+                                    libraries[i], m_strBaseDir, m_strWordNet3_0_Dir);
         }
     }
     

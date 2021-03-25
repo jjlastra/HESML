@@ -28,5 +28,6 @@ package hesml_umls_benchmark;
 public enum UMLSOntologyType
 {
     SNOMEDCT_US,
-    MeSH
+    MeSH,
+    WordNet
 }

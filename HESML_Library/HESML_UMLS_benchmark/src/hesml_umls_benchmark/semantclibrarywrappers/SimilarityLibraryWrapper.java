@@ -83,6 +83,13 @@ public abstract class SimilarityLibraryWrapper
      */
     
     protected String  m_strOboFilename;
+    
+    /**
+     * WordNet filename and the selected namespace (taxonomy)
+     */
+    
+    protected String    m_strBaseDir;
+    protected String    m_strWordNet3_0_Dir;
 
     /**
      * Constructor to load SNOMED
@@ -118,6 +125,8 @@ public abstract class SimilarityLibraryWrapper
         m_strMeSHDir = "";
         m_strMeSHXmlFilename = "";
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
     }
     
     /**
@@ -150,6 +159,8 @@ public abstract class SimilarityLibraryWrapper
         m_strSnomedDBRelationshipsFileName = "";
         m_strSnomedDBdescriptionFileName = "";
         m_strOboFilename = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
     }
     
     SimilarityLibraryWrapper(
@@ -167,7 +178,31 @@ public abstract class SimilarityLibraryWrapper
         m_strSnomedDBconceptFileName = "";
         m_strSnomedDBRelationshipsFileName = "";
         m_strSnomedDBdescriptionFileName = "";
+        m_strBaseDir = "";
+        m_strWordNet3_0_Dir = "";
     }    
+    
+    SimilarityLibraryWrapper(
+            String  strBaseDir,
+            String  strWordNet3_0_Dir) throws Exception
+    {
+        // We initilaiza all attributes
+        
+        m_strOboFilename = "";
+        m_ontologyType = UMLSOntologyType.WordNet;
+        m_strMeSHDir = "";
+        m_strMeSHXmlFilename = "";
+        m_strUmlsDir = "";
+        m_strUmlsCuiMappingFilename = "";
+        m_strSnomedDir = "";
+        m_strSnomedDBconceptFileName = "";
+        m_strSnomedDBRelationshipsFileName = "";
+        m_strSnomedDBdescriptionFileName = "";
+        m_strBaseDir = strBaseDir;
+        m_strWordNet3_0_Dir = strWordNet3_0_Dir;
+    }
+    
+    
     /**
      * This function checks if the text is a Long number
      * @param strText

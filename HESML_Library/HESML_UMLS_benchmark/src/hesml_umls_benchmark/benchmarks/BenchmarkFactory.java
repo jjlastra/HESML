@@ -232,7 +232,7 @@ public class BenchmarkFactory
     }   
     
     /**
-     * This fucntion creates a benchmark to evaluate the approximation quality
+     * This function creates a benchmark to evaluate the approximation quality
      * of the AncSPL algorithm in the GO ontology.
      * @param icModel
      * @param measureType1
@@ -253,6 +253,31 @@ public class BenchmarkFactory
         return (new AncSPLBenchmark(strOboOntologyFilename, icModel, 
                 measureType1, measureType2, nRandomSamples));
     }   
+    
+    /**
+     * This function creates a benchmark to evaluate the approximation quality
+     * of the AncSPL algorithm in the GO ontology.
+     * @param icModel
+     * @param measureType1
+     * @param measureType2
+     * @param nRandomSamples
+     * @param strBaseDir
+     * @param strWordNet3_0_Dir
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createWordNetAncSPLBenchmark(
+            IntrinsicICModelType    icModel,
+            SimilarityMeasureType   measureType1,
+            SimilarityMeasureType   measureType2,
+            int                     nRandomSamples,
+            String                  strBaseDir,
+            String                  strWordNet3_0_Dir) throws Exception
+    {
+        return (new AncSPLBenchmark(strBaseDir, strWordNet3_0_Dir, icModel, 
+                measureType1, measureType2, nRandomSamples));
+    }
     
     /**
      * This function creates a random concept evaluation.
@@ -435,5 +460,20 @@ public class BenchmarkFactory
             String  strOboOntology) throws Exception
     {
         return (new AncSPLStatisticalBenchmark(strOboOntology));
+    }
+    
+    /**
+     * This function creates an instance of the AncSPL benchmark for the
+     * WordNet ontology.
+     * @param strOboOntology
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createAncSPLStatisticalBenchmark(
+            String  strWordNetDatasetsDir,
+            String  strWordNet3_0_Dir) throws Exception
+    {
+        return (new AncSPLStatisticalBenchmark(strWordNetDatasetsDir, strWordNet3_0_Dir));
     }
 }
