@@ -191,6 +191,12 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         ICModelsFactory.getIntrinsicICmodel(m_icModelMetric).setTaxonomyData(taxonomy);
         
         // We get the vector of random concept pairs
+        
+        int nontreeNodes = taxonomy.getNumberOfVertexesWithMulitpleParents();
+        int overallNodes = taxonomy.getVertexes().getCount();
+        
+        System.out.println("NON TREE NODES: " + nontreeNodes);
+        System.out.println("OVERALL NODES: " + overallNodes);
 
         IVertex[][] randomVertexPairs = getRandomNodePairs(taxonomy, m_nRandomSamples);
         

@@ -233,6 +233,12 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         IVertexList vertexes = m_taxonomy.getVertexes();
         
+        int nontreeNodes = m_taxonomy.getNumberOfVertexesWithMulitpleParents();
+        int overallNodes = m_taxonomy.getVertexes().getCount();
+        
+        System.out.println("NON TREE NODES: " + nontreeNodes);
+        System.out.println("OVERALL NODES: " + overallNodes);
+        
         // We compute the exact and ancSPL distance for all vertex pairs in the same randomConceptPairs
         
         for (int i = 0; i < m_nRandomPairs; i++)
