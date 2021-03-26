@@ -313,9 +313,13 @@ rawdata_GO_AncSPLRada_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_GO_
 rawdata_GO_AncSPLLeacock_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_GO_AncSPLLeacockChodorow_exp4.csv"), dec = ".", sep = ';')
 rawdata_GO_AncSPLCosine_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_GO_AncSPLCosineNormWeightedJiangConrath_exp4.csv"), dec = ".", sep = ';')
 
+rawdata_WordNet_AncSPLRada_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_WordNet_AncSPLRada_exp4.csv"), dec = ".", sep = ';')
+rawdata_WordNet_AncSPLLeacock_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_WordNet_AncSPLLeacockChodorow_exp4.csv"), dec = ".", sep = ';')
+rawdata_WordNet_AncSPLCosine_exp4 <- read.csv(paste(inputDir, sep = "", "raw_output_WordNet_AncSPLCosineNormWeightedJiangConrath_exp4.csv"), dec = ".", sep = ';')
+
 # We create the table 5 as reported in the paper [4]
 
-table10 <- matrix(nrow = 6, ncol = 10);
+table10 <- matrix(nrow = 9, ncol = 10);
 
 colnames(table10) <- c("Base measure", "AncSPL reformulation", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman", "Pearson", "Spearman");
 
@@ -357,6 +361,21 @@ rawdata_GO_AncSPLCosine_exp4_sample_rows_1 <- head(rawdata_GO_AncSPLCosine_exp4,
 rawdata_GO_AncSPLCosine_exp4_sample_rows_2 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_2)
 rawdata_GO_AncSPLCosine_exp4_sample_rows_3 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_3)
 rawdata_GO_AncSPLCosine_exp4_sample_rows_4 <- head(rawdata_GO_AncSPLCosine_exp4,n_samples_4)
+
+rawdata_WordNet_AncSPLRada_exp4_sample_rows_1 <- head(rawdata_WordNet_AncSPLRada_exp4,n_samples_1)
+rawdata_WordNet_AncSPLRada_exp4_sample_rows_2 <- head(rawdata_WordNet_AncSPLRada_exp4,n_samples_2)
+rawdata_WordNet_AncSPLRada_exp4_sample_rows_3 <- head(rawdata_WordNet_AncSPLRada_exp4,n_samples_3)
+rawdata_WordNet_AncSPLRada_exp4_sample_rows_4 <- head(rawdata_WordNet_AncSPLRada_exp4,n_samples_4)
+
+rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_1 <- head(rawdata_WordNet_AncSPLLeacock_exp4,n_samples_1)
+rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_2 <- head(rawdata_WordNet_AncSPLLeacock_exp4,n_samples_2)
+rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_3 <- head(rawdata_WordNet_AncSPLLeacock_exp4,n_samples_3)
+rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_4 <- head(rawdata_WordNet_AncSPLLeacock_exp4,n_samples_4)
+
+rawdata_WordNet_AncSPLCosine_exp4_sample_rows_1 <- head(rawdata_WordNet_AncSPLCosine_exp4,n_samples_1)
+rawdata_WordNet_AncSPLCosine_exp4_sample_rows_2 <- head(rawdata_WordNet_AncSPLCosine_exp4,n_samples_2)
+rawdata_WordNet_AncSPLCosine_exp4_sample_rows_3 <- head(rawdata_WordNet_AncSPLCosine_exp4,n_samples_3)
+rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4 <- head(rawdata_WordNet_AncSPLCosine_exp4,n_samples_4)
 
 # We fill the row reporting the evaluation of the Rada measure
 
@@ -427,6 +446,39 @@ table10[6,8] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_3[,3], rawdata
 table10[6,9] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
 table10[6,10] = round(cor(rawdata_GO_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_GO_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
+
+table10[7,1] = "Rada";
+table10[7,2] = "AnsSPL-Rada";
+table10[7,3] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[7,4] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[7,5] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[7,6] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[7,7] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[7,8] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[7,9] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[7,10] = round(cor(rawdata_WordNet_AncSPLRada_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLRada_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table10[8,1] = "Leacock-Chodorow";
+table10[8,2] = "AnsSPL-Leacock";
+table10[8,3] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[8,4] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[8,5] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[8,6] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[8,7] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[8,8] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[8,9] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[8,10] = round(cor(rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLLeacock_exp4_sample_rows_4[, 4], method = "spearman"), 4)
+
+table10[9,1] = "coswJ&C";
+table10[9,2] = "AnsSPL-coswJ&C";
+table10[9,3] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_1[, 4], method = "pearson"), 4)
+table10[9,4] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_1[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_1[, 4], method = "spearman"), 4)
+table10[9,5] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_2[, 4], method = "pearson"), 4)
+table10[9,6] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_2[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_2[, 4], method = "spearman"), 4)
+table10[9,7] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_3[, 4], method = "pearson"), 4)
+table10[9,8] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_3[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_3[, 4], method = "spearman"), 4)
+table10[9,9] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4[, 4], method = "pearson"), 4)
+table10[9,10] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4[,3], rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4[, 4], method = "spearman"), 4)
 
 # ------------------------------------------------------------------------
 # Table 11 (in the paper), Experiment 13 in HESML_UMLS_benchmark.java: comparison of two large GO annotated files describing
@@ -802,6 +854,11 @@ table10[5,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}"
 table10[6,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
 table10[6,2] = "AnsSPL-coswJ\\&C";
 
+table10[7,1] = "Rada \\cite{Rada1989-cv}";
+table10[8,1] = "\\makecell[l]{Leacock and \\\\ Chodorow \\cite{Leacock1998-hr}}";
+table10[9,1] = "coswJ\\&C \\cite{Lastra-Diaz2015-ct}";
+table10[9,2] = "AnsSPL-coswJ\\&C";
+
 
 table_latex <- xtable(table10, type = "latex", digits=4, method = "compact")
 
@@ -815,9 +872,13 @@ addtorow$pos  <- list()
 addtorow$pos[[1]] <- -1
 addtorow$pos[[2]] <- 3
 addtorow$pos[[3]] <- 3
+addtorow$pos[[4]] <- 6
+addtorow$pos[[5]] <- 6
 addtorow$command  <- c(
   '\\hline \\multicolumn{2}{l}{\\hl{Correlation values in SNOMED-CT}} & \\multicolumn{2}{c}{\\underline{50 samples}} & \\multicolumn{2}{c}{\\underline{100 samples}} & \\multicolumn{2}{c}{\\underline{200 samples}} & \\multicolumn{2}{c}{\\underline{1000 samples}} \\\\ ',
   '\\hline \\multicolumn{2}{l}{\\hl{Correlation values in GO}} & \\multicolumn{2}{c}{\\underline{50 samples}} & \\multicolumn{2}{c}{\\underline{100 samples}} & \\multicolumn{2}{c}{\\underline{200 samples}} & \\multicolumn{2}{c}{\\underline{1000 samples}} \\\\ ',
+  'Base measure & \\makecell[c]{AncSPL \\\\ reformulation} & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ \\\\ \\hline ',
+  '\\hline \\multicolumn{2}{l}{\\hl{Correlation values in WordNet}} & \\multicolumn{2}{c}{\\underline{50 samples}} & \\multicolumn{2}{c}{\\underline{100 samples}} & \\multicolumn{2}{c}{\\underline{200 samples}} & \\multicolumn{2}{c}{\\underline{1000 samples}} \\\\ ',
   'Base measure & \\makecell[c]{AncSPL \\\\ reformulation} & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ & r & $\\rho$ \\\\ \\hline ')
 
 
@@ -906,7 +967,7 @@ browseURL(paste(outputDir, sep="","table11.txt"))
 
 
 #############################
-# Figures 2 and 3
+# Figures 4 and 5
 #############################
 
 # We load the library
@@ -957,44 +1018,78 @@ for (ontology in ontologies)
 }
 
 #############################
-# Figures 4 and 5
+# Figures 2 and 3
 #############################
 
 # We load the data
 
 raw_AnsSPL_SNOMED_statisticalData <- read.csv(paste(inputDir, sep = "", "raw_AnsSPL_SNOMED_statisticalData_test.csv"), sep=';', dec='.');
 raw_AnsSPL_GO_statisticalData <- read.csv(paste(inputDir, sep = "", "raw_AnsSPL_GO_statisticalData_test.csv"), sep=';', dec='.');
+raw_AnsSPL_WordNet_statisticalData <- read.csv(paste(inputDir, sep = "", "raw_AnsSPL_WordNet_statisticalData_test.csv"), sep=';', dec='.');
 
 # We compute the AncSPL distance error function
 
 error_SNOMED <- raw_AnsSPL_SNOMED_statisticalData[,4]-raw_AnsSPL_SNOMED_statisticalData[,3];
 error_GO <- raw_AnsSPL_GO_statisticalData[,4]-raw_AnsSPL_GO_statisticalData[,3];
+error_WordNet <- raw_AnsSPL_WordNet_statisticalData[,4]-raw_AnsSPL_WordNet_statisticalData[,3];
 
 # We plot the Empirical Cumulative Distribution Function
 # and save it into a EPS file
 
+# setEPS()
+# postscript(paste(outputDir, sep="","figure_SNOMED_stat.eps"))
+# 
+# ecdfPlot(error_SNOMED, discrete=TRUE, axes=FALSE,
+#          xlab="Signed AncSPL length error in number of edges (1000 random samples)",
+#          main="Cumulative Distribution Function for the AncSPL error in SNOMED-CT")
+# 
+# axis(side = 1,at = 0:max(error_SNOMED))
+# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
+# grid(NULL,NULL,lty=6)
+# dev.off()
+# 
+# 
+# setEPS()
+# postscript(paste(outputDir, sep="","figure_GO_stat.eps"))
+# 
+# ecdfPlot(error_GO, discrete=TRUE, axes=FALSE,
+#          xlab="Signed AncSPL length error in number of edges (10000 random samples)",
+#          main="Cumulative Distribution Function for the AncSPL error in GO")
+# 
+# axis(side = 1,at = 0:max(error_GO))
+# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
+# grid(NULL,NULL,lty=6)
+# dev.off()
+# 
+# 
+# 
+# setEPS()
+# postscript(paste(outputDir, sep="","figure_WordNet_stat.eps"))
+# 
+# ecdfPlot(error_WordNet, discrete=TRUE, axes=FALSE,
+#          xlab="Signed AncSPL length error in number of edges (10000 random samples)",
+#          main="Cumulative Distribution Function for the AncSPL error in WordNet", ecdf.col = "red")
+# 
+# axis(side = 1,at = 0:max(error_WordNet))
+# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
+# grid(NULL,NULL,lty=6)
+# 
+# dev.off()
+
+
 setEPS()
-postscript(paste(outputDir, sep="","figure_SNOMED_stat.eps"))
+postscript(paste(outputDir, sep="","figure_ALL_stat.eps"))
 
-ecdfPlot(error_SNOMED, discrete=TRUE, axes=FALSE,
-         xlab="Signed AncSPL length error in number of edges (1000 random samples)",
-         main="Cumulative Distribution Function for the AncSPL error in SNOMED-CT")
+png(file = paste(outputDir, sep="","figure_ALL_stat.png"), height = 20, width = 20, units = "cm", res = 300)  # Una figura de 5x10 cm
 
-axis(side = 1,at = 0:max(error_SNOMED))
-axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
-grid(NULL,NULL,lty=6)
+plot(ecdf(error_WordNet),xlim=c(0,max(error_WordNet)),ylim=c(0,1),
+     xlab="Signed AncSPL length error in number of edges ",
+     main="Cumulative Distribution Function for the AncSPL error",
+     verticals=T, lty=1, col = "blue")
+
+lines(ecdf(error_GO),lty=1,verticals=T, col = "red")
+lines(ecdf(error_SNOMED),lty=1,verticals=T, col = "green")
+
+legend(4,0.4,c("SNOMED-CT (1000 random samples)","GO (10000 random samples)", "WordNet (10000 random samples)"),lty=c(1,1,1), col=c("blue", "red", "green"))
+
 dev.off()
-
-
-setEPS()
-postscript(paste(outputDir, sep="","figure_GO_stat.eps"))
-
-ecdfPlot(error_GO, discrete=TRUE, axes=FALSE,
-         xlab="Signed AncSPL length error in number of edges (1000 random samples)",
-         main="Cumulative Distribution Function for the AncSPL error in GO")
-
-axis(side = 1,at = 0:max(error_GO))
-axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
-grid(NULL,NULL,lty=6)
-dev.off()
-
