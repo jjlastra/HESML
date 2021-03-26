@@ -253,7 +253,6 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
                 strOutputDataMatrix[iPair + 1][1] = Long.toString(randomVertexPairs[iPair][1].getID());
             }
             
-
             // We get the SNOMED taxonomy vertexes
             
             IVertex vertex1 = randomVertexPairs[iPair][0];
@@ -296,7 +295,8 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We create a ranodm number
         
-        Random rand = new Random(500);
+//        Random rand = new Random(500);
+        Random rand = new Random(600);
         
         // We get the number of concepts in the SNOMED taxonomy
         

@@ -393,6 +393,20 @@ public class BenchmarkFactory
     }
     
     /**
+     * This function creates an instance of the AncSPL subgraph scalability benchmark for GO
+     * @param strGoOntologyFilename
+     * @return
+     * @throws Exception 
+     */
+    
+    public static IBioLibraryExperiment createWordNetAncSPLSubgraphScalabilityTest(
+            String  strBaseDir, 
+            String  strWordNet3_0_Dir) throws Exception
+    {
+        return (new AncSPLSubgraphScalabilityBenchmark(strBaseDir, strWordNet3_0_Dir));
+    }
+    
+    /**
      * This funcion creates an istance of the AncSPL scalability benchmark for MeSH
      * @param strXmlMSHfilename 
      * @param strUmlsDir 

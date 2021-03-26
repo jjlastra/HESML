@@ -261,7 +261,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-        RunWordNetAncSPLCorrelationExperiment(strOutputDir);
+//        RunWordNetAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -281,7 +281,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
+        RunAncSPLSubgraphScalabilityExperiments(strOutputDir);
         
         // We show the overalll running time
         
@@ -866,24 +866,33 @@ public class HESML_UMLS_benchmark
     {
         // We create and evaluate the banchmark for SNOMED-CT
         
-        IBioLibraryExperiment snomedBenchmark = BenchmarkFactory.createSnomedAncSPLSubgraphScalabilityBenchmark(
-                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
-                                                m_strSNOMED_relationshipsFilename,
-                                                m_strSNOMED_descriptionFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+//        IBioLibraryExperiment snomedBenchmark = BenchmarkFactory.createSnomedAncSPLSubgraphScalabilityBenchmark(
+//                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
+//                                                m_strSNOMED_relationshipsFilename,
+//                                                m_strSNOMED_descriptionFilename,
+//                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+//        
+//        
+//        snomedBenchmark.run(strRawOutputDir + "/" + "raw_SNOMED_AnsSPL_subgraph_groups.csv");
+//        snomedBenchmark.clear();
+//        
+//        // We create and evaluate the banchmark for GO
+//        
+//        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
+//                                                m_strGoOntologyFilename);
+//        
+//        
+//        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
+//        goBenchmark.clear();
+        
+        // We create and evaluate the banchmark for WordNet
+        
+        IBioLibraryExperiment wordNetBenchmark = BenchmarkFactory.createWordNetAncSPLSubgraphScalabilityTest(
+                                                m_strBaseDir, m_strWordNet3_0_Dir);
         
         
-        snomedBenchmark.run(strRawOutputDir + "/" + "raw_SNOMED_AnsSPL_subgraph_groups.csv");
-        snomedBenchmark.clear();
-        
-        // We create and evaluate the banchmark for GO
-        
-        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
-                                                m_strGoOntologyFilename);
-        
-        
-        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
-        goBenchmark.clear();
+        wordNetBenchmark.run(strRawOutputDir + "/" + "raw_WordNet_AnsSPL_subgraph_groups.csv");
+        wordNetBenchmark.clear();
     }
     
     /**

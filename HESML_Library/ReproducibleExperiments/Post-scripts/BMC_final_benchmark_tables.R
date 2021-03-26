@@ -978,44 +978,61 @@ library(EnvStats)
 
 raw_SNOMED_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_SNOMED_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 raw_GO_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
+raw_WordNet_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_WordNet_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 
-# We define a variable with the available ontologies for the experiment
+# # We define a variable with the available ontologies for the experiment
+# 
+# ontologies <- c("SNOMED", "GO", "WordNet")
+#   
+# # We extract the columns information 
+# 
+# distances <- list(raw_SNOMED_AnsSPL_subgraph_groups[,1], raw_GO_AnsSPL_subgraph_groups[,1], raw_WordNet_AnsSPL_subgraph_groups[,1])
+# pairs <- list(raw_SNOMED_AnsSPL_subgraph_groups[,2], raw_GO_AnsSPL_subgraph_groups[,2], raw_WordNet_AnsSPL_subgraph_groups[,2])
+# overall_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,3], raw_GO_AnsSPL_subgraph_groups[,3], raw_WordNet_AnsSPL_subgraph_groups[,3])
+# average_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,4], raw_GO_AnsSPL_subgraph_groups[,4], raw_WordNet_AnsSPL_subgraph_groups[,4])
+# 
+# # We create a counter
+# 
+# counter <- 1
+# 
+# # We create the figures for each type of experiment
+# 
+# for (ontology in ontologies) 
+# {
+#     # We calculate the average speeds in microseconds (*10e6)
+#   
+#     average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
+#     
+#     # We plot the average speed / distance
+#     
+#     setEPS()
+#     postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
+#     plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
+#          ylab="Average running time of AncSPL (microseconds)",
+#          xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
+#          main="AncSPL running time regarding the dimension of the subgraph.")
+#     
+#     grid(NULL,NULL,lty=6)
+#     dev.off()
+#     
+#     counter <- counter + 1
+# }
 
-ontologies <- c("SNOMED", "GO")
-  
-# We extract the columns information 
+average_speeds_SNOMED = lapply(raw_SNOMED_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
+average_speeds_GO = lapply(raw_GO_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
 
-distances <- list(raw_SNOMED_AnsSPL_subgraph_groups[,1], raw_GO_AnsSPL_subgraph_groups[,1])
-pairs <- list(raw_SNOMED_AnsSPL_subgraph_groups[,2], raw_GO_AnsSPL_subgraph_groups[,2])
-overall_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,3], raw_GO_AnsSPL_subgraph_groups[,3])
-average_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,4], raw_GO_AnsSPL_subgraph_groups[,4])
+setEPS()
+postscript(paste(outputDir, "figure_ALL_average_scal.eps", sep=""))
+plot(raw_SNOMED_AnsSPL_subgraph_groups[,1], average_speeds_SNOMED, type="l", lwd=1,
+     ylab="Average running time of AncSPL (microseconds)",
+     xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
+     main="AncSPL running time regarding the dimension of the subgraph.", lty=1, col = "green")
 
-# We create a counter
+lines(raw_GO_AnsSPL_subgraph_groups[,1], average_speeds_GO, type="l", lwd=1,lty=1,verticals=T, col = "red")
 
-counter <- 1
+legend(4,170,c("SNOMED-CT", "GO"),lty=c(1,1), col=c("green", "red"))
 
-# We create the figures for each type of experiment
-
-for (ontology in ontologies) 
-{
-    # We calculate the average speeds in microseconds (*10e6)
-  
-    average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
-    
-    # We plot the average speed / distance
-    
-    setEPS()
-    postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
-    plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
-         ylab="Average running time of AncSPL (microseconds)",
-         xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
-         main="AncSPL running time regarding the dimension of the subgraph.")
-    
-    grid(NULL,NULL,lty=6)
-    dev.off()
-    
-    counter <- counter + 1
-}
+dev.off()
 
 #############################
 # Figures 2 and 3
@@ -1090,6 +1107,6 @@ plot(ecdf(error_WordNet),xlim=c(0,max(error_WordNet)),ylim=c(0,1),
 lines(ecdf(error_GO),lty=1,verticals=T, col = "red")
 lines(ecdf(error_SNOMED),lty=1,verticals=T, col = "green")
 
-legend(4,0.4,c("SNOMED-CT (1000 random samples)","GO (10000 random samples)", "WordNet (10000 random samples)"),lty=c(1,1,1), col=c("blue", "red", "green"))
+legend(4,0.4,c("WordNet (10000 random samples)", "GO (10000 random samples)", "SNOMED-CT (1000 random samples)"),lty=c(1,1,1), col=c("blue", "red", "green"))
 
 dev.off()

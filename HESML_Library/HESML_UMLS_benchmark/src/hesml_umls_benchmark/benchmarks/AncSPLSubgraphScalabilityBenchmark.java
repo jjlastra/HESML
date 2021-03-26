@@ -29,6 +29,8 @@ import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.obo.impl.OboFactory;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import hesml_umls_benchmark.IBioLibraryExperiment;
 import java.util.ArrayList;
 import java.util.Random;
@@ -61,6 +63,12 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     private IMeSHOntology   m_meshOntology;
     
     /**
+     * WordNet DB
+     */
+    
+    private IWordNetDB  m_wordnet;  
+    
+    /**
      * HESML taxonomy representing the ontology
      */
     
@@ -88,6 +96,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         m_meshOntology = null;
         m_goOntology = null;
+        m_wordnet = null;
         
         // We load the SNOMED-CT ontology
         
@@ -119,6 +128,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         m_goOntology = null;
         m_snomedOntology = null;
+        m_wordnet = null;
         
         // We load the SNOMED-CT ontology
         
@@ -142,6 +152,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         m_meshOntology = null;
         m_snomedOntology = null;
+        m_wordnet = null;
         
         // We load the SNOMED-CT ontology
         
@@ -150,6 +161,37 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         // We retrieve the taxonomy
         
         m_taxonomy = m_goOntology.getTaxonomy();
+    }
+    
+    /**
+     * Constructor for SNOMED-CT
+     * @param strGoOntologyFilename 
+     */
+    
+    AncSPLSubgraphScalabilityBenchmark(
+            String  strBaseDir, 
+            String  strWordNet3_0_Dir) throws Exception
+    {
+        // We init the unused ontologies
+        
+        m_meshOntology = null;
+        m_snomedOntology = null;
+        m_goOntology = null;
+        
+        // We load the SNOMED-CT ontology
+        
+        m_wordnet = WordNetFactory.loadWordNetDatabase(strBaseDir+strWordNet3_0_Dir, "data.noun");
+        
+        // We set the taxonomy
+        
+        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
+        
+        // We pre-process the taxonomy to compute all the parameters
+        // used by the intrinsic IC-computation methods
+        
+        System.out.println("Pre-processing the WordNet taxonomy");
+        
+        m_taxonomy.computesCachedAttributes();
     }
     
     /**
@@ -162,6 +204,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         if (m_snomedOntology != null) m_snomedOntology.clear();
         if (m_goOntology != null) m_goOntology.clear();
         if (m_meshOntology != null) m_meshOntology.clear();
+        if (m_wordnet != null) m_wordnet.clear();
     }
     
     /**
@@ -360,6 +403,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         if (m_meshOntology != null) strOntologyName = "MeSH";
         else if (m_snomedOntology != null) strOntologyName = "SNOMED-CT";
+        else if (m_wordnet != null) strOntologyName = "WordNet";
         else strOntologyName = "GO";
         
         // We return the result
