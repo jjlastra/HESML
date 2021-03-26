@@ -188,7 +188,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.MeSH);
         
         // We show the overalll running time
         
@@ -208,7 +208,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomGOConceptsExperiment(strOutputDir);
+        RunRandomGOConceptsExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -228,7 +228,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-//        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
+        RunSnomedAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -248,7 +248,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-//        RunGoAncSPLCorrelationExperiment(strOutputDir);
+        RunGoAncSPLCorrelationExperiment(strOutputDir);
 
         /**
          * Experiment 5.1: we evaluate the approximation quality of the novel
@@ -261,7 +261,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
 
-//        RunWordNetAncSPLCorrelationExperiment(strOutputDir);
+        RunWordNetAncSPLCorrelationExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -301,7 +301,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
+        RunSnomedAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -321,7 +321,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunGoAncSPLStatisticalExperiment(strOutputDir);
+        RunGoAncSPLStatisticalExperiment(strOutputDir);
 
         /**
          * Experiment 8.1: statistical benchmark of the AncSPL algorithm with regards to
@@ -334,7 +334,7 @@ public class HESML_UMLS_benchmark
         System.out.println("----------------------------------------------");
         System.out.println("----------------------------------------------");
         
-//        RunWordNetAncSPLStatisticalExperiment(strOutputDir);
+        RunWordNetAncSPLStatisticalExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -355,7 +355,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunSentenceSimilarityExperiment(strOutputDir);
+        RunSentenceSimilarityExperiment(strOutputDir);
         
         // We show the overalll running time
         
@@ -375,7 +375,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunLargeGOExperiment(strOutputDir);
+        RunLargeGOExperiment(strOutputDir);
         
         // We show the overalll running time
         

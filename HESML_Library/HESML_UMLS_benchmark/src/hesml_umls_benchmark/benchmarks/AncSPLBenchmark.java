@@ -295,8 +295,8 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We create a ranodm number
         
-//        Random rand = new Random(500);
-        Random rand = new Random(600);
+        Random rand = new Random(500);
+//        Random rand = new Random(600);
         
         // We get the number of concepts in the SNOMED taxonomy
         
