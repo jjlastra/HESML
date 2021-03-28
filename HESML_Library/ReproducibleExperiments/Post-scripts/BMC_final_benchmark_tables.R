@@ -980,12 +980,12 @@ raw_SNOMED_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_SNO
 raw_GO_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_GO_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 raw_WordNet_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_WordNet_AnsSPL_subgraph_groups.csv"), sep=';', dec='.');
 
-# # We define a variable with the available ontologies for the experiment
-# 
+# We define a variable with the available ontologies for the experiment
+
 # ontologies <- c("SNOMED", "GO", "WordNet")
-#   
-# # We extract the columns information 
-# 
+
+# We extract the columns information
+
 # distances <- list(raw_SNOMED_AnsSPL_subgraph_groups[,1], raw_GO_AnsSPL_subgraph_groups[,1], raw_WordNet_AnsSPL_subgraph_groups[,1])
 # pairs <- list(raw_SNOMED_AnsSPL_subgraph_groups[,2], raw_GO_AnsSPL_subgraph_groups[,2], raw_WordNet_AnsSPL_subgraph_groups[,2])
 # overall_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,3], raw_GO_AnsSPL_subgraph_groups[,3], raw_WordNet_AnsSPL_subgraph_groups[,3])
@@ -997,40 +997,51 @@ raw_WordNet_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_Wo
 # 
 # # We create the figures for each type of experiment
 # 
-# for (ontology in ontologies) 
+# for (ontology in ontologies)
 # {
 #     # We calculate the average speeds in microseconds (*10e6)
-#   
+# 
 #     average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
-#     
+# 
 #     # We plot the average speed / distance
-#     
+# 
 #     setEPS()
-#     postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
+#     # postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
+#     
+#     png(file = paste(outputDir, sep="","figure_", ontology, "_average_scal.png"), height = 20, width = 20, units = "cm", res = 300) 
+#     
 #     plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
 #          ylab="Average running time of AncSPL (microseconds)",
 #          xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
 #          main="AncSPL running time regarding the dimension of the subgraph.")
-#     
+# 
 #     grid(NULL,NULL,lty=6)
 #     dev.off()
-#     
+# 
 #     counter <- counter + 1
 # }
 
 average_speeds_SNOMED = lapply(raw_SNOMED_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
 average_speeds_GO = lapply(raw_GO_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
+average_speeds_WordNet = lapply(raw_WordNet_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
+
+raw_WordNet_AnsSPL_subgraph_groups
 
 setEPS()
+
 postscript(paste(outputDir, "figure_ALL_average_scal.eps", sep=""))
+
+# png(file = paste(outputDir, sep="","figure_ALL_average_scal.png"), height = 20, width = 20, units = "cm", res = 300) 
+
 plot(raw_SNOMED_AnsSPL_subgraph_groups[,1], average_speeds_SNOMED, type="l", lwd=1,
      ylab="Average running time of AncSPL (microseconds)",
      xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
      main="AncSPL running time regarding the dimension of the subgraph.", lty=1, col = "green")
 
 lines(raw_GO_AnsSPL_subgraph_groups[,1], average_speeds_GO, type="l", lwd=1,lty=1,verticals=T, col = "red")
+lines(raw_WordNet_AnsSPL_subgraph_groups[,1], average_speeds_WordNet, type="l", lwd=1,lty=1,verticals=T, col = "blue")
 
-legend(4,170,c("SNOMED-CT", "GO"),lty=c(1,1), col=c("green", "red"))
+legend(4,170,c("SNOMED-CT", "GO", "WordNet"),lty=c(1,1), col=c("green", "red", "blue"))
 
 dev.off()
 
@@ -1097,10 +1108,11 @@ error_WordNet <- raw_AnsSPL_WordNet_statisticalData[,4]-raw_AnsSPL_WordNet_stati
 setEPS()
 postscript(paste(outputDir, sep="","figure_ALL_stat.eps"))
 
-png(file = paste(outputDir, sep="","figure_ALL_stat.png"), height = 20, width = 20, units = "cm", res = 300)  # Una figura de 5x10 cm
+# png(file = paste(outputDir, sep="","figure_ALL_stat.png"), height = 20, width = 20, units = "cm", res = 300) 
 
 plot(ecdf(error_WordNet),xlim=c(0,max(error_WordNet)),ylim=c(0,1),
      xlab="Signed AncSPL length error in number of edges ",
+     ylab="Cumulative Probability",
      main="Cumulative Distribution Function for the AncSPL error",
      verticals=T, lty=1, col = "blue")
 

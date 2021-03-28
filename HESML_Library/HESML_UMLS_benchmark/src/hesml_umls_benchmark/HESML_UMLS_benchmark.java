@@ -167,7 +167,7 @@ public class HESML_UMLS_benchmark
         System.out.println("---------------------------------------------");
         System.out.println("---------------------------------------------");
         
-//        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
+        RunRandomConceptsExperiment(strOutputDir, UMLSOntologyType.SNOMEDCT_US);
         
         // We show the overalll running time
         
@@ -866,24 +866,24 @@ public class HESML_UMLS_benchmark
     {
         // We create and evaluate the banchmark for SNOMED-CT
         
-//        IBioLibraryExperiment snomedBenchmark = BenchmarkFactory.createSnomedAncSPLSubgraphScalabilityBenchmark(
-//                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
-//                                                m_strSNOMED_relationshipsFilename,
-//                                                m_strSNOMED_descriptionFilename,
-//                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
-//        
-//        
-//        snomedBenchmark.run(strRawOutputDir + "/" + "raw_SNOMED_AnsSPL_subgraph_groups.csv");
-//        snomedBenchmark.clear();
-//        
-//        // We create and evaluate the banchmark for GO
-//        
-//        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
-//                                                m_strGoOntologyFilename);
-//        
-//        
-//        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
-//        goBenchmark.clear();
+        IBioLibraryExperiment snomedBenchmark = BenchmarkFactory.createSnomedAncSPLSubgraphScalabilityBenchmark(
+                                                m_strSnomedDir, m_strSNOMED_conceptFilename,
+                                                m_strSNOMED_relationshipsFilename,
+                                                m_strSNOMED_descriptionFilename,
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+        
+        
+        snomedBenchmark.run(strRawOutputDir + "/" + "raw_SNOMED_AnsSPL_subgraph_groups.csv");
+        snomedBenchmark.clear();
+        
+        // We create and evaluate the banchmark for GO
+        
+        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
+                                                m_strGoOntologyFilename);
+        
+        
+        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
+        goBenchmark.clear();
         
         // We create and evaluate the banchmark for WordNet
         
