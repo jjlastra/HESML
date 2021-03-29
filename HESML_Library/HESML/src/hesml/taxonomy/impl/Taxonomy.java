@@ -283,7 +283,7 @@ class Taxonomy implements ITaxonomy
             
             // We release the ancestor set
             
-            if (cachedAncestors) ancestors.clear();
+            if (!cachedAncestors) ancestors.clear();
         }
         
         // We return the result
