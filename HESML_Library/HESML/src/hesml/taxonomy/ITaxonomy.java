@@ -55,6 +55,14 @@ public interface ITaxonomy
     int getSizeOfLargestAncestorSet();
     
     /**
+     * Thisfunction computes the averga number of neighbour cout per vertex
+     * in the taxonomy.
+     * @return 
+     */
+    
+    double getAverageNeighbourCountPerVertex();
+    
+    /**
      * This fucntion returns the number of vertexes with more than one parent
      * vertex in the taxonomy.
      * @return 

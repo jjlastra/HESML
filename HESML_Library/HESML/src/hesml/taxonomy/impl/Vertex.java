@@ -1467,6 +1467,41 @@ class Vertex implements IVertex
     }
     
     /**
+     * This function returns the number of adjacent vertexes.
+     * @return Te number of adjacent nodes
+     */
+    
+    @Override
+    public int getNeighboursCount()
+    {
+        // We initialize the output
+        
+        int adjacentNodes = 0;
+        
+        // We initialize the travering cursor
+        
+        IHalfEdge   loop = m_FirstOutArc;
+        
+        // We iterate around the vertex
+        
+        do
+        {
+            // We increase the counter
+            
+            adjacentNodes++;
+            
+            // We go to the next neighbour
+            
+            loop = loop.getOpposite().getNext();
+            
+        } while (loop != m_FirstOutArc);
+        
+        // We return the result
+        
+        return (adjacentNodes);
+    }
+    
+    /**
      * This function returns the count of children vertexes (direct child nodes).
      * @return Children vertex count.
      */

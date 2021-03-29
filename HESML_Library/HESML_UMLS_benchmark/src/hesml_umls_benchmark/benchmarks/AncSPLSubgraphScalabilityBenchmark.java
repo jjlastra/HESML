@@ -184,14 +184,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         // We set the taxonomy
         
-        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
-        
-        // We pre-process the taxonomy to compute all the parameters
-        // used by the intrinsic IC-computation methods
-        
-        System.out.println("Pre-processing the WordNet taxonomy");
-        
-        m_taxonomy.computesCachedAttributes();
+        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet, true);
     }
     
     /**

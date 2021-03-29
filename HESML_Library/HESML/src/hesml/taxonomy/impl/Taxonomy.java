@@ -115,6 +115,35 @@ class Taxonomy implements ITaxonomy
     }
     
     /**
+     * Thisfunction computes the averga number of neighbour cout per vertex
+     * in the taxonomy.
+     * @return Average number of adjacent nodes per node
+     */
+    
+    @Override
+    public double getAverageNeighbourCountPerVertex()
+    {
+        // We initialize the output
+        
+        double averageNeighbours = 0.0;
+        
+        // We comoute the overall number of adjacent nodes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            averageNeighbours += vertex.getNeighboursCount();
+        }
+        
+        // We comptue the average
+        
+        averageNeighbours /= m_Vertexes.getCount();
+        
+        // We return the result
+        
+        return (averageNeighbours);
+    }
+    
+    /**
      * This function computes the lowest common subsumer (ancestor), defined
      * as the common ancestor with highest depth. The function
      * returns the first vertex in the LCA set, although could exist

@@ -410,6 +410,13 @@ public interface IVertex extends Comparable<IVertex>
      */
     
     IVertexList getNeighbours() throws Exception;
+    
+    /**
+     * This function returns the number of adjacent vertexes.
+     * @return Te number of adjacent nodes
+     */
+    
+    int getNeighboursCount();
 
     /**
      * This function checks whether the vertex is a root node.
