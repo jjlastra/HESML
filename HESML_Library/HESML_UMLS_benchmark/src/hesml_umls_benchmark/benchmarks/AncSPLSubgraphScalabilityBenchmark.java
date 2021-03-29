@@ -197,7 +197,11 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         if (m_snomedOntology != null) m_snomedOntology.clear();
         if (m_goOntology != null) m_goOntology.clear();
         if (m_meshOntology != null) m_meshOntology.clear();
-        if (m_wordnet != null) m_wordnet.clear();
+        if (m_wordnet != null)
+        {
+            m_wordnet.clear();
+            m_taxonomy.clear();
+        }
     }
     
     /**
