@@ -140,7 +140,7 @@ class AncSPLStatisticalBenchmark implements IBioLibraryExperiment
         
         // We set the taxonomy
         
-        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
+        m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet, true);
         
         // We pre-process the taxonomy to compute all the parameters
         // used by the intrinsic IC-computation methods

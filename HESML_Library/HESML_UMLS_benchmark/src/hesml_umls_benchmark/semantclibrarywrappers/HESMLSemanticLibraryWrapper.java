@@ -522,7 +522,7 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         if ((m_strWordNet3_0_Dir != "") && (m_wordnet == null))
         {
             m_wordnet = WordNetFactory.loadWordNetDatabase(m_strBaseDir + m_strWordNet3_0_Dir, "data.noun");
-            m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet);
+            m_taxonomy = WordNetFactory.buildTaxonomy(m_wordnet, true);
             m_hesmlVertexes = m_taxonomy.getVertexes();
         }
     }
