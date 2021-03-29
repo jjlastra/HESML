@@ -988,6 +988,10 @@ public class HESML_UMLS_benchmark
     private static void RunSnomedAncSPLCorrelationExperiment(
             String  strRawOutputDir) throws Exception
     {
+        // We define the random seed
+        
+        int seed = 500;
+        
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
@@ -1025,7 +1029,7 @@ public class HESML_UMLS_benchmark
                                                 1000, m_strSnomedDir, m_strSNOMED_conceptFilename,
                                                 m_strSNOMED_relationshipsFilename,
                                                 m_strSNOMED_descriptionFilename,
-                                                m_strUMLSdir, m_strUmlsCuiMappingFilename);
+                                                m_strUMLSdir, m_strUmlsCuiMappingFilename, seed);
             
             // We define the output file
             
@@ -1058,6 +1062,10 @@ public class HESML_UMLS_benchmark
     private static void RunWordNetAncSPLCorrelationExperiment(
             String  strRawOutputDir) throws Exception
     {
+        // We define the random seed
+        
+        int seed = 600;
+        
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
@@ -1092,14 +1100,14 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                1000, m_strBaseDir, m_strWordNet3_0_Dir);
+                                                1000, m_strBaseDir, m_strWordNet3_0_Dir, seed);
             
             // We define the output file
             
             String outputPath = strRawOutputDir + "/" + strOutputFilenames[i];
             
             // We add the new thread to the array 
-
+            
             threads[i] = new Thread(new BioBenchmarkThread(benchmark, outputPath)); 
         }
         
@@ -1125,6 +1133,10 @@ public class HESML_UMLS_benchmark
     private static void RunGoAncSPLCorrelationExperiment(
             String  strRawOutputDir) throws Exception
     {
+        // We define the random seed
+        
+        int seed = 500;
+        
         // We set the measures being evaluated
                                                     
         SimilarityMeasureType[][] measureTypes = new SimilarityMeasureType[3][2];
@@ -1159,7 +1171,7 @@ public class HESML_UMLS_benchmark
                                                 IntrinsicICModelType.Seco,
                                                 measureTypes[i][0],
                                                 measureTypes[i][1],
-                                                10000, m_strGoOntologyFilename);
+                                                10000, m_strGoOntologyFilename, seed);
             
             // We define the output file
             

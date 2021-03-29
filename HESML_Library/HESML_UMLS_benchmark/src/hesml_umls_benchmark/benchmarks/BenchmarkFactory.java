@@ -202,12 +202,12 @@ public class BenchmarkFactory
      * @param measureType1
      * @param measureType2
      * @param nRandomSamples
-     * @param useEdgeWeights
      * @param strSnomedDir
      * @param strSnomedDBconceptFileName
      * @param strSnomedDBRelationshipsFileName
      * @param strSnomedDBdescriptionFileName
      * @param strSNOMED_CUI_mappingfilename
+     * @param seed
      * @param strUmlsDir
      * @return
      * @throws Exception 
@@ -223,12 +223,13 @@ public class BenchmarkFactory
             String                  strSnomedDBRelationshipsFileName,
             String                  strSnomedDBdescriptionFileName,
             String                  strUmlsDir,
-            String                  strSNOMED_CUI_mappingfilename) throws Exception
+            String                  strSNOMED_CUI_mappingfilename,
+            int                     seed) throws Exception
     {
         return (new AncSPLBenchmark(strSnomedDir, strSnomedDBconceptFileName,
                 strSnomedDBRelationshipsFileName, strSnomedDBdescriptionFileName,
                 strUmlsDir, strSNOMED_CUI_mappingfilename, icModel, 
-                measureType1, measureType2, nRandomSamples));
+                measureType1, measureType2, nRandomSamples, seed));
     }   
     
     /**
@@ -239,6 +240,7 @@ public class BenchmarkFactory
      * @param measureType2
      * @param nRandomSamples
      * @param strOboOntologyFilename
+     * @param seed
      * @return
      * @throws Exception 
      */
@@ -248,10 +250,11 @@ public class BenchmarkFactory
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
             int                     nRandomSamples,
-            String                  strOboOntologyFilename) throws Exception
+            String                  strOboOntologyFilename,
+            int                     seed) throws Exception
     {
         return (new AncSPLBenchmark(strOboOntologyFilename, icModel, 
-                measureType1, measureType2, nRandomSamples));
+                measureType1, measureType2, nRandomSamples, seed));
     }   
     
     /**
@@ -263,6 +266,7 @@ public class BenchmarkFactory
      * @param nRandomSamples
      * @param strBaseDir
      * @param strWordNet3_0_Dir
+     * @param seed
      * @return
      * @throws Exception 
      */
@@ -273,10 +277,11 @@ public class BenchmarkFactory
             SimilarityMeasureType   measureType2,
             int                     nRandomSamples,
             String                  strBaseDir,
-            String                  strWordNet3_0_Dir) throws Exception
+            String                  strWordNet3_0_Dir,
+            int                     seed) throws Exception
     {
         return (new AncSPLBenchmark(strBaseDir, strWordNet3_0_Dir, icModel, 
-                measureType1, measureType2, nRandomSamples));
+                measureType1, measureType2, nRandomSamples, seed));
     }
     
     /**

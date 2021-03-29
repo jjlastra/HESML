@@ -50,6 +50,12 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
     private int   m_nRandomSamples;
     
     /**
+     * Random seed value
+     */
+    
+    private int m_seed;
+    
+    /**
      * IC model used for the evaluation of the weigthed AcSPL algorithm
      */
     
@@ -84,7 +90,8 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
             IntrinsicICModelType    icModelMetric,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
-            int                     nRandomSamples) throws Exception
+            int                     nRandomSamples,
+            int                     seed) throws Exception
     {
         // We initialize the base class to load the HESML library
         
@@ -99,6 +106,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         m_icModelMetric = icModelMetric;
         m_measureType1 = measureType1;
         m_measureType2 = measureType2;
+        m_seed = seed;
     }
     
     /**
@@ -116,7 +124,8 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
             IntrinsicICModelType    icModelMetric,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
-            int                     nRandomSamples) throws Exception
+            int                     nRandomSamples,
+            int                     seed) throws Exception
     {
         // We initialize the base class to load the HESML library
         
@@ -129,6 +138,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         m_icModelMetric = icModelMetric;
         m_measureType1 = measureType1;
         m_measureType2 = measureType2;
+        m_seed = seed;
     }
             
     /**
@@ -147,7 +157,8 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
             IntrinsicICModelType    icModelMetric,
             SimilarityMeasureType   measureType1,
             SimilarityMeasureType   measureType2,
-            int                     nRandomSamples) throws Exception
+            int                     nRandomSamples,
+            int                     seed) throws Exception
     {
         // We initialize the base class to load the HESML library
         
@@ -160,6 +171,7 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         m_icModelMetric = icModelMetric;
         m_measureType1 = measureType1;
         m_measureType2 = measureType2;
+        m_seed = seed;
     }
     
     /**
@@ -295,8 +307,11 @@ class AncSPLBenchmark extends SemanticLibraryBenchmark
         
         // We create a ranodm number
         
-        Random rand = new Random(500);
-//        Random rand = new Random(600);
+        Random rand = new Random(m_seed);
+        
+        // Debug information
+        
+        System.out.println("Initialized " + m_seed + " as random seed.");
         
         // We get the number of concepts in the SNOMED taxonomy
         
