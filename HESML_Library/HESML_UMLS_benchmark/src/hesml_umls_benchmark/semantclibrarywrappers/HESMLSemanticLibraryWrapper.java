@@ -539,6 +539,10 @@ public class HESMLSemanticLibraryWrapper extends SimilarityLibraryWrapper
         if (m_hesmlSnomedOntology != null) m_hesmlSnomedOntology.clear();
         if (m_hesmlMeshOntology != null) m_hesmlMeshOntology.clear();
         if (m_hesmlOboOntology != null) m_hesmlOboOntology.clear();
-        if (m_wordnet != null) m_wordnet.clear();
+        if (m_wordnet != null)
+        {
+            m_wordnet.clear();
+            m_taxonomy.clear();
+        }
     }
 }
