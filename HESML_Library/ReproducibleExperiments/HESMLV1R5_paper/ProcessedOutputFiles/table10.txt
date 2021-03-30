@@ -12,9 +12,9 @@ Rada \cite{Rada1989-cv} & AnsSPL-Rada & 0.9214 & 0.9412 & 0.9413 & 0.9444 & 0.93
    \hline \multicolumn{2}{l}{\hl{Correlation values in GO}} & \multicolumn{2}{c}{\underline{50 samples}} & \multicolumn{2}{c}{\underline{100 samples}} & \multicolumn{2}{c}{\underline{200 samples}} & \multicolumn{2}{c}{\underline{1000 samples}} \\  Base measure & \makecell[c]{AncSPL \\ reformulation} & r & $\rho$ & r & $\rho$ & r & $\rho$ & r & $\rho$ \\ \hline Rada \cite{Rada1989-cv} & AnsSPL-Rada & 0.8571 & 0.8277 & 0.9133 & 0.9085 & 0.8883 & 0.8868 & 0.9074 & 0.8947 \\ 
   \makecell[l]{Leacock and \\ Chodorow \cite{Leacock1998-hr}} & AnsSPL-Leacock & 0.8542 & 0.8277 & 0.9109 & 0.9085 & 0.9007 & 0.8868 & 0.9191 & 0.8947 \\ 
   coswJ\&C \cite{Lastra-Diaz2015-ct} & AnsSPL-coswJ\&C & 0.9679 & 0.9848 & 0.9372 & 0.9894 & 0.9654 & 0.9888 & 0.9533 & 0.977 \\ 
-   \hline \multicolumn{2}{l}{\hl{Correlation values in WordNet}} & \multicolumn{2}{c}{\underline{50 samples}} & \multicolumn{2}{c}{\underline{100 samples}} & \multicolumn{2}{c}{\underline{200 samples}} & \multicolumn{2}{c}{\underline{1000 samples}} \\  Base measure & \makecell[c]{AncSPL \\ reformulation} & r & $\rho$ & r & $\rho$ & r & $\rho$ & r & $\rho$ \\ \hline Rada \cite{Rada1989-cv} & AnsSPL-Rada & 0.9008 & 0.9113 & 0.9259 & 0.9224 & 0.895 & 0.8793 & 0.8943 & 0.8886 \\ 
-  \makecell[l]{Leacock and \\ Chodorow \cite{Leacock1998-hr}} & AnsSPL-Leacock & 0.9369 & 0.9113 & 0.9542 & 0.9224 & 0.9326 & 0.8793 & 0.9207 & 0.8886 \\ 
-  coswJ\&C \cite{Lastra-Diaz2015-ct} & AnsSPL-coswJ\&C & 0.9967 & 0.9706 & 0.9984 & 0.9816 & 0.7836 & 0.9864 & 0.9239 & 0.9673 \\ 
+   \hline \multicolumn{2}{l}{\hl{Correlation values in WordNet}} & \multicolumn{2}{c}{\underline{50 samples}} & \multicolumn{2}{c}{\underline{100 samples}} & \multicolumn{2}{c}{\underline{200 samples}} & \multicolumn{2}{c}{\underline{1000 samples}} \\  Base measure & \makecell[c]{AncSPL \\ reformulation} & r & $\rho$ & r & $\rho$ & r & $\rho$ & r & $\rho$ \\ \hline Rada \cite{Rada1989-cv} & AnsSPL-Rada & 0.9072 & 0.8882 & 0.9151 & 0.8855 & 0.9225 & 0.8994 & 0.9168 & 0.9038 \\ 
+  \makecell[l]{Leacock and \\ Chodorow \cite{Leacock1998-hr}} & AnsSPL-Leacock & 0.9354 & 0.8882 & 0.9375 & 0.8855 & 0.937 & 0.8994 & 0.9345 & 0.9038 \\ 
+  coswJ\&C \cite{Lastra-Diaz2015-ct} & AnsSPL-coswJ\&C & 0.9993 & 0.9906 & 0.998 & 0.9916 & 0.9644 & 0.9859 & 0.9815 & 0.9807 \\ 
    \hline
 \end{tabular}
 \end{table*}

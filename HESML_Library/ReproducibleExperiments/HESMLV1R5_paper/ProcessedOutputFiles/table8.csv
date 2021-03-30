@@ -1,4 +1,4 @@
-"","Similarity measure","Measure type","SML","HESML"
-"1","Rada","edge-counting","0.062","2.446"
-"2","AnsSPLRada","edge-counting","---","93070.873"
-"3","Lin","IC-based","320549.807","1037947.355"
+"","Similarity measure","Measure type","\makecell[c]{Avg. speed \\ (pairs/sec)}","\makecell[c]{Avg. speed \\ (pairs/sec)}"
+"1","Rada \cite{Rada1989-cv}","edge-counting","\hl{0.062} (20)","\hl{\textbf{2.446}} (20)"
+"2","\makecell[l]{AncSPL-Rada \\ (this work)}","edge-counting","---","\hl{\textbf{93071}}$(10^7)$"
+"3","\makecell[l]{Lin-Seco \cite{Lin1998-pm, Seco2004-fd} \\ IC model}","IC-based","\hl{320550}$(10^7)$","\hl{\textbf{1037947}}$(10^7)$"
