@@ -140,6 +140,14 @@ class Vertex implements IVertex
     
     private double  m_Probability;
     
+    
+    /**
+     * This attribute is used by the implementation of the AncSPL
+     * algorithm to check whether the vertex belongs to the input subgraph
+     */
+    
+    private boolean m_isPartOfSubgraph;
+    
     /**
      * Constructor
      * @param id Integer unique key of a Graph node (WordNet nodes)
@@ -167,6 +175,7 @@ class Vertex implements IVertex
         m_ICvalue = 0.0;
         m_Probability = 0.0;
         m_CachedAncestorSet = null;
+        m_isPartOfSubgraph = false;
     }
     
     /**
@@ -683,10 +692,12 @@ class Vertex implements IVertex
             boolean         weighted)
     {
         // We reset all the minimum distances before to start the method
+        // and mark the vertex as part of the input subgraph
 
         for (IVertex vertex: subgraph)
         {
             vertex.setMinDistance(Double.POSITIVE_INFINITY);
+            ((Vertex)vertex).m_isPartOfSubgraph = true;
         }
 
         // We set to 0 the distance in the source vertex
@@ -717,7 +728,9 @@ class Vertex implements IVertex
 
                 IVertex adjacent = loop.getTarget();
 
-                if (subgraph.contains(adjacent))
+                // We check that the vertex is contained in the input subgraph
+                
+                if (((Vertex)adjacent).m_isPartOfSubgraph)
                 {
                     // We get the edge weight
                     
@@ -749,7 +762,14 @@ class Vertex implements IVertex
                 loop = loop.getOpposite().getNext();
 
             } while (loop != firstOutEdge);
-        }        
+        }   
+        
+        // We reset the attribute identifying the vertexes as part of the input subgraph
+
+        for (IVertex vertex: subgraph)
+        {
+            ((Vertex)vertex).m_isPartOfSubgraph = false;
+        }
     }
     
     /**
