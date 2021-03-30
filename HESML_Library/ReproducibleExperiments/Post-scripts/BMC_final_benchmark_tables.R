@@ -524,75 +524,6 @@ table11[4,2] = "IC-based";
 table11[4,3] = raw_output_BMA_Lin_Seco_largeGO[1,4];
 table11[4,4] = raw_output_BMA_Lin_Seco_largeGO[1,2] / raw_output_BMA_Lin_Seco_largeGO[1,4];
 
-# ------------------------------------------------------------
-# We save all final data tables 
-# ------------------------------------------------------------
-
-write.csv(table6, file = paste(outputDir, sep="","table6.csv"))
-write.csv(table7, file = paste(outputDir, sep="","table7.csv"))
-write.csv(table8, file = paste(outputDir, sep="","table8.csv"))
-write.csv(table9, file = paste(outputDir, sep="","table9.csv"))
-write.csv(table10, file = paste(outputDir, sep="","table10.csv"))
-write.csv(table10, file = paste(outputDir, sep="","table11.csv"))
-#-------------------------------
-# HTML report generation
-#-------------------------------
-
-library(knitr)
-library(readr)
-
-# We load and browse Table 6 in the paper
-
-kable_out <- kable(table6,
-                   caption = caption_table6,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table6.html"))
-browseURL(paste(outputDir, sep="","Table6.html"))
-
-# We load and browse Table 7 in the paper
-
-kable_out <- kable(table7,
-                   caption = caption_table7,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table7.html"))
-browseURL(paste(outputDir, sep="","Table7.html"))
-
-# We load and browse Table 8 in the paper
-
-kable_out <- kable(table8,
-                   caption = caption_table8,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table8.html"))
-browseURL(paste(outputDir, sep="","Table8.html"))
-
-# We load and browse Table 9 in the paper
-
-kable_out <- kable(table9,
-                   caption = caption_table9,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table9.html"))
-browseURL(paste(outputDir, sep="","Table9.html"))
-
-# We load and browse Table 10 in the paper
-
-kable_out <- kable(table10,
-                   caption = caption_table10,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
-browseURL(paste(outputDir, sep="","Table10.html"))
-
-kable_out <- kable(table11,
-                   caption = caption_table11,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
-browseURL(paste(outputDir, sep="","Table11.html"))
-
 #############################
 # we export the latex tables
 #############################
@@ -982,45 +913,6 @@ raw_WordNet_AnsSPL_subgraph_groups <- read.csv(paste(inputDir, sep = "", "raw_Wo
 
 # We define a variable with the available ontologies for the experiment
 
-# ontologies <- c("SNOMED", "GO", "WordNet")
-
-# We extract the columns information
-
-# distances <- list(raw_SNOMED_AnsSPL_subgraph_groups[,1], raw_GO_AnsSPL_subgraph_groups[,1], raw_WordNet_AnsSPL_subgraph_groups[,1])
-# pairs <- list(raw_SNOMED_AnsSPL_subgraph_groups[,2], raw_GO_AnsSPL_subgraph_groups[,2], raw_WordNet_AnsSPL_subgraph_groups[,2])
-# overall_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,3], raw_GO_AnsSPL_subgraph_groups[,3], raw_WordNet_AnsSPL_subgraph_groups[,3])
-# average_speeds <- list(raw_SNOMED_AnsSPL_subgraph_groups[,4], raw_GO_AnsSPL_subgraph_groups[,4], raw_WordNet_AnsSPL_subgraph_groups[,4])
-# 
-# # We create a counter
-# 
-# counter <- 1
-# 
-# # We create the figures for each type of experiment
-# 
-# for (ontology in ontologies)
-# {
-#     # We calculate the average speeds in microseconds (*10e6)
-# 
-#     average_speeds[[counter]] = lapply(average_speeds[[counter]], function(x) x*1000000)
-# 
-#     # We plot the average speed / distance
-# 
-#     setEPS()
-#     # postscript(paste(outputDir, "figure_", ontology, "_average_scal.eps", sep=""))
-#     
-#     png(file = paste(outputDir, sep="","figure_", ontology, "_average_scal.png"), height = 20, width = 20, units = "cm", res = 300) 
-#     
-#     plot(distances[[counter]], average_speeds[[counter]], type="l", lwd=1,
-#          ylab="Average running time of AncSPL (microseconds)",
-#          xlab="Dimension of the ancestor-based subgraph in the shortest-path computation",
-#          main="AncSPL running time regarding the dimension of the subgraph.")
-# 
-#     grid(NULL,NULL,lty=6)
-#     dev.off()
-# 
-#     counter <- counter + 1
-# }
-
 average_speeds_SNOMED = lapply(raw_SNOMED_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
 average_speeds_GO = lapply(raw_GO_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
 average_speeds_WordNet = lapply(raw_WordNet_AnsSPL_subgraph_groups[,4], function(x) x*1000000)
@@ -1030,6 +922,8 @@ raw_WordNet_AnsSPL_subgraph_groups
 setEPS()
 
 postscript(paste(outputDir, "figure_ALL_average_scal.eps", sep=""))
+
+# Uncomment the next line for creating a PNG file with the experiment results
 
 # png(file = paste(outputDir, sep="","figure_ALL_average_scal.png"), height = 20, width = 20, units = "cm", res = 300) 
 
@@ -1064,49 +958,10 @@ error_WordNet <- raw_AnsSPL_WordNet_statisticalData[,4]-raw_AnsSPL_WordNet_stati
 # We plot the Empirical Cumulative Distribution Function
 # and save it into a EPS file
 
-# setEPS()
-# postscript(paste(outputDir, sep="","figure_SNOMED_stat.eps"))
-# 
-# ecdfPlot(error_SNOMED, discrete=TRUE, axes=FALSE,
-#          xlab="Signed AncSPL length error in number of edges (1000 random samples)",
-#          main="Cumulative Distribution Function for the AncSPL error in SNOMED-CT")
-# 
-# axis(side = 1,at = 0:max(error_SNOMED))
-# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
-# grid(NULL,NULL,lty=6)
-# dev.off()
-# 
-# 
-# setEPS()
-# postscript(paste(outputDir, sep="","figure_GO_stat.eps"))
-# 
-# ecdfPlot(error_GO, discrete=TRUE, axes=FALSE,
-#          xlab="Signed AncSPL length error in number of edges (10000 random samples)",
-#          main="Cumulative Distribution Function for the AncSPL error in GO")
-# 
-# axis(side = 1,at = 0:max(error_GO))
-# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
-# grid(NULL,NULL,lty=6)
-# dev.off()
-# 
-# 
-# 
-# setEPS()
-# postscript(paste(outputDir, sep="","figure_WordNet_stat.eps"))
-# 
-# ecdfPlot(error_WordNet, discrete=TRUE, axes=FALSE,
-#          xlab="Signed AncSPL length error in number of edges (10000 random samples)",
-#          main="Cumulative Distribution Function for the AncSPL error in WordNet", ecdf.col = "red")
-# 
-# axis(side = 1,at = 0:max(error_WordNet))
-# axis(side = 2,at = c(0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0))
-# grid(NULL,NULL,lty=6)
-# 
-# dev.off()
-
-
 setEPS()
 postscript(paste(outputDir, sep="","figure_ALL_stat.eps"))
+
+# Uncomment the next line for creating a PNG file with the experiment results
 
 # png(file = paste(outputDir, sep="","figure_ALL_stat.png"), height = 20, width = 20, units = "cm", res = 300) 
 
@@ -1122,3 +977,74 @@ lines(ecdf(error_SNOMED),lty=1,verticals=T, col = "green")
 legend(4,0.4,c("WordNet (10000 random samples)", "GO (10000 random samples)", "SNOMED-CT (1000 random samples)"),lty=c(1,1,1), col=c("blue", "red", "green"))
 
 dev.off()
+
+# ------------------------------------------------------------
+# We save all final data tables 
+# ------------------------------------------------------------
+
+write.csv(table6, file = paste(outputDir, sep="","table6.csv"))
+write.csv(table7, file = paste(outputDir, sep="","table7.csv"))
+write.csv(table8, file = paste(outputDir, sep="","table8.csv"))
+write.csv(table9, file = paste(outputDir, sep="","table9.csv"))
+write.csv(table10, file = paste(outputDir, sep="","table10.csv"))
+write.csv(table10, file = paste(outputDir, sep="","table11.csv"))
+#-------------------------------
+# HTML report generation
+#-------------------------------
+
+library(knitr)
+library(readr)
+
+table6
+
+# We load and browse Table 6 in the paper
+
+kable_out <- kable(table6,
+                   caption = caption_table6,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table6.html"))
+browseURL(paste(outputDir, sep="","Table6.html"))
+
+# We load and browse Table 7 in the paper
+
+kable_out <- kable(table7,
+                   caption = caption_table7,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table7.html"))
+browseURL(paste(outputDir, sep="","Table7.html"))
+
+# We load and browse Table 8 in the paper
+
+kable_out <- kable(table8,
+                   caption = caption_table8,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table8.html"))
+browseURL(paste(outputDir, sep="","Table8.html"))
+
+# We load and browse Table 9 in the paper
+
+kable_out <- kable(table9,
+                   caption = caption_table9,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table9.html"))
+browseURL(paste(outputDir, sep="","Table9.html"))
+
+# We load and browse Table 10 in the paper
+
+kable_out <- kable(table10,
+                   caption = caption_table10,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
+browseURL(paste(outputDir, sep="","Table10.html"))
+
+kable_out <- kable(table11,
+                   caption = caption_table11,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
+browseURL(paste(outputDir, sep="","Table11.html"))

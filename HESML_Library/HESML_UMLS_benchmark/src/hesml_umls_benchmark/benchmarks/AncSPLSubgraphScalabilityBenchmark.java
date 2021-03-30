@@ -378,6 +378,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         if (m_meshOntology != null) minSamples = 1e08;
         else if (m_snomedOntology != null) minSamples = 500000;
+        else if (m_wordnet != null) minSamples = 1e07;
         else minSamples = 500000;
         
         // We return the result
