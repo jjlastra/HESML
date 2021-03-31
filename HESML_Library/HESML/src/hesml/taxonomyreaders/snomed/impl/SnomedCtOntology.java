@@ -270,7 +270,7 @@ class SnomedCtOntology implements ISnomedCtOntology
     /**
      * This function returns the SNOMED concepts associated to the CUIs
      * or null if they are not found in the SNOMED database.
-     * @param umlsConcetCUI
+     * @param umlsConceptCUIs
      * @return 
      */
     
@@ -359,16 +359,20 @@ class SnomedCtOntology implements ISnomedCtOntology
         
         for (SnomedConcept concept: m_SnomedConcepts)
         {
-            // We add the vertex to the taxonomy with the same SNOMED-CT ID
-            // than its qasaociated ISnomedConcept
+            // We assign the vertex ID for the SNOED concept within the taxonomy
             
-            m_Taxonomy.addVertex(concept.getSnomedId(), concept.getParentsSnomedId());
+            concept.setTaxonomyNodeId(Integer.toUnsignedLong(m_Taxonomy.getVertexes().getCount()));
             
             // We connect the concept to this database. Omce it is done, the
             // concept clears its collection of parent IDs because this information
             // can be retrieved from the taxonomy.
             
             concept.setDatabase(this);
+            
+            // We add the vertex to the taxonomy with the same SNOMED-CT ID
+            // than its qasaociated ISnomedConcept
+            
+            m_Taxonomy.addVertex(concept.getTaxonomyNodeId(), concept.getParentTaxonomyNodesId());
         }
         
         // We compute all cached information

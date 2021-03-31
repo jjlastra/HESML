@@ -38,6 +38,14 @@ public interface ISnomedConcept
     ISnomedCtOntology getOntology();
     
     /**
+     * This function returns the ID of the taxonomy vertex
+     * corresponding to this concept in the SNOMED-CT taxonomy.
+     * @return taxonomy node ID
+     */
+    
+    Long getTaxonomyNodeId();
+    
+    /**
      * This function returns the inmmediate parent concepts.
      * @return The set of parent concepts.
      */
@@ -98,4 +106,12 @@ public interface ISnomedConcept
      */
     
     Long[] getParentsSnomedId() throws Exception;
+    
+    /**
+     * This function returns the taxonomy ID values from the
+     * parent concepts of the current concept.
+     * @return The taxonomy ID of the parent SNOMED concepts
+     */
+    
+    Long[] getParentTaxonomyNodesId() throws Exception;
 }
