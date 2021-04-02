@@ -55,6 +55,23 @@ public interface ITaxonomy
     int getSizeOfLargestAncestorSet();
     
     /**
+     * This function returns the maximum number of adjacent vertex for any
+     * vertex.
+     * @return 
+     */
+    
+    int getMaxNeighboursCountPerVertex();
+    
+    /**
+     * This function computes the average number of adjacent nodes per vertex for
+     * the ancestor set corresponding to each vertex of the taxonomy. This value
+     * impacts on the time complexity of the AncSPL algorithm.
+     * @return 
+     */
+    
+    double getAverageNeighbourCountPerVertexInAncestorSet();
+    
+    /**
      * Thisfunction computes the averga number of neighbour cout per vertex
      * in the taxonomy.
      * @return 

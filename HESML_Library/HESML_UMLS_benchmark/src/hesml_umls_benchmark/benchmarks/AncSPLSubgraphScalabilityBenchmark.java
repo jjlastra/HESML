@@ -219,7 +219,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         // We create a random number
         
-        Random rand = new Random(500);
+        Random rand = new Random(103);
         
         // We get the vertex list
         
@@ -249,7 +249,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             // We retrieve the group for this subgraphDimension
             
-            if ((ancSplSubgraphDimension > 0) && (ancSplSubgraphDimension <= 100))
+            if ((ancSplSubgraphDimension > 0) && (ancSplSubgraphDimension <= 50))
             {
                 if (!groupedConceptPairs.containsKey(ancSplSubgraphDimension))
                 {
@@ -278,7 +278,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     {
         // We compute the groups of concepts
         
-        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(10000000);
+        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(1000);
         
         // We create the output file wit the following format
         // Pair subgraphDimension | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)
@@ -291,7 +291,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         strOutputMatrix[0][1] = "# concept pairs";
         strOutputMatrix[0][2] = "Overall time (secs)";
         strOutputMatrix[0][3] = "Avg time (time/concept pair)";
-        
+               
         // We evaluate the AncSPL subgraphDimension for all vertex pairs with the same subgraphDimension
         
         int iGroup = 1;
@@ -304,7 +304,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             // Debug message
             
-            System.out.println(getOntologyName() + " evaluating the subgraph-based group "
+            System.out.print(getOntologyName() + " evaluating the subgraph-based group "
                     + iGroup + " of " + groupedConceptPairs.size());
             
             // In order to deal with the large differences in time measurements,
@@ -346,6 +346,10 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             strOutputMatrix[iGroup][1] = Long.toString(overallpairEvaluations);
             strOutputMatrix[iGroup][2] = Double.toString(timeEllapsedSecs);
             strOutputMatrix[iGroup++][3] = Double.toString(timeEllapsedSecs / overallpairEvaluations);
+            
+            // We show the speed for the current group
+            
+            System.out.println(" -> " + Double.toString(timeEllapsedSecs * 1e06 / overallpairEvaluations) + " microsecs");
         }
         
         // We release all groups
@@ -372,14 +376,16 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     
     private double getMinSamplesPerOntology()
     {
-        double minSamples = 1e06;   // Output value
+        // We initialize the output value
+        
+        double minSamples = 1e06;
         
         // We set the minimum samples count
         
         if (m_meshOntology != null) minSamples = 1e08;
-        else if (m_snomedOntology != null) minSamples = 600000;
+        else if (m_snomedOntology != null) minSamples = 1e06;
         else if (m_wordnet != null) minSamples = 1e07;
-        else minSamples = 500000;
+        else minSamples = 1e06; // GO ontology
         
         // We return the result
         

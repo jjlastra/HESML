@@ -740,7 +740,7 @@ class Vertex implements IVertex
 
                     double novelDistance = seed.getMinDistance() + weight;
 
-                    // We check if the novel didstance is lower
+                    // We check if the novel distance is lower
 
                     if (novelDistance < adjacent.getMinDistance())
                     {
@@ -806,7 +806,7 @@ class Vertex implements IVertex
         
         for (IVertex ancestor : ancestors)
         {
-            subgraphCount[1] += ancestor.getAdjacentVertexesCount();
+            subgraphCount[1] += ancestor.getNeighboursCount();
         }
         
         // We release the auxiliary set whether it is not cached
@@ -1822,40 +1822,6 @@ class Vertex implements IVertex
         return (nParents);
     }
 
-    /**
-     * This function returns the number of adjacent vertexes to this vertex
-     * reagrdless their type of relationship.
-     * @return Parents count
-     */
-    
-    @Override
-    public int getAdjacentVertexesCount()
-    {
-        // We initialize the output
-        
-        int nAdjacentNodes = 0;
-        
-        // We iterate around the vertex to count all adjacent nodes
-        
-        IHalfEdge   loop = m_FirstOutArc;   // Cursor
-        
-        do
-        {
-            // We count the adjacent node
-            
-            nAdjacentNodes++;
-            
-            // We get the next outcoming arc
-            
-            loop = loop.getOpposite().getNext();
-            
-        } while (loop != m_FirstOutArc);
-
-        // We return the result
-        
-        return (nAdjacentNodes);
-    }
-    
     /**
      * This function returns the number of subsumed leaves
      * including the current vertex

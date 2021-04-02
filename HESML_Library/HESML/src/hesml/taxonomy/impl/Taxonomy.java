@@ -115,6 +115,45 @@ class Taxonomy implements ITaxonomy
     }
     
     /**
+     * This function computes the average number of adjacent nodes per vertex for
+     * the ancestor set corresponding to each vertex of the taxonomy. This value
+     * impacts on the time complexity of the AncSPL algorithm.
+     * @return 
+     */
+    
+    @Override
+    public double getAverageNeighbourCountPerVertexInAncestorSet()
+    {
+        // We initialize the output
+        
+        double averageValue = 0.0;
+        
+        // We compute the average adjacent nodes per vertex corresponding to
+        // the ancestor set of each vertex in the taxonomy
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            // We get the dimension of the ancestor subgraph and the overall
+            // number of adjacent nodes for each vertex in the ancestor set
+            
+            int[] ancestorCountAndTotalNeighbourCount = vertex.getAncestorSubgraphCount();
+            
+            // We acumulate the average value
+            
+            averageValue += (double)ancestorCountAndTotalNeighbourCount[1] /
+                            (double)ancestorCountAndTotalNeighbourCount[0];
+        }
+        
+        // We evaluae the avergae value for all vertexes in the taxonomy
+        
+        averageValue /= m_Vertexes.getCount();
+        
+        // We return the result
+        
+        return (averageValue);        
+    }
+    
+    /**
      * Thisfunction computes the averga number of neighbour cout per vertex
      * in the taxonomy.
      * @return Average number of adjacent nodes per node
@@ -141,6 +180,31 @@ class Taxonomy implements ITaxonomy
         // We return the result
         
         return (averageNeighbours);
+    }
+    
+    /**
+     * This function returns the maximum number of adjacent vertex for any
+     * vertex.
+     * @return 
+     */
+
+    @Override 
+    public int getMaxNeighboursCountPerVertex()
+    {
+        // We initialize the output
+        
+        int maxAdjacentCount = 0;
+        
+        // We compute the maxium number of adjacent vertexes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            maxAdjacentCount = Math.max(maxAdjacentCount, vertex.getNeighboursCount());
+        }
+        
+        // We return the result
+        
+        return (maxAdjacentCount);
     }
     
     /**

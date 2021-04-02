@@ -75,14 +75,6 @@ public interface IVertex extends Comparable<IVertex>
     int getParentsCount();
     
     /**
-     * This function returns the number of adjacent vertexes to this vertex
-     * reagrdless their type of relationship.
-     * @return Parents count
-     */
-    
-    int getAdjacentVertexesCount();
-    
-    /**
      * This function returns the number of nodes making up the ancestor set
      * subgraph. This subgraph is defined by the collection of ancestor nodes,
      * including this vertex, and all their adjacent nodes in the taxonomy.
