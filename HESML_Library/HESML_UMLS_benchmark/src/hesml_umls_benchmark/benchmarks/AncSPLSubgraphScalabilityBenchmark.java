@@ -219,7 +219,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
         
         // We create a random number
         
-        Random rand = new Random(103);
+        Random rand = new Random(500);
         
         // We get the vertex list
         
@@ -249,7 +249,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
             
             // We retrieve the group for this subgraphDimension
             
-            if ((ancSplSubgraphDimension > 0) && (ancSplSubgraphDimension <= 50))
+            if ((ancSplSubgraphDimension > 0) && (ancSplSubgraphDimension <= 100))
             {
                 if (!groupedConceptPairs.containsKey(ancSplSubgraphDimension))
                 {
@@ -278,7 +278,7 @@ class AncSPLSubgraphScalabilityBenchmark implements IBioLibraryExperiment
     {
         // We compute the groups of concepts
         
-        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(1000);
+        TreeMap<Integer, ArrayList<VertexPair>>  groupedConceptPairs = computeConceptGroups(100000000);
         
         // We create the output file wit the following format
         // Pair subgraphDimension | # pairs | Overall time (secs) | Avg. speed (#pairs/secs)

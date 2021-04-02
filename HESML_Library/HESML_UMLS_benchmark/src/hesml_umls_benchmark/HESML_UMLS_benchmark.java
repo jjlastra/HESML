@@ -878,21 +878,21 @@ public class HESML_UMLS_benchmark
         
         // We create and evaluate the banchmark for GO
         
-//        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
-//                                                m_strGoOntologyFilename);
-//        
-//        
-//        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
-//        goBenchmark.clear();
-//        
-//        // We create and evaluate the banchmark for WordNet
-//        
-//        IBioLibraryExperiment wordNetBenchmark = BenchmarkFactory.createWordNetAncSPLSubgraphScalabilityTest(
-//                                                m_strBaseDir, m_strWordNet3_0_Dir);
-//        
-//        
-//        wordNetBenchmark.run(strRawOutputDir + "/" + "raw_WordNet_AnsSPL_subgraph_groups.csv");
-//        wordNetBenchmark.clear();
+        IBioLibraryExperiment goBenchmark = BenchmarkFactory.createGoAncSPLSubgraphScalabilityTest(
+                                                m_strGoOntologyFilename);
+        
+        
+        goBenchmark.run(strRawOutputDir + "/" + "raw_GO_AnsSPL_subgraph_groups.csv");
+        goBenchmark.clear();
+        
+        // We create and evaluate the banchmark for WordNet
+        
+        IBioLibraryExperiment wordNetBenchmark = BenchmarkFactory.createWordNetAncSPLSubgraphScalabilityTest(
+                                                m_strBaseDir, m_strWordNet3_0_Dir);
+        
+        
+        wordNetBenchmark.run(strRawOutputDir + "/" + "raw_WordNet_AnsSPL_subgraph_groups.csv");
+        wordNetBenchmark.clear();
     }
     
     /**
