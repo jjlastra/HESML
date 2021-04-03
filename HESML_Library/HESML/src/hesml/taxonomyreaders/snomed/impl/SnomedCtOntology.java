@@ -187,7 +187,7 @@ class SnomedCtOntology implements ISnomedCtOntology
             
             for (int i = 0; i < concepts.length; i++)
             {
-                vertexes.add(taxonomyVertexes.getById(concepts[i].getSnomedId()));
+                vertexes.add(taxonomyVertexes.getById(concepts[i].getTaxonomyNodeId()));
             }
         }
 
@@ -228,7 +228,7 @@ class SnomedCtOntology implements ISnomedCtOntology
             
             for (int i = 0; i < concepts.length; i++)
             {
-                vertexes[i] = taxonomyVertexes.getById(concepts[i].getSnomedId());
+                vertexes[i] = taxonomyVertexes.getById(concepts[i].getTaxonomyNodeId());
             }
         }
 
