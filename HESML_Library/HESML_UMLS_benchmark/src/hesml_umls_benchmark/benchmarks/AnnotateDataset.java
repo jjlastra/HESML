@@ -183,6 +183,31 @@ public class AnnotateDataset
             Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        // Load metamap lite (second time)
+        
+        if(!m_metaMapLiteInstances.containsKey(posSentence))
+        {
+            try {
+                loadMetamapLite(posSentence);
+
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchMethodException ex) {
+                Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(AnnotateDataset.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if(!m_metaMapLiteInstances.containsKey(posSentence))
+        {
+            throw new Exception("ERROR loading METAMAP LITE!");
+        }
+        
         // If the annotation has not been performed yet, annotate
         
         if(("firstSentence".equals(posSentence) && m_annotatedDatasets.get(strDatasetPath).get(0).isEmpty()) ||
