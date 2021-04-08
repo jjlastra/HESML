@@ -6,9 +6,9 @@
   \hline \multicolumn{2}{l}{\makecell[l]{Evaluation of random concept \\ pairs using GO (\hl{44509} nodes)}} & \underline{SML}  & \underline{HESML} \\ \hline
 Similarity measure & Measure type & \makecell[c]{Avg. speed \\ (pairs/sec)} & \makecell[c]{Avg. speed \\ (pairs/sec)} \\ 
   \hline
-Rada \cite{Rada1989-cv} & edge-counting & \hl{0.062} (20) & \hl{\textbf{2.446}} (20) \\ 
-  \makecell[l]{AncSPL-Rada \\ (this work)} & edge-counting & --- & \hl{\textbf{93071}}$(10^7)$ \\ 
-  \makecell[l]{Lin-Seco \cite{Lin1998-pm, Seco2004-fd} \\ IC model} & IC-based & \hl{320550}$(10^7)$ & \hl{\textbf{1037947}}$(10^7)$ \\ 
+Rada \cite{Rada1989-cv} & edge-counting & \hl{0.077} (20) & \hl{\textbf{3.217}} (20) \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & edge-counting & --- & \hl{\textbf{140422}}$(10^7)$ \\ 
+  \makecell[l]{Lin-Seco \cite{Lin1998-pm, Seco2004-fd} \\ IC model} & IC-based & \hl{372140}$(10^7)$ & \hl{\textbf{1063219}}$(10^7)$ \\ 
    \hline
 \end{tabular}
 \end{table}

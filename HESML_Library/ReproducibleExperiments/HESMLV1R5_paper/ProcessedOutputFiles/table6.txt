@@ -6,10 +6,10 @@
   \hline
 Similarity measure & \makecell[c]{\underline{UMLS::Sim} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{SML} \\ Avg. speed \\ (pairs/sec)} & \makecell[c]{\underline{HESML} \\ Avg. speed \\ (pairs/sec)} \\ 
   \hline
-Rada \cite{Rada1989-cv} & \hl{\textbf{0.118}} (15) & xxx & \hl{0.032} (15) \\ 
-  \makecell[l]{AncSPL-Rada \\ (this work)} & --- & --- & \hl{\textbf{13318}}$(10^7)$ \\ 
-  Lin-Seco \cite{Lin1998-pm, Seco2004-fd} & \hl{0.72} (500) & \hl{181635}$(10^7)$ & \hl{\textbf{531756}}$(10^7)$ \\ 
-  Wu-Palmer$_{fast}$ \cite{Wu1994-hh} & \hl{0.034} (15) & --- & \hl{\textbf{479428}}$(10^7)$ \\ 
+Rada \cite{Rada1989-cv} & \hl{\textbf{0.122}} (15) & xxx & \hl{0.041} (15) \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & --- & --- & \hl{\textbf{30110}}$(10^7)$ \\ 
+  Lin-Seco \cite{Lin1998-pm, Seco2004-fd} & \hl{0.744} (500) & \hl{202160}$(10^7)$ & \hl{\textbf{491942}}$(10^7)$ \\ 
+  Wu-Palmer$_{fast}$ \cite{Wu1994-hh} & \hl{0.035} (15) & --- & \hl{\textbf{435252}}$(10^7)$ \\ 
    \hline
 \end{tabular}
 \end{table}

@@ -9,7 +9,7 @@ Groupwise measure & Measure type & \makecell[c]{\underline{HESML} \\ Time (secs)
 SimLP \cite{Gentleman2009-dc} & \makecell[l]{Common \\ ancestors \\ ratio} & 28243 & 12038 \\ 
   SimUI \cite{Gentleman2009-dc} & \makecell[l]{Common \\ ancestor \\ max depth} & 31922 & 10651 \\ 
   \makecell[l]{SimGIC-Seco \\ \cite{Pesquita2007-pv, Seco2004-fd}} & IC-based & 30754 & 11055 \\ 
-  \makecell[l]{BMA-Lin-Seco \\ \cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}} & IC-based & 7614 & 44655 \\ 
+  \makecell[l]{BMA-Lin-Seco \\ \cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}} & IC-based & 7981 & 42604 \\ 
    \hline
 \end{tabular}
 \end{table}

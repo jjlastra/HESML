@@ -935,7 +935,7 @@ plot(raw_SNOMED_AnsSPL_subgraph_groups[,1], average_speeds_SNOMED, type="l", lwd
 lines(raw_GO_AnsSPL_subgraph_groups[,1], average_speeds_GO, type="l", lwd=1,lty=1,verticals=T, col = "red")
 lines(raw_WordNet_AnsSPL_subgraph_groups[,1], average_speeds_WordNet, type="l", lwd=1,lty=1,verticals=T, col = "blue")
 
-legend(4,170,c("SNOMED-CT", "GO", "WordNet"),lty=c(1,1), col=c("green", "red", "blue"))
+legend(4,100,c("SNOMED-CT", "GO", "WordNet"),lty=c(1,1), col=c("green", "red", "blue"))
 
 dev.off()
 
