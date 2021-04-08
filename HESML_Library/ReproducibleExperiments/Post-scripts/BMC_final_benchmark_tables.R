@@ -898,7 +898,7 @@ browseURL(paste(outputDir, sep="","table11.txt"))
 
 
 #############################
-# Figures 4 and 5
+# Figure 2
 #############################
 
 # We load the library
@@ -940,7 +940,7 @@ legend(4,100,c("SNOMED-CT", "GO", "WordNet"),lty=c(1,1), col=c("green", "red", "
 dev.off()
 
 #############################
-# Figures 2 and 3
+# Figure 3
 #############################
 
 # We load the data
