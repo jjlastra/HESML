@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  * 
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -23,7 +23,7 @@ import hesml.taxonomy.IVertex;
 import java.util.Comparator;
 
 /**
- * Comparator of vertexex according to their IC value
+ * Comparator of vertexes according to their IC value
  * @author juan
  */
 

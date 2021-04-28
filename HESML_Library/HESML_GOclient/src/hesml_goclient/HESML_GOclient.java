@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  * 
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -59,7 +59,7 @@ public class HESML_GOclient {
         
         // We print the HESML version
         
-        System.out.println("Running HESML_GOclient V1R5 (1.5.0.1, July 2020) based on "
+        System.out.println("Running HESML_GOclient V1R5 (1.5.0.2, April 2021) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "

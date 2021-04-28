@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -42,8 +42,8 @@ public class HESMLversion
         System.out.println("semantic similarity measures and information content models");
         System.out.println("\nRelease name: " + getReleaseName());    
         System.out.println("Version code: " + getVersionCode());
-        System.out.println("Version date: July 2020");
-        System.out.println("Copyright (C) 2020 Universidad Nacional de Educación a Distancia (UNED)");
+        System.out.println("Version date: April 2021");
+        System.out.println("Copyright (C) 2021 Universidad Nacional de Educación a Distancia (UNED)");
         
         System.out.println("\nMain HESML publications:\n");
         System.out.println("[1] Lastra-Díaz, J. J. & García-Serrano, A. & Batet, M. & Fernández, M. & Chirigati, F. (2017).");
@@ -74,6 +74,6 @@ public class HESMLversion
     
     public static String getVersionCode()
     {
-        return ("(1.5.0.1)");
+        return ("(1.5.0.2)");
     }
 }
