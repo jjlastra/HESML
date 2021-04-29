@@ -1,4 +1,4 @@
-# HESML V1R5
+# HESML V1R5 (1.5.0.2)
 
 HESML V1R5 Java software library of ontology-based semantic similarity measures and information content (IC) models. Main novelty of V1R5 version is the implementation of the most important biomedical ontologies, such as SNOMED-CT, MeSH, GO and OBO-based ontologies, in addition to WordNet.
 
@@ -13,6 +13,10 @@ HESML V1R5 implements most ontology-based semantic similarity measures and Infor
 HESML is introduced and detailed in a companion reproducibility paper [1, 7] of the methods and experiments introduced in [2,3,4, 6].
 
 The main features of HESML are as follows: (1) it is based on an efficient and linearly scalable representation for taxonomies called PosetHERep introduced in [1], (2) its performance exhibits a linear scalability as regards the size of the taxonomy, and (3) it does not use any caching strategy of vertex sets.
+
+# Minor novelties in HESML V1R5 (1.5.0.2)
+
+This is a minor service release of HESML V1R5 that introduces a minor performance improvement of the AncSPL algorithm introduced in the HESML V1R5 paper [7] and the HESML_UMLS_bencmark program, which implements the experiments reported in the aforementioned paper [7]. IMPORTANT NOTE: the HESML_UMLS_bencmark program does not compile because it uses METAMAP Java libraries, which require a license from the National Library of Medicine (NLM) of the United States, and thus, they cannot be included in the HESML distribution. We refer any reader interested in these benchmarks to the HESML V1R5 paper [7] and its reproducibility dataset [12].
 
 # Main novelties in HESML V1R5
 
@@ -51,6 +55,8 @@ HESML library is freely distributed for any non-commercial purpose under a CC By
 [10] F. Azuaje, H. Wang, O. Bodenreider, Ontology-driven similarity approaches to supporting gene functional assessment, in: Proceedings of the ISMB’2005 SIG Meeting on Bio-Ontologies, academia.edu, 2005: pp. 9–10.
 
 [11] J.L. Sevilla, V. Segura, A. Podhorski, E. Guruceaga, J.M. Mato, L.A. Martínez-Cruz, F.J. Corrales, A. Rubio, Correlation between gene expression and GO semantic similarity, IEEE/ACM Trans. Comput. Biol. Bioinform. 2 (2005) 330–338.
+
+[12] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano, Reproducibility dataset for a benchmark of biomedical semantic measures libraries, (2020). https://doi.org/10.21950/OTDA4Z.
 
 Steps to reproduce the library
 
