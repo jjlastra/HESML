@@ -57,6 +57,12 @@ rootDir = "../HESMLV1R5_paper/RawOutputFiles/"
 inputDir = rootDir
 outputDir = "../HESMLV1R5_paper/ProcessedOutputFiles/"
 
+# We create the output dir
+
+dir.create(outputDir)
+
+library(stringr)
+
 # ------------------------------------------------------------------------
 # Table 6 (in the paper), Experiment 1 in HESML_UMLS_benchmark.java: Average speed in concepts per second in the SNOMED-CT ontology
 # ------------------------------------------------------------------------
@@ -102,6 +108,20 @@ table6[4,1] = "Wu-Palmer_fast";
 table6[4,2] = round(rawdata_WuPalmer_SNOMEDCT_US[1,2] / mean(rawdata_WuPalmer_SNOMEDCT_US[2:6,3]), digits = 3)
 table6[4,3] = "---";
 table6[4,4] = round(rawdata_WuPalmer_SNOMEDCT_US[1,4] / mean(rawdata_WuPalmer_SNOMEDCT_US[2:6,5]), digits = 3)
+
+# We make an auxiliary copy of the table for output the HTML doc
+
+table6_html <- table6
+
+table6_html[2,4] = paste0("",round(as.numeric(table6[2,4],decimal=0)),"",str_replace(rawdata_AncSPLRada_SNOMEDCT_US[1,4],"10000000","(10^7)"))
+
+table6_html[3,2] = paste0("",table6[3,2]," (",rawdata_Lin_SNOMEDCT_US[1,2],")")
+table6_html[3,3] = paste0("",round(as.numeric(table6[3,3],decimal=0)),"",str_replace(rawdata_Lin_SNOMEDCT_US[1,6],"10000000","(10^7)"))
+table6_html[3,4] = paste0("",round(as.numeric(table6[3,4],decimal=0)),"",str_replace(rawdata_Lin_SNOMEDCT_US[1,4],"10000000","(10^7)"))
+
+table6_html[4,2] = paste0("",table6[4,2]," (",rawdata_WuPalmer_SNOMEDCT_US[1,2],")")
+table6_html[4,4] = paste0("",round(as.numeric(table6[4,4],decimal=0)),"",str_replace(rawdata_WuPalmer_SNOMEDCT_US[1,4],"10000000","(10^7)"))
+
 
 # ------------------------------------------------------------------------
 # Table 7 (in the paper), Experiment 2 in HESML_UMLS_benchmark.java: Average speed in concepts per second in the MeSH ontology
@@ -149,6 +169,22 @@ table7[4,2] = round(rawdata_WuPalmer_MeSH[1,2] / mean(rawdata_WuPalmer_MeSH[2:6,
 table7[4,3] = "---";
 table7[4,4] = round(rawdata_WuPalmer_MeSH[1,4] / mean(rawdata_WuPalmer_MeSH[2:6,5]), digits = 3)
 
+table7_html <- table7
+
+table7_html[1,2] = paste0("",round(as.numeric(table7[1,2]),digits=2)," (",rawdata_Rada_MeSH[1,2],")")
+table7_html[1,3] = paste0("",table7[1,3],"} (",rawdata_Rada_MeSH[1,6],")")
+table7_html[1,4] = paste0("",round(as.numeric(table7[1,4]),digits=0),"",str_replace(rawdata_Rada_MeSH[1,4],"10000000","(10^7)"))
+
+table7_html[2,4] = paste0("",round(as.numeric(table7[2,4]),digits=0),"",str_replace(rawdata_AncSPLRada_MeSH[1,4],"10000000","(10^7)"))
+
+table7_html[3,2] = paste0("",round(as.numeric(table7[3,2]),digits=2)," (",rawdata_Lin_MeSH[1,2],")")
+table7_html[3,3] = paste0("",round(as.numeric(table7[3,3]),digits=0),"",str_replace(rawdata_Lin_MeSH[1,6],"10000000","(10^7)"))
+table7_html[3,4] = paste0("",round(as.numeric(table7[3,4]),digits=0),"",str_replace(rawdata_Lin_MeSH[1,4],"10000000","(10^7)"))
+
+table7_html[4,2] = paste0("",round(as.numeric(table7[4,2]),digits=2)," (",rawdata_WuPalmer_MeSH[1,2],")")
+table7_html[4,4] = paste0("",round(as.numeric(table7[4,4]),digits=0),"",str_replace(rawdata_WuPalmer_MeSH[1,4],"10000000","(10^7)"))
+
+
 # ------------------------------------------------------------------------
 # Table 8 (in the paper), Experiment 3 in HESML_UMLS_benchmark.java: Average speed in GO concept pairs per second for the evaluation 
 # of two representative ontology-based similarity measures based on the Gene Ontology
@@ -187,6 +223,16 @@ table8[3,2] = "IC-based";
 table8[3,3] = round(rawdata_Lin_GO[1,2] / mean(rawdata_Lin_GO[2:6,3]), digits = 3)
 table8[3,4] = round(rawdata_Lin_GO[1,4] / mean(rawdata_Lin_GO[2:6,5]), digits = 3)
 
+table8_html <- table8
+
+table8_html[1,3] = paste0("",table8[1,3]," (",rawdata_Rada_GO[1,2],")")
+table8_html[1,4] = paste0("",table8[1,4]," (",rawdata_Rada_GO[1,4],")")
+
+table8_html[2,4] = paste0("",round(as.numeric(table8[2,4]),digits=0),"",str_replace(rawdata_AncSPLRada_GO[1,4],"10000000","(10^7)"))
+
+table8_html[3,3] = paste0("",round(as.numeric(table8[3,3]),digits=0),"",str_replace(rawdata_Lin_GO[1,4],"10000000","(10^7)"))
+table8_html[3,4] = paste0("",round(as.numeric(table8[3,4]),digits=0),"",str_replace(rawdata_Lin_GO[1,4],"10000000","(10^7)"))
+
 
 # ------------------------------------------------------------------------
 # Table 9 (in the paper), Experiment 7 in HESML_UMLS_benchmark.java: Average speed in the evaluation of the semantic similarity
@@ -198,7 +244,7 @@ table8[3,4] = round(rawdata_Lin_GO[1,4] / mean(rawdata_Lin_GO[2:6,5]), digits = 
 # Language Resources and Evaluation. (2018) 1–16.
 # ------------------------------------------------------------------------
 
-caption_table9 = "Average speed in sentence pairs per second \\hl{(sent/secs) and CUI pairs per second (CUIs/secs)} for the evaluation of the UBSM \\cite{Sogancioglu2017-kb} sentence similarity measure combined with three representative ontology-based similarity measures based on MeSH (Nov, 2019) in \\hl{30} sentence pairs \\hl{extracted from} the MedSTS \\cite{Wang2018-oj} sentence similarity dataset, \\hl{and 1 million sentence pairs extracted from BioC corpus} \\cite{Comeau2019-ex}\\hl{. We provide the average evaluation in normalized CUI pairs per second to allow a fair and unbiased comparison of the results reported for 30 and 1 million sentence pairs. The dataset with 30 sentence pairs requires XXXX pairwise CUI comparisons, whilst the 1 million sentence pairs dataset requires YYY pairwise CUI comparisons.} Best performing values are shown in bold. Non-implemented methods (---)."
+caption_table9 = "Average speed in sentence pairs per second (sent/secs) and CUI pairs per second (CUIs/secs) for the evaluation of the UBSM sentence similarity measure combined with three representative ontology-based similarity measures based on MeSH (Nov, 2019) in 30 sentence pairs extracted from the MedSTS sentence similarity dataset, and 1 million sentence pairs extracted from BioC corpus. We provide the average evaluation in normalized CUI pairs per second to allow a fair and unbiased comparison of the results reported for 30 and 1 million sentence pairs. The dataset with 30 sentence pairs requires XXXX pairwise CUI comparisons, whilst the 1 million sentence pairs dataset requires YYY pairwise CUI comparisons. Best performing values are shown in bold."
 
 # Input raw CSV files generated by the reproducible experiments detailed
 # in the supplementary appendix
@@ -213,14 +259,14 @@ rawdata_WuPalmer_MedSTS <- read.csv(paste(inputDir, sep = "", "raw_output_WuPalm
 table9 <- matrix(nrow = 4, ncol = 9);
 
 colnames(table9) <- c("Similarity measure", 
-                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}",
-                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
-                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}");
+                      "Avg. speed (sent/sec)", 
+                      "Avg. speed (CUIs/sec)", 
+                      "Avg. speed (sent/sec)", 
+                      "Avg. speed (CUIs/sec)", 
+                      "Avg. speed (sent/sec)", 
+                      "Avg. speed (CUIs/sec)", 
+                      "Avg. speed (sent/sec)", 
+                      "Avg. speed (CUIs/sec)");
 
 # SML library uses caching to store the similarity values. For this reason,
 # we only consider the first value for a fair comparison.
@@ -299,8 +345,7 @@ table9[4,9] = round(rawdata_WuPalmer_MedSTS[7,5] / mean(rawdata_WuPalmer_MedSTS[
 # and their AncSPL variant
 # ------------------------------------------------------------------------
 
-
-caption_table10 = "This table shows the Pearson \\hl{(r)} and Spearman \\hl{($\\rho$)} correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm \\hl{for a sequence of 1000} random CUI pairs in SNOMED-CT 2019AB. \\hl{We show the results obtained in the evaluation of the first 50, 100, 200, and 1000 random CUI pairs}. All similarity measures are implemented in HESML V1R5 \\cite{Lastra-Diaz2020-xv}. CoswJ\\&C \\cite{Lastra-Diaz2015-ct} sets the current state-of-the-art in the family of ontology-based semantic similarity measures based on WordNet \\cite{Lastra-Diaz2019-kg}. \\hl{Note: the evaluation of any AncSPL-based measure in any tree-like taxonomy as MeSH will always report Pearson, and Spearman correlation metrics equal to 1, regardless of the number of CUI pairs, because AncSPL is exact in this case}."
+caption_table10 = "This table shows the Pearson (r) and Spearman rho correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm for a sequence of 1000 random CUI pairs in SNOMED-CT 2019AB. We show the results obtained in the evaluation of the first 50, 100, 200, and 1000 random CUI pairs. All similarity measures are implemented in HESML V1R5. CoswJ&C sets the current state-of-the-art in the family of ontology-based semantic similarity measures based on WordNet. Note: the evaluation of any AncSPL-based measure in any tree-like taxonomy as MeSH will always report Pearson, and Spearman correlation metrics equal to 1, regardless of the number of CUI pairs, because AncSPL is exact in this case."
 
 # Input raw CSV files generated by the reproducible experiments detailed
 # in the supplementary appendix
@@ -486,7 +531,7 @@ table10[9,10] = round(cor(rawdata_WordNet_AncSPLCosine_exp4_sample_rows_4[,3], r
 #
 # ------------------------------------------------------------------------
 
-caption_table11 = '\\hl{Overall running time in seconds and average speed in protein pairs per second obtained by four groupwise GO-based similarity measures (GO (44509 nodes), 2020-05-02 version) implemented by HESML in the evaluation of the pairwise protein similarity between the Homo Sapiens and Canis lupus familiaris organisms. We used the 542193 and 120720 GO annotations for both organisms provided by the ``goa\\_human.gaf" and ``go\\_dog.gaf" files, respectively. Approximately $340 \\times 10^6$ protein pairs and $33.5 \\times 10^9$ GO-annotation pairs are compared.}'
+caption_table11 = 'Overall running time in seconds and average speed in protein pairs per second obtained by four groupwise GO-based similarity measures (GO (44509 nodes), 2020-05-02 version) implemented by HESML in the evaluation of the pairwise protein similarity between the Homo Sapiens and Canis lupus familiaris organisms. We used the 542193 and 120720 GO annotations for both organisms provided by the "goa_human.gaf" and "go_dog.gaf" files, respectively. Approximately 340 times 10^6 protein pairs and 33.5 times 10^9 GO-annotation pairs are compared.'
 
 # Input raw CSV files generated by the reproducible experiments detailed
 # in the supplementary appendix
@@ -504,25 +549,99 @@ colnames(table11) <- c("", "", "", "");
 
 # We fill the row reporting the evaluation of the Rada measure
 
-table11[1,1] = "SimLP \\cite{Gentleman2009-dc}";
-table11[1,2] = "\\makecell[l]{Common \\\\ ancestors \\\\ ratio}";
+table11[1,1] = "SimLP";
+table11[1,2] = "Common ancestors ratio";
 table11[1,3] = raw_output_SimLP_largeGO[1,4];
 table11[1,4] = raw_output_SimLP_largeGO[1,2] / raw_output_SimLP_largeGO[1,4];
 
-table11[2,1] = "SimUI \\cite{Gentleman2009-dc}";
-table11[2,2] = "\\makecell[l]{Common \\\\ ancestor \\\\ max depth}";
+table11[2,1] = "SimUI";
+table11[2,2] = "Common ancestor max depth";
 table11[2,3] = raw_output_SimUI_largeGO[1,4];
 table11[2,4] = raw_output_SimUI_largeGO[1,2] / raw_output_SimUI_largeGO[1,4];
 
-table11[3,1] = "SimGIC-Seco \\cite{Pesquita2007-pv, Seco2004-fd}";
+table11[3,1] = "SimGIC-Seco";
 table11[3,2] = "IC-based";
 table11[3,3] = raw_output_SimGIC_largeGO[1,4];
 table11[3,4] = raw_output_SimGIC_largeGO[1,2] / raw_output_SimGIC_largeGO[1,4];
 
-table11[4,1] = "BMA-Lin-Seco \\cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}";
+table11[4,1] = "BMA-Lin-Seco";
 table11[4,2] = "IC-based";
 table11[4,3] = raw_output_BMA_Lin_Seco_largeGO[1,4];
 table11[4,4] = raw_output_BMA_Lin_Seco_largeGO[1,2] / raw_output_BMA_Lin_Seco_largeGO[1,4];
+
+
+table11_html <- table11
+
+table11_html[1,4] = round(as.numeric(table11[1,4]),digits=0)
+table11_html[2,4] = round(as.numeric(table11[2,4]),digits=0)
+table11_html[3,4] = round(as.numeric(table11[3,4]),digits=0)
+table11_html[4,4] = round(as.numeric(table11[4,4]),digits=0)
+
+table11_html[1,3] = round(as.numeric(table11[1,3]),digits=0)
+table11_html[2,3] = round(as.numeric(table11[2,3]),digits=0)
+table11_html[3,3] = round(as.numeric(table11[3,3]),digits=0)
+table11_html[4,3] = round(as.numeric(table11[4,3]),digits=0)
+#-------------------------------
+# HTML report generation
+#-------------------------------
+
+library(knitr)
+library(readr)
+
+
+
+# We load and browse Table 6 in the paper
+
+kable_out <- kable(table6_html,
+                   caption = caption_table6,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table6.html"))
+browseURL(paste(outputDir, sep="","Table6.html"))
+
+# We load and browse Table 7 in the paper
+
+kable_out <- kable(table7_html,
+                   caption = caption_table7,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table7.html"))
+browseURL(paste(outputDir, sep="","Table7.html"))
+
+# We load and browse Table 8 in the paper
+
+kable_out <- kable(table8_html,
+                   caption = caption_table8,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table8.html"))
+browseURL(paste(outputDir, sep="","Table8.html"))
+
+# We load and browse Table 9 in the paper
+
+kable_out <- kable(table9,
+                   caption = caption_table9,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table9.html"))
+browseURL(paste(outputDir, sep="","Table9.html"))
+
+# We load and browse Table 10 in the paper
+
+kable_out <- kable(table10,
+                   caption = caption_table10,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
+browseURL(paste(outputDir, sep="","Table10.html"))
+
+kable_out <- kable(table11_html,
+                   caption = caption_table11,
+                   format = "html")
+
+readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
+browseURL(paste(outputDir, sep="","Table11.html"))
+
 
 #############################
 # we export the latex tables
@@ -531,7 +650,7 @@ table11[4,4] = raw_output_BMA_Lin_Seco_largeGO[1,2] / raw_output_BMA_Lin_Seco_la
 library(knitr)
 library(readr)
 library(kableExtra)
-library(stringr)
+
 library(xtable)
 
 
@@ -708,9 +827,18 @@ browseURL(paste(outputDir, sep="","table8.txt"))
 # Table 9
 #############################
 
-# We define the latex table with the data
+caption_table9 = "Average speed in sentence pairs per second \\hl{(sent/secs) and CUI pairs per second (CUIs/secs)} for the evaluation of the UBSM \\cite{Sogancioglu2017-kb} sentence similarity measure combined with three representative ontology-based similarity measures based on MeSH (Nov, 2019) in \\hl{30} sentence pairs \\hl{extracted from} the MedSTS \\cite{Wang2018-oj} sentence similarity dataset, \\hl{and 1 million sentence pairs extracted from BioC corpus} \\cite{Comeau2019-ex}\\hl{. We provide the average evaluation in normalized CUI pairs per second to allow a fair and unbiased comparison of the results reported for 30 and 1 million sentence pairs. The dataset with 30 sentence pairs requires XXXX pairwise CUI comparisons, whilst the 1 million sentence pairs dataset requires YYY pairwise CUI comparisons.} Best performing values are shown in bold. Non-implemented methods (---)."
 
-table9_b <- table9
+
+colnames(table9) <- c("Similarity measure", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}",
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", 
+                      "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}");
 
 # colnames(table9) <- c("Similarity measure", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}", "\\makecell[c]{Avg. speed \\\\ (sent/sec)}", "\\makecell[c]{Avg. speed \\\\ (CUIs/sec)}");
 
@@ -772,6 +900,8 @@ browseURL(paste(outputDir, sep="","table9.txt"))
 #############################
 
 # We define the latex table with the data
+
+caption_table10 = "This table shows the Pearson \\hl{(r)} and Spearman \\hl{($\\rho$)} correlation values between the similarity values returned by a set of path-based similarity measures and those values returned by their reformulation based on the new AncSPL algorithm \\hl{for a sequence of 1000} random CUI pairs in SNOMED-CT 2019AB. \\hl{We show the results obtained in the evaluation of the first 50, 100, 200, and 1000 random CUI pairs}. All similarity measures are implemented in HESML V1R5 \\cite{Lastra-Diaz2020-xv}. CoswJ\\&C \\cite{Lastra-Diaz2015-ct} sets the current state-of-the-art in the family of ontology-based semantic similarity measures based on WordNet \\cite{Lastra-Diaz2019-kg}. \\hl{Note: the evaluation of any AncSPL-based measure in any tree-like taxonomy as MeSH will always report Pearson, and Spearman correlation metrics equal to 1, regardless of the number of CUI pairs, because AncSPL is exact in this case}."
 
 colnames(table10) <- c("Base measure", "\\makecell[c]{AncSPL \\\\ reformulation}", "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$', "r", '$\\rho$');
 
@@ -844,9 +974,32 @@ browseURL(paste(outputDir, sep="","table10.txt"))
 # Table 11
 #############################
 
+caption_table11 = '\\hl{Overall running time in seconds and average speed in protein pairs per second obtained by four groupwise GO-based similarity measures (GO (44509 nodes), 2020-05-02 version) implemented by HESML in the evaluation of the pairwise protein similarity between the Homo Sapiens and Canis lupus familiaris organisms. We used the 542193 and 120720 GO annotations for both organisms provided by the ``goa\\_human.gaf" and ``go\\_dog.gaf" files, respectively. Approximately $340 \\times 10^6$ protein pairs and $33.5 \\times 10^9$ GO-annotation pairs are compared.}'
+
 # We define the latex table with the data
 
 colnames(table11) <- c("Groupwise measure", "Measure type", "\\makecell[c]{\\underline{HESML} \\\\ Time (secs)}", "\\makecell[l]{Avg. speed \\\\ (prot. pairs/sec)}");
+
+
+table11[1,1] = "SimLP \\cite{Gentleman2009-dc}";
+table11[1,2] = "\\makecell[l]{Common \\\\ ancestors \\\\ ratio}";
+table11[1,3] = raw_output_SimLP_largeGO[1,4];
+table11[1,4] = raw_output_SimLP_largeGO[1,2] / raw_output_SimLP_largeGO[1,4];
+
+table11[2,1] = "SimUI \\cite{Gentleman2009-dc}";
+table11[2,2] = "\\makecell[l]{Common \\\\ ancestor \\\\ max depth}";
+table11[2,3] = raw_output_SimUI_largeGO[1,4];
+table11[2,4] = raw_output_SimUI_largeGO[1,2] / raw_output_SimUI_largeGO[1,4];
+
+table11[3,1] = "SimGIC-Seco \\cite{Pesquita2007-pv, Seco2004-fd}";
+table11[3,2] = "IC-based";
+table11[3,3] = raw_output_SimGIC_largeGO[1,4];
+table11[3,4] = raw_output_SimGIC_largeGO[1,2] / raw_output_SimGIC_largeGO[1,4];
+
+table11[4,1] = "BMA-Lin-Seco \\cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}";
+table11[4,2] = "IC-based";
+table11[4,3] = raw_output_BMA_Lin_Seco_largeGO[1,4];
+table11[4,4] = raw_output_BMA_Lin_Seco_largeGO[1,2] / raw_output_BMA_Lin_Seco_largeGO[1,4];
 
 table11[3,1] = "\\makecell[l]{SimGIC-Seco \\\\ \\cite{Pesquita2007-pv, Seco2004-fd}}";
 table11[4,1] = "\\makecell[l]{BMA-Lin-Seco \\\\ \\cite{Azuaje2005-cv, Lin1998-pm, Seco2004-fd}}";
@@ -988,63 +1141,4 @@ write.csv(table8, file = paste(outputDir, sep="","table8.csv"))
 write.csv(table9, file = paste(outputDir, sep="","table9.csv"))
 write.csv(table10, file = paste(outputDir, sep="","table10.csv"))
 write.csv(table10, file = paste(outputDir, sep="","table11.csv"))
-#-------------------------------
-# HTML report generation
-#-------------------------------
 
-library(knitr)
-library(readr)
-
-table6
-
-# We load and browse Table 6 in the paper
-
-kable_out <- kable(table6,
-                   caption = caption_table6,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table6.html"))
-browseURL(paste(outputDir, sep="","Table6.html"))
-
-# We load and browse Table 7 in the paper
-
-kable_out <- kable(table7,
-                   caption = caption_table7,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table7.html"))
-browseURL(paste(outputDir, sep="","Table7.html"))
-
-# We load and browse Table 8 in the paper
-
-kable_out <- kable(table8,
-                   caption = caption_table8,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table8.html"))
-browseURL(paste(outputDir, sep="","Table8.html"))
-
-# We load and browse Table 9 in the paper
-
-kable_out <- kable(table9,
-                   caption = caption_table9,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table9.html"))
-browseURL(paste(outputDir, sep="","Table9.html"))
-
-# We load and browse Table 10 in the paper
-
-kable_out <- kable(table10,
-                   caption = caption_table10,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table10.html"))
-browseURL(paste(outputDir, sep="","Table10.html"))
-
-kable_out <- kable(table11,
-                   caption = caption_table11,
-                   format = "html")
-
-readr::write_file(kable_out, paste(outputDir, sep="","Table11.html"))
-browseURL(paste(outputDir, sep="","Table11.html"))
