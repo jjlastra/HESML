@@ -75,6 +75,17 @@ public interface IVertex extends Comparable<IVertex>
     int getParentsCount();
     
     /**
+     * This function returns the number of nodes making up the ancestor set
+     * subgraph. This subgraph is defined by the collection of ancestor nodes,
+     * including this vertex, and all their adjacent nodes in the taxonomy.
+     * This subgraph is used by the AncSPL algortihm to speed up the computation
+     * of the shortest path between taxonomy nodes.
+     * @return The number of ancestors [0] and the overall number of adjacent nodes [1]
+     */
+    
+    int[] getAncestorSubgraphCount();
+    
+    /**
      * This function returns the content of the string Tag field
      * @return A user-defined string field
      */
@@ -212,7 +223,8 @@ public interface IVertex extends Comparable<IVertex>
             boolean     weighted) throws Exception;
     
     /**
-     * This function computes a fast approximation of the Dijkstra algorithm
+     * This function computes a fast approximation of the Dijkstra algorithm,
+     * called Ancestors-based Shortest-Path Length (AncSPL),
      * using the edge weights assigned to the taxonomy, or a uniform weight = 1
      * when it is invoked to count the edges between the current and target
      * vertexes. This novel algortihm is especially suited for taxonomies
@@ -224,6 +236,17 @@ public interface IVertex extends Comparable<IVertex>
     double getFastShortestPathDistanceTo(
             IVertex     target,
             boolean     weighted) throws Exception;
+    
+    /**
+     * This function returns the number of taxonomy nodes used by the AncSPL
+     * algortihm in the computation of the shortest-path between this node
+     * and the target node.
+     * @param target
+     * @return 
+     */
+    
+    int getAncSPLSubgraphDimension(
+            IVertex target) throws Exception;
 
     /**
      * This function computes the distance field from the current vertex
@@ -379,6 +402,13 @@ public interface IVertex extends Comparable<IVertex>
      */
     
     IVertexList getNeighbours() throws Exception;
+    
+    /**
+     * This function returns the number of adjacent vertexes.
+     * @return Te number of adjacent nodes
+     */
+    
+    int getNeighboursCount();
 
     /**
      * This function checks whether the vertex is a root node.

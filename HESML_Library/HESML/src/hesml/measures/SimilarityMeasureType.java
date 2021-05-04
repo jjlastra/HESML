@@ -499,6 +499,5 @@ public enum SimilarityMeasureType
     
     EMBWordEmbedding,
     UKBppvEmbedding,
-    NasariEmbedding,
-    FastTextBinaryWordEmbedding
+    NasariEmbedding
 }

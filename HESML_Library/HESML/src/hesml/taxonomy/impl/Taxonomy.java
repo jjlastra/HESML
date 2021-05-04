@@ -115,6 +115,99 @@ class Taxonomy implements ITaxonomy
     }
     
     /**
+     * This function computes the average number of adjacent nodes per vertex for
+     * the ancestor set corresponding to each vertex of the taxonomy. This value
+     * impacts on the time complexity of the AncSPL algorithm.
+     * @return 
+     */
+    
+    @Override
+    public double getAverageNeighbourCountPerVertexInAncestorSet()
+    {
+        // We initialize the output
+        
+        double averageValue = 0.0;
+        
+        // We compute the average adjacent nodes per vertex corresponding to
+        // the ancestor set of each vertex in the taxonomy
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            // We get the dimension of the ancestor subgraph and the overall
+            // number of adjacent nodes for each vertex in the ancestor set
+            
+            int[] ancestorCountAndTotalNeighbourCount = vertex.getAncestorSubgraphCount();
+            
+            // We acumulate the average value
+            
+            averageValue += (double)ancestorCountAndTotalNeighbourCount[1] /
+                            (double)ancestorCountAndTotalNeighbourCount[0];
+        }
+        
+        // We evaluae the avergae value for all vertexes in the taxonomy
+        
+        averageValue /= m_Vertexes.getCount();
+        
+        // We return the result
+        
+        return (averageValue);        
+    }
+    
+    /**
+     * Thisfunction computes the averga number of neighbour cout per vertex
+     * in the taxonomy.
+     * @return Average number of adjacent nodes per node
+     */
+    
+    @Override
+    public double getAverageNeighbourCountPerVertex()
+    {
+        // We initialize the output
+        
+        double averageNeighbours = 0.0;
+        
+        // We comoute the overall number of adjacent nodes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            averageNeighbours += vertex.getNeighboursCount();
+        }
+        
+        // We comptue the average
+        
+        averageNeighbours /= m_Vertexes.getCount();
+        
+        // We return the result
+        
+        return (averageNeighbours);
+    }
+    
+    /**
+     * This function returns the maximum number of adjacent vertex for any
+     * vertex.
+     * @return 
+     */
+
+    @Override 
+    public int getMaxNeighboursCountPerVertex()
+    {
+        // We initialize the output
+        
+        int maxAdjacentCount = 0;
+        
+        // We compute the maxium number of adjacent vertexes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            maxAdjacentCount = Math.max(maxAdjacentCount, vertex.getNeighboursCount());
+        }
+        
+        // We return the result
+        
+        return (maxAdjacentCount);
+    }
+    
+    /**
      * This function computes the lowest common subsumer (ancestor), defined
      * as the common ancestor with highest depth. The function
      * returns the first vertex in the LCA set, although could exist
@@ -197,6 +290,70 @@ class Taxonomy implements ITaxonomy
         return (lcaVertex);
     }
     
+    /**
+     * This fucntion returns the number of vertexes with more than one parent
+     * vertex in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public int getNumberOfVertexesWithMulitpleParents()
+    {
+        // We initialize the output
+        
+        int vertexesWithMultipleParents = 0;
+        
+        // We traverse the collection of vertexes
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            if (vertex.getParentsCount() > 1) vertexesWithMultipleParents++;
+        }
+        
+        // We return the result
+        
+        return (vertexesWithMultipleParents);
+    }
+    
+    /**
+     * This function returns the size of the largest ancestor set for
+     * all vertexes in the taxonomy.
+     * @return 
+     */
+    
+    @Override
+    public int getSizeOfLargestAncestorSet()
+    {
+        // We initialize the output
+        
+        int largestSize = 0;
+        
+        // We traverse the collection of vertexes searching for the
+        // largest ancestor set
+        
+        for (IVertex vertex : m_Vertexes)
+        {
+            // We check whether the taxonomy holds the cached ancestor set
+
+            Set<IVertex> ancestors = ((Vertex)vertex).getCachedAncestorSet();
+            
+            boolean cachedAncestors = (ancestors != null);
+
+            if (!cachedAncestors) ancestors = getUnorderedAncestorSet(vertex);
+
+            // We update the largest size
+            
+            largestSize = Math.max(largestSize, ancestors.size());
+            
+            // We release the ancestor set
+            
+            if (!cachedAncestors) ancestors.clear();
+        }
+        
+        // We return the result
+        
+        return (largestSize);
+    }
     /**
      * Remove all the objects and destroys the taxonomy.
      */

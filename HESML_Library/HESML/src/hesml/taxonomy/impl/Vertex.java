@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import javax.naming.ldap.HasControls;
 
 /**
  * This class implements a IVertex object in the half-edge representation
@@ -141,6 +140,14 @@ class Vertex implements IVertex
     
     private double  m_Probability;
     
+    
+    /**
+     * This attribute is used by the implementation of the AncSPL
+     * algorithm to check whether the vertex belongs to the input subgraph
+     */
+    
+    private boolean m_isPartOfSubgraph;
+    
     /**
      * Constructor
      * @param id Integer unique key of a Graph node (WordNet nodes)
@@ -168,6 +175,7 @@ class Vertex implements IVertex
         m_ICvalue = 0.0;
         m_Probability = 0.0;
         m_CachedAncestorSet = null;
+        m_isPartOfSubgraph = false;
     }
     
     /**
@@ -684,10 +692,12 @@ class Vertex implements IVertex
             boolean         weighted)
     {
         // We reset all the minimum distances before to start the method
+        // and mark the vertex as part of the input subgraph
 
         for (IVertex vertex: subgraph)
         {
             vertex.setMinDistance(Double.POSITIVE_INFINITY);
+            ((Vertex)vertex).m_isPartOfSubgraph = true;
         }
 
         // We set to 0 the distance in the source vertex
@@ -718,7 +728,9 @@ class Vertex implements IVertex
 
                 IVertex adjacent = loop.getTarget();
 
-                if (subgraph.contains(adjacent))
+                // We check that the vertex is contained in the input subgraph
+                
+                if (((Vertex)adjacent).m_isPartOfSubgraph)
                 {
                     // We get the edge weight
                     
@@ -728,7 +740,7 @@ class Vertex implements IVertex
 
                     double novelDistance = seed.getMinDistance() + weight;
 
-                    // We check if the novel didstance is lower
+                    // We check if the novel distance is lower
 
                     if (novelDistance < adjacent.getMinDistance())
                     {
@@ -750,7 +762,60 @@ class Vertex implements IVertex
                 loop = loop.getOpposite().getNext();
 
             } while (loop != firstOutEdge);
-        }        
+        }   
+        
+        // We reset the attribute identifying the vertexes as part of the input subgraph
+
+        for (IVertex vertex: subgraph)
+        {
+            ((Vertex)vertex).m_isPartOfSubgraph = false;
+        }
+    }
+    
+    /**
+     * This function returns the number of nodes making up the ancestor set
+     * subgraph. This subgraph is defined by the collection of ancestor nodes,
+     * including this vertex, and all their adjacent nodes in the taxonomy.
+     * This subgraph is used by the AncSPL algortihm to speed up the computation
+     * of the shortest path between taxonomy nodes.
+     * @return The number of ancestors [0] and the overall number of adjacent nodes [1]
+     */
+    
+    @Override
+    public int[] getAncestorSubgraphCount()
+    {
+        // We initialize the output
+        
+        int[] subgraphCount = new int[2];
+        
+        // We check whether the taxonomy holds the cached ancestor set
+
+        boolean cachedAncestors = (m_CachedAncestorSet != null);
+        
+        // We compute the shortest-path constrained to the ancestor set
+        // of the target vertex, which includes this vertex
+
+        Set<IVertex> ancestors = cachedAncestors ? getCachedAncestorSet()
+                                : m_Taxonomy.getUnorderedAncestorSet(this);
+
+        // We get the number of ancestors
+        
+        subgraphCount[0] = ancestors.size();
+        
+        // We count the number of adjacent nodes for all ancestors
+        
+        for (IVertex ancestor : ancestors)
+        {
+            subgraphCount[1] += ancestor.getNeighboursCount();
+        }
+        
+        // We release the auxiliary set whether it is not cached
+        
+        if (!cachedAncestors) ancestors.clear();
+        
+        // We treturn the result
+        
+        return (subgraphCount);
     }
     
     /**
@@ -883,7 +948,7 @@ class Vertex implements IVertex
         
         return (descendant);
     }
-
+    
     /**
      * This function checks if the query vertex is an ancestor node of
      * the current vertex.
@@ -1006,7 +1071,7 @@ class Vertex implements IVertex
      * Length (AnsSPL) and it is introduced by Lastra-Díaz et al. (2020) [1].
      *
      * [1] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,
-     * HESML: an efficient semantic measures library for the biomedical domain,
+     * HESML: a real-time semantic measures library for the biomedical domain,
      * Submitted for Publication. (2020).
      * 
      * @param target
@@ -1018,7 +1083,9 @@ class Vertex implements IVertex
             IVertex     target,
             boolean     weighted) throws Exception
     {
-        double  distance;    // Returned value
+        // We initialize the output
+        
+        double  distance = Double.POSITIVE_INFINITY;
         
         // We check for identical target
         
@@ -1036,49 +1103,34 @@ class Vertex implements IVertex
 
             boolean cachedAncestors = (m_CachedAncestorSet != null);
 
+            // We obtain the ancestor set of both vertexes
+
+            Set<IVertex> targetAncestors = cachedAncestors ?
+                                        ((Vertex)target).getCachedAncestorSet()
+                                        : m_Taxonomy.getUnorderedAncestorSet(target);
+
+            Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                                        : m_Taxonomy.getUnorderedAncestorSet(this);
+            
             // We compute a subgraoh containing most of paths between
             // the current vertex and the target
 
-            if (isMyDescendant(target))
+            if (targetAncestors.contains(this))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of the target vertex, which includes this vertex
 
-                Set<IVertex> targetAncestors = cachedAncestors ?
-                                        ((Vertex)target).getCachedAncestorSet()
-                                        : m_Taxonomy.getUnorderedAncestorSet(target);
-
                 computeDistanceFieldOnSubgraph(targetAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                if (!cachedAncestors) targetAncestors.clear();
             }
-            else if (target.isMyDescendant(this))
+            else if (sourceAncestors.contains(target))
             {
                 // We compute the shortes-path constrained to the ancestor set
                 // of this vertex, which includes the target vertex
 
-                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(this);
-
                 computeDistanceFieldOnSubgraph(sourceAncestors, weighted);
-
-                // We destroy the ancestor set if it was obtained on-the-fly
-
-                if (!cachedAncestors) sourceAncestors.clear();
             }
             else
             {
-                // We obtain the ancestor set of both vertexes
-
-                Set<IVertex> targetAncestors = cachedAncestors ?
-                                            ((Vertex)target).getCachedAncestorSet()
-                                            : m_Taxonomy.getUnorderedAncestorSet(target);
-
-                Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
-                        : m_Taxonomy.getUnorderedAncestorSet(this);
-
                 // We merge both ancestor sets to buld the subgraph
 
                 HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
@@ -1088,23 +1140,108 @@ class Vertex implements IVertex
 
                 // // We destroy the ancestor sets if they were obtained on-the-fly
 
-                if (!cachedAncestors)
-                {
-                    targetAncestors.clear();
-                    sourceAncestors.clear();
-                }
-
                 mergeSubgraph.clear();
             }
 
             // We get the shortest distance until the target vertex
 
             distance = target.getMinDistance();
+            
+            // We destroy the ancestor set if it was obtained on-the-fly
+
+            if (!cachedAncestors)
+            {
+                sourceAncestors.clear();
+                targetAncestors.clear();
+            }
         }
         
         // We return the result
         
         return (distance);
+    }
+        
+    /**
+     * This function returns the number of taxonomy nodes used by the AncSPL
+     * algortihm in the computation of the shortest-path between this node
+     * and the target node.
+     * @param target
+     * @return 
+     */
+    
+    @Override
+    public int getAncSPLSubgraphDimension(
+            IVertex target) throws Exception
+    {
+        // We initialize the output
+        
+        int  subgraphCount = 0;
+        
+        // We check for identical target
+        
+        if (target != this)
+        {
+            // We check whether the taxonomy holds the cached ancestor set
+
+            boolean cachedAncestors = (m_CachedAncestorSet != null);
+            
+            // We retrieve the inclusive and unordered ancestor sets
+            // of the input vertexes
+
+            Set<IVertex> sourceAncestors = cachedAncestors ? getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(this);
+
+            Set<IVertex> targetAncestors = cachedAncestors ? ((Vertex)target).getCachedAncestorSet()
+                                            : m_Taxonomy.getUnorderedAncestorSet(target);
+
+            // We check if the taxonomy is a tree, in whose case AncSPL will use the LCS node
+            
+            if (m_Taxonomy.isTreeLike())
+            {
+                subgraphCount = targetAncestors.size() * sourceAncestors.size();
+            }
+            else
+            {
+                // We compute a subgraoh containing most of paths between
+                // the current vertex and the target
+
+                if (targetAncestors.contains(this))
+                {
+                    subgraphCount = targetAncestors.size();
+                }
+                else if (sourceAncestors.contains(target))
+                {
+                    subgraphCount = sourceAncestors.size();
+                }
+                else
+                {
+                    // We merge both ancestor sets to buld the subgraph
+
+                    HashSet<IVertex> mergeSubgraph = new HashSet<>(targetAncestors);
+                    mergeSubgraph.addAll(sourceAncestors);
+
+                    // We obtain the dimension of the subgraph
+
+                    subgraphCount = mergeSubgraph.size();
+
+                    // We destroy the ancestor merged set if they were obtained on-the-fly
+
+                    mergeSubgraph.clear();
+                }
+            }
+            
+            // We reset the visited sets
+
+            if (!cachedAncestors)
+            {
+                sourceAncestors.clear();
+                targetAncestors.clear();
+            }
+        }
+        
+        // We return the result
+        
+        return (subgraphCount);
     }
     
     /**
@@ -1347,6 +1484,41 @@ class Vertex implements IVertex
         // We return the result
         
         return (neighbours);
+    }
+    
+    /**
+     * This function returns the number of adjacent vertexes.
+     * @return Te number of adjacent nodes
+     */
+    
+    @Override
+    public int getNeighboursCount()
+    {
+        // We initialize the output
+        
+        int adjacentNodes = 0;
+        
+        // We initialize the travering cursor
+        
+        IHalfEdge   loop = m_FirstOutArc;
+        
+        // We iterate around the vertex
+        
+        do
+        {
+            // We increase the counter
+            
+            adjacentNodes++;
+            
+            // We go to the next neighbour
+            
+            loop = loop.getOpposite().getNext();
+            
+        } while (loop != m_FirstOutArc);
+        
+        // We return the result
+        
+        return (adjacentNodes);
     }
     
     /**

@@ -106,4 +106,39 @@ public class WordNetFactory
         
         return (taxonomy);
     }
+    
+    /**
+     * This function builds the taxonomy associated to a WordNetDB
+     * @param wordnet WordNet database
+     * @param useCachedAttributes 
+     * @return The taxonomy representing the WordNet database
+     * @throws java.lang.InterruptedException Unexpected error
+     */
+    
+    public static ITaxonomy buildTaxonomy(
+            IWordNetDB  wordnet,
+            boolean     useCachedAttributes) throws InterruptedException, Exception
+    {
+        // We create the graph
+        
+        ITaxonomy taxonomy = hesml.taxonomy.impl.TaxonomyFactory.createBlankTaxonomy(
+                    wordnet.getSynsetCount());
+        
+        // We create a vertex into the taxonomy for each synset.
+        // Each vertex shares the same ID that its parent synset.
+        
+        for (IWordNetSynset synset: wordnet)
+        {
+            taxonomy.addVertex(synset.getID(), synset.getParentsId());
+        }
+        
+        // We pre-process the taxonomy to compute the cached attributes
+        
+        taxonomy.computesCachedAttributes();
+        taxonomy.computeCachedAncestorSet(false);
+        
+        // We return the result
+        
+        return (taxonomy);
+    }
 }
