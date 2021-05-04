@@ -116,7 +116,7 @@ class GroupwiseSimLPMeasure implements IGroupwiseSimilarityMeasure
     }
     
     /**
-     * This function returns the type of groupwise measure
+     * This fucntion returns the type of groupwise measure
      * @return 
      */
     
