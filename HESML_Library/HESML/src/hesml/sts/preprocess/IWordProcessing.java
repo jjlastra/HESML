@@ -59,4 +59,10 @@ public interface IWordProcessing
      */
     
     String getLabel();
+    
+    /**
+     * Set the NER type
+     */
+    
+    void setNERType(NERType nerType);
 }

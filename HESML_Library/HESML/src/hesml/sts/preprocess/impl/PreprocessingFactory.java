@@ -23,6 +23,7 @@ package hesml.sts.preprocess.impl;
 
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.IWordProcessing;
+import hesml.sts.preprocess.NERType;
 import hesml.sts.preprocess.TokenizerType;
 import java.io.IOException;
 
@@ -41,7 +42,7 @@ public class PreprocessingFactory
      * @param stopWordFileName
      * @param tokenizerType
      * @param lowercaseNormalization
-     * @param conceptsAnnotation
+     * @param nerType
      * @param charFilteringType
      * @return 
      * @throws java.io.IOException
@@ -51,11 +52,11 @@ public class PreprocessingFactory
             String              stopWordFileName,
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
-            boolean             conceptsAnnotation,
+            NERType             nerType,
             CharFilteringType   charFilteringType) throws IOException
     {   
         return (new WordProcessing(tokenizerType,lowercaseNormalization,
-                conceptsAnnotation, stopWordFileName, charFilteringType));
+                nerType, stopWordFileName, charFilteringType));
     }
     
     
@@ -65,7 +66,7 @@ public class PreprocessingFactory
      * @param stopWordFileName
      * @param tokenizerType
      * @param lowercaseNormalization
-     * @param conceptsAnnotation
+     * @param nerType
      * @param charFilteringType
      * @param tempDir
      * @param modelDirPath
@@ -79,7 +80,7 @@ public class PreprocessingFactory
             String              stopWordFileName,
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
-            boolean             conceptsAnnotation,
+            NERType             nerType,
             CharFilteringType   charFilteringType,
             String              tempDir,
             String              pythonVirtualEnvironmentDir,
@@ -87,7 +88,7 @@ public class PreprocessingFactory
             String              modelDirPath) throws IOException
     {   
         return (new WordProcessing(tokenizerType, lowercaseNormalization,
-                conceptsAnnotation, stopWordFileName, charFilteringType, tempDir,
+                nerType, stopWordFileName, charFilteringType, tempDir,
                 pythonVirtualEnvironmentDir, pythonScriptDir, modelDirPath));
     }    
 }

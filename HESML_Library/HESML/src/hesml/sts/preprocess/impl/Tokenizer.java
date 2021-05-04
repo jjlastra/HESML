@@ -23,6 +23,8 @@ package hesml.sts.preprocess.impl;
 
 import bioc.preprocessing.pipeline.PreprocessingPipeline;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.CoreDocument;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.TokenizerType;
 
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  *  Implementation of the tokenization methods
@@ -135,7 +138,7 @@ class Tokenizer implements ITokenizer
 
                 break;
 
-            case StanfordCoreNLPv3_9_1:
+            case StanfordCoreNLPv4_2_0:
 
                 // Convert to a Stanford CoreNLP Sentence object and get the tokens.
 
@@ -144,6 +147,14 @@ class Tokenizer implements ITokenizer
                 // Get the list of tokenized words and convert to array.
 
                 tokens = sent.words().toArray(new String[0]); 
+
+                break;
+            
+            case StanfordCoreNLPv4_2_0_Spanish:
+
+                // Convert to a Stanford CoreNLP Sentence object and get the tokens.
+                
+                tokens = getTokensStanfordCoreNLPLibrary(strRawSentence);
 
                 break;
 
@@ -217,6 +228,55 @@ class Tokenizer implements ITokenizer
         // Return the result
         
         return tokenizedText;
+    }
+    
+    /**
+     * Use the Stanford CoreNLP library to tokenize the text.
+     * 
+     * @param strSentence
+     * @return String[] array with the tokens of the sentence
+     */
+    
+    private String[] getTokensStanfordCoreNLPLibrary(
+            String strSentence) 
+    {
+        // Initialize the output
+
+        String[] tokens = {};
+        ArrayList<String> tokenizedTokens = new ArrayList();
+        
+        Properties props = new Properties();
+        props.put("annotators", "tokenize");
+        props.setProperty("tokenize.language", "es");
+        
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+        CoreDocument doc = pipeline.processToCoreDocument(strSentence);
+
+        List<CoreLabel> sentenceCoreLabel = doc.tokens();
+
+        for(CoreLabel token: sentenceCoreLabel)
+        {
+            // Extract the token from the sentence
+
+            String word = strSentence.substring(token.beginPosition(), token.endPosition());
+
+            // Add the token to the list
+
+            tokenizedTokens.add(word);
+        }
+
+        // Convert the arraylist to an array
+
+        tokens = tokenizedTokens.toArray(new String[0]);
+
+        // Clear the arraylist
+
+        tokenizedTokens.clear();
+
+        // Return the results
+
+        return tokens;
     }
     
     /**

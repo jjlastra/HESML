@@ -64,5 +64,11 @@ public enum CharFilteringType
      * estimation in the biomedical domain, BMC Bioinformatics. 20 (2019) 178.
      */
     
-    Blagec2019
+    Blagec2019,
+    
+    /**
+     * Spanish filtering (not removing spanish characters)
+     */
+    
+    Spanish
 }

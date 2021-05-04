@@ -22,31 +22,22 @@
 package hesml.sts.preprocess.impl;
 
 
-import bioc.BioCDocument;
-import gov.nih.nlm.nls.metamap.document.FreeText;
-import gov.nih.nlm.nls.metamap.lite.types.Entity;
-import gov.nih.nlm.nls.metamap.lite.types.Ev;
 import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.sts.preprocess.CharFilteringType;
+import hesml.sts.preprocess.INER;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.IWordProcessing;
+import hesml.sts.preprocess.NERType;
 import hesml.sts.preprocess.TokenizerType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -60,9 +51,10 @@ class WordProcessing implements IWordProcessing
     
     private final boolean m_lowercaseNormalization; 
     
-    // Configure the concept annotation using Metamap
+    // Configure the concept annotation
     
-    private final boolean m_conceptsAnnotation;
+    private NERType m_nerType;
+    private final INER m_ner;
     
     // Metamap Lite instance
     
@@ -119,7 +111,7 @@ class WordProcessing implements IWordProcessing
     WordProcessing(
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
-            boolean             conceptsAnnotation,
+            NERType             nerType,
             String              strStopWordsFileName,
             CharFilteringType   charFilteringType) throws IOException
     {
@@ -129,25 +121,11 @@ class WordProcessing implements IWordProcessing
         m_lowercaseNormalization = lowercaseNormalization;
         m_strStopWordsFileName = strStopWordsFileName;
         m_charFilter = new CharsFiltering(charFilteringType);
-        m_conceptsAnnotation = conceptsAnnotation;
+        m_nerType = nerType;
         
-        // Initialize Metamap to null
+        // Initialize the Concept annotation method
         
-        m_metaMapLiteInst = null;
-        
-        // Load Metamap Lite if necessary
-        
-        if(m_conceptsAnnotation) try {
-            loadMetamapLite();
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
-            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        m_ner = new NER(m_nerType);
         
         // Initialize the temporal dirs to null.
         
@@ -178,7 +156,7 @@ class WordProcessing implements IWordProcessing
     WordProcessing(
             TokenizerType       tokenizerType,
             boolean             lowercaseNormalization,
-            boolean             conceptsAnnotation,
+            NERType             nerType,
             String              strStopWordsFileName,
             CharFilteringType   charFilteringType,
             String              tempDir,
@@ -192,11 +170,11 @@ class WordProcessing implements IWordProcessing
         m_lowercaseNormalization = lowercaseNormalization;
         m_strStopWordsFileName = strStopWordsFileName;
         m_charFilter = new CharsFiltering(charFilteringType);
-        m_conceptsAnnotation = conceptsAnnotation;
+        m_nerType = nerType;
         
-        // Initialize Metamap to null
+        // Initialize the Concept annotation method
         
-        m_metaMapLiteInst = null;
+        m_ner = new NER(m_nerType);
         
         // Initialize the temporal dirs to null.
         
@@ -208,15 +186,6 @@ class WordProcessing implements IWordProcessing
         // load the stop words
         
         getStopWords();
-        
-        // Load Metamap Lite if necessary
-        
-        if(m_conceptsAnnotation) try {
-            loadMetamapLite();
-        } catch (IllegalAccessException | ClassNotFoundException | 
-                InstantiationException | NoSuchMethodException ex) {
-            Logger.getLogger(WordProcessing.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
         // Compile the pattern in the constructor for efficiency reasons.
         
@@ -258,12 +227,18 @@ class WordProcessing implements IWordProcessing
         
         if(strFilteredSentence.length() > 2 
                 && m_pattern.matcher(strFilteredSentence).find())
-        {           
-            // Annotate the text (if set)
+        {     
+            // In the Spanish version, the annotation process occurs at the end
             
-            if(m_conceptsAnnotation) 
-                strFilteredSentence = annotateSentence(strFilteredSentence);
-
+            if(m_nerType != NERType.MetamapSNOMEDCT_SP &&
+                    m_nerType != NERType.MetamapMESH_SP &&
+                    m_nerType != NERType.None)
+            {
+                // Annotate the text (if set)
+            
+                strFilteredSentence = m_ner.annotate(strRawSentence);
+            }
+            
             // Tokenize the text
             
             ITokenizer tokenizer = null;
@@ -309,11 +284,31 @@ class WordProcessing implements IWordProcessing
                     lstWordsPreprocessed.add(preprocessedToken);
                 }
             }
+            
+            // In the Spanish version, the annotation process occurs at the end
+            
+            if(m_nerType == NERType.MetamapSNOMEDCT_SP ||
+                    m_nerType == NERType.MetamapMESH_SP)
+            {
+                // Create an auxiliary string
+                
+                String preprocessedSentNotAnn = String.join(" ", lstWordsPreprocessed);
+                
+                // Annotate the text (if set)
+            
+                preprocessedSentNotAnn = m_ner.annotate(preprocessedSentNotAnn);
+                
+                // Convert to list
+                
+                tokens = preprocessedSentNotAnn.split(" ");
+            }
+            else
+            {
+                // Convert the arraylist to a string array
 
-            // Convert the arraylist to a string array
-
-            tokens = lstWordsPreprocessed.toArray(new String[0]);
-
+                tokens = lstWordsPreprocessed.toArray(new String[0]);
+            }
+            
             // Clear the arraylist
 
             lstWordsPreprocessed.clear();
@@ -393,75 +388,6 @@ class WordProcessing implements IWordProcessing
     }
     
     /**
-     * This function loads the Metamap Lite instance before executing the queries.
-     */
-    
-    private void loadMetamapLite() throws ClassNotFoundException, 
-                                    InstantiationException, NoSuchMethodException, 
-                                    IllegalAccessException, IOException
-    {
-        // Initialization Section
-        
-        Properties myProperties = new Properties();
-        
-        // Select the 2018AB database
-        
-        // myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2018ABascii/USAbase/");
-        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2020AA/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
-        
-        myProperties.setProperty("metamaplite.sourceset", "MSH");
-
-        // We create the METAMAP maname
-        
-        m_metaMapLiteInst = new MetaMapLite(myProperties);
-        
-    }
-    
-    /**
-     * This function annotates a sentence with CUI codes replacing 
-     * keywords with codes in the same sentence.
-     * @return 
-     */
-    
-    private String annotateSentence(
-            String sentence) throws InvocationTargetException, IOException, Exception
-    {
-        // Initialize the result
-        
-        String annotatedSentence = sentence;
-        
-        // Processing Section
-
-        // Each document must be instantiated as a BioC document before processing
-        
-        BioCDocument document = FreeText.instantiateBioCDocument(sentence);
-        
-        // Proccess the document with Metamap
-        
-        List<Entity> entityList = m_metaMapLiteInst.processDocument(document);
-
-        // For each keyphrase, select the first CUI candidate and replace in text.
-        
-        for (Entity entity: entityList) 
-        {
-            for (Ev ev: entity.getEvSet()) 
-            {
-                // Replace in text
-                
-                annotatedSentence = annotatedSentence.replaceAll(entity.getMatchedText(), ev.getConceptInfo().getCUI());
-            }
-        }
-        
-        // Return the result
-        
-        return (annotatedSentence);
-    }
-    
-    /**
      * Dynamically assign a label or name for a Wordprocessing object 
      * using the parameters configuration.
      * 
@@ -496,8 +422,7 @@ class WordProcessing implements IWordProcessing
         
         // Add the conceptAnnotationInfo
         
-        if(m_conceptsAnnotation)
-            label = label + "_ca";
+        label = label + "_" + m_nerType;
         
         // Add the bert vocabulary if exists
         
@@ -515,5 +440,11 @@ class WordProcessing implements IWordProcessing
         // Return the result
         
         return (label);
+    }
+
+    @Override
+    public void setNERType(NERType nerType) 
+    {
+        m_nerType = nerType;
     }
 }

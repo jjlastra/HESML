@@ -35,6 +35,7 @@ import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.IWordProcessing;
+import hesml.sts.preprocess.NERType;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
@@ -67,13 +68,13 @@ import org.w3c.dom.NodeList;
 public class SentenceSimBenchmarkFactory
 {
     /**
-     * Singleton instance of the WOrdNet DB
+     * Singleton instance of the WordNet DB
      */
     
     private static IWordNetDB   m_WordNetDbSingleton = null;
     
     /**
-     * Singleton instace of the Wordnet taxonomy
+     * Singleton instance of the WordNet taxonomy
      */
     
     private static ITaxonomy    m_WordNetTaxonomySingleton = null;
@@ -224,7 +225,7 @@ public class SentenceSimBenchmarkFactory
         ArrayList<ISentenceSimilarityMeasure> tempMeasureList = new ArrayList<>();
         
         // We parse all measures
-
+        
         for (int i = 0; i < measureNodes.getLength(); i++)
         {
             // We filter all non-element nodes
@@ -302,7 +303,7 @@ public class SentenceSimBenchmarkFactory
         }
         
         // We create the vector to return the collection of sentence similarity measures
-         
+        
         ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[tempMeasureList.size()];
         
         // We copy the measures to the vector and release the temporary list
@@ -319,7 +320,7 @@ public class SentenceSimBenchmarkFactory
         // We return the result
         
         return (benchmark);
-    }   
+    }
     
     /**
      * This function parses a word processing object from a XML-based experiment file.
@@ -345,7 +346,7 @@ public class SentenceSimBenchmarkFactory
                                         strStopWordsFileDir + "/" + strStopWordsFilename,
                                         convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
                                         readBooleanField(wordProcessingNode, "LowercaseNormalization"),
-                                        readBooleanField(wordProcessingNode, "ConceptAnnotation"),
+                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
                                         convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")));
         // We return the result
         
@@ -600,7 +601,7 @@ public class SentenceSimBenchmarkFactory
     {
         // We initialize the output
         
-        TokenizerType recoveredType = TokenizerType.StanfordCoreNLPv3_9_1;
+        TokenizerType recoveredType = TokenizerType.StanfordCoreNLPv4_2_0;
         
         // We look for the matching value
         
@@ -609,6 +610,35 @@ public class SentenceSimBenchmarkFactory
             if (tokenType.toString().equals(strMethod))
             {
                 recoveredType = tokenType;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredType);
+    }
+    
+    /**
+     * This function converts the input string into a TokenizerType value.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static NERType convertToNERType(
+            String  strMethod)
+    {
+        // We initialize the output
+        
+        NERType recoveredType = NERType.None;
+        
+        // We look for the matching value
+        
+        for (NERType type: NERType.values())
+        {
+            if (type.toString().equals(strMethod))
+            {
+                recoveredType = type;
                 break;
             }
         }
@@ -1151,7 +1181,7 @@ public class SentenceSimBenchmarkFactory
                                         strStopWordsFileDir + "/" + strStopWordsFilename,
                                         convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
                                         readBooleanField(wordProcessingNode, "LowercaseNormalization"),
-                                        readBooleanField(wordProcessingNode, "ConceptAnnotation"),
+                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
                                         convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")),
                                         strPythonScriptsDirectory,
                                         strPythonVirtualEnvironmentDir,

@@ -31,6 +31,7 @@ import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.IWordProcessing;
+import hesml.sts.preprocess.NERType;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
@@ -209,7 +210,7 @@ public class HESMLSTSclient
         
         // Execute the tests
         
-        // testStringMeasures(sentences1, sentences2);
+        testStringMeasures(sentences1, sentences2);
         // testWBSMMeasures(sentences1, sentences2);
         // testUBSMMeasures(sentences1, sentences2);
     }
@@ -241,8 +242,8 @@ public class HESMLSTSclient
         
         wordPreprocessing = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv3_9_1, 
-                        true, true,
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapSNOMEDCT,
                         CharFilteringType.Blagec2019);
         
         // Add the string based methods to test
@@ -326,7 +327,7 @@ public class HESMLSTSclient
         
         preprocesser = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", TokenizerType.WhiteSpace, 
-                        true, false, CharFilteringType.BIOSSES);
+                        true, NERType.None, CharFilteringType.BIOSSES);
         
         // Create the measure
         
@@ -380,7 +381,7 @@ public class HESMLSTSclient
         
         preprocesser = PreprocessingFactory.getWordProcessing(
                         "", TokenizerType.WhiteSpace, 
-                        false, true, CharFilteringType.BIOSSES);
+                        false, NERType.MetamapSNOMEDCT, CharFilteringType.BIOSSES);
         
         if ((m_strMeSHdir != "") && (m_MeshOntology == null))
         {

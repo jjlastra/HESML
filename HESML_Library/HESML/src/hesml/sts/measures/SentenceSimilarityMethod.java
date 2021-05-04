@@ -146,5 +146,7 @@ public enum SentenceSimilarityMethod
      * for the Biomedical Domain.” Bioinformatics  33 (14): i49–58.
      */
     
-    COM
+    COM,
+    
+    ComMixedVectorsMeasure
 }

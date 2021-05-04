@@ -23,6 +23,7 @@ package hesml.sts.preprocess.impl;
 
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.ICharsFiltering;
+import java.text.Normalizer;
 import java.util.HashMap;
 
 /**
@@ -69,11 +70,19 @@ class CharsFiltering implements ICharsFiltering
                 
                 m_replacingMap.put("\\p{Punct}"," ");
                 
+                // We remove the special symbols from \x00 to \x7f
+        
+                 m_replacingMap.put("[^\\x00-\\x7F]+","");
+                
                 break;
                 
             case BIOSSES:
                 
                 setBiosssesFilteringPatterns();
+                
+                // We remove the special symbols from \x00 to \x7f
+        
+                 m_replacingMap.put("[^\\x00-\\x7F]+","");
                 
                 break;
                 
@@ -81,12 +90,23 @@ class CharsFiltering implements ICharsFiltering
                 
                 setBlagecFilteringPatterns();
                 
+                // We remove the special symbols from \x00 to \x7f
+        
+                 m_replacingMap.put("[^\\x00-\\x7F]+","");
+                
+                break;
+                
+            case Spanish:
+                
+                // Remove all the punctuation marks using the Java preexisting regex.
+                // 	Punctuation: One of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+                
+                m_replacingMap.put("\\p{Punct}"," ");
+                
                 break;
         }
         
-        // We remove the special symbols from \x00 to \x7f
         
-        m_replacingMap.put("[^\\x00-\\x7F]+","");
         
         // We register the last extra words applied as last filtering
         
@@ -123,6 +143,17 @@ class CharsFiltering implements ICharsFiltering
         {
             strFilteredSentence = strFilteredSentence.replaceAll(strToBeReplaced,
                                     m_replacingMap.get(strToBeReplaced));
+        }
+        
+        // In Spanish language, we have to replace non-ascii characters with its equivalents (á -> a)
+        
+        if(m_charFilteringType == CharFilteringType.Spanish)
+        {
+            // Replace non-ascii characters with its equivalents
+                
+            strFilteredSentence = Normalizer.normalize(strFilteredSentence, Normalizer.Form.NFD);
+
+            strFilteredSentence = strFilteredSentence.replaceAll("[^\\x00-\\x7F]", "");
         }
         
         // We apply the last triming. Extra words are removed by the last replcament pattern.
