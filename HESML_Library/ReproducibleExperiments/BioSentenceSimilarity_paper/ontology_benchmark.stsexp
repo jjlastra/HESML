@@ -18,7 +18,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -34,7 +34,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -50,7 +50,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -66,7 +66,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -82,7 +82,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -108,7 +108,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -131,7 +131,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -154,7 +154,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -177,7 +177,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -200,7 +200,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -225,7 +225,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -241,7 +241,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -257,7 +257,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -273,7 +273,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -289,7 +289,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -314,7 +314,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -337,7 +337,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -360,7 +360,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -383,7 +383,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -406,7 +406,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -433,7 +433,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -449,7 +449,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -465,7 +465,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -481,7 +481,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -497,7 +497,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</WBSMMeasure>
@@ -522,7 +522,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -545,7 +545,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -568,7 +568,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -591,7 +591,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>
@@ -614,7 +614,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapSNOMEDCT</NERType>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 				</WordProcessing>
 			</UBSMMeasure>

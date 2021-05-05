@@ -19,7 +19,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 
@@ -35,7 +35,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -50,7 +50,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -65,7 +65,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			
@@ -91,7 +91,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 
@@ -107,7 +107,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -122,7 +122,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -137,7 +137,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 
@@ -162,7 +162,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 
@@ -178,7 +178,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -193,7 +193,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			<SWEMMeasure>
@@ -208,7 +208,7 @@
 					<TokenizerType>BioCNLPTokenizer</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>None</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</SWEMMeasure>
 			

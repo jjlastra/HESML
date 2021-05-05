@@ -20,7 +20,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</USEModelMeasure>
 
@@ -38,7 +38,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</Sent2vecModelMeasure> 
 
@@ -57,7 +57,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</FlairModelMeasure>
 
@@ -87,7 +87,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</USEModelMeasure>
 
@@ -105,7 +105,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</Sent2vecModelMeasure> 
 
@@ -122,7 +122,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</FlairModelMeasure>
 
@@ -148,7 +148,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</USEModelMeasure>
 
@@ -166,7 +166,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>Default</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</Sent2vecModelMeasure> 
 
@@ -183,7 +183,7 @@
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</FlairModelMeasure>
 

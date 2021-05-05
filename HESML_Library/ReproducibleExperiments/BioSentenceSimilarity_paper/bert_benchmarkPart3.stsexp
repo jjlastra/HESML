@@ -14,7 +14,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>seiya/oubiobert-base-uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -23,11 +23,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>oubiobert-base-uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -38,7 +38,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -47,11 +47,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -62,7 +62,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -71,11 +71,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -88,7 +88,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>scibert_scivocab_uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -97,11 +97,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>scibert_scivocab_uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -116,7 +116,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -125,11 +125,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -142,7 +142,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_large_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -151,11 +151,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_large_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			
@@ -176,7 +176,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>seiya/oubiobert-base-uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -185,11 +185,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>oubiobert-base-uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -200,7 +200,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -209,11 +209,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -224,7 +224,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -233,11 +233,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -250,7 +250,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>scibert_scivocab_uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -259,11 +259,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>scibert_scivocab_uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -278,7 +278,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -287,11 +287,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -304,7 +304,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_large_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -313,11 +313,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_large_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			
@@ -336,7 +336,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>seiya/oubiobert-base-uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -345,11 +345,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>oubiobert-base-uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -360,7 +360,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -369,11 +369,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract-fulltext</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -384,7 +384,7 @@
 				<PretrainedModelDirectory></PretrainedModelDirectory>
 				<PretrainedModelName>microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/PytorchExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/PytorchExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -393,11 +393,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>PubMedBERT-base-uncased-abstract</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -410,7 +410,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>scibert_scivocab_uncased</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -419,11 +419,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>scibert_scivocab_uncased</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -438,7 +438,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -447,11 +447,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 
@@ -464,7 +464,7 @@
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_large_v1.1_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<WordProcessing>
 					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
@@ -473,11 +473,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_large_v1.1_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			

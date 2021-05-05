@@ -27,6 +27,7 @@ import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
+import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.SWEMpoolingMethod;
 import hesml.sts.measures.SentenceSimilarityFamily;
@@ -99,6 +100,10 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
 
     private final SWEMpoolingMethod    m_poolingMethod;
     
+    // COM Mixed vector measure type
+    
+    private final ComMixedVectorsMeasureType  m_comMixedVectorsMeasureType;
+    
     
     /**
      * Constructor for MESH ontology
@@ -118,7 +123,8 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
             IntrinsicICModelType        icModelType,
             ISentenceSimilarityMeasure  stringMeasure,
-            Double                      lambda) throws Exception
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
         // We intialize the base class
         
@@ -136,6 +142,10 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         m_wordnet = wordnet;
         m_wordnetTaxonomy = wordnetTaxonomy;
+        
+        // Set the COM Mixed method
+        
+        m_comMixedVectorsMeasureType = comMixedVectorsMeasureType;
         
         // Initialize the string measure
         
@@ -306,19 +316,34 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         // 2. Initialize the semantic vectors.
         
-        semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
-        semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
-        
-        semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
-        semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
-        
-        semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
-        semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
-        
+        if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.PooledAVG ||
+                m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.PooledMin)
+        {
+            semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
+            semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+
+            semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
+            semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
+
+            semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
+            semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+            
+        }
+        else if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.WordNet)
+        {
+            semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
+            semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
+
+        }
+        else if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.UMLS)
+        {
+            semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
+            semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+        }
+            
         // 3. Compute the cosine similarity between the semantic vectors
         
         double ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
-//        double ontologySimilarity = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
         
         // Compute the string-based similarity value
         

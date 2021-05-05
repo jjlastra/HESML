@@ -25,6 +25,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.measures.BERTpoolingMethod;
+import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.MLPythonLibrary;
@@ -280,11 +281,12 @@ public class SentenceSimilarityFactory
             SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
             IntrinsicICModelType        icModelType,
             ISentenceSimilarityMeasure  stringMeasure,
-            Double                      lambda) throws Exception
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
         return (new ComMixedVectorsMeasure(strLabel, preprocesser,
                 snomedOntology, vertexes, taxonomy, wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet,
-                wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure, lambda));
+                wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure, lambda, comMixedVectorsMeasureType));
     }
     
     /**

@@ -26,6 +26,7 @@ import hesml.measures.SimilarityMeasureType;
 import hesml.measures.WordEmbeddingFileType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.measures.BERTpoolingMethod;
+import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.MLPythonLibrary;
@@ -100,7 +101,7 @@ public class SentenceSimBenchmarkFactory
      * @throws java.lang.Exception 
      */
     
-    private static ISentenceSimilarityBenchmark getSingleDatasetBenchmark(
+    public static ISentenceSimilarityBenchmark getSingleDatasetBenchmark(
             ISentenceSimilarityMeasure[]    measures,
             String                          strDatasetDirectory,
             String                          strDatasetFilename,
@@ -655,7 +656,35 @@ public class SentenceSimBenchmarkFactory
         
         return (recoveredType);
     }
-
+            
+    /**
+     * This function converts the input string into a ComMixedVectorsMeasureType.
+     * @param strICmodelType
+     * @return 
+     */
+    
+    private static ComMixedVectorsMeasureType convertToComMixedVectorsMeasureType(
+            String  strMethod)
+    {
+        // We initialize the output
+        
+        ComMixedVectorsMeasureType recoveredType = ComMixedVectorsMeasureType.PooledAVG;
+        
+        // We look for the matching value
+        
+        for (ComMixedVectorsMeasureType type: ComMixedVectorsMeasureType.values())
+        {
+            if (type.toString().equals(strMethod))
+            {
+                recoveredType = type;
+                break;
+            }
+        }
+        
+        // We return the result
+        
+        return (recoveredType);
+    }
     /**
      * This function converts the input string into a CharFilteringType value.
      * @param strICmodelType
@@ -1080,7 +1109,8 @@ public class SentenceSimBenchmarkFactory
                 m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed, m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
                 wordSimilarityMeasureTypeWordnet,
                 wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure,
-                readDoubleField(measureNode, "Lambda"));
+                readDoubleField(measureNode, "Lambda"),
+                convertToComMixedVectorsMeasureType(readStringField(measureNode, "ComMixedVectorsMeasureType")));
                
         // We return the result
         
