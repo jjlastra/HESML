@@ -246,13 +246,40 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
             
             // We divide by the vector norms
             
-            similarity /= (MeasureFactory.getVectorNorm(sentence1Vector)
-                        * MeasureFactory.getVectorNorm(sentence2Vector));
+            similarity /= (getVectorNorm(sentence1Vector)
+                        * getVectorNorm(sentence2Vector));
         }
         
         // We return the result
         
         return (similarity);
+    }
+    
+    /**
+     * This function computes the Euclidean norm of the input vector
+     * @param vector
+     * @return 
+     */
+    
+    public static double getVectorNorm(
+        double[]    vector)
+    {
+        double norm = 0.0;  // Returned value
+        
+        // We compute the acumulated square-coordinates
+        
+        for (int i = 0; i < vector.length; i++)
+        {
+            norm += vector[i] * vector[i];
+        }
+        
+        // Finally, we compute the square root
+        
+        norm = Math.sqrt(norm);
+        
+        // We return the result
+        
+        return (norm);
     }
     
     /**

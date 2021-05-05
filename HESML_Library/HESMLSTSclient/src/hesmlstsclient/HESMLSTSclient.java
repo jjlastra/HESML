@@ -35,13 +35,6 @@ import hesml.sts.preprocess.NERType;
 import hesml.sts.preprocess.TokenizerType;
 import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
-import hesml.taxonomy.IVertexList;
-import hesml.taxonomyreaders.mesh.IMeSHOntology;
-import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
-import hesml.taxonomyreaders.obo.IOboOntology;
-import hesml.taxonomyreaders.obo.impl.OboFactory;
-import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
-import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
@@ -184,7 +177,7 @@ public class HESMLSTSclient
         
         // We call the SampleExperiments() function
         
-//        SampleExperiments();
+        SampleExperiments();
     }
     
     /**

@@ -8,6 +8,8 @@ import socket
 logger = tf.get_logger()
 logger.setLevel(logging.ERROR)
 
+# print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
 # Set the fine_tunned option to false by default
 
 fine_tunned = False

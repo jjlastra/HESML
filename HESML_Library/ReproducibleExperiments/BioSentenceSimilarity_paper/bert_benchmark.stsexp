@@ -12,10 +12,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5555</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -26,11 +27,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -38,10 +39,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5557</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -52,11 +54,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -64,10 +66,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5559</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -78,11 +81,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -90,10 +93,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5561</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -104,11 +108,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -116,10 +120,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5563</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -130,11 +135,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -142,10 +147,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5565</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -156,11 +162,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -168,10 +174,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5567</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -182,11 +189,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			
@@ -204,10 +211,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5555</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -218,11 +226,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -230,10 +238,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5557</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -244,11 +253,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -256,10 +265,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5559</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -270,11 +280,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -282,10 +292,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5561</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -296,11 +307,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -308,10 +319,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5563</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -322,11 +334,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -334,10 +346,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5565</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -348,11 +361,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -360,10 +373,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5567</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -374,14 +388,13 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
-			
 		</SentenceSimilarityMeasures>
 	</SingleDatasetSentenceSimilarityValuesExperiment>
 	<SingleDatasetSentenceSimilarityValuesExperiment>
@@ -395,10 +408,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5555</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -409,11 +423,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -421,10 +435,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5557</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -435,11 +450,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -447,10 +462,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>biobert_v1.0_pubmed_pmc</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5559</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -461,11 +477,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>biobert_v1.0_pubmed_pmc</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -473,10 +489,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5561</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -487,11 +504,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -499,10 +516,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5563</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -513,11 +531,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -525,10 +543,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5565</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -539,11 +558,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-12_H-768_A-12</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			<BertEmbeddingModelMeasure>
@@ -551,10 +570,11 @@
 				<Method>BERTEmbeddingModel</Method>
 				<Pooling>REDUCE_MEAN</Pooling>
 				<PoolingLayers>-2</PoolingLayers>
+				<MLPythonLibrary>Tensorflow</MLPythonLibrary>
 				<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 				<PretrainedModelName>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelName>
 				<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+				<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 				<PythonScriptFilename>extractBERTvectors.py</PythonScriptFilename>
 				<PythonServerPort>5567</PythonServerPort>
 				<PreprocessedSentencesPath>true</PreprocessedSentencesPath>
@@ -565,11 +585,11 @@
 					<LowercaseNormalization>true</LowercaseNormalization>
 					<CharFilteringType>BIOSSES</CharFilteringType>
 					<PythonScriptsDirectory>../BERTExperiments/</PythonScriptsDirectory>
-					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python3</PythonVirtualEnvironmentDir>
+					<PythonVirtualEnvironmentDir>../BERTExperiments/venv/bin/python</PythonVirtualEnvironmentDir>
 					<PythonWordPieceTokenizerScript>WordPieceTokenization.py</PythonWordPieceTokenizerScript>
 					<PretrainedModelDirectory>../BERTExperiments/BERTPretrainedModels/</PretrainedModelDirectory>
 					<PretrainedModelFilename>NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16</PretrainedModelFilename>
-					<ConceptAnnotation>false</ConceptAnnotation>
+					<NERType>None</NERType>
 				</WordProcessing>
 			</BertEmbeddingModelMeasure>
 			

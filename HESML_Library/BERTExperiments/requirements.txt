@@ -3,7 +3,7 @@ astor==0.8.0
 bert-serving-client==1.9.8
 bert-serving-server==1.9.8
 bert-tensorflow==1.0.1
-gast==0.3.2
+gast==0.2.2
 GPUtil==1.4.0
 grpcio==1.25.0
 h5py==2.10.0
@@ -15,8 +15,9 @@ numpy==1.17.4
 protobuf==3.10.0
 pyzmq==18.1.1
 six==1.13.0
-tensorboard==1.13.1
-tensorflow==1.13.1
-tensorflow-estimator==1.13.0
+tensorboard==1.15
+tensorflow==1.15.0
+tensorflow-estimator==1.15.1
 termcolor==1.1.0
 Werkzeug==0.16.0
+tensorflow-gpu==1.15.0

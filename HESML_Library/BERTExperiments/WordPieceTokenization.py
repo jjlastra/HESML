@@ -1,6 +1,10 @@
 import sys
 from bert import tokenization
 
+
+import tensorflow as tf
+tf.gfile = tf.io.gfile
+
 # Get the arguments
 
 m_vocab_file = sys.argv[1]
