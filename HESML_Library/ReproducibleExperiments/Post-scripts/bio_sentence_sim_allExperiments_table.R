@@ -25,10 +25,17 @@ rm(list = ls())
 # Unix-like format to be compatible with Windows
 # or Linux-based R distributions.
 
+# First, we get the current file script directory
+
+current_working_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+
+# and we set the working directory for the R project
+
+setwd(current_working_dir)
+
 # Define the root path 
 
-rootDir = "/home/user/HESML/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper"
-rootDir = "/home/alicia/Desktop/HESML_dockerdev/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper"
+rootDir = "../BioSentenceSimilarity_paper"
 
 
 # We import the library that implements the data structures.
@@ -55,6 +62,7 @@ latexTables <- ordered_dict()
 
 # We define the output directory 
 
+dir.create(paste(rootDir, "/", preprocessedExperimentsSubdirectory, "/", sep = ""))
 outputDir =  paste(rootDir, "/", preprocessedExperimentsSubdirectory, "/", sep = "")
 
 # Loop for the defined experiments and calculate the scores for Pearson, Sperman and Harmonic.
@@ -74,9 +82,9 @@ for(iExperimentSubdirectory in experiments$keys())
     
     # We load the input raw results file
     
-    rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES.csv"), dec = ".", sep = ';')
-    rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull.csv"), dec = ".", sep = ';')
-    rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR.csv"), dec = ".", sep = ';')
+    rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_pooled.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_pooled.csv"), dec = ".", sep = ';')
+    rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_pooled.csv"), dec = ".", sep = ';')
     
     # mat.sort function is copied from source files of
     # BioPhysConnectoR package which is now unavailable.
@@ -237,5 +245,5 @@ write_file(strLatexTables, paste(outputDir,"table_allMetrics_experiment.tex", se
 
 # And open the table in the default file browser.
 
-browseURL("table_allMetrics_experiment.tex")
+browseURL(paste(outputDir,"table_allMetrics_experiment.tex", sep=""))
 

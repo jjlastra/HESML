@@ -14,7 +14,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -26,7 +26,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -38,7 +38,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -50,7 +50,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -62,7 +62,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -82,7 +82,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -94,7 +94,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -106,7 +106,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -118,7 +118,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -130,7 +130,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -150,7 +150,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -162,7 +162,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -174,7 +174,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -186,7 +186,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -198,7 +198,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>None</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>

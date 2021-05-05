@@ -184,7 +184,7 @@ public class HESMLSTSclient
         
         // We call the SampleExperiments() function
         
-        SampleExperiments();
+//        SampleExperiments();
     }
     
     /**
@@ -360,88 +360,88 @@ public class HESMLSTSclient
      * @param sentences2 
      */
     
-    private static void testUBSMMeasures(
-            String[] sentences1,
-            String[] sentences2) throws IOException, InterruptedException, Exception
-    {
-        // Initialize the preprocessing method and measures
-        
-        IWordProcessing preprocesser = null;
-        ISentenceSimilarityMeasure measure = null;
-        ISimilarityMeasure wordSimilarityMeasure = null;
-        
-        ISnomedCtOntology  m_SnomedOntology = null;            // WordNet DB
-        IMeSHOntology m_MeshOntology = null;    // WordNet taxonomy
-        IOboOntology m_OboOntology = null;    // WordNet taxonomy
-        
-        IVertexList m_vertexes;
-        ITaxonomy   m_taxonomy;
-        
-        // Create a Wordpreprocessing object using WordPieceTokenizer
-        
-        preprocesser = PreprocessingFactory.getWordProcessing(
-                        "", TokenizerType.WhiteSpace, 
-                        false, NERType.MetamapSNOMEDCT, CharFilteringType.BIOSSES);
-        
-        if ((m_strMeSHdir != "") && (m_MeshOntology == null))
-        {
-            // We load the MeSH ontology and get the vertex list of its taxonomy
-            
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-            
-            // Create the measure
-        
-            measure = SentenceSimilarityFactory.getUBSMMeasureMeSH("WBSM test",
-                        preprocesser, m_MeshOntology,
-                        SimilarityMeasureType.Lin, IntrinsicICModelType.Seco);
-            
-        }
-        else if ((m_strSnomedDir != "") && (m_SnomedOntology == null))
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-            
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-                                    m_strSnomedConceptFilename,
-                                    m_strSnomedRelationshipsFilename,
-                                    m_strSnomedDescriptionFilename,
-                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-           
-            // Create the measure
-        
-            measure = SentenceSimilarityFactory.getUBSMMeasureSnomed("WBSM test",
-                        preprocesser, m_SnomedOntology,
-                        SimilarityMeasureType.CaiStrategy1, IntrinsicICModelType.Seco);
-        }
-        else if ((m_strOboFilename != "") && (m_OboOntology == null))
-        {
-            // We load the OBO ontology
-            
-            m_OboOntology = OboFactory.loadOntology(m_strOboFilename);
-            
-            // Create the measure
-        
-            measure = SentenceSimilarityFactory.getUBSMMeasureObo("WBSM test",
-                        preprocesser, m_OboOntology,
-                        SimilarityMeasureType.Rada, IntrinsicICModelType.Seco);
-        }
-        
-        // Get the similarity scores for the lists of sentences
-            
-        double[] simScores = measure.getSimilarityValues(sentences1, sentences2);
-        
-        // Print the results - For testing purposes
-        
-        System.out.println("Scores for UBSM measure: ");
-        for (int i = 0; i < simScores.length; i++)
-        {
-            double score = simScores[i];
-            System.out.println("---- Sentence " + i + " : " + score);
-        }
-        
-        // We release the resources
-        
-        measure.clear();
-    }
+//    private static void testUBSMMeasures(
+//            String[] sentences1,
+//            String[] sentences2) throws IOException, InterruptedException, Exception
+//    {
+//        // Initialize the preprocessing method and measures
+//        
+//        IWordProcessing preprocesser = null;
+//        ISentenceSimilarityMeasure measure = null;
+//        ISimilarityMeasure wordSimilarityMeasure = null;
+//        
+//        ISnomedCtOntology  m_SnomedOntology = null;            // WordNet DB
+//        IMeSHOntology m_MeshOntology = null;    // WordNet taxonomy
+//        IOboOntology m_OboOntology = null;    // WordNet taxonomy
+//        
+//        IVertexList m_vertexes;
+//        ITaxonomy   m_taxonomy;
+//        
+//        // Create a Wordpreprocessing object using WordPieceTokenizer
+//        
+//        preprocesser = PreprocessingFactory.getWordProcessing(
+//                        "", TokenizerType.WhiteSpace, 
+//                        false, NERType.MetamapSNOMEDCT, CharFilteringType.BIOSSES);
+//        
+//        if ((m_strMeSHdir != "") && (m_MeshOntology == null))
+//        {
+//            // We load the MeSH ontology and get the vertex list of its taxonomy
+//            
+//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+//            
+//            // Create the measure
+//        
+//            measure = SentenceSimilarityFactory.getUBSMMeasureMeSH("WBSM test",
+//                        preprocesser, m_MeshOntology,
+//                        SimilarityMeasureType.Lin, IntrinsicICModelType.Seco);
+//            
+//        }
+//        else if ((m_strSnomedDir != "") && (m_SnomedOntology == null))
+//        {
+//            // We load the SNOMED ontology and get the vertex list of its taxonomy
+//            
+//            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+//                                    m_strSnomedConceptFilename,
+//                                    m_strSnomedRelationshipsFilename,
+//                                    m_strSnomedDescriptionFilename,
+//                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+//           
+//            // Create the measure
+//        
+//            measure = SentenceSimilarityFactory.getUBSMMeasureSnomed("WBSM test",
+//                        preprocesser, m_SnomedOntology,
+//                        SimilarityMeasureType.CaiStrategy1, IntrinsicICModelType.Seco);
+//        }
+//        else if ((m_strOboFilename != "") && (m_OboOntology == null))
+//        {
+//            // We load the OBO ontology
+//            
+//            m_OboOntology = OboFactory.loadOntology(m_strOboFilename);
+//            
+//            // Create the measure
+//        
+//            measure = SentenceSimilarityFactory.getUBSMMeasureObo("WBSM test",
+//                        preprocesser, m_OboOntology,
+//                        SimilarityMeasureType.Rada, IntrinsicICModelType.Seco);
+//        }
+//        
+//        // Get the similarity scores for the lists of sentences
+//            
+//        double[] simScores = measure.getSimilarityValues(sentences1, sentences2);
+//        
+//        // Print the results - For testing purposes
+//        
+//        System.out.println("Scores for UBSM measure: ");
+//        for (int i = 0; i < simScores.length; i++)
+//        {
+//            double score = simScores[i];
+//            System.out.println("---- Sentence " + i + " : " + score);
+//        }
+//        
+//        // We release the resources
+//        
+//        measure.clear();
+//    }
 }

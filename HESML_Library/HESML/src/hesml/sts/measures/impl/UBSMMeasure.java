@@ -37,11 +37,8 @@ import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.obo.IOboConcept;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
-import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -113,6 +110,8 @@ class UBSMMeasure extends SentenceSimilarityMeasure
             String                      strLabel,
             IWordProcessing             preprocesser,
             ISnomedCtOntology           snomedOntology,
+            IVertexList                 vertexes,
+            ITaxonomy                   taxonomy,
             SimilarityMeasureType       wordSimilarityType,
             IntrinsicICModelType        icModelType) throws Exception
     {
@@ -126,9 +125,9 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         m_ICmodel = ICModelsFactory.getIntrinsicICmodel(icModelType);
         
-        m_taxonomy = m_SnomedOntology.getTaxonomy();
+        m_taxonomy = taxonomy;
 
-        m_Vertexes = m_taxonomy.getVertexes();
+        m_Vertexes = vertexes;
         
         // Initialize the word similarity measure 
         

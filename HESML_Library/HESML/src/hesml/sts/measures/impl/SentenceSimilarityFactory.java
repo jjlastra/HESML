@@ -33,6 +33,7 @@ import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
@@ -152,10 +153,13 @@ public class SentenceSimilarityFactory
             String                  strLabel,
             IWordProcessing         preprocesser,
             ISnomedCtOntology       SnomedOntology,
+            IVertexList             vertexes,
+            ITaxonomy               taxonomy,
             SimilarityMeasureType   wordSimilarityMeasureType,
             IntrinsicICModelType    icModelType) throws Exception
     {
-        return (new UBSMMeasure(strLabel, preprocesser, SnomedOntology, wordSimilarityMeasureType, icModelType));
+        return (new UBSMMeasure(strLabel, preprocesser, SnomedOntology, 
+                vertexes, taxonomy, wordSimilarityMeasureType, icModelType));
     }
     
     /**
@@ -175,7 +179,6 @@ public class SentenceSimilarityFactory
     {
         return (new COMMeasure(strLabel, lambda, measures));
     }
-    
     
     /**
      * This function creates a UBSM measure.
@@ -246,6 +249,42 @@ public class SentenceSimilarityFactory
     {
         return (new SimpleWordEmbeddingModelMeasure(strLabel, poolingMethod,
                 embeddingType, preprocesser, strPretrainedWEFilename));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param meshOntology
+     * @param wordnet
+     * @param wordnetTaxonomy
+     * @param wordSimilarityMeasureTypeWordnet
+     * @param wordSimilarityMeasureTypeUMLS
+     * @param icModelType
+     * @param stringMeasure
+     * @param lambda
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasure(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            ISnomedCtOntology           snomedOntology,
+            IVertexList                 vertexes,
+            ITaxonomy                   taxonomy,
+            IWordNetDB                  wordnet,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       wordSimilarityMeasureTypeWordnet,
+            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
+            IntrinsicICModelType        icModelType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+                snomedOntology, vertexes, taxonomy, wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet,
+                wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure, lambda));
     }
     
     /**

@@ -124,8 +124,7 @@ class NER implements INER
                 
                 // Loads Metamap using word sense disambiguation
                 
-//                loadMetamap("-R SNOMEDCT"); 
-                loadMetamap(""); 
+                loadMetamap("-R SNOMEDCT");
 
                 break;
                 
@@ -293,8 +292,8 @@ class NER implements INER
         // Create a new Metamap instance using the selected options 
         
         m_metaMapInst = new MetaMapApiImpl();
-        m_metaMapInst.setHost("127.0.0.1");
-        m_metaMapInst.setPort(8066);
+//        m_metaMapInst.setHost("127.0.0.1");
+//        m_metaMapInst.setPort(8066);
         List<String> theOptions = new ArrayList<>();
         theOptions.add("-y"); // turn on Word Sense Disambiguation
         theOptions.add(options);
@@ -318,7 +317,7 @@ class NER implements INER
         // Initialize the result
         
         String annotatedSentence = sentence;
-        
+
         // Process the sentence using the Metamap objects
         
         List<Result> resultList = m_metaMapInst.processCitationsFromString(sentence);

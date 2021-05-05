@@ -35,7 +35,6 @@ import hesml.sts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertex;
 import hesml.taxonomy.IVertexList;
-import hesml.taxonomyreaders.mesh.IMeSHOntology;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import java.io.FileNotFoundException;
@@ -67,12 +66,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     
     // SNOMED-CT ontology
     
-    private ISnomedCtOntology   m_SnomedOntology;
+    private final ISnomedCtOntology   m_SnomedOntology;
     
     // Taxonomy and vertexes contained in the HESML taxonomy encoding SNOMED
     
-    private IVertexList m_Snomedvertexes;
-    private ITaxonomy   m_Snomedtaxonomy;
+    private final IVertexList m_Snomedvertexes;
+    private final ITaxonomy   m_Snomedtaxonomy;
     
     // WordNetDB and taxonomy for computing the WordNet-based word similarity measures.
     
@@ -99,6 +98,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     // Specific method implemented
 
     private final SWEMpoolingMethod    m_poolingMethod;
+    
     
     /**
      * Constructor for MESH ontology
@@ -306,19 +306,19 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         // 2. Initialize the semantic vectors.
         
-//        semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
-//        semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+        semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
+        semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
         
         semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
         semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
         
-//        semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
-//        semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+        semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
+        semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
         
         // 3. Compute the cosine similarity between the semantic vectors
         
-//        double ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
-        double ontologySimilarity = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
+        double ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
+//        double ontologySimilarity = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
         
         // Compute the string-based similarity value
         
@@ -429,13 +429,40 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             
             // We divide by the vector norms
             
-            similarity /= (MeasureFactory.getVectorNorm(sentence1Vector)
-                        * MeasureFactory.getVectorNorm(sentence2Vector));
+            similarity /= (getVectorNorm(sentence1Vector)
+                        * getVectorNorm(sentence2Vector));
         }
         
         // Return the result
         
         return (similarity);
+    }
+    
+    /**
+     * This function computes the Euclidean norm of the input vector
+     * @param vector
+     * @return 
+     */
+    
+    public static double getVectorNorm(
+        double[]    vector)
+    {
+        double norm = 0.0;  // Returned value
+        
+        // We compute the acumulated square-coordinates
+        
+        for (int i = 0; i < vector.length; i++)
+        {
+            norm += vector[i] * vector[i];
+        }
+        
+        // Finally, we compute the square root
+        
+        norm = Math.sqrt(norm);
+        
+        // We return the result
+        
+        return (norm);
     }
     
     /**

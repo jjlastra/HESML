@@ -344,13 +344,42 @@ class WBSMMeasure extends SentenceSimilarityMeasure
             
             // We divide by the vector norms
             
-            similarity /= (MeasureFactory.getVectorNorm(sentence1Vector)
-                        * MeasureFactory.getVectorNorm(sentence2Vector));
+            double normVector1 = getVectorNorm(sentence1Vector);
+            
+            similarity /= (normVector1
+                        * getVectorNorm(sentence2Vector));
         }
         
         // Return the result
         
         return (similarity);
+    }
+    
+    /**
+     * This function computes the Euclidean norm of the input vector
+     * @param vector
+     * @return 
+     */
+    
+    public static double getVectorNorm(
+        double[]    vector)
+    {
+        double norm = 0.0;  // Returned value
+        
+        // We compute the acumulated square-coordinates
+        
+        for (int i = 0; i < vector.length; i++)
+        {
+            norm += vector[i] * vector[i];
+        }
+        
+        // Finally, we compute the square root
+        
+        norm = Math.sqrt(norm);
+        
+        // We return the result
+        
+        return (norm);
     }
     
     /**

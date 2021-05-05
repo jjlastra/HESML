@@ -24,12 +24,12 @@
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>false</ConceptAnnotation>
+						<NERType>None</NERType>
 						<CharFilteringType>BIOSSES</CharFilteringType>
 					</WordProcessing>
 				</WBSMMeasure>
 				<UBSMMeasure>
-					<Label>UBSM AncSPLRada</Label>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
 					<Method>UBSMMeasure</Method>
 					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -40,14 +40,14 @@
 					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 					<OboFilename>None</OboFilename>
-					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
 					<WordProcessing>
 						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>true</ConceptAnnotation>
-						<CharFilteringType>BIOSSES</CharFilteringType>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
 					</WordProcessing>
 				</UBSMMeasure>
 			</COMMeasure>
@@ -61,7 +61,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapLite</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -89,12 +89,12 @@
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>false</ConceptAnnotation>
+						<NERType>None</NERType>
 						<CharFilteringType>BIOSSES</CharFilteringType>
 					</WordProcessing>
 				</WBSMMeasure>
 				<UBSMMeasure>
-					<Label>UBSM AncSPLRada</Label>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
 					<Method>UBSMMeasure</Method>
 					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -105,14 +105,14 @@
 					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 					<OboFilename>None</OboFilename>
-					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
 					<WordProcessing>
 						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>true</ConceptAnnotation>
-						<CharFilteringType>BIOSSES</CharFilteringType>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
 					</WordProcessing>
 				</UBSMMeasure>
 			</COMMeasure>
@@ -126,7 +126,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapLite</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>
@@ -154,12 +154,12 @@
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>false</ConceptAnnotation>
+						<NERType>None</NERType>
 						<CharFilteringType>BIOSSES</CharFilteringType>
 					</WordProcessing>
 				</WBSMMeasure>
 				<UBSMMeasure>
-					<Label>UBSM AncSPLRada</Label>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
 					<Method>UBSMMeasure</Method>
 					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
 					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
@@ -170,14 +170,14 @@
 					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
 					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
 					<OboFilename>None</OboFilename>
-					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
 					<WordProcessing>
 						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
 						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 						<TokenizerType>WhiteSpace</TokenizerType>
 						<LowercaseNormalization>true</LowercaseNormalization>
-						<ConceptAnnotation>true</ConceptAnnotation>
-						<CharFilteringType>BIOSSES</CharFilteringType>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
 					</WordProcessing>
 				</UBSMMeasure>
 			</COMMeasure>
@@ -191,7 +191,7 @@
 					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
 					<TokenizerType>WhiteSpace</TokenizerType>
 					<LowercaseNormalization>true</LowercaseNormalization>
-					<ConceptAnnotation>true</ConceptAnnotation>
+					<NERType>MetamapLite</NERType>
 					<CharFilteringType>Default</CharFilteringType>
 				</WordProcessing>
 			</StringBasedSentenceSimilarityMeasure>

@@ -142,11 +142,7 @@ class Tokenizer implements ITokenizer
 
                 // Convert to a Stanford CoreNLP Sentence object and get the tokens.
 
-                Sentence sent = new Sentence(strRawSentence);
-
-                // Get the list of tokenized words and convert to array.
-
-                tokens = sent.words().toArray(new String[0]); 
+                tokens = getTokensStanfordCoreNLPLibrary(strRawSentence, "en");
 
                 break;
             
@@ -154,7 +150,7 @@ class Tokenizer implements ITokenizer
 
                 // Convert to a Stanford CoreNLP Sentence object and get the tokens.
                 
-                tokens = getTokensStanfordCoreNLPLibrary(strRawSentence);
+                tokens = getTokensStanfordCoreNLPLibrary(strRawSentence, "es");
 
                 break;
 
@@ -238,7 +234,8 @@ class Tokenizer implements ITokenizer
      */
     
     private String[] getTokensStanfordCoreNLPLibrary(
-            String strSentence) 
+            String strSentence,
+            String lang) 
     {
         // Initialize the output
 
@@ -247,7 +244,7 @@ class Tokenizer implements ITokenizer
         
         Properties props = new Properties();
         props.put("annotators", "tokenize");
-        props.setProperty("tokenize.language", "es");
+        props.setProperty("tokenize.language", lang);
         
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
