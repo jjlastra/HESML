@@ -90,9 +90,13 @@ for(iExperimentSubdirectory in experiments$keys())
     # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_pooled.csv"), dec = ".", sep = ';')
     # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_pooled.csv"), dec = ".", sep = ';')
     
-    rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_comMixedMeasures.csv"), dec = ".", sep = ';')
-    rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_comMixedMeasures.csv"), dec = ".", sep = ';')
-    rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_comMixedMeasures.csv"), dec = ".", sep = ';')
+    # rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_comMixedMeasures.csv"), dec = ".", sep = ';')
+    # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_comMixedMeasures.csv"), dec = ".", sep = ';')
+    # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_comMixedMeasures.csv"), dec = ".", sep = ';')
+    
+    rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_bert.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_bert.csv"), dec = ".", sep = ';')
+    rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_bert.csv"), dec = ".", sep = ';')
     
     # mat.sort function is copied from source files of
     # BioPhysConnectoR package which is now unavailable.

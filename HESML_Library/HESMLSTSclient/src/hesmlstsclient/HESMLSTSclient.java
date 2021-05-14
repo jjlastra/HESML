@@ -22,14 +22,8 @@
 package hesmlstsclient;
 
 import hesml.HESMLversion;
-import hesml.configurators.IntrinsicICModelType;
-import hesml.measures.ISimilarityMeasure;
-import hesml.measures.SimilarityMeasureType;
-import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
-import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
-import hesml.sts.measures.SentenceSimilarityMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
@@ -40,15 +34,11 @@ import hesml.sts.preprocess.impl.PreprocessingFactory;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;
-import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
 import hesml.taxonomyreaders.obo.IOboOntology;
 import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
-import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
-import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,28 +183,6 @@ public class HESMLSTSclient
                 System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
             }
         }
-        else if((args.length > 0) && (args[0].equals("all")))
-        {
-            // We get the start time
-
-            long startFileProcessingTime = System.currentTimeMillis();
-
-            // Loading message
-
-            System.out.println("Loading and running all the combination experiments");
-
-//            executeStringMeasures();
-//            executeCOMMixedMeasures();
-
-            // We measure the elapsed time to run the experiments
-
-            long endTime = System.currentTimeMillis();
-            long minutes = (endTime - startFileProcessingTime) / 60000;
-            long seconds = (endTime - startFileProcessingTime) / 1000;
-
-            System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
-            System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
-        }
         else
         {
             showUsage = true;
@@ -258,9 +226,7 @@ public class HESMLSTSclient
         
         // Execute the tests
         
-//        testStringMeasures(sentences1, sentences2);
-        // testWBSMMeasures(sentences1, sentences2);
-        // testUBSMMeasures(sentences1, sentences2);
+        testStringMeasures(sentences1, sentences2);
     }
     
     /**
@@ -332,316 +298,5 @@ public class HESMLSTSclient
             }
         }
         measure.clear();
-    }
-    
-    /**
-     * Test all the string measures.
-     * 
-     *  * Preprocessing configured as Blagec2019.
-     * @return
-     * @throws IOException 
-     * @param sentences1: first sentences of the dataset
-     * @param sentences2: second sentences of the dataset
-     */
-    
-    private static void executeStringMeasures() 
-            throws IOException, InterruptedException, Exception
-    {
-        // We define the methods to be evaluated
-
-        ArrayList<StringBasedSentenceSimilarityMethod> methods = new ArrayList<>();
-        
-        methods.add(StringBasedSentenceSimilarityMethod.Jaccard);
-        methods.add(StringBasedSentenceSimilarityMethod.BlockDistance);
-        methods.add(StringBasedSentenceSimilarityMethod.Levenshtein);
-        methods.add(StringBasedSentenceSimilarityMethod.OverlapCoefficient);
-        methods.add(StringBasedSentenceSimilarityMethod.Qgram);
-        
-        ArrayList<IWordProcessing> wordProcessingCombinations = getAllPreprocessingConfigurations();
-        
-        System.out.println("Calculating the combination of " + wordProcessingCombinations.size() + " word processing configurations");
-
-        // We iterate the methods and create the measures
-        
-        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-        
-        for(StringBasedSentenceSimilarityMethod method: methods)
-        {
-            // We iterate word processing combinations
-            
-            for(IWordProcessing wordProcessing : wordProcessingCombinations)
-            {
-                ISentenceSimilarityMeasure measure = 
-                        SentenceSimilarityFactory.getStringBasedMeasure(
-                            method.name() + "_" + wordProcessing.getLabel(),
-                            method, 
-                            wordProcessing);
-                measuresLst.add(measure);
-            }
-        }
-        
-        // We create the vector to return the collection of sentence similarity measures
-        
-        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
-        
-        // We copy the measures to the vector and release the temporary list
-        
-        measuresLst.toArray(measures);
-        measuresLst.clear();
-        
-        // We read the configuration of the experiment
-        
-        String strDatasetDir = "../SentenceSimDatasets/";
-        String outputFilesDirPath = "../ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
-        
-        String strDatasetFileNameBIOSSES = "BIOSSESNormalized.tsv";
-        String strDatasetFileNameMedSTS = "MedStsFullNormalized.tsv";
-        String strDatasetFileNameCTR = "CTRNormalized_averagedScore.tsv";
-        
-        String strOutputFileNameBIOSSES = outputFilesDirPath + "raw_similarity_BIOSSES_stringMeasures.csv";
-        String strOutputFileNameMedSTS = outputFilesDirPath + "raw_similarity_MedSTSFull_stringMeasures.csv";
-        String strOutputFileNameCTR = outputFilesDirPath + "raw_similarity_CTR_stringMeasures.csv";
-        
-        // We create the benchmarks for all measuers and dataset
-        
-        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
-        
-        benchmarkBIOSSES.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
-        
-        benchmarkMedSTS.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameCTR, strOutputFileNameCTR);
-        
-        benchmarkCTR.evaluateBenchmark(true);
-    }
-    
-    /**
-     * Test all the  measures.
-     * 
-     *  * Preprocessing configured as Blagec2019.
-     * @return
-     * @throws IOException 
-     * @param sentences1: first sentences of the dataset
-     * @param sentences2: second sentences of the dataset
-     */
-    
-    private static void executeCOMMixedMeasures() 
-            throws IOException, InterruptedException, Exception
-    {
-        // We define the methods to be evaluated
-
-        ArrayList<SimilarityMeasureType> methods = new ArrayList<>();
-
-        
-        loadOntologies();
-
-        // We get the intrinsic IC model if anyone has been defined
-
-        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
-        
-        
-        // Create the best string combination.
-        
-        IWordProcessing wordPreprocessingBestString = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
-        
-        IWordProcessing wordPreprocessingBestOntology = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.MetamapLite,
-                        CharFilteringType.BIOSSES);
-        
-         // Initialize the measure
-            
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                            "BlockDistance_" + wordPreprocessingBestString.getLabel(),
-                            StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            wordPreprocessingBestString);
-        
-        
-        ArrayList<IWordProcessing> wordProcessingCombinations = getAllPreprocessingConfigurations();
-        
-        // We iterate the methods and create the measures
-        
-        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-        
-        
-        ComMixedVectorsMeasureType[] comMixedVectorsMeasuresType = {
-                                        ComMixedVectorsMeasureType.PooledAVG,
-                                        ComMixedVectorsMeasureType.PooledMin,
-                                        ComMixedVectorsMeasureType.UMLS,
-                                        ComMixedVectorsMeasureType.WordNet,
-                                        };
-        
-        // We iterate all wordnet and umls measures combinations
-            
-        for(ComMixedVectorsMeasureType comMixedVectorsMeasureType : comMixedVectorsMeasuresType)
-        {
-            ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getComMixedVectorsMeasure(
-                                "COMMixed_AncSPLRada_"+comMixedVectorsMeasureType.name(), 
-                                wordPreprocessingBestOntology,
-                                m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed, m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                                SimilarityMeasureType.AncSPLRada,
-                                SimilarityMeasureType.AncSPLRada, icModelType, stringMeasure,
-                                0.5, comMixedVectorsMeasureType);
-            measuresLst.add(measure);
-        }
-
-        // We create the vector to return the collection of sentence similarity measures
-        
-        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
-        
-        // We copy the measures to the vector and release the temporary list
-        
-        measuresLst.toArray(measures);
-        measuresLst.clear();
-        
-        // We read the configuration of the experiment
-        
-        String strDatasetDir = "../SentenceSimDatasets/";
-        String outputFilesDirPath = "../ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
-        
-        String strDatasetFileNameBIOSSES = "BIOSSESNormalized.tsv";
-        String strDatasetFileNameMedSTS = "MedStsFullNormalized.tsv";
-        String strDatasetFileNameCTR = "CTRNormalized_averagedScore.tsv";
-        
-        String strOutputFileNameBIOSSES = outputFilesDirPath + "raw_similarity_BIOSSES_comMixedMeasures.csv";
-        String strOutputFileNameMedSTS = outputFilesDirPath + "raw_similarity_MedSTSFull_comMixedMeasures.csv";
-        String strOutputFileNameCTR = outputFilesDirPath + "raw_similarity_CTR_comMixedMeasures.csv";
-        
-        // We create the benchmarks for all measuers and dataset
-        
-        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
-        
-        benchmarkBIOSSES.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
-        
-        benchmarkMedSTS.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, strDatasetDir,
-                                                    strDatasetFileNameCTR, strOutputFileNameCTR);
-        
-        benchmarkCTR.evaluateBenchmark(true);
-    }
-    
-    /**
-     * Load ontologies
-     */
-    private static void loadOntologies() throws Exception
-    {
-        // We create the singleton instance of the WordNet database and taxonomy
-
-        if (m_WordNetDbSingleton == null)
-        {
-            // We load the singleton instance of WordNet-related objects. It is done to
-            // avoid the memory cost of multiple instances of WordNet when multiple
-            // instances of the WBSM measure are created.
-            
-            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-
-            // We pre-process the taxonomy to compute all the parameters
-            // used by the intrinsic IC-computation methods
-
-            m_WordNetTaxonomySingleton.computesCachedAttributes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_SnomedOntology == null)
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-                                    m_strSnomedConceptFilename,
-                                    m_strSnomedRelationshipsFilename,
-                                    m_strSnomedDescriptionFilename,
-                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-
-            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-        }
-    }
-    
-    /**
-     * Get all the word preprocessing configurations for non-bert models
-     */
-    private static ArrayList<IWordProcessing> getAllPreprocessingConfigurations() throws IOException
-    {
-        // Initialize the result
-        
-        ArrayList<IWordProcessing> wordProcessingCombinations = new ArrayList<>();
-
-        
-        ArrayList<String> stopWordsCombs = new ArrayList<>();
-        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt");
-        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt");
-        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt");
-        
-        ArrayList<TokenizerType> tokenizerTypeCombs = new ArrayList<>();
-        tokenizerTypeCombs.add(TokenizerType.WhiteSpace);
-        tokenizerTypeCombs.add(TokenizerType.BioCNLPTokenizer);
-        tokenizerTypeCombs.add(TokenizerType.StanfordCoreNLPv4_2_0);
-        
-        ArrayList<NERType> nerTypeCombs = new ArrayList<>();
-        nerTypeCombs.add(NERType.None);
-//        nerTypeCombs.add(NERType.MetamapLite);
-//        nerTypeCombs.add(NERType.MetamapSNOMEDCT);
-//        nerTypeCombs.add(NERType.MetamapMESH);
-        
-        ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
-        charFilteringTypeCombs.add(CharFilteringType.None);
-        charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
-        charFilteringTypeCombs.add(CharFilteringType.Blagec2019);
-        charFilteringTypeCombs.add(CharFilteringType.Default);
-        
-        ArrayList<Boolean> lowerCasingCombs = new ArrayList<>();
-        lowerCasingCombs.add(true);
-        lowerCasingCombs.add(false);
-        
-        // We iterate all the combinations
-        
-        for(String stopword : stopWordsCombs)
-        {
-            for(TokenizerType tokenizer : tokenizerTypeCombs)
-            {
-                for(NERType ners : nerTypeCombs)
-                {
-                    for(CharFilteringType charfiltering : charFilteringTypeCombs)
-                    {
-                        for(Boolean lw : lowerCasingCombs)
-                        {
-                            wordProcessingCombinations.add( 
-                                    PreprocessingFactory.getWordProcessing(
-                                    stopword, 
-                                    tokenizer,
-                                    lw, ners,
-                                    charfiltering));
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Return the result
-        
-        return (wordProcessingCombinations);
     }
 }
