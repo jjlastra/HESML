@@ -24,6 +24,8 @@ def is_port_in_use(port):
 
 # get the pooling strategy an layers
 
+print(sys.argv)
+
 strPoolingStrategy = sys.argv[1]
 strPoolingLayer = sys.argv[2]
 
@@ -45,12 +47,14 @@ if len(sys.argv) > 6:
 
 # strPoolingStrategy = "REDUCE_MEAN"
 # strPoolingLayer = "-2"
-# strModelPath = "../BERTExperiments/BERTPretrainedModels/PubMedBERT-base-uncased-abstract"
-# absPathTempSentencesFile = "../BERTExperiments/tempSentences.txt"
+# # strModelPath = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased"
+# strModelPath = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc"
+# absPathTempSentencesFile = "../BERTExperiments/wordpiecetokenizer_lc_nonestopwords_none_none_oubiobert-base-uncased__Sents.txt"
 # absPathTempVectorsFile = "../BERTExperiments/tempVecs.txt"
 # pythonServerPort = "5555"
 # checkPointFilename = "model.ckpt-150000.index"
-# FineTunedModelPath = "../BERTExperiments/BERTPretrainedModels/Bio+ClinicalBERT"
+# # FineTunedModelPath = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased"
+# FineTunedModelPath = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc"
 
 # The pooling layer is modified from "-2,-1" to "-2 -1"
 

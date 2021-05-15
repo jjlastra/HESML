@@ -65,4 +65,12 @@ public interface IWordProcessing
      */
     
     void setNERType(NERType nerType);
+    
+    /**
+     * Change the BERT model
+     * 
+     * @param bertmodel 
+     */
+    
+    void setBERTModel(String bertmodel);
 }

@@ -1,4 +1,5 @@
 import sys
+
 from sentence_transformers import SentenceTransformer
 
 # get the input parameters
@@ -6,13 +7,19 @@ from sentence_transformers import SentenceTransformer
 # get the model path
 
 strModelPath = sys.argv[1]
+print("MODEL " + strModelPath)
 
 # get the input sentences and the output embedding paths.
 
 absPathTempSentencesFile = sys.argv[2] # the preprocessed sentences path in format: s1 \t s2 \n
 absPathTempVectorsFile = sys.argv[3] # the output path
 
-model = SentenceTransformer(strModelPath)
+# strModelPath = "seiya/oubiobert-base-uncased"
+# absPathTempSentencesFile = "../wordpiecetokenizer_lc_nonestopwords_none_none_pubmedbert-base-uncased-abstract__Sents.txt"
+# absPathTempVectorsFile = "../wordpiecetokenizer_lc_nonestopwords_none_none_pubmedbert-base-uncased-abstract__Vecs.txt"
+
+model = SentenceTransformer(strModelPath, device="cuda")
+model.save("downl_" + strModelPath.replace("/", "_"))
 
 f = open(absPathTempSentencesFile, "r")
 file = f.read().split("\n")

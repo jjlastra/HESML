@@ -206,7 +206,7 @@ class Tokenizer implements ITokenizer
         InputStreamReader inputStreamReader = new InputStreamReader(proc.getInputStream());
         BufferedReader readerTerminal = new BufferedReader(inputStreamReader);
 
-        // Read the sentence and split by whitespaces
+        // Read the sentTokenizer.java:212ence and split by whitespaces
         
         String sentence = readerTerminal.readLine();
         sentence = sentence.trim();

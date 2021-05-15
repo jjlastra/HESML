@@ -28,6 +28,8 @@ import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
 import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.MLPythonLibrary;
+import hesml.sts.measures.SentenceEmbeddingMethod;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
 import hesml.sts.preprocess.CharFilteringType;
@@ -171,8 +173,9 @@ public class HESMLSTSImpactEvaluationclient
 
         System.out.println("Loading and running all the combination experiments");
 
-        executeStringMeasures();
-//            executeCOMMixedMeasures();
+//        executeStringMeasures();
+//        executeCOMMixedMeasures();
+        executeBERTMeasures();
 
         // We measure the elapsed time to run the experiments
 
@@ -379,6 +382,132 @@ public class HESMLSTSImpactEvaluationclient
     }
     
     /**
+     * Test all the string measures.
+     * 
+     *  * Preprocessing configured as Blagec2019.
+     * @return
+     * @throws IOException 
+     * @param sentences1: first sentences of the dataset
+     * @param sentences2: second sentences of the dataset
+     */
+    
+    private static void executeBERTMeasures() 
+            throws IOException, InterruptedException, Exception
+    {
+        // We define the models to be evaluated
+
+        String[][] modelPaths = new String[1][6];
+        
+        /**
+         * The structure for each model paths is:
+         * 
+         * strBertDir + strBERTPretrainedModelFilename, 
+         * strPythonScriptsDirectory, 
+         * strPythonVirtualEnvironmentDir, 
+         * strPythonScriptsDirectory + strPythonScript
+         */
+        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "seiya/oubiobert-base-uncased";
+//        modelPaths[0][5] = "oubiobert-base-uncased";
+        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "allenai/scibert_scivocab_uncased";
+//        modelPaths[0][5] = "scibert_scivocab_uncased";
+        
+        
+        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[0][1] = "../BERTExperiments/";
+        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
+
+        
+        int total_models = 1;
+        
+        // We create the combinations but we don't assign the BERT model names
+        
+        ArrayList<IWordProcessing> wordProcessingCombinations = getAllPreprocessingConfigurationsForBERT(
+                "../BERTExperiments/",
+                "../BERTExperiments/venv/bin/python",
+                "../BERTExperiments/WordPieceTokenization.py", ""); 
+        
+        System.out.println("Calculating the combination of " + wordProcessingCombinations.size() + " word processing configurations");
+
+        // We iterate the methods and create the measures
+        
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+        
+        for(int i=0; i<total_models; i++)
+        {
+            // We iterate word processing combinations
+            
+            for(IWordProcessing wordProcessing : wordProcessingCombinations)
+            {
+                // We set the BERT model in the preprocessing
+                
+                wordProcessing.setBERTModel(modelPaths[i][0]);
+                
+                ISentenceSimilarityMeasure measure = 
+                        SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
+                            modelPaths[i][5] + wordProcessing.getLabel(), 
+                            SentenceEmbeddingMethod.BERTEmbeddingModel,
+                            MLPythonLibrary.Pytorch,
+                            wordProcessing, 
+                            modelPaths[i][4], 
+                            modelPaths[i][1], 
+                            modelPaths[i][2], 
+                            modelPaths[i][3]);
+                
+                measuresLst.add(measure);
+            }
+        }
+        
+        // We create the vector to return the collection of sentence similarity measures
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
+        
+        // We copy the measures to the vector and release the temporary list
+        
+        measuresLst.toArray(measures);
+        measuresLst.clear();
+        
+        // We read the configuration of the experiment
+        
+        
+        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_stringMeasures.csv";
+        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_stringMeasures.csv";
+        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_stringMeasures.csv";
+        
+        // We create the benchmarks for all measuers and dataset
+        
+        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
+        
+        benchmarkBIOSSES.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
+        
+        benchmarkMedSTS.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameCTR, strOutputFileNameCTR);
+        
+        benchmarkCTR.evaluateBenchmark(true);
+    }
+    
+    /**
      * Load ontologies
      */
     private static void loadOntologies() throws Exception
@@ -420,6 +549,7 @@ public class HESMLSTSImpactEvaluationclient
     /**
      * Get all the word preprocessing configurations for non-bert models
      */
+    
     private static ArrayList<IWordProcessing> getAllPreprocessingConfigurations() throws IOException
     {
         // Initialize the result
@@ -459,7 +589,7 @@ public class HESMLSTSImpactEvaluationclient
         {
             for(TokenizerType tokenizer : tokenizerTypeCombs)
             {
-                for(NERType ners : nerTypeCombs)
+                for(NERType ner : nerTypeCombs)
                 {
                     for(CharFilteringType charfiltering : charFilteringTypeCombs)
                     {
@@ -469,8 +599,81 @@ public class HESMLSTSImpactEvaluationclient
                                     PreprocessingFactory.getWordProcessing(
                                     stopword, 
                                     tokenizer,
-                                    lw, ners,
+                                    lw, ner,
                                     charfiltering));
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Return the result
+        
+        return (wordProcessingCombinations);
+    }
+    
+    /**
+     * Get all the word preprocessing configurations for BERT-based models
+     */
+    
+    private static ArrayList<IWordProcessing> getAllPreprocessingConfigurationsForBERT(
+            String strPythonScriptsDirectory,
+            String strPythonVirtualEnvironmentDir,
+            String strPythonScript,
+            String strBERTPretrainedModelFilename) throws IOException
+    {
+        // Initialize the result
+        
+        ArrayList<IWordProcessing> wordProcessingCombinations = new ArrayList<>();
+
+        
+        ArrayList<String> stopWordsCombs = new ArrayList<>();
+//        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt");
+//        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt");
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt");
+        
+        ArrayList<TokenizerType> tokenizerTypeCombs = new ArrayList<>();
+        tokenizerTypeCombs.add(TokenizerType.WordPieceTokenizer);
+        
+        ArrayList<NERType> nerTypeCombs = new ArrayList<>();
+        nerTypeCombs.add(NERType.None);
+//        nerTypeCombs.add(NERType.MetamapLite);
+//        nerTypeCombs.add(NERType.MetamapSNOMEDCT);
+//        nerTypeCombs.add(NERType.MetamapMESH);
+        
+        ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
+        charFilteringTypeCombs.add(CharFilteringType.None);
+//        charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
+//        charFilteringTypeCombs.add(CharFilteringType.Blagec2019);
+//        charFilteringTypeCombs.add(CharFilteringType.Default);
+        
+        ArrayList<Boolean> lowerCasingCombs = new ArrayList<>();
+        lowerCasingCombs.add(true);
+//        lowerCasingCombs.add(false);
+        
+        // We iterate all the combinations
+        
+        for(String stopword : stopWordsCombs)
+        {
+            for(TokenizerType tokenizer : tokenizerTypeCombs)
+            {
+                for(NERType ner : nerTypeCombs)
+                {
+                    for(CharFilteringType charfiltering : charFilteringTypeCombs)
+                    {
+                        for(Boolean lw : lowerCasingCombs)
+                        {
+                            wordProcessingCombinations.add( 
+                                    PreprocessingFactory.getWordProcessing(
+                                        stopword,
+                                        tokenizer,
+                                        lw,
+                                        ner,
+                                        charfiltering,
+                                        strPythonScriptsDirectory,
+                                        strPythonVirtualEnvironmentDir,
+                                        strPythonScript,
+                                        strBERTPretrainedModelFilename));
                         }
                     }
                 }

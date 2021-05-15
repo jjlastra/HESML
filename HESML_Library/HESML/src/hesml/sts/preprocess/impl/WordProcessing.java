@@ -89,7 +89,7 @@ class WordProcessing implements IWordProcessing
     
     // Path to the pretrained model embedding 
     
-    private final String m_modelDirPath;
+    private String m_modelDirPath;
     
     // Set with all the stop words
     
@@ -446,5 +446,11 @@ class WordProcessing implements IWordProcessing
     public void setNERType(NERType nerType) 
     {
         m_nerType = nerType;
+    }
+
+    @Override
+    public void setBERTModel(String bertmodel) 
+    {
+        m_modelDirPath = bertmodel;
     }
 }
