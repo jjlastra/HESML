@@ -485,4 +485,21 @@ class NER implements INER
         
         return (annotatedSentence);
     }
+
+    /**
+     * Clear the data
+     */
+    
+    @Override
+    public void clear() 
+    {
+        if(m_metaMapLiteInst != null)
+            m_metaMapLiteInst = null;
+        
+        if(m_metaMapInst != null)
+            m_metaMapInst.disconnect();
+        
+        if(m_pipelineIncludingUmlsDictionaries != null)
+            m_pipelineIncludingUmlsDictionaries.destroy();
+    }
 }

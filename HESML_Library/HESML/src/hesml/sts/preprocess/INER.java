@@ -56,4 +56,11 @@ public interface INER
             String strRawSentence) 
             throws InvocationTargetException, ClassNotFoundException, 
             InstantiationException, IOException, NoSuchMethodException, Exception;
+    
+    
+    /**
+     * Clear data
+     */
+    
+    void clear();
 }

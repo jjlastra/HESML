@@ -203,6 +203,7 @@ class WordProcessing implements IWordProcessing
         
         m_charFilter.clear();
         m_stopWordsHashSet.clear();
+        m_ner.clear();
     }
     
     /**

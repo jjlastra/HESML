@@ -160,7 +160,6 @@ public class HESMLSTSImpactEvaluationclient
         
         System.out.println("");
         
-
         // We get the start time
 
         long startFileProcessingTime = System.currentTimeMillis();
