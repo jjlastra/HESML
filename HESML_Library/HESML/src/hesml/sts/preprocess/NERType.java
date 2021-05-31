@@ -63,5 +63,11 @@ public enum NERType
      * Use Metamap Spanish Version
      */
     
-    MetamapMESH_SP
+    MetamapMESH_SP,
+    
+    /**
+     * Use Ctakes
+     */
+    
+    Ctakes,
 }

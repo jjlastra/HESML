@@ -42,6 +42,20 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
+// CTAKES dependencies
+
+import org.apache.ctakes.typesystem.type.textsem.*;
+import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.ctakes.typesystem.type.refsem.UmlsConcept;
+import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.resource.ResourceInitializationException;
+import org.apache.uima.util.InvalidXMLException;
+
 /**
  *  Implementation of the NER methods
  * @author alicia
@@ -61,6 +75,10 @@ class NER implements INER
     
     protected MetaMapApi m_metaMapInst;
     
+    // Ctakes pipeline
+    
+    protected AnalysisEngine m_pipelineIncludingUmlsDictionaries;
+    
     /**
      * Constructor with parameters.
      * @param NERType 
@@ -71,6 +89,10 @@ class NER implements INER
         // Set the ner type
             
         m_NERType = nerType;
+        
+        m_metaMapLiteInst = null;
+        m_metaMapInst = null;
+        m_pipelineIncludingUmlsDictionaries = null;
         
         // load the object instance
          
@@ -151,6 +173,12 @@ class NER implements INER
                 loadMetamap("-R MSH,MSHSPA"); 
 
                 break;
+            
+            case Ctakes:
+                
+                // Loads Ctakes
+                
+                loadCtakes();
         }
     }
 
@@ -206,6 +234,15 @@ class NER implements INER
                 annotatedSentence = annotateSentenceMetamap(strRawSentence);
 
                 break;
+            
+            case Ctakes:
+                
+                // Annotate the sentence
+                
+                annotatedSentence = annotateSentenceCtakes(strRawSentence);
+
+                break;
+                
         }
         
         // Return the result
@@ -238,7 +275,6 @@ class NER implements INER
         // We create the METAMAP maname
         
         m_metaMapLiteInst = new MetaMapLite(myProperties);
-        
     }
      
     /**
@@ -281,6 +317,8 @@ class NER implements INER
         return (annotatedSentence);
     }
     
+    
+    
     /**
      * This function loads the Metamap instance before executing the queries.
      */
@@ -292,13 +330,10 @@ class NER implements INER
         // Create a new Metamap instance using the selected options 
         
         m_metaMapInst = new MetaMapApiImpl();
-//        m_metaMapInst.setHost("127.0.0.1");
-//        m_metaMapInst.setPort(8066);
         List<String> theOptions = new ArrayList<>();
         theOptions.add("-y"); // turn on Word Sense Disambiguation
         theOptions.add(options);
            
-        
         theOptions.forEach(opt -> {
             m_metaMapInst.setOptions(opt);
         });
@@ -339,6 +374,111 @@ class NER implements INER
                 }
             }
           }
+        }
+        
+        // Return the result
+        
+        return (annotatedSentence);
+    }
+    
+    /**
+     * This function loads the Ctakes instance before executing the queries.
+     */
+    
+    private void loadCtakes() throws ClassNotFoundException, 
+                                    InstantiationException, NoSuchMethodException, 
+                                    IllegalAccessException, IOException, ResourceInitializationException
+    {
+        // Create a new ctakes instance using the selected options 
+
+        try 
+        {
+            m_pipelineIncludingUmlsDictionaries = AnalysisEngineFactory.createEngineFromPath(
+                    "desc/ctakes-clinical-pipeline/desc/analysis_engine/CuisOnlyPlaintextUMLSProcessor.xml");
+        } 
+        catch (InvalidXMLException ex) 
+        {
+            Logger.getLogger(NER.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (ResourceInitializationException ex) 
+        {
+            Logger.getLogger(NER.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function annotates a sentence with CUI codes replacing 
+     * keywords with codes in the same sentence.
+     * @return 
+     */
+    
+    private String annotateSentenceCtakes(
+            String sentence) throws InvocationTargetException, IOException, Exception
+    {
+        // Initialize the result
+
+        String annotatedSentence = sentence;
+
+        //Create cTakes Pipeline
+         
+        JCas jCas = m_pipelineIncludingUmlsDictionaries.newJCas();
+        
+        //Load text to pipeline
+        
+        jCas.setDocumentText(sentence);
+        
+        //Process document
+        
+        m_pipelineIncludingUmlsDictionaries.process(jCas);
+
+        //Create cTakes Pipeline
+        
+        List<Class<? extends Annotation>> semClasses = new ArrayList<>();
+        
+        // CUI types: ALL
+
+        semClasses.add(IdentifiedAnnotation.class);
+
+        //Parse the results
+        
+        //Iterate over relevant Annotation Types
+        
+        for(Class<? extends Annotation> semClass : semClasses){
+
+            //iterate over annotations
+            
+            for(Annotation annot : JCasUtil.select(jCas, semClass)){
+                
+                //Create Response object
+          
+                if(annot instanceof IdentifiedAnnotation) 
+                {
+                    IdentifiedAnnotation ia = (IdentifiedAnnotation) annot;
+                    
+                    if(ia.getOntologyConceptArr() != null) 
+                    {
+                        //Extract all umls Concepts found for annotation
+                        
+                        for (UmlsConcept concept : JCasUtil.select(ia.getOntologyConceptArr(), UmlsConcept.class)) 
+                        {
+                            //Save each found match for UMLS concept
+                            
+//                            Map<String, String> atts = new HashMap<>();
+//                            atts.put("codingScheme", concept.getCodingScheme());
+//                            atts.put("cui", concept.getCui());
+//                            atts.put("text", ia.getCoveredText());
+//                            atts.put("begin", String.valueOf(ia.getBegin()));
+//                            atts.put("end", String.valueOf(ia.getEnd()));
+//                            
+//                            System.out.println(atts.toString());
+
+                            // replace substring from indexes
+                            
+                            annotatedSentence = annotatedSentence.replaceAll(ia.getCoveredText(), " " + String.valueOf(concept.getCui()) + " ");
+                        }
+                    }
+                }
+            }
         }
         
         // Return the result

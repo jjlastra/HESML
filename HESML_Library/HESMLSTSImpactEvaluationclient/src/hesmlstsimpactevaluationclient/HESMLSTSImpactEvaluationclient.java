@@ -49,15 +49,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * This class implements a basic client application of the HESML similarity
- * measures library introduced in the paper below.
+ * This class implements a basic client application of the HESML for sentence similarity
  * 
- * Lastra-Díaz, J. J., and García-Serrano, A. (2016).
- * HESML: a scalable ontology-based semantic similarity measures
- * library with a set of reproducible experiments and a replication dataset.
- * Submitted for publication in Information Systems Journal.
- * 
- * @author j.lastra
+ * @author alicia and j.lastra
  */
 
 public class HESMLSTSImpactEvaluationclient
@@ -164,6 +158,8 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("Java heap size in Mb = "
                 + (Runtime.getRuntime().totalMemory() / (1024 * 1024)));
         
+        System.out.println("");
+        
 
         // We get the start time
 
@@ -173,9 +169,10 @@ public class HESMLSTSImpactEvaluationclient
 
         System.out.println("Loading and running all the combination experiments");
 
+
 //        executeStringMeasures();
-//        executeCOMMixedMeasures();
-        executeBERTMeasures();
+        executeCOMMixedMeasures();
+//        executeBERTMeasures();
 
         // We measure the elapsed time to run the experiments
 
@@ -186,6 +183,7 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
     }
+    
     
     /**
      * Test all the string measures.
@@ -297,54 +295,74 @@ public class HESMLSTSImpactEvaluationclient
         
         // Create the best string combination.
         
-        IWordProcessing wordPreprocessingBestString = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
-        
-        IWordProcessing wordPreprocessingBestOntology = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.MetamapLite,
-                        CharFilteringType.BIOSSES);
-        
-         // Initialize the measure
-            
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                            "BlockDistance_" + wordPreprocessingBestString.getLabel(),
-                            StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            wordPreprocessingBestString);
-        
-        
+//        IWordProcessing wordPreprocessingBestString = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.WhiteSpace, 
+//                        true, NERType.None,
+//                        CharFilteringType.BIOSSES);
+//        
+//        IWordProcessing wordPreprocessingBestOntology = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.WhiteSpace, 
+//                        true, NERType.MetamapLite,
+//                        CharFilteringType.BIOSSES);
+
+//        IWordProcessing wordPreprocessingBestString = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.WhiteSpace, 
+//                        true, NERType.None,
+//                        CharFilteringType.BIOSSES);
+//        
+//        IWordProcessing wordPreprocessingBestOntology = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.WhiteSpace, 
+//                        true, NERType.Ctakes,
+//                        CharFilteringType.BIOSSES);
+
         ArrayList<IWordProcessing> wordProcessingCombinations = getAllPreprocessingConfigurations();
         
-        // We iterate the methods and create the measures
+        ArrayList<IWordProcessing> wordProcessingCombinationsWithNERs = getAllPreprocessingConfigurationsWithNERs();
         
+        // We initialize the measures list
+
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
         
-        
-        ComMixedVectorsMeasureType[] comMixedVectorsMeasuresType = {
-                                        ComMixedVectorsMeasureType.PooledAVG,
-                                        ComMixedVectorsMeasureType.PooledMin,
-                                        ComMixedVectorsMeasureType.UMLS,
-                                        ComMixedVectorsMeasureType.WordNet,
-                                        };
-        
-        // We iterate all wordnet and umls measures combinations
+        // We iterate word processing combinations
             
-        for(ComMixedVectorsMeasureType comMixedVectorsMeasureType : comMixedVectorsMeasuresType)
+        for(IWordProcessing wordProcessing : wordProcessingCombinations)
         {
-            ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getComMixedVectorsMeasure(
-                                "COMMixed_AncSPLRada_"+comMixedVectorsMeasureType.name(), 
-                                wordPreprocessingBestOntology,
-                                m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed, m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                                SimilarityMeasureType.AncSPLRada,
-                                SimilarityMeasureType.AncSPLRada, icModelType, stringMeasure,
-                                0.5, comMixedVectorsMeasureType);
-            measuresLst.add(measure);
-        }
+            for(IWordProcessing wordProcessingWithNERs : wordProcessingCombinationsWithNERs)
+            {
+                // Initialize the measure
+            
+                ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                                    "BlockDistance_" + wordProcessing.getLabel(),
+                                    StringBasedSentenceSimilarityMethod.BlockDistance, 
+                                    wordProcessing);
 
+                ComMixedVectorsMeasureType[] comMixedVectorsMeasuresType = {
+                                                ComMixedVectorsMeasureType.PooledAVG,
+                                                ComMixedVectorsMeasureType.PooledMin,
+                                                ComMixedVectorsMeasureType.UMLS,
+                                                ComMixedVectorsMeasureType.WordNet,
+                                                };
+
+                // We iterate the methods and create the measures
+
+                for(ComMixedVectorsMeasureType comMixedVectorsMeasureType : comMixedVectorsMeasuresType)
+                {
+                    ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getComMixedVectorsMeasure(
+                                        "COMMixed_AncSPLRada_"+comMixedVectorsMeasureType.name() + "_" + wordProcessingWithNERs.getLabel(), 
+                                        wordProcessingWithNERs,
+                                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed, m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                                        SimilarityMeasureType.AncSPLRada,
+                                        SimilarityMeasureType.AncSPLRada, icModelType, stringMeasure,
+                                        0.5, comMixedVectorsMeasureType);
+                    measuresLst.add(measure);
+                }
+            }
+        }
+        
         // We create the vector to return the collection of sentence similarity measures
         
         ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
@@ -422,12 +440,19 @@ public class HESMLSTSImpactEvaluationclient
 //        modelPaths[0][5] = "scibert_scivocab_uncased";
         
         
-        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
+        
+        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
         modelPaths[0][1] = "../BERTExperiments/";
         modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
         modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
-        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
-        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
 
         
         int total_models = 1;
@@ -546,6 +571,73 @@ public class HESMLSTSImpactEvaluationclient
         }
     }
     
+            
+    /**
+     * Get all the word preprocessing configurations for non-bert models
+     */
+    
+    private static ArrayList<IWordProcessing> getAllPreprocessingConfigurationsWithNERs() throws IOException
+    {
+        // Initialize the result
+        
+        ArrayList<IWordProcessing> wordProcessingCombinations = new ArrayList<>();
+
+        
+        ArrayList<String> stopWordsCombs = new ArrayList<>();
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt");
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt");
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt");
+        
+        ArrayList<TokenizerType> tokenizerTypeCombs = new ArrayList<>();
+        tokenizerTypeCombs.add(TokenizerType.WhiteSpace);
+        tokenizerTypeCombs.add(TokenizerType.BioCNLPTokenizer);
+        tokenizerTypeCombs.add(TokenizerType.StanfordCoreNLPv4_2_0);
+        
+        ArrayList<NERType> nerTypeCombs = new ArrayList<>();
+        nerTypeCombs.add(NERType.None);
+//        nerTypeCombs.add(NERType.MetamapLite);
+        nerTypeCombs.add(NERType.MetamapSNOMEDCT);
+//        nerTypeCombs.add(NERType.MetamapMESH);
+        nerTypeCombs.add(NERType.Ctakes);
+        
+        ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
+        charFilteringTypeCombs.add(CharFilteringType.None);
+        charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
+        charFilteringTypeCombs.add(CharFilteringType.Blagec2019);
+        charFilteringTypeCombs.add(CharFilteringType.Default);
+        
+        ArrayList<Boolean> lowerCasingCombs = new ArrayList<>();
+        lowerCasingCombs.add(true);
+        lowerCasingCombs.add(false);
+        
+        // We iterate all the combinations
+        
+        for(String stopword : stopWordsCombs)
+        {
+            for(TokenizerType tokenizer : tokenizerTypeCombs)
+            {
+                for(NERType ner : nerTypeCombs)
+                {
+                    for(CharFilteringType charfiltering : charFilteringTypeCombs)
+                    {
+                        for(Boolean lw : lowerCasingCombs)
+                        {
+                            wordProcessingCombinations.add( 
+                                    PreprocessingFactory.getWordProcessing(
+                                    stopword, 
+                                    tokenizer,
+                                    lw, ner,
+                                    charfiltering));
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Return the result
+        
+        return (wordProcessingCombinations);
+    }
     /**
      * Get all the word preprocessing configurations for non-bert models
      */
@@ -572,6 +664,7 @@ public class HESMLSTSImpactEvaluationclient
 //        nerTypeCombs.add(NERType.MetamapLite);
 //        nerTypeCombs.add(NERType.MetamapSNOMEDCT);
 //        nerTypeCombs.add(NERType.MetamapMESH);
+//        nerTypeCombs.add(NERType.Ctakes);
         
         ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
         charFilteringTypeCombs.add(CharFilteringType.None);
