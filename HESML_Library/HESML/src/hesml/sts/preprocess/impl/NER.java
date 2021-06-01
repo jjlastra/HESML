@@ -387,23 +387,13 @@ class NER implements INER
     
     private void loadCtakes() throws ClassNotFoundException, 
                                     InstantiationException, NoSuchMethodException, 
-                                    IllegalAccessException, IOException, ResourceInitializationException
+                                    IllegalAccessException, IOException, ResourceInitializationException, InvalidXMLException
     {
         // Create a new ctakes instance using the selected options 
 
-        try 
-        {
-            m_pipelineIncludingUmlsDictionaries = AnalysisEngineFactory.createEngineFromPath(
-                    "desc/ctakes-clinical-pipeline/desc/analysis_engine/CuisOnlyPlaintextUMLSProcessor.xml");
-        } 
-        catch (InvalidXMLException ex) 
-        {
-            Logger.getLogger(NER.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        catch (ResourceInitializationException ex) 
-        {
-            Logger.getLogger(NER.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        m_pipelineIncludingUmlsDictionaries = AnalysisEngineFactory.createEngineFromPath(
+                "desc/ctakes-clinical-pipeline/desc/analysis_engine/CuisOnlyPlaintextUMLSProcessor.xml");
+       
     }
     
     /**
@@ -475,6 +465,7 @@ class NER implements INER
                             // replace substring from indexes
                             
                             annotatedSentence = annotatedSentence.replaceAll(ia.getCoveredText(), " " + String.valueOf(concept.getCui()) + " ");
+//                            System.out.println(annotatedSentence);
                         }
                     }
                 }
@@ -499,7 +490,7 @@ class NER implements INER
         if(m_metaMapInst != null)
             m_metaMapInst.disconnect();
         
-        if(m_pipelineIncludingUmlsDictionaries != null)
-            m_pipelineIncludingUmlsDictionaries.destroy();
+//        if(m_pipelineIncludingUmlsDictionaries != null)
+//            m_pipelineIncludingUmlsDictionaries.destroy();
     }
 }
