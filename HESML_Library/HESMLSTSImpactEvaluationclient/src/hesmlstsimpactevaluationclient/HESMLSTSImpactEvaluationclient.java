@@ -26,6 +26,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
+import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.MLPythonLibrary;
@@ -172,10 +173,10 @@ public class HESMLSTSImpactEvaluationclient
 //        executeStringMeasures();
 //        executeCOMMixedMeasures();
         
-        executeStringMeasuresNER();
-        executeCOMMixedMeasuresNER();
+//        executeStringMeasuresNER();
+//        executeCOMMixedMeasuresNER();
         
-//        executeBERTMeasures();
+        executeBERTMeasures();
 
         // We measure the elapsed time to run the experiments
 
@@ -404,7 +405,7 @@ public class HESMLSTSImpactEvaluationclient
     {
         // We define the models to be evaluated
 
-        String[][] modelPaths = new String[1][6];
+        String[][] modelPaths = new String[1][9];
         
         /**
          * The structure for each model paths is:
@@ -415,34 +416,157 @@ public class HESMLSTSImpactEvaluationclient
          * strPythonScriptsDirectory + strPythonScript
          */
         
-//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
-//        modelPaths[0][1] = "../BERTExperiments/";
-//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
-//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
-//        modelPaths[0][4] = "seiya/oubiobert-base-uncased";
-//        modelPaths[0][5] = "oubiobert-base-uncased";
-        
-//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
-//        modelPaths[0][1] = "../BERTExperiments/";
-//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
-//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
-//        modelPaths[0][4] = "allenai/scibert_scivocab_uncased";
-//        modelPaths[0][5] = "scibert_scivocab_uncased";
-        
-        
-//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
-//        modelPaths[0][1] = "../BERTExperiments/";
-//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
-//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
-//        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
-//        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
-        
-        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
         modelPaths[0][1] = "../BERTExperiments/";
-        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[0][2] = "python3";
         modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
-        modelPaths[0][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
-        modelPaths[0][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[0][4] = "seiya/oubiobert-base-uncased";
+        modelPaths[0][5] = "oubiobert-base-uncased";
+        modelPaths[0][6] = "Pytorch";
+        modelPaths[0][7] = "";
+        modelPaths[0][8] = "";
+        
+//        modelPaths[1][0] = "../BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
+//        modelPaths[1][1] = "../BERTExperiments/";
+//        modelPaths[1][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[1][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[1][4] = "allenai/scibert_scivocab_uncased";
+//        modelPaths[1][5] = "scibert_scivocab_uncased";
+//        modelPaths[1][6] = "Pytorch";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[2][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[2][1] = "../BERTExperiments/";
+//        modelPaths[2][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[2][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[2][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[2][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
+//        modelPaths[2][6] = "Pytorch";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[3][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+//        modelPaths[3][1] = "../BERTExperiments/";
+//        modelPaths[3][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[3][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[3][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+//        modelPaths[3][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+//        modelPaths[3][6] = "Pytorch";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "";
+//        modelPaths[0][8] = "";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/Bio+ClinicalBERT";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "model.ckpt-150000.index";
+//        modelPaths[0][8] = "Bio+ClinicalBERT";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/Bio+DischargeSummaryBERT";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "model.ckpt-100000.index";
+//        modelPaths[0][8] = "Bio+DischargeSummaryBERT";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/clinicalBERT";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "model.ckpt-150000.index";
+//        modelPaths[0][8] = "clinicalBERT";
+//        
+//        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/DischargeSummaryBERT";
+//        modelPaths[0][1] = "../BERTExperiments/";
+//        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+//        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+//        modelPaths[0][4] = "";
+//        modelPaths[0][5] = "biobert_v1.0_pubmed_pmc";
+//        modelPaths[0][6] = "Tensorflow";
+//        modelPaths[0][7] = "model.ckpt-100000.index";
+//        modelPaths[0][8] = "DischargeSummaryBERT";
+        
 
         
         int total_models = 1;
@@ -470,16 +594,52 @@ public class HESMLSTSImpactEvaluationclient
                 
                 wordProcessing.setBERTModel(modelPaths[i][0]);
                 
-                ISentenceSimilarityMeasure measure = 
+                // Select the python library
+                
+                MLPythonLibrary mllibrary = MLPythonLibrary.Tensorflow;
+                if("Pytorch".equals(modelPaths[i][6]))
+                    mllibrary = MLPythonLibrary.Pytorch;
+                
+                // Create the measure
+                
+                ISentenceSimilarityMeasure measure = null;
+                
+                String[] poolingLayers = new String[1];
+                poolingLayers[0] = "-2";
+                
+                // The constructor for Tensorflow differs from Pytorch
+                
+                if(mllibrary == MLPythonLibrary.Tensorflow)
+                {
+                    measure = SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
+                            modelPaths[i][5] + wordProcessing.getLabel(), 
+                            SentenceEmbeddingMethod.BERTEmbeddingModel,
+                            mllibrary,
+                            wordProcessing, 
+                            modelPaths[i][5], 
+                            modelPaths[i][7],
+                            modelPaths[i][8],
+                            modelPaths[i][1], 
+                            modelPaths[i][2], 
+                            modelPaths[i][3],
+                            BERTpoolingMethod.REDUCE_MEAN, 
+                            poolingLayers);
+                }
+                else
+                {
+                    measure = 
                         SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
                             modelPaths[i][5] + wordProcessing.getLabel(), 
                             SentenceEmbeddingMethod.BERTEmbeddingModel,
-                            MLPythonLibrary.Pytorch,
+                            mllibrary,
                             wordProcessing, 
                             modelPaths[i][4], 
                             modelPaths[i][1], 
                             modelPaths[i][2], 
                             modelPaths[i][3]);
+                }
+                
+                // Add the measure to the list
                 
                 measuresLst.add(measure);
             }
@@ -497,9 +657,301 @@ public class HESMLSTSImpactEvaluationclient
         // We read the configuration of the experiment
         
         
-        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_stringMeasures.csv";
-        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_stringMeasures.csv";
-        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_stringMeasures.csv";
+        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_bertMeasures.csv";
+        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_bertMeasures.csv";
+        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_bertMeasures.csv";
+        
+        // We create the benchmarks for all measuers and dataset
+        
+        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
+        
+        benchmarkBIOSSES.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
+        
+        benchmarkMedSTS.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameCTR, strOutputFileNameCTR);
+        
+        benchmarkCTR.evaluateBenchmark(true);
+    }
+    
+    /**
+     * Test all the string measures.
+     * 
+     *  * Preprocessing configured as Blagec2019.
+     * @return
+     * @throws IOException 
+     * @param sentences1: first sentences of the dataset
+     * @param sentences2: second sentences of the dataset
+     */
+    
+    private static void executeBERTMeasuresNER() 
+            throws IOException, InterruptedException, Exception
+    {
+        // We define the models to be evaluated
+
+        String[][] modelPaths = new String[1][9];
+        
+        /**
+         * The structure for each model paths is:
+         * 
+         * strBertDir + strBERTPretrainedModelFilename, 
+         * strPythonScriptsDirectory, 
+         * strPythonVirtualEnvironmentDir, 
+         * strPythonScriptsDirectory + strPythonScript
+         */
+        
+        modelPaths[0][0] = "../BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
+        modelPaths[0][1] = "../BERTExperiments/";
+        modelPaths[0][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[0][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[0][4] = "seiya/oubiobert-base-uncased";
+        modelPaths[0][5] = "oubiobert-base-uncased";
+        modelPaths[0][6] = "Pytorch";
+        modelPaths[0][7] = "";
+        modelPaths[0][8] = "";
+        
+        modelPaths[1][0] = "../BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
+        modelPaths[1][1] = "../BERTExperiments/";
+        modelPaths[1][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[1][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[1][4] = "allenai/scibert_scivocab_uncased";
+        modelPaths[1][5] = "scibert_scivocab_uncased";
+        modelPaths[1][6] = "Pytorch";
+        modelPaths[0][7] = "";
+        modelPaths[0][8] = "";
+        
+        modelPaths[2][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[2][1] = "../BERTExperiments/";
+        modelPaths[2][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[2][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[2][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[2][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract";
+        modelPaths[2][6] = "Pytorch";
+        modelPaths[0][7] = "";
+        modelPaths[0][8] = "";
+        
+        modelPaths[3][0] = "../BERTExperiments/BERTPretrainedModels/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[3][1] = "../BERTExperiments/";
+        modelPaths[3][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[3][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[3][4] = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[3][5] = "BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext";
+        modelPaths[3][6] = "Pytorch";
+        modelPaths[0][7] = "";
+        modelPaths[0][8] = "";
+        
+        modelPaths[4][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed";
+        modelPaths[4][1] = "../BERTExperiments/";
+        modelPaths[4][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[4][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[4][4] = "";
+        modelPaths[4][5] = "biobert_v1.0_pubmed";
+        modelPaths[4][6] = "Tensorflow";
+        modelPaths[4][7] = "";
+        modelPaths[4][8] = "";
+        
+        modelPaths[5][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc";
+        modelPaths[5][1] = "../BERTExperiments/";
+        modelPaths[5][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[5][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[5][4] = "";
+        modelPaths[5][5] = "biobert_v1.0_pmc";
+        modelPaths[5][6] = "Tensorflow";
+        modelPaths[5][7] = "";
+        modelPaths[5][8] = "";
+        
+        modelPaths[6][0] = "../BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
+        modelPaths[6][1] = "../BERTExperiments/";
+        modelPaths[6][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[6][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[6][4] = "";
+        modelPaths[6][5] = "biobert_v1.0_pubmed_pmc";
+        modelPaths[6][6] = "Tensorflow";
+        modelPaths[6][7] = "";
+        modelPaths[6][8] = "";
+        
+        modelPaths[7][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
+        modelPaths[7][1] = "../BERTExperiments/";
+        modelPaths[7][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[7][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[7][4] = "";
+        modelPaths[7][5] = "NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
+        modelPaths[7][6] = "Tensorflow";
+        modelPaths[7][7] = "";
+        modelPaths[7][8] = "";
+        
+        modelPaths[8][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
+        modelPaths[8][1] = "../BERTExperiments/";
+        modelPaths[8][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[8][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[8][4] = "";
+        modelPaths[8][5] = "NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
+        modelPaths[8][6] = "Tensorflow";
+        modelPaths[8][7] = "";
+        modelPaths[8][8] = "";
+        
+        modelPaths[9][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
+        modelPaths[9][1] = "../BERTExperiments/";
+        modelPaths[9][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[9][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[9][4] = "";
+        modelPaths[9][5] = "NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
+        modelPaths[9][6] = "Tensorflow";
+        modelPaths[9][7] = "";
+        modelPaths[9][8] = "";
+        
+        modelPaths[10][0] = "../BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
+        modelPaths[10][1] = "../BERTExperiments/";
+        modelPaths[10][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[10][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[10][4] = "";
+        modelPaths[10][5] = "NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
+        modelPaths[10][6] = "Tensorflow";
+        modelPaths[10][7] = "";
+        modelPaths[10][8] = "";
+        
+        modelPaths[11][0] = "../BERTExperiments/BERTPretrainedModels/Bio+ClinicalBERT";
+        modelPaths[11][1] = "../BERTExperiments/";
+        modelPaths[11][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[11][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[11][4] = "";
+        modelPaths[11][5] = "biobert_v1.0_pubmed_pmc";
+        modelPaths[11][6] = "Tensorflow";
+        modelPaths[11][7] = "model.ckpt-150000.index";
+        modelPaths[11][8] = "Bio+ClinicalBERT";
+        
+        modelPaths[12][0] = "../BERTExperiments/BERTPretrainedModels/Bio+DischargeSummaryBERT";
+        modelPaths[12][1] = "../BERTExperiments/";
+        modelPaths[12][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[12][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[12][4] = "";
+        modelPaths[12][5] = "biobert_v1.0_pubmed_pmc";
+        modelPaths[12][6] = "Tensorflow";
+        modelPaths[12][7] = "model.ckpt-100000.index";
+        modelPaths[12][8] = "Bio+DischargeSummaryBERT";
+        
+        modelPaths[13][0] = "../BERTExperiments/BERTPretrainedModels/clinicalBERT";
+        modelPaths[13][1] = "../BERTExperiments/";
+        modelPaths[13][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[13][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[13][4] = "";
+        modelPaths[13][5] = "biobert_v1.0_pubmed_pmc";
+        modelPaths[13][6] = "Tensorflow";
+        modelPaths[13][7] = "model.ckpt-150000.index";
+        modelPaths[13][8] = "clinicalBERT";
+        
+        modelPaths[14][0] = "../BERTExperiments/BERTPretrainedModels/DischargeSummaryBERT";
+        modelPaths[14][1] = "../BERTExperiments/";
+        modelPaths[14][2] = "../BERTExperiments/PytorchExperiments/venv/bin/python";
+        modelPaths[14][3] = "../BERTExperiments/PytorchExperiments/extractBERTvectors.py";
+        modelPaths[14][4] = "";
+        modelPaths[14][5] = "biobert_v1.0_pubmed_pmc";
+        modelPaths[14][6] = "Tensorflow";
+        modelPaths[14][7] = "model.ckpt-100000.index";
+        modelPaths[14][8] = "DischargeSummaryBERT";
+        
+
+        
+        int total_models = 1;
+        
+        // We create the combinations but we don't assign the BERT model names
+        
+        IWordProcessing bestBERTWordProcessingword =  
+                                    PreprocessingFactory.getWordProcessing(
+                                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                                        TokenizerType.WhiteSpace,
+                                        true,
+                                        NERType.None,
+                                        CharFilteringType.BIOSSES,
+                                        "../BERTExperiments/",
+                "../BERTExperiments/venv/bin/python",
+                "../BERTExperiments/WordPieceTokenization.py", "");
+        
+        // We iterate the methods and create the measures
+        
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+        
+        for(int i=0; i<total_models; i++)
+        {
+
+            // We set the BERT model in the preprocessing
+
+            bestBERTWordProcessingword.setBERTModel(modelPaths[i][0]);
+
+            // Select the python library
+
+            MLPythonLibrary mllibrary = MLPythonLibrary.Tensorflow;
+            if("Pytorch".equals(modelPaths[i][6]))
+                mllibrary = MLPythonLibrary.Pytorch;
+
+            // Create the measure
+
+            ISentenceSimilarityMeasure measure = null;
+
+            String[] poolingLayers = new String[1];
+            poolingLayers[0] = "-2";
+
+            // The constructor for Tensorflow differs from Pytorch
+
+            if(mllibrary == MLPythonLibrary.Tensorflow)
+            {
+                measure = SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
+                        modelPaths[i][5] + bestBERTWordProcessingword.getLabel(), 
+                        SentenceEmbeddingMethod.BERTEmbeddingModel,
+                        mllibrary,
+                        bestBERTWordProcessingword, 
+                        modelPaths[i][5], 
+                        modelPaths[i][7],
+                        modelPaths[i][8],
+                        modelPaths[i][1], 
+                        modelPaths[i][2], 
+                        modelPaths[i][3],
+                        BERTpoolingMethod.REDUCE_MEAN, 
+                        poolingLayers);
+            }
+            else
+            {
+                measure = 
+                    SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
+                        modelPaths[i][5] + bestBERTWordProcessingword.getLabel(), 
+                        SentenceEmbeddingMethod.BERTEmbeddingModel,
+                        mllibrary,
+                        bestBERTWordProcessingword, 
+                        modelPaths[i][4], 
+                        modelPaths[i][1], 
+                        modelPaths[i][2], 
+                        modelPaths[i][3]);
+            }
+
+            // Add the measure to the list
+
+            measuresLst.add(measure);
+            
+        }
+        
+        // We create the vector to return the collection of sentence similarity measures
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
+        
+        // We copy the measures to the vector and release the temporary list
+        
+        measuresLst.toArray(measures);
+        measuresLst.clear();
+        
+        // We read the configuration of the experiment
+        
+        
+        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_bertMeasures.csv";
+        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_bertMeasures.csv";
+        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_bertMeasures.csv";
         
         // We create the benchmarks for all measuers and dataset
         
@@ -680,8 +1132,8 @@ public class HESMLSTSImpactEvaluationclient
 
         
         ArrayList<String> stopWordsCombs = new ArrayList<>();
-//        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt");
-//        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt");
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt");
+        stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt");
         stopWordsCombs.add(m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt");
         
         ArrayList<TokenizerType> tokenizerTypeCombs = new ArrayList<>();
@@ -689,19 +1141,16 @@ public class HESMLSTSImpactEvaluationclient
         
         ArrayList<NERType> nerTypeCombs = new ArrayList<>();
         nerTypeCombs.add(NERType.None);
-//        nerTypeCombs.add(NERType.MetamapLite);
-//        nerTypeCombs.add(NERType.MetamapSNOMEDCT);
-//        nerTypeCombs.add(NERType.MetamapMESH);
         
         ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
         charFilteringTypeCombs.add(CharFilteringType.None);
-//        charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
-//        charFilteringTypeCombs.add(CharFilteringType.Blagec2019);
-//        charFilteringTypeCombs.add(CharFilteringType.Default);
+        charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
+        charFilteringTypeCombs.add(CharFilteringType.Blagec2019);
+        charFilteringTypeCombs.add(CharFilteringType.Default);
         
         ArrayList<Boolean> lowerCasingCombs = new ArrayList<>();
         lowerCasingCombs.add(true);
-//        lowerCasingCombs.add(false);
+        lowerCasingCombs.add(false);
         
         // We iterate all the combinations
         

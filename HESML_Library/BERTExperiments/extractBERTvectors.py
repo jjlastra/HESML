@@ -24,7 +24,7 @@ def is_port_in_use(port):
 
 # get the pooling strategy an layers
 
-print(sys.argv)
+# print(sys.argv)
 
 strPoolingStrategy = sys.argv[1]
 strPoolingLayer = sys.argv[2]

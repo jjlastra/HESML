@@ -82,21 +82,36 @@ for(iExperimentSubdirectory in experiments$keys())
     
     # We load the input raw results file
     
-    # rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_stringMeasures.csv"), dec = ".", sep = ';')
-    # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_stringMeasures.csv"), dec = ".", sep = ';')
-    # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_stringMeasures.csv"), dec = ".", sep = ';')
+    rawdata_BIOSSES_string <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_stringMeasures.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS_string  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_stringMeasures.csv"), dec = ".", sep = ';')
+    rawdata_CTR_string     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_stringMeasures.csv"), dec = ".", sep = ';')
+    
+    rawdata_BIOSSES_COM <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_comMixedMeasures.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS_COM  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_comMixedMeasures.csv"), dec = ".", sep = ';')
+    rawdata_CTR_COM     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_comMixedMeasures.csv"), dec = ".", sep = ';')
+    
+    rawdata_BIOSSES_string_NER <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_stringMeasures_NER.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS_string_NER  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_stringMeasures_NER.csv"), dec = ".", sep = ';')
+    rawdata_CTR_string_NER     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_stringMeasures_NER.csv"), dec = ".", sep = ';')
+    
+    rawdata_BIOSSES_COM_NER <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_comMixedMeasures_NER.csv"), dec = ".", sep = ';')
+    rawdata_MedSTS_COM_NER  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_comMixedMeasures_NER.csv"), dec = ".", sep = ';')
+    rawdata_CTR_COM_NER     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_comMixedMeasures_NER.csv"), dec = ".", sep = ';')
+    
     
     # rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_pooled.csv"), dec = ".", sep = ';')
     # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_pooled.csv"), dec = ".", sep = ';')
     # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_pooled.csv"), dec = ".", sep = ';')
     
-    # rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_comMixedMeasures.csv"), dec = ".", sep = ';')
-    # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_comMixedMeasures.csv"), dec = ".", sep = ';')
-    # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_comMixedMeasures.csv"), dec = ".", sep = ';')
+    # rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_bert.csv"), dec = ".", sep = ';')
+    # rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_bert.csv"), dec = ".", sep = ';')
+    # rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_bert.csv"), dec = ".", sep = ';')
     
-    rawdata_BIOSSES <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_bert.csv"), dec = ".", sep = ';')
-    rawdata_MedSTS  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_bert.csv"), dec = ".", sep = ';')
-    rawdata_CTR     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_bert.csv"), dec = ".", sep = ';')
+    
+    rawdata_BIOSSES <- cbind(rawdata_BIOSSES_string,rawdata_BIOSSES_COM,rawdata_BIOSSES_string_NER,rawdata_BIOSSES_COM_NER)
+    rawdata_MedSTS <- cbind(rawdata_MedSTS_string,rawdata_MedSTS_COM,rawdata_MedSTS_string_NER,rawdata_MedSTS_COM_NER)
+    rawdata_CTR <- cbind(rawdata_CTR_string,rawdata_CTR_COM,rawdata_CTR_string_NER,rawdata_CTR_COM_NER)
+    
     
     # mat.sort function is copied from source files of
     # BioPhysConnectoR package which is now unavailable.
