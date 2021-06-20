@@ -21,7 +21,7 @@
 
 package hesml.sts.benchmarks.impl;
 
-import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
+import hesml.sts.benchmarks.IAggregatedSentenceSimilarityBenchmark;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import java.io.File;
 import java.io.FileWriter;
@@ -34,7 +34,7 @@ import java.io.IOException;
  * @author j.lastra
  */
 
-class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
+class SentenceSimilarityAggregativeBenchmark implements IAggregatedSentenceSimilarityBenchmark
 {
     /**
      * Output filename.
@@ -55,26 +55,82 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
     private ISentenceSimilarityMeasure[] m_Measures;
     
     /**
+     * Column headers
+     */
+    
+    private String[] m_strColumnHeaders;
+    
+    /**
+     * Similarity values matrix
+     */
+    
+    private double[][] m_similarityMatrix;
+    
+    /**
+     * Offset of the aggregated measures (absolute measures counter)
+     */
+    
+    private int m_measuresOffset;
+    
+    /**
      * Constructor
      * @param strDatasetFilename
      * @param strOutputFilename 
      */
     
-    SentenceSimilaritySingleBenchmark(
-            ISentenceSimilarityMeasure[]    measures,
+    SentenceSimilarityAggregativeBenchmark(
             String                          strDatasetDirectory,
             String                          strDatasetFilename,
+            int                             totalMeasures,
             String                          strOutputFilename) throws Exception
     {
         // We store the setup objects
-        
-        m_Measures = measures;
+
         m_strOutputFilename = strOutputFilename;
         
         // We create the reader and manager of the dataset
         
         m_Dataset = new SentenceSimilarityDataset(strDatasetDirectory
                         + "/" + strDatasetFilename);
+        
+        // We create the similarity matrix containing the similiarity
+        // values returned by each measure for each sentence pair.
+        
+        m_similarityMatrix = new double[m_Dataset.getPairsCount()][totalMeasures + 1];
+        
+        // We create the vector of column headers
+        
+        m_strColumnHeaders = new String[totalMeasures + 1];
+        
+        m_strColumnHeaders[0] = "Human";
+        
+        // First, there is not a list of measures, so the offset is 0
+        
+        m_measuresOffset = 0;
+    }
+    
+    /**
+     * Add a list of measures for the evaluation
+     * @param measures 
+     */
+    
+    @Override
+    public void addMeasures(
+            ISentenceSimilarityMeasure[] measures)
+    {
+        m_Measures = measures;
+    }
+    
+    /**
+     *  Write the results in the output file
+     */
+    
+    @Override
+    public void writeResults() throws IOException
+    {
+        // We save the raw similarity values into the output file
+        
+        writeCSVfile(m_strColumnHeaders, m_similarityMatrix, m_strOutputFilename);
     }
     
     /**
@@ -115,27 +171,16 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
     public void evaluateBenchmark(
             boolean showDebugInfo) throws Exception
     {
-        // We create the similarity matrix containing the similiarity
-        // values returned by each measure for each sentence pair.
-        
-        double[][] similarityMatrix = new double[m_Dataset.getPairsCount()][m_Measures.length + 1];
-        
-        // We create the vector of column headers
-        
-        String[] strColumnHeaders = new String[m_Measures.length + 1];
-        
-        strColumnHeaders[0] = "Human";
-        
         // We copy the human similarity judgement in the first column
         
         for (int iPair = 0; iPair < m_Dataset.getPairsCount(); iPair++)
         {
-            similarityMatrix[iPair][0] = m_Dataset.getHumanJudgementAt(iPair);
+            m_similarityMatrix[iPair][0] = m_Dataset.getHumanJudgementAt(iPair);
         }
         
         // We evaluate all similarity measures 
 
-        for (int iMeasure = 0; iMeasure < m_Measures.length; iMeasure++)
+        for (int iMeasure = m_measuresOffset; iMeasure < m_Measures.length; iMeasure++)
         {
             if (showDebugInfo)
             {
@@ -144,7 +189,7 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
 
             // We set the coluimn header for the current measure
 
-            strColumnHeaders[iMeasure + 1] = m_Measures[iMeasure].getLabel();
+            m_strColumnHeaders[iMeasure + 1] = m_Measures[iMeasure].getLabel();
             
             // We prepare the measure for evaluation
             
@@ -159,13 +204,13 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
             
             for (int iScore = 0; iScore < similarityScores.length; iScore++)
             {
-                similarityMatrix[iScore][iMeasure + 1] = similarityScores[iScore];
+                m_similarityMatrix[iScore][iMeasure + 1] = similarityScores[iScore];
             }
+            
+            // We update the measures offset
+            
+            m_measuresOffset++;
         }
-        
-        // We save the raw similarity values into the output file
-        
-        writeCSVfile(strColumnHeaders, similarityMatrix, m_strOutputFilename);
     }
         
     /**

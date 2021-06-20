@@ -24,6 +24,7 @@ package hesml.sts.benchmarks.impl;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.WordEmbeddingFileType;
+import hesml.sts.benchmarks.IAggregatedSentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.ComMixedVectorsMeasureType;
@@ -109,6 +110,27 @@ public class SentenceSimBenchmarkFactory
     {
         return (new SentenceSimilaritySingleBenchmark(measures,
                 strDatasetDirectory, strDatasetFilename, strOutputFilename));
+    }
+    
+    /**
+     * This function returns an instance of an aggregated-dataset sentence
+     * similarity benchmark.
+     * @param totalMeasures
+     * @param strDatasetDirectory
+     * @param strDatasetFilename
+     * @param strOutputFilename
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    
+    public static IAggregatedSentenceSimilarityBenchmark getAggregativeDatasetBenchmark(
+            int                             totalMeasures,
+            String                          strDatasetDirectory,
+            String                          strDatasetFilename,
+            String                          strOutputFilename) throws Exception
+    {
+        return (new SentenceSimilarityAggregativeBenchmark(strDatasetDirectory, 
+                strDatasetFilename, totalMeasures, strOutputFilename));
     }
     
     /**

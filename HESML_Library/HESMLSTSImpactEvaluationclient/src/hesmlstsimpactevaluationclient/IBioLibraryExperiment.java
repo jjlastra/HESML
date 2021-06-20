@@ -1,5 +1,5 @@
-/* 
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+/*
+ * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -19,35 +19,27 @@
  *
  */
 
-package hesml.sts.preprocess;
+package hesmlstsimpactevaluationclient;
 
 /**
- *  Interface class for filtering punctuation methods
- *  @author alicia
+ *
+ * @author alicia lara and j. lastra
  */
 
-public interface ICharsFiltering
+public interface IBioLibraryExperiment 
 {
     /**
-     * Given a sentence, filter the chars using the method selected.
-     * @param strRawSentence
-     * @return String sentence with the characters filtered.
+     * This function runs the benchmark and writes the results to the
+     * output file.
+     * @param strOutputFilename
+     * @throws java.lang.Exception
      */
     
-    String filter(
-            String strRawSentence);
+    void run(String strOutputFilename) throws Exception;
     
     /**
-     * Return Char Filtering type
-     * @return char filtering type
+     * This function releases the resources used by the benchmark.
      */
     
-    CharFilteringType to_string();
-    
-    /**
-     * Return Char Filtering type
-     * @return char filtering type
-     */
-    
-    CharFilteringType getCharFilteringType();
+    void clear(); 
 }

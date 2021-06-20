@@ -163,8 +163,21 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+
+        // We set the pooling method, which depends on the COMMixed type
         
-        m_poolingMethod = SWEMpoolingMethod.Min;
+        switch (comMixedVectorsMeasureType)
+        {
+            case PooledMin:
+                m_poolingMethod = SWEMpoolingMethod.Min;
+                break;
+            case PooledMax:
+                m_poolingMethod = SWEMpoolingMethod.Max;
+                break;
+            default:
+                m_poolingMethod = SWEMpoolingMethod.Average;
+                break;
+        }
     }
     
     /**
@@ -314,31 +327,43 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
         dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
         
-        // 2. Initialize the semantic vectors.
         
-        if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.PooledAVG ||
-                m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.PooledMin)
-        {
-            semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
-            semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
-
-            semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
-            semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
-
-            semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
-            semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+        // 2. Initialize the semantic vectors.
             
-        }
-        else if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.WordNet)
+        switch (m_comMixedVectorsMeasureType) 
         {
-            semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
-            semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
-
-        }
-        else if(m_comMixedVectorsMeasureType == ComMixedVectorsMeasureType.UMLS)
-        {
-            semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
-            semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+            case PooledAVG:
+            case PooledMin:
+            case PooledMax:
+                
+                semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
+                semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+                
+                semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
+                semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
+                
+                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
+                semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+                
+                break;
+                
+            case WordNet:
+                
+                semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
+                semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
+                
+                break;
+                
+            case UMLS:
+                
+                semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
+                semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
+                
+                break;
+                
+            default:
+                
+                break;
         }
             
         // 3. Compute the cosine similarity between the semantic vectors
@@ -389,7 +414,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                     sentenceVector[i] += v2[i];
 
                     break;
-
+                
                 case Max:
 
                     sentenceVector[i] = Math.max(sentenceVector[i], v2[i]);
@@ -521,9 +546,18 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         for (String word : dictionary)
         {
             // We check if the first sentence contains the word
+            double wordVectorComponent;
             
-            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 
-                        getWordSimilarityScore(word, lstWordsSentence, ontology);
+            if(setWordsSentence1.contains(word))
+            {
+                wordVectorComponent = 1.0;
+            }
+            else
+            {
+                wordVectorComponent = getWordSimilarityScore(word, lstWordsSentence, ontology);
+            }
+//            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 
+//                        getWordSimilarityScore(word, lstWordsSentence, ontology);
             
             semanticVector[count] = wordVectorComponent;
             count++;
@@ -604,7 +638,9 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 // We compute the similarity using the active ontology
                 
                 if(m_wordnet.contains(strFirstConceptId) & m_wordnet.contains(strSecondConceptId))
+                {
                     similarity = getWordNetSimilarity(strFirstConceptId, strSecondConceptId);
+                }
                 
                 break;
                 
@@ -741,9 +777,11 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             String              word1, 
             String              word2) throws Exception
     {
+        if(word1.equals("feedback"))
+            System.out.print("para");
         // Initialize the similarity values
-        
-        double simValue = 0.0;  
+
+        double maxSimilarity = Double.NEGATIVE_INFINITY;
 
         // If the concepts exists in WordNet, compute the similiarity
         
@@ -768,8 +806,23 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             // We compute the similarity among all the pairwise
             // combinations of Synsets (cartesian product)
 
-            simValue = m_wordSimilarityMeasureTypeWordnet.getHighestPairwiseSimilarity(
-                                word1Concepts, word2Concepts);
+//            simValue = m_wordSimilarityMeasureTypeWordnet.getHighestPairwiseSimilarity(
+//                                word1Concepts, word2Concepts);
+
+            // We compute the similarity for each pair of tree nodes
+
+            for (IVertex vertex1: word1Concepts)
+            {
+                for (IVertex vertex2: word2Concepts)
+                {
+                    double simValue = m_wordSimilarityMeasureTypeWordnet.getSimilarity(
+                                                vertex1, vertex2);
+
+                    // We update the maximum similarity
+
+                    if (simValue > maxSimilarity) maxSimilarity = simValue;
+                }
+            }
 
             // We clear the vertex lists
 
@@ -779,7 +832,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         // Return the value
         
-        return (simValue);
+        return (maxSimilarity);
     }
     
     /**

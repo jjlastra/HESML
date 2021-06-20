@@ -29,7 +29,7 @@ import java.io.IOException;
  * @author Juan Lastra-Díaz
  */
 
-public interface ISentenceSimilarityBenchmark
+public interface IAggregatedSentenceSimilarityBenchmark
 {
     /**
      * This function releases all the resources used by the object.
@@ -53,4 +53,18 @@ public interface ISentenceSimilarityBenchmark
     
     void evaluateBenchmark(
             boolean showDebugInfo) throws Exception;
+    
+    /**
+     * Add a list of measures
+     * @param measures
+     */
+    
+    void addMeasures(ISentenceSimilarityMeasure[] measures);
+    
+    /**
+     *  Write the results in the output file
+     * @throws java.io.IOException
+     */
+    
+    void writeResults() throws IOException;
 }

@@ -24,6 +24,7 @@ package hesml.sts.preprocess.impl;
 
 import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.sts.preprocess.CharFilteringType;
+import hesml.sts.preprocess.ICharsFiltering;
 import hesml.sts.preprocess.INER;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.IWordProcessing;
@@ -402,37 +403,42 @@ class WordProcessing implements IWordProcessing
         
         String label = "";
         
-        // Add the tokenizer method
-        
-        label = m_tokenizerType.toString();
-        
-        // Add the lowercase info
-        
-        if(m_lowercaseNormalization)
-            label = label + "_lc";
-        
-        // Stop words filename
-        
-        String[] stopwords = m_strStopWordsFileName.split("/");
-        String cleanedStopWordsFilename = stopwords[2].replace(".txt","");
-        label = label + "_" + cleanedStopWordsFilename;
-        
-        // Add the char filtering method
-        
-        label = label + "_" + m_charFilter.to_string();
-        
-        // Add the conceptAnnotationInfo
-        
-        label = label + "_" + m_nerType;
-        
         // Add the bert vocabulary if exists
         
         if(m_modelDirPath != null)
         {
             String[] modelDirList = m_modelDirPath.split("/");
             String modelDir = modelDirList[modelDirList.length-1];
-            label = label + "_" + modelDir;
+            label = modelDir;
         }
+        
+        // Add the tokenizer method
+        
+        if(label == "")
+            label = "TOK-" + m_tokenizerType.toString();
+        else
+            label = label + "_TOK-" + m_tokenizerType.toString();
+        
+        // Add the lowercase info
+        
+        if(m_lowercaseNormalization)
+            label = label + "_lc";
+        else
+            label = label + "_notlc";
+        
+        // Stop words filename
+        
+        String[] stopwords = m_strStopWordsFileName.split("/");
+        String cleanedStopWordsFilename = stopwords[2].replace(".txt","");
+        label = label + "_SW-" + cleanedStopWordsFilename;
+        
+        // Add the char filtering method
+        
+        label = label + "_CF-" + m_charFilter.to_string();
+        
+        // Add the conceptAnnotationInfo
+        
+        label = label + "_NER-" + m_nerType;
         
         // lowercase the result
         

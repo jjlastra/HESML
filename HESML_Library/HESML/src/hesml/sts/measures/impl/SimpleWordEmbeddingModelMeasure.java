@@ -82,8 +82,7 @@ class SimpleWordEmbeddingModelMeasure extends SentenceSimilarityMeasure
         
         m_strLabel = strLabel;
         m_poolingMethod = poolingMethod;
-        m_wordEmbedding = MeasureFactory.getWordEmbeddingModel(embeddingType,
-                            strPretrainedModelFilename);
+        m_wordEmbedding = MeasureFactory.getWordEmbeddingModel(embeddingType, strPretrainedModelFilename);
     }
     
     /**

@@ -58,8 +58,7 @@ public class PreprocessingFactory
         return (new WordProcessing(tokenizerType,lowercaseNormalization,
                 nerType, stopWordFileName, charFilteringType));
     }
-    
-    
+
     /**
      *  Constructor of the preprocess pipeline factory with Python wrapper for BERT.
      * 

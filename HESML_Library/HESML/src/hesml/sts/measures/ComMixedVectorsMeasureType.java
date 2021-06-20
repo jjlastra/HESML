@@ -15,6 +15,8 @@ public enum ComMixedVectorsMeasureType
     
     PooledAVG,
     
+    PooledMax,
+    
     WordNet,
     
     UMLS

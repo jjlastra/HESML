@@ -262,7 +262,7 @@ class NER implements INER
         
         Properties myProperties = new Properties();
         
-        // Select the 2018AB database
+        // Select the 2020AA database
         
         myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2020AA/USAbase/");
         myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");

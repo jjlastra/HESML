@@ -686,8 +686,9 @@ public class MeasureFactory
      * a word similarity measure.
      * @param embeddingType
      * @param strRawVectorFile
-     * @param words
      * @return 
+     * @throws java.io.IOException 
+     * @throws java.text.ParseException 
      */
     
     public static IPretrainedWordEmbedding getWordEmbeddingModel(
