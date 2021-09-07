@@ -203,6 +203,14 @@ class Tokenizer implements ITokenizer
         
         // Read the output 
         
+        String command = m_pythonVenvDir + " " +
+                "-W" + " " +
+                "ignore" + " " +
+                m_pythonScriptDir + " " +
+                m_modelDirPath + "/vocab.txt" + " " + strSentence;
+        
+//        System.out.println(command);
+        
         InputStreamReader inputStreamReader = new InputStreamReader(proc.getInputStream());
         BufferedReader readerTerminal = new BufferedReader(inputStreamReader);
 

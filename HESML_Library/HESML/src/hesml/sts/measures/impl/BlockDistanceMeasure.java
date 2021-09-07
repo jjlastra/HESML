@@ -53,6 +53,7 @@ class BlockDistanceMeasure extends SentenceSimilarityMeasure
     
     private final String m_strLabel;
     
+    
     /**
      * Constructor with parameters.
      * @param preprocesser 
@@ -62,7 +63,6 @@ class BlockDistanceMeasure extends SentenceSimilarityMeasure
             String          strLabel,
             IWordProcessing preprocesser)
     {
-        
         // We intialize the base class
         
         super(preprocesser);

@@ -257,23 +257,122 @@ public class SentenceSimilarityFactory
      * 
      * @param strLabel
      * @param preprocesser
+     * @param snomedOntology
+     * @param taxonomy
+     * @param wordSimilarityMeasureTypeUMLS
+     * @param icModelType
+     * @param stringMeasure
+     * @param lambda
+     * @param comMixedVectorsMeasureType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureSnomedCT(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            ISnomedCtOntology           snomedOntology,
+            ITaxonomy                   taxonomy,
+            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
+            IntrinsicICModelType        icModelType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+                snomedOntology, taxonomy, wordSimilarityMeasureTypeUMLS, icModelType, 
+                stringMeasure, lambda, comMixedVectorsMeasureType));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param wordnet
+     * @param wordnetTaxonomy
+     * @param wordSimilarityMeasureTypeWordnet
+     * @param icModelType
+     * @param stringMeasure
+     * @param lambda
+     * @param comMixedVectorsMeasureType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureWordNet(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            IWordNetDB                  wordnet,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       wordSimilarityMeasureTypeWordnet,
+            IntrinsicICModelType        icModelType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+                wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet,
+                icModelType, stringMeasure, lambda, comMixedVectorsMeasureType));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
+     * @param meshOntology
+     * @param taxonomy
+     * @param wordSimilarityMeasureTypeUMLS
+     * @param icModelType
+     * @param stringMeasure
+     * @param lambda
+     * @param comMixedVectorsMeasureType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureMeSH(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            IMeSHOntology               meshOntology,
+            ITaxonomy                   taxonomy,
+            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
+            IntrinsicICModelType        icModelType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+                meshOntology, taxonomy, wordSimilarityMeasureTypeUMLS, icModelType, 
+                stringMeasure, lambda, comMixedVectorsMeasureType));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesserWBSM
+     * @param preprocesserUBSM
      * @param meshOntology
      * @param wordnet
+     * @param taxonomy
      * @param wordnetTaxonomy
      * @param wordSimilarityMeasureTypeWordnet
      * @param wordSimilarityMeasureTypeUMLS
      * @param icModelType
      * @param stringMeasure
      * @param lambda
+     * @param comMixedVectorsMeasureType
      * @return ISentenceSimilarityMeasure
      * @throws java.lang.Exception
      */
 
-    public static ISentenceSimilarityMeasure getComMixedVectorsMeasure(
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureWordNetMeshPooled(
             String                      strLabel,
-            IWordProcessing             preprocesser,
-            ISnomedCtOntology           snomedOntology,
-            IVertexList                 vertexes,
+            IWordProcessing             preprocesserWBSM,
+            IWordProcessing             preprocesserUBSM,
+            IMeSHOntology               meshOntology,
             ITaxonomy                   taxonomy,
             IWordNetDB                  wordnet,
             ITaxonomy                   wordnetTaxonomy,
@@ -284,9 +383,49 @@ public class SentenceSimilarityFactory
             Double                      lambda,
             ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
-        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
-                snomedOntology, vertexes, taxonomy, wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet,
-                wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure, lambda, comMixedVectorsMeasureType));
+        return (new ComMixedVectorsMeasure(strLabel, preprocesserWBSM, preprocesserUBSM, meshOntology, taxonomy,
+                wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet, wordSimilarityMeasureTypeUMLS,
+                icModelType, stringMeasure, lambda, comMixedVectorsMeasureType));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesserWBSM
+     * @param preprocesserUBSM
+     * @param snomedOntology
+     * @param wordnet
+     * @param taxonomy
+     * @param wordnetTaxonomy
+     * @param wordSimilarityMeasureTypeWordnet
+     * @param wordSimilarityMeasureTypeUMLS
+     * @param icModelType
+     * @param stringMeasure
+     * @param lambda
+     * @param comMixedVectorsMeasureType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureWordNetSnomedCTPooled(
+            String                      strLabel,
+            IWordProcessing             preprocesserWBSM,
+            IWordProcessing             preprocesserUBSM,
+            ISnomedCtOntology           snomedOntology,
+            ITaxonomy                   taxonomy,
+            IWordNetDB                  wordnet,
+            ITaxonomy                   wordnetTaxonomy,
+            SimilarityMeasureType       wordSimilarityMeasureTypeWordnet,
+            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
+            IntrinsicICModelType        icModelType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesserWBSM, preprocesserUBSM, snomedOntology, taxonomy,
+                wordnet, wordnetTaxonomy, wordSimilarityMeasureTypeWordnet, wordSimilarityMeasureTypeUMLS,
+                icModelType, stringMeasure, lambda, comMixedVectorsMeasureType));
     }
     
     /**
@@ -475,16 +614,7 @@ public class SentenceSimilarityFactory
             BERTpoolingMethod       poolingStrategy,
             String[]                poolingLayers) throws IOException,
             InterruptedException, org.json.simple.parser.ParseException
-    {
-        // We check the existence of the pre-trained model file
-        
-        File pretainedModelFileInfo = new File(strPretrainedModelFilename);
-        
-        if (!pretainedModelFileInfo.exists())
-        {
-            throw (new FileNotFoundException(pretainedModelFileInfo.getAbsolutePath()));
-        }
-            
+    {           
         // We initialize the output
         
         ISentenceSimilarityMeasure measure = new BertEmbeddingModelMeasure(

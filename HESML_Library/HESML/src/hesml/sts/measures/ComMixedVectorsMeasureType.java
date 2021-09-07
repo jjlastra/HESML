@@ -17,8 +17,6 @@ public enum ComMixedVectorsMeasureType
     
     PooledMax,
     
-    WordNet,
-    
-    UMLS
+    SingleOntology
     
 }

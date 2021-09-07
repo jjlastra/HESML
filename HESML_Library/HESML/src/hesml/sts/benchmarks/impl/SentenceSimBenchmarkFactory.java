@@ -373,12 +373,14 @@ public class SentenceSimBenchmarkFactory
 
         // We parse the chracter filtering method
         
-        IWordProcessing processer = PreprocessingFactory.getWordProcessing(
-                                        strStopWordsFileDir + "/" + strStopWordsFilename,
-                                        convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
-                                        readBooleanField(wordProcessingNode, "LowercaseNormalization"),
-                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
-                                        convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")));
+//        IWordProcessing processer = PreprocessingFactory.getWordProcessing(
+//                                        strStopWordsFileDir + "/" + strStopWordsFilename,
+//                                        convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
+//                                        readBooleanField(wordProcessingNode, "LowercaseNormalization"),
+//                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
+//                                        convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")));
+
+        IWordProcessing processer = null;
         // We return the result
         
         return (processer);
@@ -1125,11 +1127,10 @@ public class SentenceSimBenchmarkFactory
                                 convertToStringBasedSentenceSimilarityMethod(readStringField(StringBasedSentenceSimilarityNode, "Method")),
                                 readWordProcessing(StringBasedSentenceSimilarityNode));
         
-        measure = SentenceSimilarityFactory.getComMixedVectorsMeasure(
+        measure = SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
                 readStringField(measureNode, "Label"), 
                 readWordProcessing(measureNode),
-                m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed, m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                wordSimilarityMeasureTypeWordnet,
+                m_SnomedOntology, m_taxonomySnomed,
                 wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure,
                 readDoubleField(measureNode, "Lambda"),
                 convertToComMixedVectorsMeasureType(readStringField(measureNode, "ComMixedVectorsMeasureType")));
@@ -1296,7 +1297,7 @@ public class SentenceSimBenchmarkFactory
         String strPythonVirtualEnvironmentDir = readStringField(measureNode, "PythonVirtualEnvironmentDir");
         String strPythonScript = readStringField(measureNode, "PythonScriptFilename");
 
-        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
+        ISentenceSimilarityMeasure model = SentenceSimilarityFactory.getSent2vecMethodMeasure(
                                                 readStringField(measureNode, "Label"), 
                                                 convertToSentenceEmbeddingMethod(readStringField(measureNode, "Method")),
                                                 readWordProcessing(measureNode), 
@@ -1338,16 +1339,18 @@ public class SentenceSimBenchmarkFactory
 
         // We parse the chracter filtering method
         
-        IWordProcessing processer = PreprocessingFactory.getWordProcessing(
-                                        strStopWordsFileDir + "/" + strStopWordsFilename,
-                                        convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
-                                        readBooleanField(wordProcessingNode, "LowercaseNormalization"),
-                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
-                                        convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")),
-                                        strPythonScriptsDirectory,
-                                        strPythonVirtualEnvironmentDir,
-                                        strPythonScriptsDirectory + strPythonScript,
-                                        strBERTPretrainedModelDir + strBERTPretrainedModelFilename);
+//        IWordProcessing processer = PreprocessingFactory.getWordProcessing(
+//                                        strStopWordsFileDir + "/" + strStopWordsFilename,
+//                                        convertToTokenizerType(readStringField(wordProcessingNode, "TokenizerType")),
+//                                        readBooleanField(wordProcessingNode, "LowercaseNormalization"),
+//                                        convertToNERType(readStringField(wordProcessingNode, "NERType")),
+//                                        convertToCharFilteringType(readStringField(wordProcessingNode, "CharFilteringType")),
+//                                        strPythonScriptsDirectory,
+//                                        strPythonVirtualEnvironmentDir,
+//                                        strPythonScriptsDirectory + strPythonScript,
+//                                        strBERTPretrainedModelDir + strBERTPretrainedModelFilename);
+
+IWordProcessing processer = null;
         
         // We return the result
         

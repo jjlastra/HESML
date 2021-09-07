@@ -49,5 +49,11 @@ public enum SentenceEmbeddingMethod
      * In International Conference on Machine Learning, 1188–96. jmlr.org.
      */
     
-    ParagraphVector
+    ParagraphVector,
+    
+    /**
+     * Flair
+     */
+    
+    Flair,
 }

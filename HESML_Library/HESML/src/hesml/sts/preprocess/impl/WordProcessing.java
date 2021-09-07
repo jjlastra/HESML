@@ -50,12 +50,12 @@ class WordProcessing implements IWordProcessing
 {
     // Configure if the text would be lowercased.
     
-    private final boolean m_lowercaseNormalization; 
+    protected final boolean m_lowercaseNormalization; 
     
     // Configure the concept annotation
     
-    private NERType m_nerType;
-    private final INER m_ner;
+    protected NERType m_nerType;
+    protected final INER m_ner;
     
     // Metamap Lite instance
     
@@ -63,43 +63,43 @@ class WordProcessing implements IWordProcessing
 
     // Set the tokenization method
     
-    private final TokenizerType m_tokenizerType; 
+    protected final TokenizerType m_tokenizerType; 
     
     // Set the filtering method
     
-    private final CharsFiltering m_charFilter; 
+    protected final CharsFiltering m_charFilter; 
 
     // Stopwords filename and hashset. 
     // If empty, there's not a stopwords preprocessing.
     
-    private final String m_strStopWordsFileName;
+    protected final String m_strStopWordsFileName;
     
     // The Temp and Python directories are used in some 
     // tokenizer methods that uses the Python wrapper.
     // Path to the temp directory.
     
-    private final String m_tempDir;
+    protected final String m_tempDir;
     
     // Python executable using the virtual environment.
     
-    private final String m_pythonVenvDir;
+    protected final String m_pythonVenvDir;
     
     // Python script wrapper
     
-    private final String m_pythonScriptDir;
+    protected final String m_pythonScriptDir;
     
     // Path to the pretrained model embedding 
     
-    private String m_modelDirPath;
+    protected String m_modelDirPath;
     
     // Set with all the stop words
     
-    private HashSet<String> m_stopWordsHashSet;
+    protected HashSet<String> m_stopWordsHashSet;
     
     // Define an internal Pattern parameter for checking if the input sentence 
     // has at least one alphanumeric character.
     
-    private final Pattern m_pattern;
+    protected final Pattern m_pattern;
 
     /**
      * Constructor with parameters

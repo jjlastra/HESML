@@ -21,7 +21,6 @@
 
 package hesml.sts.measures.impl;
 
-import hesml.measures.impl.MeasureFactory;
 import hesml.sts.measures.BERTpoolingMethod;
 import hesml.sts.measures.MLPythonLibrary;
 import hesml.sts.measures.SentenceSimilarityFamily;

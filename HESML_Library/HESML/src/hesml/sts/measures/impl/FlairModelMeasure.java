@@ -119,7 +119,7 @@ class FlairModelMeasure extends SentenceSimilarityMeasure
     @Override
     public SentenceSimilarityMethod getMethod()
     {
-        return (SentenceSimilarityMethod.USEModelMeasure);
+        return (SentenceSimilarityMethod.Flair);
     }
     
     /**
