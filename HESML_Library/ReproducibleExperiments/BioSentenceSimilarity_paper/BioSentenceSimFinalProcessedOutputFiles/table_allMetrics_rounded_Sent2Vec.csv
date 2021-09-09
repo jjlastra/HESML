@@ -1,0 +1,16 @@
+"","r","$\rho$","r","$\rho$","r","$\rho$","Avg"
+"Human",1,1,1,1,1,1,1
+"Human.1",1,1,1,1,1,1,1
+"Human.2",1,1,1,1,1,1,1
+"X.SW...Sent2vec_tok.whitespace_lc_sw.biosses2017stopwords_cf.default_ner.none",0.789,0.76,0.765,0.638,0.788,0.818,0.758
+"X.SW...Sent2vec_tok.whitespace_lc_sw.nltk2018stopwords_cf.default_ner.none",0.787,0.758,0.763,0.637,0.787,0.815,0.756
+"X.TOK...Sent2vec_tok.stanfordcorenlpv4_2_0_lc_sw.nonestopwords_cf.default_ner.none",0.809,0.787,0.739,0.616,0.771,0.807,0.753
+"X.CF...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.biosses_ner.none",0.791,0.773,0.738,0.626,0.782,0.818,0.753
+"X.SW...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.807,0.787,0.739,0.616,0.771,0.807,0.752
+"X.CF...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.807,0.787,0.739,0.616,0.771,0.807,0.752
+"X.TOK...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.807,0.787,0.739,0.616,0.771,0.807,0.752
+"X.LC...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.807,0.787,0.739,0.616,0.771,0.807,0.752
+"X.TOK...Sent2vec_tok.biocnlptokenizer_lc_sw.nonestopwords_cf.default_ner.none",0.809,0.787,0.722,0.601,0.771,0.807,0.747
+"X.CF...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.blagec2019_ner.none",0.77,0.745,0.738,0.628,0.782,0.815,0.745
+"X.CF...Sent2vec_tok.whitespace_lc_sw.nonestopwords_cf.none_ner.none",0.75,0.733,0.662,0.562,0.796,0.828,0.72
+"X.LC...Sent2vec_tok.whitespace_notlc_sw.nonestopwords_cf.default_ner.none",0.681,0.665,0.697,0.601,0.697,0.747,0.68

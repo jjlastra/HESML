@@ -41,8 +41,8 @@ absPathTempVectorsFile = sys.argv[5] # the output path
 # if we have a fine tunned model, get the model
 
 if len(sys.argv) > 6:
-    checkPointFilename = sys.argv[7]
-    FineTunedModelPath = sys.argv[8]
+    checkPointFilename = sys.argv[6]
+    FineTunedModelPath = sys.argv[7]
     fine_tunned = True
 
 # strPoolingStrategy = "REDUCE_MEAN"

@@ -1,0 +1,63 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised OurWE similarity method evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & r & $\rho$ & r & $\rho$ & Avg \\ 
+  \hline
+Human & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.1 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.2 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.814 & 0.777 & 0.758 & 0.660 & 0.761 & 0.760 & 0.754 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.821 & 0.794 & 0.731 & 0.624 & 0.751 & 0.745 & 0.743 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.746 & 0.734 & 0.755 & 0.677 & 0.771 & 0.761 & 0.740 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.746 & 0.734 & 0.755 & 0.677 & 0.771 & 0.761 & 0.740 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.746 & 0.734 & 0.755 & 0.677 & 0.771 & 0.761 & 0.740 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.746 & 0.734 & 0.755 & 0.677 & 0.771 & 0.761 & 0.740 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none\_Min & 0.721 & 0.723 & 0.749 & 0.674 & 0.755 & 0.762 & 0.730 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none\_Min & 0.721 & 0.722 & 0.748 & 0.673 & 0.755 & 0.761 & 0.729 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.743 & 0.738 & 0.687 & 0.661 & 0.771 & 0.761 & 0.727 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.706 & 0.700 & 0.732 & 0.641 & 0.770 & 0.760 & 0.717 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.706 & 0.700 & 0.732 & 0.641 & 0.770 & 0.760 & 0.717 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.706 & 0.700 & 0.732 & 0.641 & 0.770 & 0.760 & 0.717 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.706 & 0.700 & 0.732 & 0.641 & 0.770 & 0.760 & 0.717 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none\_Average & 0.657 & 0.684 & 0.753 & 0.660 & 0.723 & 0.808 & 0.712 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none\_Sum & 0.657 & 0.684 & 0.753 & 0.660 & 0.723 & 0.808 & 0.712 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none\_Average & 0.658 & 0.676 & 0.753 & 0.658 & 0.724 & 0.807 & 0.711 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none\_Sum & 0.658 & 0.676 & 0.753 & 0.658 & 0.724 & 0.807 & 0.711 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none\_Max & 0.690 & 0.690 & 0.727 & 0.635 & 0.755 & 0.752 & 0.707 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none\_Max & 0.687 & 0.688 & 0.727 & 0.635 & 0.755 & 0.756 & 0.707 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.710 & 0.701 & 0.660 & 0.626 & 0.770 & 0.760 & 0.704 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none\_Max & 0.733 & 0.767 & 0.655 & 0.606 & 0.605 & 0.608 & 0.662 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.616 & 0.669 & 0.695 & 0.641 & 0.623 & 0.728 & 0.660 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.616 & 0.669 & 0.695 & 0.641 & 0.623 & 0.728 & 0.660 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none\_Average & 0.621 & 0.663 & 0.661 & 0.629 & 0.606 & 0.704 & 0.646 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none\_Sum & 0.621 & 0.663 & 0.661 & 0.629 & 0.606 & 0.704 & 0.646 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.SW...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.568 & 0.616 & 0.679 & 0.645 & 0.613 & 0.719 & 0.638 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.579 & 0.630 & 0.556 & 0.632 & 0.613 & 0.719 & 0.619 \\ 
+  X.TOK...bioc\_skipgram\_defaultchar\_\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.579 & 0.630 & 0.556 & 0.632 & 0.613 & 0.719 & 0.619 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none\_Min & 0.623 & 0.746 & 0.634 & 0.637 & 0.488 & 0.592 & 0.616 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none\_Average & 0.652 & 0.672 & 0.658 & 0.633 & 0.398 & 0.463 & 0.578 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none\_Sum & 0.652 & 0.672 & 0.658 & 0.633 & 0.398 & 0.463 & 0.578 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none\_Max & 0.669 & 0.749 & 0.615 & 0.597 & 0.244 & 0.269 & 0.523 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none\_Average & 0.396 & 0.484 & 0.330 & 0.504 & 0.532 & 0.643 & 0.472 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none\_Sum & 0.396 & 0.484 & 0.330 & 0.504 & 0.532 & 0.643 & 0.472 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none\_Min & 0.586 & 0.726 & 0.581 & 0.607 & 0.160 & 0.191 & 0.472 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none\_Average & 0.432 & 0.542 & 0.416 & 0.521 & 0.266 & 0.338 & 0.414 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none\_Sum & 0.432 & 0.542 & 0.416 & 0.521 & 0.266 & 0.338 & 0.414 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none\_Max & 0.361 & 0.335 & 0.280 & 0.333 & 0.462 & 0.476 & 0.374 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none\_Max & 0.347 & 0.501 & 0.411 & 0.448 & 0.236 & 0.297 & 0.367 \\ 
+  X.CF...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none\_Min & 0.333 & 0.496 & 0.369 & 0.450 & 0.189 & 0.272 & 0.342 \\ 
+  X.LC...bioc\_skipgram\_defaultchar\_\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none\_Min & 0.251 & 0.244 & 0.238 & 0.312 & 0.364 & 0.362 & 0.293 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}

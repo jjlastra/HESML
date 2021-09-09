@@ -12,3 +12,11 @@
 /.cache/
 /.keras/
 /HESML_Library/HESML/dist/
+/HESML_DATA/
+/.netbeans/
+/.local/
+/.profile
+/.bash_history
+/.bash_logout
+/.bashrc
+/.gitconfig
