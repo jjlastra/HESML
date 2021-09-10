@@ -264,11 +264,11 @@ class NER implements INER
         
         // Select the 2020AA database
         
-        myProperties.setProperty("metamaplite.index.directory", "../public_mm_lite/data/ivf/2020AA/USAbase/");
-        myProperties.setProperty("opennlp.models.directory", "../public_mm_lite/data/models/");
-        myProperties.setProperty("opennlp.en-pos.bin.path", "../public_mm_lite/data/models/en-pos-maxent.bin");
-        myProperties.setProperty("opennlp.en-sent.bin.path", "../public_mm_lite/data/models/en-sent.bin");
-        myProperties.setProperty("opennlp.en-token.bin.path", "../public_mm_lite/data/models/en-token.bin");
+        myProperties.setProperty("metamaplite.index.directory", "/home/user/HESML_DATA/public_mm_lite/data/ivf/2020AA/USAbase/");
+        myProperties.setProperty("opennlp.models.directory", "/home/user/HESML_DATA/public_mm_lite/data/models/");
+        myProperties.setProperty("opennlp.en-pos.bin.path", "/home/user/HESML_DATA/public_mm_lite/data/models/en-pos-maxent.bin");
+        myProperties.setProperty("opennlp.en-sent.bin.path", "/home/user/HESML_DATA/public_mm_lite/data/models/en-sent.bin");
+        myProperties.setProperty("opennlp.en-token.bin.path", "/home/user/HESML_DATA/public_mm_lite/data/models/en-token.bin");
         
         myProperties.setProperty("metamaplite.sourceset", "MSH");
 
@@ -392,7 +392,7 @@ class NER implements INER
         // Create a new ctakes instance using the selected options 
 
         m_pipelineIncludingUmlsDictionaries = AnalysisEngineFactory.createEngineFromPath(
-                "desc/ctakes-clinical-pipeline/desc/analysis_engine/CuisOnlyPlaintextUMLSProcessor.xml");
+                "/home/user/HESML_DATA/apache-ctakes-4.0.0.1-src/desc/ctakes-clinical-pipeline/desc/analysis_engine/CuisOnlyPlaintextUMLSProcessor.xml");
        
     }
     

@@ -52,6 +52,8 @@ import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class implements a basic client application of the HESML for sentence similarity
@@ -65,12 +67,14 @@ public class HESMLSTSImpactEvaluationclient
      * Resources directories.
      * 
      * m_strBaseDir: the base directory with the resources
+     * m_strDataDirectory: The base directory with the external resources
      * m_strStopWordsDir: Subdirectory with all the stop words files
      * m_strWordNetDatasetsDir: Subdirectory with all the WordNet datasets
      * m_strWordNet3_0_Dir: Subdirectory with WordNet v3.0 dictionary
      */
     
-    private static final String  m_strBaseDir = "../";
+    private static final String  m_strBaseDir = "/home/user/HESML/HESML_Library/";
+    private static final String  m_strDataDirectory = "/home/user/HESML_DATA/";
     private static final String  m_strStopWordsDir = "StopWordsFiles/";
     
     private static final String  m_strWordNetDatasetsDir = m_strBaseDir + "/Wordnet-3.0/dict";
@@ -80,7 +84,7 @@ public class HESMLSTSImpactEvaluationclient
      * Filenames and directory for the SNOMED-CT files
      */
 
-    private static String m_strSnomedDir = "../UMLS/SNOMED_Nov2019";
+    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_Nov2019";
     private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
     private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
     private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
@@ -90,21 +94,21 @@ public class HESMLSTSImpactEvaluationclient
      */
     
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strUMLSdir = "../UMLS/UMLS2019AB";    
+    private static final String m_strUMLSdir = m_strDataDirectory + "UMLS/UMLS2019AB";    
     
     /**
      * Filenames and directory for the MeSH ontology
      */
     
-    private static final String m_strMeSHdir = "../UMLS/MeSH_Nov2019";
+    private static final String m_strMeSHdir = m_strDataDirectory + "UMLS/MeSH_Nov2019";
     private static final String m_strMeSHdescriptorFilename = "desc2020.xml";
     
     /**
      * Output files path
      */
     
-    private static final String m_strDatasetDir = "../SentenceSimDatasets/";
-    private static final String m_outputFilesDirPath = "../ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
+    private static final String m_strDatasetDir = m_strDataDirectory + "SentenceSimDatasets/";
+    private static final String m_outputFilesDirPath = m_strBaseDir + "ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
     
     /**
      * Dataset filenames
@@ -113,13 +117,7 @@ public class HESMLSTSImpactEvaluationclient
     private static final String m_strDatasetFileNameBIOSSES = "BIOSSESNormalized.tsv";
     private static final String m_strDatasetFileNameMedSTS = "MedStsFullNormalized.tsv";
     private static final String m_strDatasetFileNameCTR = "CTRNormalized_averagedScore.tsv";
-    
-    /**
-     * Docker data directory
-     */
-    
-    private static final String m_strDataDirectory = "../../HESML_DATA/";
-
+   
     /**
     * Filename of the OBO ontology
     */
@@ -186,6 +184,25 @@ public class HESMLSTSImpactEvaluationclient
         int totalCombinations = 0;
         
         /**
+         * Testing NER tools.
+         * 
+         * First, we test the external NER tools to ensure it's all working
+         * 
+         * Remember to start the services and export the UMLS license number: 
+         *  [HESMLDIR]/public_mm:
+         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/skrmedpostctl start
+         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/wsdserverctl start
+         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/mmserver -R SNOMEDCT &
+         *  ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# export ctakes_umls_apikey=XXXXXXXXXXXXXX
+         * 
+         * 
+         * After executing the tests, read the result file:
+         * tail -n50 /home/user/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES_tests.csv
+         */
+        
+//        testExternalTools();
+        
+        /**
          * ***********************************************
          * ***********************************************
          * 
@@ -231,6 +248,68 @@ public class HESMLSTSImpactEvaluationclient
 
         System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
+    }
+    
+    /**
+     * This function test all the external tools (Metamap and CTakes) before executing the experiments
+     */
+    
+    private static void testExternalTools() throws Exception
+    {
+        // We initialize the list of measures with different preprocessing methods
+            
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+            
+        try {
+            
+            // First, we initialize the preprocessing method using Metamap
+            
+            IWordProcessing metamapWordProcessing = PreprocessingFactory.getWordProcessing(
+                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                    TokenizerType.WhiteSpace,
+                    true, NERType.MetamapSNOMEDCT,
+                    CharFilteringType.BIOSSES);
+            
+            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                            "testStringMeasureMetamap",
+                            StringBasedSentenceSimilarityMethod.Jaccard, 
+                            metamapWordProcessing));
+            
+            // Second, we initialize the preprocessing method using Metamap Lite
+            
+            IWordProcessing metamapLiteWordProcessing = PreprocessingFactory.getWordProcessing(
+                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                    TokenizerType.WhiteSpace,
+                    true, NERType.MetamapLite,
+                    CharFilteringType.BIOSSES);
+            
+            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                            "testStringMeasureMetamapLite",
+                            StringBasedSentenceSimilarityMethod.Jaccard, 
+                            metamapLiteWordProcessing));
+            
+            // First, we initialize the preprocessing method using Metamap Lite
+            
+            IWordProcessing ctakesWordProcessing = PreprocessingFactory.getWordProcessing(
+                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                    TokenizerType.WhiteSpace,
+                    true, NERType.Ctakes,
+                    CharFilteringType.BIOSSES);
+            
+            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                            "testStringMeasurectakes",
+                            StringBasedSentenceSimilarityMethod.Jaccard, 
+                            ctakesWordProcessing));
+            
+        } 
+        catch (IOException ex) 
+        {
+            Logger.getLogger(HESMLSTSImpactEvaluationclient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // We execute the experiments
+        
+        executeExperiments(measuresLst, "tests");
     }
     
     /**
