@@ -19,7 +19,7 @@
  *
  */
 
-package hesmlstsimpactevaluationclient;
+package hesmlststestclient;
 
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;

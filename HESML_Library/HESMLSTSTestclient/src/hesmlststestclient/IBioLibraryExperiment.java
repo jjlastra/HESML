@@ -19,7 +19,7 @@
  *
  */
 
-package hesmlstsimpactevaluationclient;
+package hesmlststestclient;
 
 /**
  *
