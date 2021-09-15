@@ -121,6 +121,7 @@ public class HESMLSTSImpactEvaluationclient
     /**
     * Filename of the OBO ontology
     */
+    
     private static final String m_strOboFilename = "";
     
     /**
@@ -144,7 +145,6 @@ public class HESMLSTSImpactEvaluationclient
     private static ITaxonomy   m_taxonomySnomed = null;
     private static ITaxonomy   m_taxonomyMesh = null;
 
-    
     /**
      * This function loads an input XML file detailing a
      * set of reproducible experiments on sentence similarity.
@@ -155,8 +155,6 @@ public class HESMLSTSImpactEvaluationclient
     
     public static void main(String[] args) throws IOException, InterruptedException, Exception
     {
-        boolean showUsage = false;  // Show usage
-        
         // We print the HESML version
         
         System.out.println("Running HESMLSTSClient V2R1 (2.1.0.0, February 2020) based on "
@@ -214,7 +212,7 @@ public class HESMLSTSImpactEvaluationclient
          * ***********************************************
          */
         
-//        totalCombinations += executePreprocessingExperiments();
+        totalCombinations += executePreprocessingExperiments();
         
         /**
          * ***********************************************
@@ -392,12 +390,10 @@ public class HESMLSTSImpactEvaluationclient
         
         // Compute all the executions
         
-        
         totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
         totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
         totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
         totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
-        
         
         // We measure the elapsed time to run the experiments
 
@@ -601,7 +597,6 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
 
-
         /**
          * ***********************************************
          * ***********************************************
@@ -621,32 +616,25 @@ public class HESMLSTSImpactEvaluationclient
         // List with all the pooling methods for WE-based methods
         
         ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
-//        poolingMethods.add(SWEMpoolingMethod.Max);
-//        poolingMethods.add(SWEMpoolingMethod.Average);
+        poolingMethods.add(SWEMpoolingMethod.Max);
+        poolingMethods.add(SWEMpoolingMethod.Average);
         poolingMethods.add(SWEMpoolingMethod.Min);
-//        poolingMethods.add(SWEMpoolingMethod.Sum);
+        poolingMethods.add(SWEMpoolingMethod.Sum);
         
         // We define the models to be evaluated
         
         ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
         ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
         
-        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
-//        modelsFastextVecBased_part1.add("bioconceptvec_glove.txt");
-//        modelsFastextVecBased_part1.add("bioconceptvec_word2vec_cbow.txt");
-//        modelsFastextVecBased_part1.add("bioconceptvec_word2vec_skipgram.txt");
+        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
         
-//        modelsFastextVecBased_part2.add("PubMed_CBOW.txt");
-//        modelsFastextVecBased_part2.add("PubMed_Glove.txt");
-//        modelsFastextVecBased_part2.add("PubMed_SkipGramNegSampling.txt");
+        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
         modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
         
         ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
         
         modelsBioWordVecBased.add("bio_embedding_extrinsic");
-//        modelsBioWordVecBased.add("bio_embedding_intrinsic");
         modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
-//        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-30.bin");
         
         // Reset the total combinations
         
@@ -961,9 +949,6 @@ public class HESMLSTSImpactEvaluationclient
         ArrayList<String> modelsFastextVecBased = new ArrayList<>();
         
         modelsFastextVecBased.add("bioc_skipgram_defaultchar.vec");
-//        modelsFastextVecBased.add("bioc_skipgram_Nonechar200dim.vec");
-//        modelsFastextVecBased.add("stanford_skipgram_nonechar200dim.vec");
-//        modelsFastextVecBased.add("stanf_skipgram_defaultchar200dim.vec");
         
         // We define the base model dir
         
@@ -987,6 +972,8 @@ public class HESMLSTSImpactEvaluationclient
             
             for(IWordProcessing wordProcessing : wordProcessingCombinations)
             {
+                // We iterate the pooling methods 
+                
                 for(SWEMpoolingMethod pooling : poolingMethods)
                 {
                     // Get the model name without file extensions
@@ -1005,7 +992,6 @@ public class HESMLSTSImpactEvaluationclient
 
                     measuresLst.add(measure);
                 }
-                
             }
         }
         
@@ -1172,13 +1158,10 @@ public class HESMLSTSImpactEvaluationclient
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
         
-        // We load and register a BERT measure from the XML file 
-
         // We load and register a USE measure from the XML file 
 
         String strUSEModelURL = "https://tfhub.dev/google/universal-sentence-encoder/4";
         String strPythonScriptsDirectory = "../UniversalSentenceEncoderExperiments/";
-//        String strPythonVirtualEnvironmentDir = "../UniversalSentenceEncoderExperiments/venv/bin/python3";
         String strPythonVirtualEnvironmentDir = "python3";
         String strPythonScript = "extractUniversalSentenceEncoderVectors.py";
 
@@ -1239,7 +1222,6 @@ public class HESMLSTSImpactEvaluationclient
 
         String strFlairModelURL = "../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt";
         String strPythonScriptsDirectory = "../FlairEmbeddings/";
-//        String strPythonVirtualEnvironmentDir = "../FlairEmbeddings/venv/bin/python3";
         String strPythonVirtualEnvironmentDir = "python3";
         String strPythonScript = "extractFlairVectors.py";
 
@@ -1407,7 +1389,6 @@ public class HESMLSTSImpactEvaluationclient
         wordMeasures.add(SimilarityMeasureType.Lin);
         wordMeasures.add(SimilarityMeasureType.AncSPLCaiStrategy1);
         
-        
         // We get the intrinsic IC model if anyone has been defined
 
         IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
@@ -1480,7 +1461,6 @@ public class HESMLSTSImpactEvaluationclient
         wordMeasures.add(SimilarityMeasureType.WuPalmerFast);
         wordMeasures.add(SimilarityMeasureType.Lin);
         wordMeasures.add(SimilarityMeasureType.AncSPLCaiStrategy1);
-        
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -1756,7 +1736,6 @@ public class HESMLSTSImpactEvaluationclient
         methods.add(StringBasedSentenceSimilarityMethod.OverlapCoefficient);
         methods.add(StringBasedSentenceSimilarityMethod.Qgram);
         
-        
         // We iterate word processing combinations
 
         for(StringBasedSentenceSimilarityMethod method: methods)
@@ -1794,9 +1773,6 @@ public class HESMLSTSImpactEvaluationclient
         ArrayList<String> modelsFastextVecBased = new ArrayList<>();
         
         modelsFastextVecBased.add("bioc_skipgram_defaultchar.vec");
-        modelsFastextVecBased.add("bioc_skipgram_Nonechar200dim.vec");
-        modelsFastextVecBased.add("stanford_skipgram_nonechar200dim.vec");
-        modelsFastextVecBased.add("stanf_skipgram_defaultchar200dim.vec");
         
         // We iterate the methods and create the measures
         
@@ -2635,18 +2611,6 @@ public class HESMLSTSImpactEvaluationclient
         tokenizerTypeCombs.add(TokenizerType.BioCNLPTokenizer);
         tokenizerTypeCombs.add(TokenizerType.StanfordCoreNLPv4_2_0);
         
-        ArrayList<NERType> nerTypeCombs = new ArrayList<>();
-        
-//        if(usingNER)
-//        {
-//            nerTypeCombs.add(NERType.Ctakes);
-//            nerTypeCombs.add(NERType.MetamapLite);
-//            nerTypeCombs.add(NERType.MetamapSNOMEDCT);
-//            nerTypeCombs.add(NERType.None);
-//        }
-//        else
-//            nerTypeCombs.add(NERType.None);
-        
         ArrayList<CharFilteringType> charFilteringTypeCombs = new ArrayList<>();
         charFilteringTypeCombs.add(CharFilteringType.None);
         charFilteringTypeCombs.add(CharFilteringType.BIOSSES);
@@ -2918,7 +2882,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[1][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
         modelPaths[1][1] = "../BERTExperiments/";
-        modelPaths[1][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[1][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[1][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[1][4] = "allenai/scibert_scivocab_uncased";
         modelPaths[1][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/scibert_scivocab_uncased";
@@ -2948,7 +2912,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[4][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed";
         modelPaths[4][1] = "../BERTExperiments/";
-        modelPaths[4][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[4][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[4][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[4][4] = "";
         modelPaths[4][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed";
@@ -2958,7 +2922,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[5][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc";
         modelPaths[5][1] = "../BERTExperiments/";
-        modelPaths[5][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[5][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[5][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[5][4] = "";
         modelPaths[5][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pmc";
@@ -2968,7 +2932,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[6][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
         modelPaths[6][1] = "../BERTExperiments/";
-        modelPaths[6][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[6][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[6][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[6][4] = "";
         modelPaths[6][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
@@ -2978,7 +2942,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[7][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
         modelPaths[7][1] = "../BERTExperiments/";
-        modelPaths[7][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[7][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[7][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[7][4] = "";
         modelPaths[7][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12";
@@ -2988,7 +2952,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[8][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
         modelPaths[8][1] = "../BERTExperiments/";
-        modelPaths[8][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[8][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[8][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[8][4] = "";
         modelPaths[8][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16";
@@ -2998,7 +2962,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[9][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
         modelPaths[9][1] = "../BERTExperiments/";
-        modelPaths[9][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[9][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[9][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[9][4] = "";
         modelPaths[9][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-12_H-768_A-12";
@@ -3008,7 +2972,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[10][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
         modelPaths[10][1] = "../BERTExperiments/";
-        modelPaths[10][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[10][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[10][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[10][4] = "";
         modelPaths[10][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16";
@@ -3018,7 +2982,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[11][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/Bio+ClinicalBERT";
         modelPaths[11][1] = "../BERTExperiments/";
-        modelPaths[11][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[11][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[11][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[11][4] = "";
         modelPaths[11][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
@@ -3028,7 +2992,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[12][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/Bio+DischargeSummaryBERT";
         modelPaths[12][1] = "../BERTExperiments/";
-        modelPaths[12][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[12][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[12][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[12][4] = "";
         modelPaths[12][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
@@ -3038,7 +3002,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[13][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/clinicalBERT";
         modelPaths[13][1] = "../BERTExperiments/";
-        modelPaths[13][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[13][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[13][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[13][4] = "";
         modelPaths[13][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
@@ -3048,7 +3012,7 @@ public class HESMLSTSImpactEvaluationclient
         
         modelPaths[14][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/DischargeSummaryBERT";
         modelPaths[14][1] = "../BERTExperiments/";
-        modelPaths[14][2] = "../BERTExperiments/venv/bin/python";
+        modelPaths[14][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
         modelPaths[14][3] = "../BERTExperiments/extractBERTvectors.py";
         modelPaths[14][4] = "";
         modelPaths[14][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.0_pubmed_pmc";
