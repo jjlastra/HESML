@@ -121,15 +121,22 @@ source(paste("bio_sentence_sim_scripts", "readFlair.R", sep = "/"), local = knit
 
 source(paste("bio_sentence_sim_scripts", "readBESTCOMBS.R", sep = "/"), local = knitr::knit_global())
 
+# We load the input raw results file for test combinations 
+
+source(paste("bio_sentence_sim_scripts", "readTest.R", sep = "/"), local = knitr::knit_global())
+
 
 # We add the experiments to the list
 
 # rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BESTCOMBS)
-# rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BESTCOMBS)
 
-rawdata_experiments <- list(rawdata_COMMixed)
-# rawdata_experiments <- list(rawdata_SWEM)
-# rawdata_experiments <- list(rawdata_OurWE)
+# rawdata_experiments <- list(rawdata_BESTCOMBS)
+
+rawdata_experiments <- list(rawdata_Test)
+
+# We initialize the counter of executions
+
+counter_executions <- 0
 
 # We initialize the string with the latex tables output. We will print all at the end of the script
 
@@ -142,6 +149,10 @@ for(iexperiment in rawdata_experiments)
   # We get the label
   
   experimentLabel = iexperiment$label
+  
+  # We update the counter with the number of columns (the number the experiments that are in the table)
+  
+  counter_executions <- counter_executions + ncol(iexperiment$biosses) - 1
   
   # We get the experiment subdirectory and the caption for the Latex File
   
@@ -220,20 +231,27 @@ for(iexperiment in rawdata_experiments)
   # into a same data table by concatening previouos data tables.
   # ------------------------------------------------------------
   
-  table_allMetrics <- cbind(table_Pearson, table_Spearman, table_Harmonic, Avg = rowMeans(table_Harmonic[1:nrow(table_Harmonic),]))
+  # table_allMetrics <- cbind(table_Pearson, table_Spearman, table_Harmonic, Avg = rowMeans(table_Harmonic[1:nrow(table_Harmonic),]))
+  
+  table_allMetrics <- cbind(table_Pearson, table_Spearman, Avg = rowMeans(table_Harmonic[1:nrow(table_Harmonic),]))
+  
   
   table_allMetrics <- mat.sort(table_allMetrics, ncol(table_allMetrics), decreasing = TRUE)
   
   # We set the column names to the final matrix
   
+  # colnames(table_allMetrics) <- c("r", "r", "r",
+  #                                 '$\\rho$', '$\\rho$', '$\\rho$',
+  #                                 "h", "h", "h", 
+  #                                 "Avg")
   colnames(table_allMetrics) <- c("r", "r", "r",
                                   '$\\rho$', '$\\rho$', '$\\rho$',
-                                  "h", "h", "h", 
                                   "Avg")
   
   # We reorder the matrix columns grouping by dataset names.
   
-  table_allMetrics <- table_allMetrics[ , c(1,4,7,2,5,8,3,6,9,10) ]
+  # table_allMetrics <- table_allMetrics[ , c(1,4,7,2,5,8,3,6,9,10) ]
+  table_allMetrics <- table_allMetrics[ , c(1,4,2,5,3,6,7) ]
   
   # We make a copy of the tables in order to round their values to 3 decimal digits
   
@@ -308,5 +326,4 @@ file_name <- paste(outputDir,"table_allMetricsALLJoint.txt", sep="")
 
 write_file(strLatexTables, file_name)
 
-
-
+counter_executions

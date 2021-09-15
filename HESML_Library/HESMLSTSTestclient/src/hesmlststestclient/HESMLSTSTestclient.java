@@ -26,6 +26,7 @@ import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
 import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
+import hesml.sts.measures.ComMixedVectorsMeasureType;
 import hesml.sts.measures.ISentenceSimilarityMeasure;
 import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
 import hesml.sts.measures.impl.SentenceSimilarityFactory;
@@ -160,7 +161,7 @@ public class HESMLSTSTestclient
         
         // We load the ontologies
         
-        loadOntologies(false);
+        loadOntologies(true);
         
         // We get the start time
 
@@ -191,7 +192,7 @@ public class HESMLSTSTestclient
          * tail -n50 /home/user/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES_tests.csv
          */
         
-        testExternalTools();
+//        testExternalTools();
         
         /**
          * ***********************************************
@@ -302,56 +303,98 @@ public class HESMLSTSTestclient
         // We iterate the methods and create the measures
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-        
-        /**
-         * ****************************************************
-         * ****************************************************
-         * Starting WBSM experiment
-         * ****************************************************
-         * ****************************************************
-         */
-        
-        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
 
-        // We define the word similarity measures to be compared
-        
-        ArrayList<SimilarityMeasureType> wordMeasuresWBSM = new ArrayList<>();
-        wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
-        wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLRada);
-        wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasuresWBSM.add(SimilarityMeasureType.WuPalmerFast);
-        wordMeasuresWBSM.add(SimilarityMeasureType.Lin);
-        wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLCaiStrategy1);
-        
         // We get the intrinsic IC model if anyone has been defined
 
         IntrinsicICModelType icModelTypeWBSM = IntrinsicICModelType.Seco;
        
         // We iterate word processing combinations
 
-        for(SimilarityMeasureType wordMeasure : wordMeasuresWBSM)
-        {
-            // We create a copy of the wordProcessing object for avoid multithreading errors
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.None);
+        
+        // We create the measures with the same preprocessing configuration
 
-            ISentenceSimilarityMeasure measure = 
-                    SentenceSimilarityFactory.getWBSMMeasure(
-                            "WBSM_" + wordMeasure.name(),
-                            bestWBSMWordProcessing,
-                            m_WordNetDbSingleton, 
-                            m_WordNetTaxonomySingleton, 
-                            wordMeasure, 
-                            icModelTypeWBSM);
+//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelTypeWBSM));
+//        
+//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelTypeWBSM));
+//         
+//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelTypeWBSM));
+//         
+//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelTypeWBSM));
+         
+         /**
+         * ****************************************************
+         * ****************************************************
+         * Starting COMMixed methods
+         * ****************************************************
+         * ****************************************************
+         */
+         
+         // We define the string and WBSM similarity methods
+         
+        StringBasedSentenceSimilarityMethod stringMethod = StringBasedSentenceSimilarityMethod.Jaccard;
+        SimilarityMeasureType wbsmMethod = SimilarityMeasureType.AncSPLWeightedJiangConrath;
+         
+        // Initialize the string measure
 
-            measuresLst.add(measure);
-            
-            // Update the total of combinations
-            
-            totalCombinations++;
-        }
+        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                            stringMethod.name() + "_" + bestWBSMWordProcessing.getLabel(),
+                            stringMethod, 
+                            bestWBSMWordProcessing);
+
+        // We create the measure
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
+                "COMMixed_WBSM-" + wbsmMethod +"_String-" + stringMethod, 
+                bestWBSMWordProcessing,
+                m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
+                wbsmMethod, IntrinsicICModelType.Seco, stringMeasure,
+                0.25, ComMixedVectorsMeasureType.SingleOntology));
+
+        // We load the ontologies
+
+//        loadOntologies(false);
+        
+        // We create the measure
+        
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
+                "COMMixed_WBSM-" + wbsmMethod +"_String-" + stringMethod, 
+                bestWBSMWordProcessing,
+                m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
+                wbsmMethod, IntrinsicICModelType.Seco, stringMeasure,
+                0.25, ComMixedVectorsMeasureType.SingleOntology));
+      
+        // Update the total of combinations
+
+        totalCombinations = 2;
         
         // We execute the experiments
         

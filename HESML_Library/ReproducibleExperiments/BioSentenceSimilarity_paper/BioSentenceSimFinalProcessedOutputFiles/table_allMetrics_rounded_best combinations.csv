@@ -1,3 +1,7 @@
-"","r","$\rho$","h","r","$\rho$","h","r","$\rho$","h","Avg"
-"WBSM_AncSPLRada",0.772,0.791,0.782,0.774,0.709,0.74,0.785,0.765,0.775,0.766
-"Jaccard",0.782,0.815,0.798,0.706,0.68,0.693,0.759,0.797,0.777,0.756
+"","r","$\rho$","r","$\rho$","r","$\rho$","Avg"
+"COMMixed_UBSM.AncSPLWeightedJiangConrath_String.BlockDistance_lambda0.5",0.808,0.818,0.77,0.709,0.794,0.805,0.783
+"COMMixed_WBSM_UBSM_String_PooledMin_lambda0.5",0.808,0.818,0.77,0.709,0.794,0.805,0.783
+"COMMixed_UBSM.AncSPLWeightedJiangConrath_String.BlockDistance_lambda0.25",0.807,0.817,0.766,0.708,0.796,0.805,0.783
+"COMMixed_WBSM_UBSM_String_PooledMin_lambda0.25",0.807,0.817,0.766,0.708,0.796,0.805,0.783
+"COMMixed_UBSM.AncSPLWeightedJiangConrath_String.BlockDistance_lambda0.75",0.803,0.817,0.772,0.708,0.791,0.803,0.782
+"COMMixed_WBSM_UBSM_String_PooledMin_lambda0.75",0.803,0.817,0.772,0.708,0.791,0.803,0.782

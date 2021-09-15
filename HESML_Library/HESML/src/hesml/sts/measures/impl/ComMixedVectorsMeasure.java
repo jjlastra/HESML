@@ -449,7 +449,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         if (measureType != SimilarityMeasureType.Rada)
         {
             m_ICmodelWordNet.setTaxonomyData(m_wordnetTaxonomy);
-            m_wordnetTaxonomy.computeCachedAncestorSet(true);
+//            m_wordnetTaxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the similarity measure
@@ -475,12 +475,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             if(m_Snomedtaxonomy != null)
             {
                 m_ICmodelUMLS.setTaxonomyData(m_Snomedtaxonomy);
-                m_Snomedtaxonomy.computeCachedAncestorSet(true);
+//                m_Snomedtaxonomy.computeCachedAncestorSet(true);
             }
             if(m_MeSHtaxonomy != null)
             {
                 m_ICmodelUMLS.setTaxonomyData(m_MeSHtaxonomy);
-                m_MeSHtaxonomy.computeCachedAncestorSet(true);
+//                m_MeSHtaxonomy.computeCachedAncestorSet(true);
             }
         }
         
@@ -594,8 +594,8 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 lstWordsSentence1WBSM = m_preprocesserWBSM.getWordTokens(strRawSentence1);
                 lstWordsSentence2WBSM = m_preprocesserWBSM.getWordTokens(strRawSentence2);
                 
-                lstWordsSentence1UBSM = m_preprocesserWBSM.getWordTokens(strRawSentence1);
-                lstWordsSentence2UBSM = m_preprocesserWBSM.getWordTokens(strRawSentence2);
+                lstWordsSentence1UBSM = m_preprocesserUBSM.getWordTokens(strRawSentence1);
+                lstWordsSentence2UBSM = m_preprocesserUBSM.getWordTokens(strRawSentence2);
                 
                 // 1. Construct the joint set of distinct words from S1 and S2 (dictionary)
                 
