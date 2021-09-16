@@ -1,8 +1,4 @@
 /resources/
 /desc/
 /build/
-/dist/
-/downl_seiya_oubiobert-base-uncased/
-/downl_microsoft_BiomedNLP-PubMedBERT-base-uncased-abstract/
-/downl_microsoft_BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/
 /test/
