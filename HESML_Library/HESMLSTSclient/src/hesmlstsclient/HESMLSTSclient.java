@@ -180,25 +180,6 @@ public class HESMLSTSclient
         int totalCombinations = 0;
         
         /**
-         * Testing NER tools.
-         * 
-         * First, we test the external NER tools to ensure it's all working
-         * 
-         * Remember to start the services and export the UMLS license number: 
-         *  [HESMLDIR]/public_mm:
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/skrmedpostctl start
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/wsdserverctl start
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/mmserver -R SNOMEDCT &
-         *  ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# export ctakes_umls_apikey=XXXXXXXXXXXXXX
-         * 
-         * 
-         * After executing the tests, read the result file:
-         * tail -n50 /home/user/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES_tests.csv
-         */
-        
-//        testExternalTools();
-        
-        /**
          * ***********************************************
          * ***********************************************
          * 
@@ -218,7 +199,7 @@ public class HESMLSTSclient
         System.out.println("-------------------------------------------------------");
         System.out.println("Finished measures experiments");
         System.out.println("Processed a total of " + totalCombinations + 
-                " combinations in = " + seconds + " (seconds)");
+                            " combinations in = " + seconds + " (seconds)");
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
 
