@@ -57,10 +57,6 @@ class WordProcessing implements IWordProcessing
     protected NERType m_nerType;
     protected final INER m_ner;
     
-    // Metamap Lite instance
-    
-    protected MetaMapLite m_metaMapLiteInst;
-
     // Set the tokenization method
     
     protected final TokenizerType m_tokenizerType; 
@@ -190,7 +186,7 @@ class WordProcessing implements IWordProcessing
         
         // Compile the pattern in the constructor for efficiency reasons.
         
-        m_pattern = Pattern.compile("[[:alnum:m_metaMapLiteInst]]");
+        m_pattern = Pattern.compile("[[:alnum:]]");
     }
 
     /**

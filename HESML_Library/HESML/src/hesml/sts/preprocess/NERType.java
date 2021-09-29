@@ -70,4 +70,10 @@ public enum NERType
      */
     
     Ctakes,
+    
+    /**
+     * Use Metamap to change concepts to its preferred names
+     */
+    
+    MetamapExpandPreferredNames,
 }

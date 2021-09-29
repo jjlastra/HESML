@@ -17,6 +17,8 @@ public enum ComMixedVectorsMeasureType
     
     PooledMax,
     
-    SingleOntology
+    SingleOntology,
+    
+    Mixed
     
 }

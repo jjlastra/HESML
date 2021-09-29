@@ -289,6 +289,31 @@ public class SentenceSimilarityFactory
      * 
      * @param strLabel
      * @param preprocesser
+     * @param wordSimilarityMeasureType
+     * @param stringMeasure
+     * @param lambda
+     * @param comMixedVectorsMeasureType
+     * @return ISentenceSimilarityMeasure
+     * @throws java.lang.Exception
+     */
+
+    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureNotAnnotated(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            SimilarityMeasureType       wordSimilarityMeasureType,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+                wordSimilarityMeasureType, stringMeasure, lambda, comMixedVectorsMeasureType));
+    }
+    
+    /**
+     * This function creates a COM Mixed Vectors measure.
+     * 
+     * @param strLabel
+     * @param preprocesser
      * @param wordnet
      * @param wordnetTaxonomy
      * @param wordSimilarityMeasureTypeWordnet

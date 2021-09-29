@@ -24,6 +24,8 @@ package hesml.sts.measures.impl;
 import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
 import hesml.configurators.icmodels.ICModelsFactory;
+import hesml.measures.GroupwiseMetricType;
+import hesml.measures.IGroupwiseSimilarityMeasure;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
@@ -112,6 +114,9 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     private final IWordProcessing m_preprocesserWBSM;
     private final IWordProcessing m_preprocesserUBSM;
     
+    private final IGroupwiseSimilarityMeasure m_UBSMMeasure;
+    private final IGroupwiseSimilarityMeasure m_WBSMMeasure;
+    
     /**
      * Constructor for SNOMED ontology
      * @param preprocesser 
@@ -154,6 +159,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         m_poolingMethod = comMixedVectorsMeasureType;
         
+        m_UBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    m_Snomedtaxonomy,
+                                                    wordSimilarityMeasureTypeUMLS,
+                                                    GroupwiseMetricType.BestMatchAverage);
+        m_WBSMMeasure = null;
+        
         // Initialize the string measure
         
         m_stringMeasure = stringMeasure;
@@ -169,6 +180,61 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+    }
+    
+    /**
+     * Constructor for none ontology
+     * @param preprocesser 
+     * @param strWordNet_Dir Path to WordNet directory
+     */
+    
+    ComMixedVectorsMeasure(
+            String                      strLabel,
+            IWordProcessing             preprocesser,
+            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
+            ISentenceSimilarityMeasure  stringMeasure,
+            Double                      lambda,
+            ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
+    {
+        // We intialize the base class
+        
+        super(preprocesser);
+        
+        m_preprocesserWBSM = null;
+        m_preprocesserUBSM = null;
+        
+        // Initialize the WordNetDB, taxonomy and IC model
+        
+        m_ICmodelUMLS = null;
+        m_ICmodelWordNet = null;
+        
+        m_SnomedOntology = null;
+        m_Snomedtaxonomy = null;
+        
+        m_MeshOntology = null;
+        m_MeSHtaxonomy = null;
+        
+        m_wordnet = null;
+        m_wordnetTaxonomy = null;
+        
+        // Set the COM Mixed method
+        
+        m_poolingMethod = comMixedVectorsMeasureType;
+        
+        // Initialize the string measure
+        
+        m_stringMeasure = stringMeasure;
+        
+        // Initialize the lambda value
+        
+        m_lambda = lambda;
+        
+        // We save the label
+
+        m_strLabel = strLabel;
+        
+        m_UBSMMeasure = null;
+        m_WBSMMeasure = null;
     }
     
     /**
@@ -233,6 +299,16 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+        
+        m_UBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    m_Snomedtaxonomy,
+                                                    wordSimilarityMeasureTypeUMLS,
+                                                    GroupwiseMetricType.BestMatchAverage);
+        
+        m_WBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    wordnetTaxonomy,
+                                                    wordSimilarityMeasureTypeWordnet,
+                                                    GroupwiseMetricType.BestMatchAverage);
     }
     
     /**
@@ -292,6 +368,13 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+        
+        m_UBSMMeasure = null;
+                
+        m_WBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    wordnetTaxonomy,
+                                                    wordSimilarityMeasureTypeWordnet,
+                                                    GroupwiseMetricType.BestMatchAverage);
     }
     
     /**
@@ -351,6 +434,13 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+        
+        m_UBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    m_MeSHtaxonomy,
+                                                    wordSimilarityMeasureTypeUMLS,
+                                                    GroupwiseMetricType.BestMatchAverage);
+        
+        m_WBSMMeasure = null;
     }
     
     /**
@@ -415,6 +505,16 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // We save the label
 
         m_strLabel = strLabel;
+        
+        m_UBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    m_MeSHtaxonomy,
+                                                    wordSimilarityMeasureTypeUMLS,
+                                                    GroupwiseMetricType.BestMatchAverage);
+        
+        m_WBSMMeasure = MeasureFactory.getGroupwiseBasedOnPairwiseMeasure(
+                                                    wordnetTaxonomy,
+                                                    wordSimilarityMeasureTypeWordnet,
+                                                    GroupwiseMetricType.BestMatchAverage);
     }
     
     /**
@@ -449,7 +549,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         if (measureType != SimilarityMeasureType.Rada)
         {
             m_ICmodelWordNet.setTaxonomyData(m_wordnetTaxonomy);
-//            m_wordnetTaxonomy.computeCachedAncestorSet(true);
+            m_wordnetTaxonomy.computeCachedAncestorSet(true);
         }
         
         // We get the similarity measure
@@ -590,6 +690,9 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             case PooledAVG:
             case PooledMin:
             case PooledMax:
+            case Mixed:
+                
+                // We get the word tokens
                 
                 lstWordsSentence1WBSM = m_preprocesserWBSM.getWordTokens(strRawSentence1);
                 lstWordsSentence2WBSM = m_preprocesserWBSM.getWordTokens(strRawSentence2);
@@ -603,8 +706,10 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 dictionaryUBSM = constructDictionaryList(lstWordsSentence1UBSM, lstWordsSentence2UBSM);
                 
                 break;
-
+                
             default:
+                
+                // We get the word tokens
                 
                 lstWordsSentence1 = m_preprocesser.getWordTokens(strRawSentence1);
                 lstWordsSentence2 = m_preprocesser.getWordTokens(strRawSentence2);
@@ -615,6 +720,10 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         }
         
         // 2. Initialize the semantic vectors.
+        
+        // Initialize the similarity value 
+        
+        double ontologySimilarity = 0.0;
             
         switch (m_poolingMethod) 
         {
@@ -624,14 +733,36 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
                 // With a pooling method, we calculate the similarity using UMLS and WordNet
                 
+                semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "none");
+                semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "none");
+                
+                semanticVector1_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence1WBSM, "wordnet");
+                semanticVector2_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence2WBSM, "wordnet"); 
+                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
+                semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+                
+                // 3. Compute the cosine similarity between the semantic vectors
+                
+                ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
+                
+                break;
+                
+            case Mixed:
+                
                 semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "umls");
                 semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "umls");
                 
                 semanticVector1_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence1WBSM, "wordnet");
                 semanticVector2_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence2WBSM, "wordnet");
                 
-                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
-                semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+                // 3. Compute the cosine similarity between the semantic vectors
+                
+                double ontologySimilarityUMLS = computeCosineSimilarity(semanticVector1_umls, semanticVector2_umls);
+                double ontologySimilarityWordNet = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
+                
+                // We get the high value for each similarity measure
+                
+                ontologySimilarity = (ontologySimilarityUMLS + ontologySimilarityWordNet) / 2;
                 
                 break;
                 
@@ -644,26 +775,31 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                     semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "umls");
                     semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "umls");
                 }
-                else
+                else if(m_wordnet != null)
                 {
                     semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "wordnet");
                     semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "wordnet");
                 }
+                else
+                {
+                    semanticVector1 = constructSemanticVector(dictionary, lstWordsSentence1, "none");
+                    semanticVector2 = constructSemanticVector(dictionary, lstWordsSentence2, "none");
+                }
+                
+                // 3. Compute the cosine similarity between the semantic vectors
+                
+                ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
                 
                 break;
         }
             
-        // 3. Compute the cosine similarity between the semantic vectors
-        
-        double ontologySimilarity = computeCosineSimilarity(semanticVector1, semanticVector2);
-        
         // Compute the string-based similarity value
         
         double stringSimilarity = m_stringMeasure.getSimilarityValue(strRawSentence1, strRawSentence2);
         
-        // Compute the COM value
+        // Compute the value
         
-        similarity = (ontologySimilarity*m_lambda) + (stringSimilarity*(1-m_lambda));
+        similarity = (ontologySimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
         
         // Return the similarity value
         
@@ -842,8 +978,6 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             {
                 wordVectorComponent = getWordSimilarityScore(word, lstWordsSentence, ontology);
             }
-//            double wordVectorComponent = setWordsSentence1.contains(word) ? 1.0 : 
-//                        getWordSimilarityScore(word, lstWordsSentence, ontology);
             
             semanticVector[count] = wordVectorComponent;
             count++;
@@ -942,6 +1076,18 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
                 break;
                 
+            case "none":
+                
+                // In this case, if the concept is in the array, the similarity value is 1, else the similarity value is 0
+                
+                if(strFirstConceptId.equals(strSecondConceptId))
+                    similarity = 1.0;
+                else
+                    similarity = 0.0;
+                
+                break; 
+            
+            case "mixed":
             default:
                 
                 // If both concepts are CUIs codes, compute similarity values
@@ -963,8 +1109,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                         similarity = getMeSHSimilarity(strFirstConceptId, strSecondConceptId);
                     }
                 }
-                else 
-                    if(m_wordnet.contains(strFirstConceptId) & m_wordnet.contains(strSecondConceptId))
+                else if(m_wordnet.contains(strFirstConceptId) & m_wordnet.contains(strSecondConceptId))
                 {
                     // If the concepts exists in WordNet, compute the similiarity
                     // We compute the similarity using the active ontology
@@ -1091,39 +1236,15 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         if(isCuiCode(strFirstUmlsCUI) && isCuiCode(strSecondUmlsCUI))
         {
-            // We get the SNOMED concepts evoked by each CUI
+            // We get the SNOMED concept nodes in thetaxonbomy which are evokedby the CUIs
 
-            IVertex[] firstVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strFirstUmlsCUI.toUpperCase());
-            IVertex[] secondVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strSecondUmlsCUI.toUpperCase());
+            Set<IVertex> cuiVertexes1 = m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strFirstUmlsCUI.toUpperCase());
+            Set<IVertex> cuiVertexes2 = m_SnomedOntology.getTaxonomyVertexSetForUmlsCUI(strSecondUmlsCUI.toUpperCase());
 
-            // We check the existence oif SNOMED concepts associated to the CUIS
+            // We get the similarity between both CUIs
 
-            if ((firstVertexes.length > 0)
-                    && (secondVertexes.length > 0))
-            {
-                // We initialize the maximum similarity
-
-                double maxSimilarity = Double.NEGATIVE_INFINITY;
-
-                // We compare all pairs of evoked SNOMED concepts
-
-                for (IVertex vertex1: firstVertexes)
-                {
-                    for (IVertex vertex2: secondVertexes)
-                    {
-                        double ontoSimilarity = m_wordSimilarityMeasureTypeUMLS.getSimilarity(
-                                                    vertex1, vertex2);
-
-                        // We update the maximum similarity
-
-                        if (ontoSimilarity > maxSimilarity) maxSimilarity = ontoSimilarity;
-                    }
-                }
-
-                // We assign the output similarity value
-
-                similarity = maxSimilarity;
-            }
+            similarity = m_UBSMMeasure.getSimilarity(cuiVertexes1, cuiVertexes2);
+            
         }
         
         // We return the result
@@ -1144,8 +1265,6 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             String              word1, 
             String              word2) throws Exception
     {
-        if(word1.equals("feedback"))
-            System.out.print("para");
         // Initialize the similarity values
 
         double maxSimilarity = Double.NEGATIVE_INFINITY;

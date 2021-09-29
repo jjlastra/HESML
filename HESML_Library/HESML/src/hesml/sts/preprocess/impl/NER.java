@@ -22,10 +22,12 @@
 package hesml.sts.preprocess.impl;
 
 import bioc.BioCDocument;
+import gov.nih.nlm.nls.metamap.AcronymsAbbrevs;
 import gov.nih.nlm.nls.metamap.Mapping;
 import gov.nih.nlm.nls.metamap.MetaMapApi;
 import gov.nih.nlm.nls.metamap.MetaMapApiImpl;
 import gov.nih.nlm.nls.metamap.PCM;
+import gov.nih.nlm.nls.metamap.Position;
 import gov.nih.nlm.nls.metamap.Result;
 import gov.nih.nlm.nls.metamap.Utterance;
 import gov.nih.nlm.nls.metamap.document.FreeText;
@@ -143,10 +145,11 @@ class NER implements INER
                 break;
 
             case MetamapSNOMEDCT:
+            case MetamapExpandPreferredNames:
                 
                 // Loads Metamap using word sense disambiguation
                 
-                loadMetamap("-R SNOMEDCT");
+                loadMetamap("-R SNOMEDCT_US");
 
                 break;
                 
@@ -233,6 +236,12 @@ class NER implements INER
                 
                 annotatedSentence = annotateSentenceMetamap(strRawSentence);
 
+                break;
+                
+            case MetamapExpandPreferredNames:
+                
+                annotatedSentence = expandSentenceMetamap(strRawSentence);
+                
                 break;
             
             case Ctakes:
@@ -337,7 +346,6 @@ class NER implements INER
         theOptions.forEach(opt -> {
             m_metaMapInst.setOptions(opt);
         });
-       
     }
     
     /**
@@ -352,31 +360,146 @@ class NER implements INER
         // Initialize the result
         
         String annotatedSentence = sentence;
-
-        // Process the sentence using the Metamap objects
         
+        annotatedSentence = annotatedSentence.replace(".", " ");
+
         List<Result> resultList = m_metaMapInst.processCitationsFromString(sentence);
-        for (Result result: resultList) 
+        
+        if(resultList.size() > 0)
         {
+            Result result = resultList.get(0);
+
+            int diff_lenght = 0;
+
             for (Utterance utterance: result.getUtteranceList()) 
             {
                 for (PCM pcm: utterance.getPCMList()) 
                 {
-                  for (Mapping map: pcm.getMappingList()) 
-                  {
-                    for (gov.nih.nlm.nls.metamap.Ev mapEv: map.getEvList()) 
+                    List<Mapping> maps = pcm.getMappingList();
+
+                    if(maps.size() > 0)
                     {
-                        for(String matchedWord : mapEv.getMatchedWords())
-                        {
-                            annotatedSentence = annotatedSentence.replaceAll(matchedWord, " " + mapEv.getConceptId() + " ");
-                        }
+                        Mapping map = maps.get(0);
+
+                        List<gov.nih.nlm.nls.metamap.Ev> event = map.getEvList();
+
+                        gov.nih.nlm.nls.metamap.Ev mapEv = event.get(0);
+
+
+                         List<Position> pos = mapEv.getPositionalInfo();
+
+                         for(Position p : mapEv.getPositionalInfo())
+                         {
+                             long pos_ini = p.getX() - diff_lenght;
+                             long num_chars = p.getY();
+
+                             int total_lenght = annotatedSentence.length();
+
+                             int pos_end = (int) (pos_ini + num_chars);
+
+                             int cuiLenght = mapEv.getConceptId().length();
+
+                             diff_lenght += (int) (num_chars - cuiLenght);
+
+                             String para = mapEv.getConceptId();
+                             String palabra = mapEv.getConceptName();
+
+                             annotatedSentence = annotatedSentence.substring(0, (int) pos_ini) + mapEv.getConceptId() + annotatedSentence.substring(pos_end, total_lenght);
+                         }
                     }
                 }
             }
-          }
         }
         
         // Return the result
+        
+        return (annotatedSentence);
+    }
+    
+    /**
+     * This function annotates a sentence with CUI codes replacing 
+     * keywords with codes in the same sentence.
+     * @return 
+     */
+    
+    private String expandSentenceMetamap(
+            String sentence) throws InvocationTargetException, IOException, Exception
+    {
+        // Initialize the result
+        
+        String annotatedSentence = sentence;
+        
+        annotatedSentence = annotatedSentence.replace(".", " ");
+
+        // Process the sentence using the Metamap objects
+
+
+//        MetaMapApi api = new MetaMapApiImpl();
+//        
+//        api.setOptions("-y"); 
+        List<Result> resultList = m_metaMapInst.processCitationsFromString(sentence);
+        
+        if(resultList.size() > 0)
+        {
+            Result result = resultList.get(0);
+            
+            int diff_lenght = 0;
+
+            for (Utterance utterance: result.getUtteranceList()) 
+            {
+                for (PCM pcm: utterance.getPCMList()) 
+                {
+                    List<Mapping> maps = pcm.getMappingList();
+
+                    if(maps.size() > 0)
+                    {
+                        Mapping map = maps.get(0);
+
+                        List<gov.nih.nlm.nls.metamap.Ev> event = map.getEvList();
+
+                        gov.nih.nlm.nls.metamap.Ev mapEv = event.get(0);
+
+
+                         List<Position> pos = mapEv.getPositionalInfo();
+
+                         for(Position p : mapEv.getPositionalInfo())
+                         {
+                             long pos_ini = p.getX() - diff_lenght;
+                             long num_chars = p.getY();
+
+                             int total_lenght = annotatedSentence.length();
+
+                             int pos_end = (int) (pos_ini + num_chars);
+
+                             int cuiLenght = mapEv.getPreferredName().length();
+
+                             diff_lenght += (int) (num_chars - cuiLenght);
+
+                             annotatedSentence = annotatedSentence.substring(0, (int) pos_ini) + mapEv.getPreferredName() + annotatedSentence.substring(pos_end, total_lenght);
+                         }
+                    }
+                }
+            }
+            
+            List<AcronymsAbbrevs> aaList = result.getAcronymsAbbrevsList();
+            
+            if (aaList.size() > 0) 
+            {
+                for (AcronymsAbbrevs e: aaList) 
+                {
+                    String acronym = e.getAcronym();
+                    String expansion = e.getExpansion();
+                    annotatedSentence = annotatedSentence.replaceAll(e.getAcronym(), e.getExpansion());
+                }
+              
+            } 
+        }
+        
+//        api.disconnect();
+        
+        // Return the result
+        
+//        System.out.println(annotatedSentence);
         
         return (annotatedSentence);
     }
@@ -486,9 +609,9 @@ class NER implements INER
     {
         if(m_metaMapLiteInst != null)
             m_metaMapLiteInst = null;
-        
-        if(m_metaMapInst != null)
-            m_metaMapInst.disconnect();
+        m_metaMapInst.disconnect();
+//        if(m_metaMapInst != null)
+//            m_metaMapInst.disconnect();
         
 //        if(m_pipelineIncludingUmlsDictionaries != null)
 //            m_pipelineIncludingUmlsDictionaries.destroy();

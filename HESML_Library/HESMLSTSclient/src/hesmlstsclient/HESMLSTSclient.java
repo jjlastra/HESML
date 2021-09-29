@@ -82,17 +82,22 @@ public class HESMLSTSclient
      * Filenames and directory for the SNOMED-CT files
      */
 
-    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_Nov2019";
-    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
-    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
-    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+//    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_Nov2019";
+//    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+//    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+//    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+    
+    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_JUL2020";
+    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_INT_20200731.txt";
+    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_INT_20200731.txt";
+    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_INT_20200731.txt";
 
     /** 
      * Filename and directory for the UMLS CUI mapping file
      */
     
     private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strUMLSdir = m_strDataDirectory + "UMLS/UMLS2019AB";    
+    private static final String m_strUMLSdir = m_strDataDirectory + "UMLS/UMLS2020AA";    
     
     /**
      * Filenames and directory for the MeSH ontology
@@ -276,6 +281,7 @@ public class HESMLSTSclient
                         method.name(),
                         method, 
                         bestStringWordProcessing);
+            
             measuresLst.add(measure);
             
             // Update the total of combinations
@@ -384,6 +390,7 @@ public class HESMLSTSclient
                 true, NERType.None,
                 CharFilteringType.Default);
         
+        // We define the best pre-processing methods for BioWodVect-based embedding models.
         
         IWordProcessing[] bestSWEMProcessingsBioWordVecBased = new IWordProcessing[4];
         
@@ -411,6 +418,7 @@ public class HESMLSTSclient
                 false, NERType.None,
                 CharFilteringType.Default);
    
+        // We add the models to the arrays
         
         String[] modelsFastextVecBasedSWEM = new String[8];
         
@@ -482,6 +490,8 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We define the best pre-processing WBSM method
+        
         IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv4_2_0, 
@@ -494,9 +504,8 @@ public class HESMLSTSclient
         wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
         wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLRada);
         wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasuresWBSM.add(SimilarityMeasureType.WuPalmerFast);
-        wordMeasuresWBSM.add(SimilarityMeasureType.Lin);
         wordMeasuresWBSM.add(SimilarityMeasureType.AncSPLCaiStrategy1);
+        wordMeasuresWBSM.add(SimilarityMeasureType.JiangConrath);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -516,7 +525,9 @@ public class HESMLSTSclient
                             m_WordNetTaxonomySingleton, 
                             wordMeasure, 
                             icModelTypeWBSM);
-
+            
+            // We add the measure
+            
             measuresLst.add(measure);
             
             // Update the total of combinations
@@ -532,6 +543,8 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We define the best UBSM pre-processing method
+        
         IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                 TokenizerType.StanfordCoreNLPv4_2_0, 
@@ -544,9 +557,8 @@ public class HESMLSTSclient
         wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
         wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLRada);
         wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasuresUBSM.add(SimilarityMeasureType.WuPalmerFast);
-        wordMeasuresUBSM.add(SimilarityMeasureType.Lin);
         wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCaiStrategy1);
+        wordMeasuresUBSM.add(SimilarityMeasureType.JiangConrath);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -565,7 +577,9 @@ public class HESMLSTSclient
                             m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
                             wordMeasure,
                             icModelTypeUBSM);
-
+            
+            // We add the measure
+            
             measuresLst.add(measure);
             
             // Update the total of combinations
@@ -586,33 +600,41 @@ public class HESMLSTSclient
         IntrinsicICModelType icModelTypeCOM = IntrinsicICModelType.Seco;
        
         // We calculate the best measure combination
-          ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
-
-            ISentenceSimilarityMeasure measureWBSM = 
-                    SentenceSimilarityFactory.getWBSMMeasure(
-                            "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-                            bestWBSMWordProcessing,
-                            m_WordNetDbSingleton, 
-                            m_WordNetTaxonomySingleton, 
-                            SimilarityMeasureType.AncSPLRada, 
-                            icModelTypeCOM);
-                ISentenceSimilarityMeasure measureUBSM =
-                    SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                            "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
-                            bestUBSMWordProcessing,
-                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                            SimilarityMeasureType.AncSPLWeightedJiangConrath,
-                            icModelTypeCOM);
-
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
+        
+        // We initialize WBSM and UBSM methods
+        
+        ISentenceSimilarityMeasure measureWBSM = 
+                SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        bestWBSMWordProcessing,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeCOM);
+        
+        ISentenceSimilarityMeasure measureUBSM =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
+                    bestUBSMWordProcessing,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    icModelTypeCOM);
+        
+        // We add the measures to a list
+        
         measures[0] = measureWBSM;
         measures[1] = measureUBSM;
 
-        // We create a copy of the wordProcessing object 
+        // We create the COM measure
 
         ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
             "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
             0.25,
             measures);
+        
+        // We add the measure
 
         measuresLst.add(measure);
 
@@ -631,7 +653,27 @@ public class HESMLSTSclient
         
         // We define the lambda values
         
-        double[] lambda = {0.25,0.5,0.75};
+        double[] lambda = {0.25, 0.5};
+        
+        // We define the pre-processing methods
+        
+        IWordProcessing bestStringExpandedWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingSnomed = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMeSH = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapMESH,
+                CharFilteringType.BIOSSES);
         
         // Initialize the string measure
 
@@ -644,25 +686,51 @@ public class HESMLSTSclient
         
         for(int i=0; i < lambda.length; i++)
         {
-            // We add the measures
+            // We create and add the measures
             
             measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
                      "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestUBSMWordProcessing,
+                     bestUBSMWordProcessingSnomed,
                      m_SnomedOntology, m_taxonomySnomed,  
                      SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
                      lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-
-             measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                     "COMMixed_WBSM_UBSM_String_" + ComMixedVectorsMeasureType.PooledMin.name() + "_lambda"+lambda[i], 
+            
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureMeSH(
+                     "COMMixed_UBSMMeSH-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
+                     bestUBSMWordProcessingMeSH,
+                     m_MeshOntology, m_taxonomyMesh,  
+                     SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
+            
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
+                     "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
                      bestWBSMWordProcessing,
-                     bestUBSMWordProcessing,
+                     m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
+                     SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
+            
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
+                     "COMMixed_LietalExpanded-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
+                     bestStringExpandedWordProcessing,
+                     SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
+                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
+            
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
+                     "COMMixed_LietalBase-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
+                     bestStringWordProcessing,
+                     SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
+                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
+            
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                     "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda[i], 
+                     bestWBSMWordProcessing,
+                     bestUBSMWordProcessingSnomed,
                      m_SnomedOntology, m_taxonomySnomed,  
                      m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
                      SimilarityMeasureType.AncSPLRada,
                      SimilarityMeasureType.AncSPLWeightedJiangConrath, 
                      IntrinsicICModelType.Seco, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.PooledMin));
+                     lambda[i], ComMixedVectorsMeasureType.Mixed));
         }
 
         /**
@@ -673,6 +741,8 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We define the paths to Python directories
+        
         String strPythonScriptsDirectory = "../BERTExperiments/";
         String strPythonVirtualEnvironmentDir = "python3";
         String strPythonScript = "../BERTExperiments/WordPieceTokenization.py";
@@ -680,7 +750,7 @@ public class HESMLSTSclient
         
         // We configure the best preprocessing method for each model
         
-        IWordProcessing[] bestBERTProcessing = new IWordProcessing[15];
+        IWordProcessing[] bestBERTProcessing = new IWordProcessing[17];
         
         bestBERTProcessing[0] = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
@@ -847,9 +917,37 @@ public class HESMLSTSclient
                         strPythonScript,
                         strBERTPretrainedModelFilename);
         
-        int total_models = 15;
+        bestBERTProcessing[15] = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[16] = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        // We create a list for storing the BERT model paths
+        
+        int total_models = 17;
+        
+        // We call a function to retrieve all the BERT model paths
         
         String[][] modelPaths = getBERTModelPathList(total_models);
+        
+        // We iterate the models and add the methods to the list
         
         for(int i=0; i<total_models; i++)
         {
@@ -872,6 +970,8 @@ public class HESMLSTSclient
 
             if(mllibrary == MLPythonLibrary.Tensorflow)
             {
+                // We add the model
+                
                 measuresLst.add(SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
                         bestBERTProcessing[i].getLabel(), 
                         SentenceEmbeddingMethod.BERTEmbeddingModel,
@@ -888,6 +988,8 @@ public class HESMLSTSclient
             }
             else
             {
+                // We add the model
+                
                 measuresLst.add(SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
                         bestBERTProcessing[i].getLabel(), 
                         SentenceEmbeddingMethod.BERTEmbeddingModel,
@@ -908,6 +1010,8 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We create the preprocessing configuration
+        
         IWordProcessing bestSent2VecWordProcessing = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
                 TokenizerType.StanfordCoreNLPv4_2_0, 
@@ -919,8 +1023,10 @@ public class HESMLSTSclient
         String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
         String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
         String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
-        String strPythonVirtualEnvironmentDirSent2vec = "../Sent2vecExperiments/venv/bin/python3";
+        String strPythonVirtualEnvironmentDirSent2vec = m_strDataDirectory + "Sent2vecExperiments/venv/bin/python3";
         String strPythonScriptSent2vec = "extractSent2vecvectors.py";
+        
+        // We add the measure
         
         measuresLst.add(SentenceSimilarityFactory.getSent2vecMethodMeasure(
                         "Sent2vec_" + strSent2vecModelFile.replace(".bin", ""), 
@@ -939,18 +1045,22 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We create the pre-processing configuration
+        
         IWordProcessing bestUSEWordProcessing = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
                 TokenizerType.StanfordCoreNLPv4_2_0, 
                 false, NERType.None,
                 CharFilteringType.Default);
         
+        // We define the USE paths to the model
+        
         String strUSEModelURL = "https://tfhub.dev/google/universal-sentence-encoder/4";
         String strPythonScriptsDirectoryUSE = "../UniversalSentenceEncoderExperiments/";
         String strPythonVirtualEnvironmentDirUSE = "python3";
         String strPythonScriptUSE = "extractUniversalSentenceEncoderVectors.py";
 
-        // We iterate word processing combinations
+        // We add the method to the list
             
         measuresLst.add(SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
                     "USE", 
@@ -969,17 +1079,23 @@ public class HESMLSTSclient
          * ****************************************************
          */
         
+        // We create the pre-processing configuration
+        
         IWordProcessing bestFlairWordProcessing = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
                 TokenizerType.WhiteSpace, 
                 false, NERType.None,
                 CharFilteringType.BIOSSES);
         
-        String strFlairModelURL = "../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt";
+        // We define the Flair paths to the model
+        
+        String strFlairModelURL = m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-backward.pt," + m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-forward.pt";
         String strPythonScriptsDirectoryFlair = "../FlairEmbeddings/";
         String strPythonVirtualEnvironmentDirFlair = "python3";
         String strPythonScriptFlair = "extractFlairVectors.py";
 
+        // We add the method to the list
+        
         measuresLst.add(SentenceSimilarityFactory.getFlairEmbeddingMethod(
                             "Flair",  
                             SentenceEmbeddingMethod.Flair,
@@ -1045,8 +1161,10 @@ public class HESMLSTSclient
     }
     
     /**
-     * Load ontologies
+     * This function loads WordNet, UMLS and MeSH ontologies before executing the experiments.
+     * 
      */
+    
     private static void loadOntologies(boolean useWordNetCache) throws Exception
     {
         // We create the singleton instance of the WordNet database and taxonomy
@@ -1116,8 +1234,6 @@ public class HESMLSTSclient
          * strPythonVirtualEnvironmentDir, 
          * strPythonScriptsDirectory + strPythonScript
          */
-        
-        
         
         modelPaths[0][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
         modelPaths[0][1] = "../BERTExperiments/";
@@ -1268,6 +1384,26 @@ public class HESMLSTSclient
         modelPaths[14][6] = "Tensorflow";
         modelPaths[14][7] = "model.ckpt-100000.index";
         modelPaths[14][8] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/DischargeSummaryBERT";
+        
+        modelPaths[15][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.1_pubmed";
+        modelPaths[15][1] = "../BERTExperiments/";
+        modelPaths[15][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
+        modelPaths[15][3] = "../BERTExperiments/extractBERTvectors.py";
+        modelPaths[15][4] = "";
+        modelPaths[15][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.1_pubmed";
+        modelPaths[15][6] = "Tensorflow";
+        modelPaths[15][7] = "";
+        modelPaths[15][8] = "";
+        
+        modelPaths[16][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_large_v1.1_pubmed";
+        modelPaths[16][1] = "../BERTExperiments/";
+        modelPaths[16][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
+        modelPaths[16][3] = "../BERTExperiments/extractBERTvectors.py";
+        modelPaths[16][4] = "";
+        modelPaths[16][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_large_v1.1_pubmed";
+        modelPaths[16][6] = "Tensorflow";
+        modelPaths[16][7] = "";
+        modelPaths[16][8] = "";
         
         // Return the result
         

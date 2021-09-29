@@ -21,33 +21,19 @@
 
 package hesmlststestclient;
 
+import gov.nih.nlm.nls.metamap.Ev;
+import gov.nih.nlm.nls.metamap.Mapping;
+import gov.nih.nlm.nls.metamap.MetaMapApi;
+import gov.nih.nlm.nls.metamap.MetaMapApiImpl;
+import gov.nih.nlm.nls.metamap.PCM;
+import gov.nih.nlm.nls.metamap.Position;
+import gov.nih.nlm.nls.metamap.Result;
+import gov.nih.nlm.nls.metamap.Utterance;
+
 import hesml.HESMLversion;
-import hesml.configurators.IntrinsicICModelType;
-import hesml.measures.SimilarityMeasureType;
-import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
-import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
-import hesml.sts.measures.ComMixedVectorsMeasureType;
-import hesml.sts.measures.ISentenceSimilarityMeasure;
-import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
-import hesml.sts.measures.impl.SentenceSimilarityFactory;
-import hesml.sts.preprocess.CharFilteringType;
-import hesml.sts.preprocess.IWordProcessing;
-import hesml.sts.preprocess.NERType;
-import hesml.sts.preprocess.TokenizerType;
-import hesml.sts.preprocess.impl.PreprocessingFactory;
-import hesml.taxonomy.ITaxonomy;
-import hesml.taxonomy.IVertexList;
-import hesml.taxonomyreaders.mesh.IMeSHOntology;
-import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
-import hesml.taxonomyreaders.obo.IOboOntology;
-import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
-import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
-import hesml.taxonomyreaders.wordnet.IWordNetDB;
-import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+
 
 /**
  * This class implements a basic client application of the HESML for sentence similarity
@@ -57,88 +43,6 @@ import java.util.logging.Logger;
 
 public class HESMLSTSTestclient
 {
-    /**
-     * Resources directories.
-     * 
-     * m_strBaseDir: the base directory with the resources
-     * m_strDataDirectory: The base directory with the external resources
-     * m_strStopWordsDir: Subdirectory with all the stop words files
-     * m_strWordNetDatasetsDir: Subdirectory with all the WordNet datasets
-     * m_strWordNet3_0_Dir: Subdirectory with WordNet v3.0 dictionary
-     */
-    
-    private static final String  m_strBaseDir = "/home/user/HESML/HESML_Library/";
-    private static final String  m_strDataDirectory = "/home/user/HESML_DATA/";
-    private static final String  m_strStopWordsDir = "StopWordsFiles/";
-    
-    private static final String  m_strWordNetDatasetsDir = m_strBaseDir + "/Wordnet-3.0/dict";
-    private static final String  m_strWordNetDBDir = "data.noun";
-    
-    /**
-     * Filenames and directory for the SNOMED-CT files
-     */
-
-    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_Nov2019";
-    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
-    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
-    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
-
-    /** 
-     * Filename and directory for the UMLS CUI mapping file
-     */
-    
-    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
-    private static final String m_strUMLSdir = m_strDataDirectory + "UMLS/UMLS2019AB";    
-    
-    /**
-     * Filenames and directory for the MeSH ontology
-     */
-    
-    private static final String m_strMeSHdir = m_strDataDirectory + "UMLS/MeSH_Nov2019";
-    private static final String m_strMeSHdescriptorFilename = "desc2020.xml";
-    
-    /**
-     * Output files path
-     */
-    
-    private static final String m_strDatasetDir = m_strDataDirectory + "SentenceSimDatasets/";
-    private static final String m_outputFilesDirPath = m_strBaseDir + "ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
-    
-    /**
-     * Dataset filenames
-     */
-    
-    private static final String m_strDatasetFileNameBIOSSES = "BIOSSESNormalized.tsv";
-    private static final String m_strDatasetFileNameMedSTS = "MedStsFullNormalized.tsv";
-    private static final String m_strDatasetFileNameCTR = "CTRNormalized_averagedScore.tsv";
-   
-    /**
-    * Filename of the OBO ontology
-    */
-    
-    private static final String m_strOboFilename = "";
-    
-    /**
-     * Singleton instance of the WordNet DB
-     */
-    
-    private static IWordNetDB   m_WordNetDbSingleton = null;
-    
-    /**
-     * Singleton instance of the WordNet taxonomy
-     */
-    
-    private static ITaxonomy    m_WordNetTaxonomySingleton = null;
-    
-    // Singleton instances of biomedical ontologies and taxonomy
-
-    private static ISnomedCtOntology  m_SnomedOntology = null;          
-    private static IMeSHOntology m_MeshOntology = null;    
-    private static IOboOntology m_OboOntology = null;    
-    private static IVertexList m_vertexesSnomed = null;
-    private static ITaxonomy   m_taxonomySnomed = null;
-    private static ITaxonomy   m_taxonomyMesh = null;
-
     /**
      * This function loads an input XML file detailing a
      * set of reproducible experiments on sentence similarity.
@@ -158,11 +62,7 @@ public class HESMLSTSTestclient
                 + (Runtime.getRuntime().totalMemory() / (1024 * 1024)));
         
         System.out.println("");
-        
-        // We load the ontologies
-        
-        loadOntologies(true);
-        
+     
         // We get the start time
 
         long startFileProcessingTime = System.currentTimeMillis();
@@ -171,52 +71,79 @@ public class HESMLSTSTestclient
         long minutes = 0;
         long seconds = 0;
         
-        // Reset the total combinations
+        // Initialize the result
         
-        int totalCombinations = 0;
+        String sentence = "anorexia";
         
-        /**
-         * Testing NER tools.
-         * 
-         * First, we test the external NER tools to ensure it's all working
-         * 
-         * Remember to start the services and export the UMLS license number: 
-         *  [HESMLDIR]/public_mm:
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/skrmedpostctl start
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/wsdserverctl start
-         *          ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# ./bin/mmserver -R SNOMEDCT &
-         *  ~/HESML_DATA/apache-ctakes-4.0.0.1-src/desc# export ctakes_umls_apikey=XXXXXXXXXXXXXX
-         * 
-         * 
-         * After executing the tests, read the result file:
-         * tail -n50 /home/user/HESML/HESML_Library/ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES_tests.csv
-         */
+        String annotatedSentence = sentence;
+
+        // Process the sentence using the Metamap objects
+
+
+        MetaMapApi api = new MetaMapApiImpl();
         
-//        testExternalTools();
+        api.setOptions("-y");
+        api.setOptions("-R SNOMEDCT_US");  
+        List<Result> resultList = api.processCitationsFromString(sentence);
         
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * Testing function - WordNet issue evaluating twice the same measure
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
         
-        totalCombinations += testWordNetIssue();
+        Result result = resultList.get(0);
+
+        int diff_lenght = 0;
         
-        // We measure the elapsed time to run the experiments
+        for (Utterance utterance: result.getUtteranceList()) {
+            System.out.println("Utterance:");
+            System.out.println(" Id: " + utterance.getId());
+            System.out.println(" Utterance text: " + utterance.getString());
+            System.out.println(" Position: " + utterance.getPosition());
+            
+            for (PCM pcm: utterance.getPCMList()) {
+                System.out.println("Phrase:");
+                System.out.println(" text: " + pcm.getPhrase().getPhraseText());
+                
+                System.out.println("Candidates:");
+                
+                
+                System.out.println("Mappings:");
+                for (Mapping map: pcm.getMappingList()) {
+                  System.out.println(" Map Score: " + map.getScore());
+                  for (Ev mapEv: map.getEvList()) {
+                    System.out.println("   Score: " + mapEv.getScore());
+                    System.out.println("   Concept Id: " + mapEv.getConceptId());
+                    System.out.println("   Concept Name: " + mapEv.getConceptName());
+                    System.out.println("   Preferred Name: " + mapEv.getPreferredName());
+                    System.out.println("   Matched Words: " + mapEv.getMatchedWords());
+                    System.out.println("   Semantic Types: " + mapEv.getSemanticTypes());
+                    System.out.println("   MatchMap: " + mapEv.getMatchMap());
+                    System.out.println("   MatchMap alt. repr.: " + mapEv.getMatchMapList());
+                    System.out.println("   is Head?: " + mapEv.isHead());
+                    System.out.println("   is Overmatch?: " + mapEv.isOvermatch());
+                    System.out.println("   Sources: " + mapEv.getSources());
+                    System.out.println("   Positional Info: " + mapEv.getPositionalInfo());
+                    
+                    List<Position> pos = mapEv.getPositionalInfo();
+                    
+                    for(Position p : mapEv.getPositionalInfo())
+                    {
+                        long pos_ini = p.getX() - diff_lenght;
+                        long num_chars = p.getY();
+                        
+                        int total_lenght = annotatedSentence.length();
+                        
+                        int pos_end = (int) (pos_ini + num_chars);
+                        
+                        int cuiLenght = mapEv.getConceptId().length();
+                        
+                        diff_lenght += (int) (num_chars - cuiLenght);
+                        
+                        annotatedSentence = annotatedSentence.substring(0, (int) pos_ini) + mapEv.getConceptId() + annotatedSentence.substring(pos_end, total_lenght);
+                    }
+
+                  }
+                }
+            }
+        }
         
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + 
-                " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
 
         // We measure the elapsed time to run the experiments
 
@@ -226,280 +153,5 @@ public class HESMLSTSTestclient
 
         System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
-    }
-    
-    /**
-     * This function test all the external tools (Metamap and CTakes) before executing the experiments
-     */
-    
-    private static void testExternalTools() throws Exception
-    {
-        // We initialize the list of measures with different preprocessing methods
-            
-        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-            
-        try {
-            
-            // First, we initialize the preprocessing method using Metamap
-            
-            IWordProcessing metamapWordProcessing = PreprocessingFactory.getWordProcessing(
-                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-                    TokenizerType.WhiteSpace,
-                    true, NERType.MetamapSNOMEDCT,
-                    CharFilteringType.BIOSSES);
-            
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                            "testStringMeasureMetamap",
-                            StringBasedSentenceSimilarityMethod.Jaccard, 
-                            metamapWordProcessing));
-            
-            // Second, we initialize the preprocessing method using Metamap Lite
-            
-            IWordProcessing metamapLiteWordProcessing = PreprocessingFactory.getWordProcessing(
-                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-                    TokenizerType.WhiteSpace,
-                    true, NERType.MetamapLite,
-                    CharFilteringType.BIOSSES);
-            
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                            "testStringMeasureMetamapLite",
-                            StringBasedSentenceSimilarityMethod.Jaccard, 
-                            metamapLiteWordProcessing));
-            
-            // First, we initialize the preprocessing method using Metamap Lite
-            
-            IWordProcessing ctakesWordProcessing = PreprocessingFactory.getWordProcessing(
-                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-                    TokenizerType.WhiteSpace,
-                    true, NERType.Ctakes,
-                    CharFilteringType.BIOSSES);
-            
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                            "testStringMeasurectakes",
-                            StringBasedSentenceSimilarityMethod.Jaccard, 
-                            ctakesWordProcessing));
-            
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(HESMLSTSTestclient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        // We execute the experiments
-        
-        executeExperiments(measuresLst, "tests");
-    }
-    
-    /**
-     * Test the WordNet issue - Executing twice the same measure gives different results
-     */
-    
-    private static int testWordNetIssue() throws Exception
-    {
-        // Initialize the result
-        
-        int totalCombinations = 0;
-        
-        // We iterate the methods and create the measures
-        
-        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-
-        // We get the intrinsic IC model if anyone has been defined
-
-        IntrinsicICModelType icModelTypeWBSM = IntrinsicICModelType.Seco;
-       
-        // We iterate word processing combinations
-
-        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.None,
-                        CharFilteringType.None);
-        
-        // We create the measures with the same preprocessing configuration
-
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessing,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeWBSM));
-//        
-//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessing,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeWBSM));
-//         
-//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessing,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeWBSM));
-//         
-//         measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessing,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeWBSM));
-         
-         /**
-         * ****************************************************
-         * ****************************************************
-         * Starting COMMixed methods
-         * ****************************************************
-         * ****************************************************
-         */
-         
-         // We define the string and WBSM similarity methods
-         
-        StringBasedSentenceSimilarityMethod stringMethod = StringBasedSentenceSimilarityMethod.Jaccard;
-        SimilarityMeasureType wbsmMethod = SimilarityMeasureType.AncSPLWeightedJiangConrath;
-         
-        // Initialize the string measure
-
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                            stringMethod.name() + "_" + bestWBSMWordProcessing.getLabel(),
-                            stringMethod, 
-                            bestWBSMWordProcessing);
-
-        // We create the measure
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
-                "COMMixed_WBSM-" + wbsmMethod +"_String-" + stringMethod, 
-                bestWBSMWordProcessing,
-                m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
-                wbsmMethod, IntrinsicICModelType.Seco, stringMeasure,
-                0.25, ComMixedVectorsMeasureType.SingleOntology));
-
-        // We load the ontologies
-
-//        loadOntologies(false);
-        
-        // We create the measure
-        
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
-                "COMMixed_WBSM-" + wbsmMethod +"_String-" + stringMethod, 
-                bestWBSMWordProcessing,
-                m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
-                wbsmMethod, IntrinsicICModelType.Seco, stringMeasure,
-                0.25, ComMixedVectorsMeasureType.SingleOntology));
-      
-        // Update the total of combinations
-
-        totalCombinations = 2;
-        
-        // We execute the experiments
-        
-        executeExperiments(measuresLst, "TestWordNetIssues");
-
-        // Return the result
-        
-        return (totalCombinations);
-    }
-    
-    /**
-     * We execute the experiments and write the output file
-     * 
-     * @return 
-     */
-    private static void executeExperiments(
-            ArrayList<ISentenceSimilarityMeasure> measuresLst,
-            String outputFileNames
-    ) throws Exception
-    {
-        // We create the vector to return the collection of sentence similarity measures
-        
-        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
-        
-        // We copy the measures to the vector and release the temporary list
-        
-        measuresLst.toArray(measures);
-        measuresLst.clear();
-        
-        // We read the configuration of the experiment
-        
-        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_" + outputFileNames + ".csv";
-        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_" + outputFileNames + ".csv";
-        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_" + outputFileNames + ".csv";
-        
-        // We create the benchmarks for all measuers and dataset
-        
-        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, m_strDatasetDir,
-                                                    m_strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
-        
-        benchmarkBIOSSES.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, m_strDatasetDir,
-                                                    m_strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
-        
-        benchmarkMedSTS.evaluateBenchmark(true);
-        
-        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
-                                                    measures, m_strDatasetDir,
-                                                    m_strDatasetFileNameCTR, strOutputFileNameCTR);
-        
-        benchmarkCTR.evaluateBenchmark(true);
-    }
-    
-    /**
-     * Load ontologies
-     */
-    private static void loadOntologies(boolean useWordNetCache) throws Exception
-    {
-        // We create the singleton instance of the WordNet database and taxonomy
-
-        if (m_WordNetDbSingleton == null || useWordNetCache == false)
-        {
-            // We load the singleton instance of WordNet-related objects. It is done to
-            // avoid the memory cost of multiple instances of WordNet when multiple
-            // instances of the WBSM measure are created.
-            
-            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-
-            // We pre-process the taxonomy to compute all the parameters
-            // used by the intrinsic IC-computation methods
-
-            m_WordNetTaxonomySingleton.computesCachedAttributes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_SnomedOntology == null)
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-                                    m_strSnomedConceptFilename,
-                                    m_strSnomedRelationshipsFilename,
-                                    m_strSnomedDescriptionFilename,
-                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-
-            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_MeshOntology == null)
-        {
-            // We load the MeSH ontology and get the vertex list of its taxonomy
-
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-
-            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
-        }
     }
 }
