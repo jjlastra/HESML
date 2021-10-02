@@ -653,7 +653,7 @@ public class HESMLSTSclient
         
         // We define the lambda values
         
-        double[] lambda = {0.25, 0.5};
+        double lambda = 0.5;
         
         // We define the pre-processing methods
         
@@ -682,57 +682,75 @@ public class HESMLSTSclient
                             StringBasedSentenceSimilarityMethod.BlockDistance, 
                             bestStringWordProcessing);
         
-        // We execute the best COMMixed methods with different lambdas configurations
         
-        for(int i=0; i < lambda.length; i++)
-        {
-            // We create and add the measures
+        // We create and add the measures
             
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
-                     "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestUBSMWordProcessingSnomed,
-                     m_SnomedOntology, m_taxonomySnomed,  
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-            
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureMeSH(
-                     "COMMixed_UBSMMeSH-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestUBSMWordProcessingMeSH,
-                     m_MeshOntology, m_taxonomyMesh,  
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-            
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
-                     "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestWBSMWordProcessing,
-                     m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-            
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
-                     "COMMixed_LietalExpanded-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestStringExpandedWordProcessing,
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-            
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
-                     "COMMixed_LietalBase-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda[i], 
-                     bestStringWordProcessing,
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.SingleOntology));
-            
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                     "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda[i], 
-                     bestWBSMWordProcessing,
-                     bestUBSMWordProcessingSnomed,
-                     m_SnomedOntology, m_taxonomySnomed,  
-                     m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                     SimilarityMeasureType.AncSPLRada,
-                     SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                     IntrinsicICModelType.Seco, stringMeasure,
-                     lambda[i], ComMixedVectorsMeasureType.Mixed));
-        }
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
+                 "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.SingleOntology));
 
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureMeSH(
+                 "COMMixed_UBSMMeSH-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestUBSMWordProcessingMeSH,
+                 m_MeshOntology, m_taxonomyMesh,  
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.SingleOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
+                 "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.SingleOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
+                 "COMMixed_LietalExpanded-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestStringExpandedWordProcessing,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.SingleOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
+                 "COMMixed_LietalBase-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestStringWordProcessing,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.SingleOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.Mixed));
+        
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_PooledMax_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.PooledMax));
+        
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_PooledAVG_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.PooledAVG));
+        
         /**
          * ****************************************************
          * ****************************************************

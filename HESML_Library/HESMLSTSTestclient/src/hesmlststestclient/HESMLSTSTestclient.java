@@ -31,7 +31,30 @@ import gov.nih.nlm.nls.metamap.Result;
 import gov.nih.nlm.nls.metamap.Utterance;
 
 import hesml.HESMLversion;
+import hesml.configurators.IntrinsicICModelType;
+import hesml.measures.SimilarityMeasureType;
+import hesml.sts.benchmarks.ISentenceSimilarityBenchmark;
+import hesml.sts.benchmarks.impl.SentenceSimBenchmarkFactory;
+import hesml.sts.measures.ComMixedVectorsMeasureType;
+import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
+import hesml.sts.measures.impl.SentenceSimilarityFactory;
+import hesml.sts.preprocess.CharFilteringType;
+import hesml.sts.preprocess.IWordProcessing;
+import hesml.sts.preprocess.NERType;
+import hesml.sts.preprocess.TokenizerType;
+import hesml.sts.preprocess.impl.PreprocessingFactory;
+import hesml.taxonomy.ITaxonomy;
+import hesml.taxonomy.IVertexList;
+import hesml.taxonomyreaders.mesh.IMeSHOntology;
+import hesml.taxonomyreaders.mesh.impl.MeSHFactory;
+import hesml.taxonomyreaders.obo.IOboOntology;
+import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
+import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
+import hesml.taxonomyreaders.wordnet.IWordNetDB;
+import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,6 +66,93 @@ import java.util.List;
 
 public class HESMLSTSTestclient
 {
+    /**
+     * Resources directories.
+     * 
+     * m_strBaseDir: the base directory with the resources
+     * m_strDataDirectory: The base directory with the external resources
+     * m_strStopWordsDir: Subdirectory with all the stop words files
+     * m_strWordNetDatasetsDir: Subdirectory with all the WordNet datasets
+     * m_strWordNet3_0_Dir: Subdirectory with WordNet v3.0 dictionary
+     */
+    
+    private static final String  m_strBaseDir = "/home/user/HESML/HESML_Library/";
+    private static final String  m_strDataDirectory = "/home/user/HESML_DATA/";
+    private static final String  m_strStopWordsDir = "StopWordsFiles/";
+    
+    private static final String  m_strWordNetDatasetsDir = m_strBaseDir + "/Wordnet-3.0/dict";
+    private static final String  m_strWordNetDBDir = "data.noun";
+    
+    /**
+     * Filenames and directory for the SNOMED-CT files
+     */
+
+//    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_Nov2019";
+//    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_US1000124_20190901.txt";
+//    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_US1000124_20190901.txt";
+//    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_US1000124_20190901.txt";
+    
+    private static String m_strSnomedDir = m_strDataDirectory + "UMLS/SNOMED_JUL2020";
+    private static final String m_strSnomedConceptFilename = "sct2_Concept_Snapshot_INT_20200731.txt";
+    private static final String m_strSnomedRelationshipsFilename = "sct2_Relationship_Snapshot_INT_20200731.txt";
+    private static final String m_strSnomedDescriptionFilename = "sct2_Description_Snapshot-en_INT_20200731.txt";
+
+    /** 
+     * Filename and directory for the UMLS CUI mapping file
+     */
+    
+    private static final String m_strUmlsCuiMappingFilename = "MRCONSO.RRF";
+    private static final String m_strUMLSdir = m_strDataDirectory + "UMLS/UMLS2020AA";    
+    
+    /**
+     * Filenames and directory for the MeSH ontology
+     */
+    
+    private static final String m_strMeSHdir = m_strDataDirectory + "UMLS/MeSH_Nov2019";
+    private static final String m_strMeSHdescriptorFilename = "desc2020.xml";
+    
+    /**
+     * Output files path
+     */
+    
+    private static final String m_strDatasetDir = m_strDataDirectory + "SentenceSimDatasets/";
+    private static final String m_outputFilesDirPath = m_strBaseDir + "ReproducibleExperiments/BioSentenceSimilarity_paper/BioSentenceSimFinalRawOutputFiles/";
+    
+    /**
+     * Dataset filenames
+     */
+    
+    private static final String m_strDatasetFileNameBIOSSES = "BIOSSESNormalized.tsv";
+    private static final String m_strDatasetFileNameMedSTS = "MedStsFullNormalized.tsv";
+    private static final String m_strDatasetFileNameCTR = "CTRNormalized_averagedScore.tsv";
+   
+    /**
+    * Filename of the OBO ontology
+    */
+    
+    private static final String m_strOboFilename = "";
+    
+    /**
+     * Singleton instance of the WordNet DB
+     */
+    
+    private static IWordNetDB   m_WordNetDbSingleton = null;
+    
+    /**
+     * Singleton instance of the WordNet taxonomy
+     */
+    
+    private static ITaxonomy    m_WordNetTaxonomySingleton = null;
+    
+    // Singleton instances of biomedical ontologies and taxonomy
+
+    private static ISnomedCtOntology  m_SnomedOntology = null;          
+    private static IMeSHOntology m_MeshOntology = null;    
+    private static IOboOntology m_OboOntology = null;    
+    private static IVertexList m_vertexesSnomed = null;
+    private static ITaxonomy   m_taxonomySnomed = null;
+    private static ITaxonomy   m_taxonomyMesh = null;
+    
     /**
      * This function loads an input XML file detailing a
      * set of reproducible experiments on sentence similarity.
@@ -73,7 +183,7 @@ public class HESMLSTSTestclient
         
         // Initialize the result
         
-        String sentence = "anorexia";
+        String sentence = "NSCLC";
         
         String annotatedSentence = sentence;
 
@@ -144,6 +254,86 @@ public class HESMLSTSTestclient
             }
         }
         
+        // We load the ontologies
+        
+        loadOntologies(false);
+        
+        // Initialize the result
+        
+        int totalCombinations = 0;
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        // We define the lambda values
+        
+        double lambda = 0.5;
+        
+        // We define the pre-processing methods
+        
+        IWordProcessing bestStringExpandedWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingSnomed = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMeSH = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapMESH,
+                CharFilteringType.BIOSSES);
+        
+        // For each family of methods, define the best word processing combination
+        
+        IWordProcessing bestStringWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // Initialize the string measure
+
+        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                            "BlockDistance_" + bestStringWordProcessing.getLabel(),
+                            StringBasedSentenceSimilarityMethod.BlockDistance, 
+                            bestStringWordProcessing);
+        
+        ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.PooledMax);
+
+        
+        String firstSents = "It has recently been shown that Craf is essential for Kras G12D-induced NSCLC.";
+        String secondSent = "It has recently become evident that Craf is essential for the onset of Kras-driven non-small cell lung cancer";
+        
+        measure.prepareForEvaluation();
+        measure.getSimilarityValue(firstSents, secondSent);
 
         // We measure the elapsed time to run the experiments
 
@@ -153,5 +343,106 @@ public class HESMLSTSTestclient
 
         System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
+    }
+    
+    
+    /**
+     * This function loads WordNet, UMLS and MeSH ontologies before executing the experiments.
+     * 
+     */
+    
+    private static void loadOntologies(boolean useWordNetCache) throws Exception
+    {
+        // We create the singleton instance of the WordNet database and taxonomy
+
+        if (m_WordNetDbSingleton == null || useWordNetCache == false)
+        {
+            // We load the singleton instance of WordNet-related objects. It is done to
+            // avoid the memory cost of multiple instances of WordNet when multiple
+            // instances of the WBSM measure are created.
+            
+            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
+            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+
+            // We pre-process the taxonomy to compute all the parameters
+            // used by the intrinsic IC-computation methods
+
+            m_WordNetTaxonomySingleton.computesCachedAttributes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+        if (m_SnomedOntology == null)
+        {
+            // We load the SNOMED ontology and get the vertex list of its taxonomy
+
+            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+                                    m_strSnomedConceptFilename,
+                                    m_strSnomedRelationshipsFilename,
+                                    m_strSnomedDescriptionFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+
+            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
+            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+//        if (m_MeshOntology == null)
+//        {
+//            // We load the MeSH ontology and get the vertex list of its taxonomy
+//
+//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+//
+//            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
+//        }
+    }
+    
+    /**
+     * We execute the experiments and write the output file
+     * 
+     * @return 
+     */
+    private static void executeExperiments(
+            ArrayList<ISentenceSimilarityMeasure> measuresLst,
+            String outputFileNames
+                        ) throws Exception
+    {
+        // We create the vector to return the collection of sentence similarity measures
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[measuresLst.size()];
+        
+        // We copy the measures to the vector and release the temporary list
+        
+        measuresLst.toArray(measures);
+        measuresLst.clear();
+        
+        // We read the configuration of the experiment
+        
+        String strOutputFileNameBIOSSES = m_outputFilesDirPath + "raw_similarity_BIOSSES_" + outputFileNames + ".csv";
+        String strOutputFileNameMedSTS = m_outputFilesDirPath + "raw_similarity_MedSTSFull_" + outputFileNames + ".csv";
+        String strOutputFileNameCTR = m_outputFilesDirPath + "raw_similarity_CTR_" + outputFileNames + ".csv";
+        
+        // We create the benchmarks for all measuers and dataset
+        
+        ISentenceSimilarityBenchmark benchmarkBIOSSES = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameBIOSSES, strOutputFileNameBIOSSES);
+        
+        benchmarkBIOSSES.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkMedSTS = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameMedSTS, strOutputFileNameMedSTS);
+        
+        benchmarkMedSTS.evaluateBenchmark(true);
+        
+        ISentenceSimilarityBenchmark benchmarkCTR = SentenceSimBenchmarkFactory.getSingleDatasetBenchmark(
+                                                    measures, m_strDatasetDir,
+                                                    m_strDatasetFileNameCTR, strOutputFileNameCTR);
+        
+        benchmarkCTR.evaluateBenchmark(true);
     }
 }

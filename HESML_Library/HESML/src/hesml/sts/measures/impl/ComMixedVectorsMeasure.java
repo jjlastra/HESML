@@ -733,13 +733,14 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
                 // With a pooling method, we calculate the similarity using UMLS and WordNet
                 
-                semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "none");
-                semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "none");
+                semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "umls");
+                semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "umls");
                 
-                semanticVector1_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence1WBSM, "wordnet");
-                semanticVector2_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence2WBSM, "wordnet"); 
-                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
-                semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
+                semanticVector1_wordnet = constructSemanticVector(dictionaryUBSM, lstWordsSentence1WBSM, "wordnet");
+                semanticVector2_wordnet = constructSemanticVector(dictionaryUBSM, lstWordsSentence2WBSM, "wordnet"); 
+                
+                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector2_umls);
+                semanticVector2 = poolVectors(semanticVector1_wordnet,semanticVector2_wordnet);
                 
                 // 3. Compute the cosine similarity between the semantic vectors
                 
