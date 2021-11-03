@@ -158,6 +158,116 @@ colnames(rawdata_MedSTS_SWEMLC_part3Max)[colnames(rawdata_MedSTS_SWEMLC_part3Max
 colnames(rawdata_CTR_SWEMLC_part3Max)[colnames(rawdata_CTR_SWEMLC_part3Max) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part3Max)[colnames(rawdata_CTR_SWEMLC_part3Max) != "Human"])
 
 
+
+
+
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
+rawdata_BIOSSES_SWEMStopWords_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part1Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part1Min  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part1Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part1Min     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part1Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part1Min)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Min) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part1Min)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part1Min)[colnames(rawdata_MedSTS_SWEMStopWords_part1Min) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part1Min)[colnames(rawdata_MedSTS_SWEMStopWords_part1Min) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part1Min)[colnames(rawdata_CTR_SWEMStopWords_part1Min) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part1Min)[colnames(rawdata_CTR_SWEMStopWords_part1Min) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part1Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part1Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part1Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Min)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Min) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Min)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part1Min)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Min) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part1Min)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Min) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part1Min)[colnames(rawdata_CTR_SWEMCharFiltering_part1Min) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part1Min)[colnames(rawdata_CTR_SWEMCharFiltering_part1Min) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part1Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part1Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part1Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part1Min)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part1Min)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part1Min)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part1Min)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Min) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part1Min)[colnames(rawdata_CTR_SWEMTokenizer_part1Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part1Min)[colnames(rawdata_CTR_SWEMTokenizer_part1Min) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part1Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part1Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part1Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part1Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part1Min)[colnames(rawdata_BIOSSES_SWEMLC_part1Min) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part1Min)[colnames(rawdata_BIOSSES_SWEMLC_part1Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part1Min)[colnames(rawdata_MedSTS_SWEMLC_part1Min) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part1Min)[colnames(rawdata_MedSTS_SWEMLC_part1Min) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part1Min)[colnames(rawdata_CTR_SWEMLC_part1Min) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part1Min)[colnames(rawdata_CTR_SWEMLC_part1Min) != "Human"])
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
+rawdata_BIOSSES_SWEMStopWords_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part2Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part2Min  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part2Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part2Min     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part2Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part2Min)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Min) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part2Min)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part2Min)[colnames(rawdata_MedSTS_SWEMStopWords_part2Min) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part2Min)[colnames(rawdata_MedSTS_SWEMStopWords_part2Min) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part2Min)[colnames(rawdata_CTR_SWEMStopWords_part2Min) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part2Min)[colnames(rawdata_CTR_SWEMStopWords_part2Min) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part2Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part2Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part2Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Min)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Min) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Min)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part2Min)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Min) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part2Min)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Min) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part2Min)[colnames(rawdata_CTR_SWEMCharFiltering_part2Min) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part2Min)[colnames(rawdata_CTR_SWEMCharFiltering_part2Min) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part2Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part2Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part2Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part2Min)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part2Min)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part2Min)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part2Min)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Min) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part2Min)[colnames(rawdata_CTR_SWEMTokenizer_part2Min) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part2Min)[colnames(rawdata_CTR_SWEMTokenizer_part2Min) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part2Min.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part2Min.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part2Min <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part2Min.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part2Min)[colnames(rawdata_BIOSSES_SWEMLC_part2Min) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part2Min)[colnames(rawdata_BIOSSES_SWEMLC_part2Min) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part2Min)[colnames(rawdata_MedSTS_SWEMLC_part2Min) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part2Min)[colnames(rawdata_MedSTS_SWEMLC_part2Min) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part2Min)[colnames(rawdata_CTR_SWEMLC_part2Min) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part2Min)[colnames(rawdata_CTR_SWEMLC_part2Min) != "Human"])
+
 ################################
 # We load the input raw results file for OurWE-based measures
 ################################
@@ -218,6 +328,112 @@ colnames(rawdata_CTR_SWEMLC_part3Min)[colnames(rawdata_CTR_SWEMLC_part3Min) != "
 
 # Stop-words processing
 
+rawdata_BIOSSES_SWEMStopWords_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part1Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part1Average  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part1Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part1Average     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part1Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part1Average)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Average) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part1Average)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part1Average)[colnames(rawdata_MedSTS_SWEMStopWords_part1Average) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part1Average)[colnames(rawdata_MedSTS_SWEMStopWords_part1Average) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part1Average)[colnames(rawdata_CTR_SWEMStopWords_part1Average) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part1Average)[colnames(rawdata_CTR_SWEMStopWords_part1Average) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part1Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part1Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part1Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Average)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Average) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Average)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part1Average)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Average) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part1Average)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Average) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part1Average)[colnames(rawdata_CTR_SWEMCharFiltering_part1Average) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part1Average)[colnames(rawdata_CTR_SWEMCharFiltering_part1Average) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part1Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part1Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part1Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part1Average)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part1Average)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part1Average)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part1Average)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Average) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part1Average)[colnames(rawdata_CTR_SWEMTokenizer_part1Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part1Average)[colnames(rawdata_CTR_SWEMTokenizer_part1Average) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part1Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part1Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part1Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part1Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part1Average)[colnames(rawdata_BIOSSES_SWEMLC_part1Average) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part1Average)[colnames(rawdata_BIOSSES_SWEMLC_part1Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part1Average)[colnames(rawdata_MedSTS_SWEMLC_part1Average) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part1Average)[colnames(rawdata_MedSTS_SWEMLC_part1Average) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part1Average)[colnames(rawdata_CTR_SWEMLC_part1Average) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part1Average)[colnames(rawdata_CTR_SWEMLC_part1Average) != "Human"])
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
+rawdata_BIOSSES_SWEMStopWords_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part2Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part2Average  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part2Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part2Average     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part2Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part2Average)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Average) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part2Average)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part2Average)[colnames(rawdata_MedSTS_SWEMStopWords_part2Average) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part2Average)[colnames(rawdata_MedSTS_SWEMStopWords_part2Average) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part2Average)[colnames(rawdata_CTR_SWEMStopWords_part2Average) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part2Average)[colnames(rawdata_CTR_SWEMStopWords_part2Average) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part2Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part2Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part2Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Average)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Average) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Average)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part2Average)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Average) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part2Average)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Average) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part2Average)[colnames(rawdata_CTR_SWEMCharFiltering_part2Average) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part2Average)[colnames(rawdata_CTR_SWEMCharFiltering_part2Average) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part2Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part2Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part2Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part2Average)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part2Average)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part2Average)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part2Average)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Average) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part2Average)[colnames(rawdata_CTR_SWEMTokenizer_part2Average) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part2Average)[colnames(rawdata_CTR_SWEMTokenizer_part2Average) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part2Average.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part2Average.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part2Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part2Average.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part2Average)[colnames(rawdata_BIOSSES_SWEMLC_part2Average) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part2Average)[colnames(rawdata_BIOSSES_SWEMLC_part2Average) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part2Average)[colnames(rawdata_MedSTS_SWEMLC_part2Average) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part2Average)[colnames(rawdata_MedSTS_SWEMLC_part2Average) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part2Average)[colnames(rawdata_CTR_SWEMLC_part2Average) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part2Average)[colnames(rawdata_CTR_SWEMLC_part2Average) != "Human"])
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
 rawdata_BIOSSES_SWEMStopWords_part3Average <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part3Average.csv"), dec = ".", sep = ';')
 rawdata_MedSTS_SWEMStopWords_part3Average  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part3Average.csv"), dec = ".", sep = ';')
 rawdata_CTR_SWEMStopWords_part3Average     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part3Average.csv"), dec = ".", sep = ';')
@@ -264,6 +480,115 @@ rawdata_CTR_SWEMLC_part3Average <- read.csv(paste(inputDir, sep = "", "raw_simil
 colnames(rawdata_BIOSSES_SWEMLC_part3Average)[colnames(rawdata_BIOSSES_SWEMLC_part3Average) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part3Average)[colnames(rawdata_BIOSSES_SWEMLC_part3Average) != "Human"])
 colnames(rawdata_MedSTS_SWEMLC_part3Average)[colnames(rawdata_MedSTS_SWEMLC_part3Average) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part3Average)[colnames(rawdata_MedSTS_SWEMLC_part3Average) != "Human"])
 colnames(rawdata_CTR_SWEMLC_part3Average)[colnames(rawdata_CTR_SWEMLC_part3Average) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part3Average)[colnames(rawdata_CTR_SWEMLC_part3Average) != "Human"])
+
+
+
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
+rawdata_BIOSSES_SWEMStopWords_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part1Sum  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part1Sum     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part1Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part1Sum)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part1Sum)[colnames(rawdata_BIOSSES_SWEMStopWords_part1Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part1Sum)[colnames(rawdata_MedSTS_SWEMStopWords_part1Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part1Sum)[colnames(rawdata_MedSTS_SWEMStopWords_part1Sum) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part1Sum)[colnames(rawdata_CTR_SWEMStopWords_part1Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part1Sum)[colnames(rawdata_CTR_SWEMStopWords_part1Sum) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part1Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Sum)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Sum)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part1Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part1Sum)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part1Sum)[colnames(rawdata_MedSTS_SWEMCharFiltering_part1Sum) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part1Sum)[colnames(rawdata_CTR_SWEMCharFiltering_part1Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part1Sum)[colnames(rawdata_CTR_SWEMCharFiltering_part1Sum) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part1Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part1Sum)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part1Sum)[colnames(rawdata_BIOSSES_SWEMTokenizer_part1Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part1Sum)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part1Sum)[colnames(rawdata_MedSTS_SWEMTokenizer_part1Sum) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part1Sum)[colnames(rawdata_CTR_SWEMTokenizer_part1Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part1Sum)[colnames(rawdata_CTR_SWEMTokenizer_part1Sum) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part1Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part1Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part1Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part1Sum)[colnames(rawdata_BIOSSES_SWEMLC_part1Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part1Sum)[colnames(rawdata_BIOSSES_SWEMLC_part1Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part1Sum)[colnames(rawdata_MedSTS_SWEMLC_part1Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part1Sum)[colnames(rawdata_MedSTS_SWEMLC_part1Sum) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part1Sum)[colnames(rawdata_CTR_SWEMLC_part1Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part1Sum)[colnames(rawdata_CTR_SWEMLC_part1Sum) != "Human"])
+
+################################
+# We load the input raw results file for OurWE-based measures
+################################
+
+# Stop-words processing
+
+rawdata_BIOSSES_SWEMStopWords_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMStopWords_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMStopWords_part2Sum  <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMStopWords_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMStopWords_part2Sum     <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMStopWords_part2Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMStopWords_part2Sum)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_BIOSSES_SWEMStopWords_part2Sum)[colnames(rawdata_BIOSSES_SWEMStopWords_part2Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMStopWords_part2Sum)[colnames(rawdata_MedSTS_SWEMStopWords_part2Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_MedSTS_SWEMStopWords_part2Sum)[colnames(rawdata_MedSTS_SWEMStopWords_part2Sum) != "Human"])
+colnames(rawdata_CTR_SWEMStopWords_part2Sum)[colnames(rawdata_CTR_SWEMStopWords_part2Sum) != "Human"] = paste("[SW]", "", colnames(rawdata_CTR_SWEMStopWords_part2Sum)[colnames(rawdata_CTR_SWEMStopWords_part2Sum) != "Human"])
+
+# Char filtering processing
+
+rawdata_BIOSSES_SWEMCharFiltering_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMCharFiltering_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMCharFiltering_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMCharFiltering_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMCharFiltering_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMCharFiltering_part2Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Sum)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Sum)[colnames(rawdata_BIOSSES_SWEMCharFiltering_part2Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMCharFiltering_part2Sum)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_MedSTS_SWEMCharFiltering_part2Sum)[colnames(rawdata_MedSTS_SWEMCharFiltering_part2Sum) != "Human"])
+colnames(rawdata_CTR_SWEMCharFiltering_part2Sum)[colnames(rawdata_CTR_SWEMCharFiltering_part2Sum) != "Human"] = paste("[CF]", "", colnames(rawdata_CTR_SWEMCharFiltering_part2Sum)[colnames(rawdata_CTR_SWEMCharFiltering_part2Sum) != "Human"])
+
+# Tokenizers processing
+
+rawdata_BIOSSES_SWEMTokenizer_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMTokenizer_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMTokenizer_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMTokenizer_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMTokenizer_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMTokenizer_part2Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMTokenizer_part2Sum)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_BIOSSES_SWEMTokenizer_part2Sum)[colnames(rawdata_BIOSSES_SWEMTokenizer_part2Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMTokenizer_part2Sum)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_MedSTS_SWEMTokenizer_part2Sum)[colnames(rawdata_MedSTS_SWEMTokenizer_part2Sum) != "Human"])
+colnames(rawdata_CTR_SWEMTokenizer_part2Sum)[colnames(rawdata_CTR_SWEMTokenizer_part2Sum) != "Human"] = paste("[TOK]", "", colnames(rawdata_CTR_SWEMTokenizer_part2Sum)[colnames(rawdata_CTR_SWEMTokenizer_part2Sum) != "Human"])
+
+
+# Lowercasing processing
+
+rawdata_BIOSSES_SWEMLC_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_BIOSSES_SWEMLC_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_MedSTS_SWEMLC_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_MedSTSFull_SWEMLC_part2Sum.csv"), dec = ".", sep = ';')
+rawdata_CTR_SWEMLC_part2Sum <- read.csv(paste(inputDir, sep = "", "raw_similarity_CTR_SWEMLC_part2Sum.csv"), dec = ".", sep = ';')
+
+# Replace the names of the columns with the current type of experiment (SW: stopwords, CF: char filtering, TOK: tokenizers, LW: lowercasing)
+
+colnames(rawdata_BIOSSES_SWEMLC_part2Sum)[colnames(rawdata_BIOSSES_SWEMLC_part2Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part2Sum)[colnames(rawdata_BIOSSES_SWEMLC_part2Sum) != "Human"])
+colnames(rawdata_MedSTS_SWEMLC_part2Sum)[colnames(rawdata_MedSTS_SWEMLC_part2Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part2Sum)[colnames(rawdata_MedSTS_SWEMLC_part2Sum) != "Human"])
+colnames(rawdata_CTR_SWEMLC_part2Sum)[colnames(rawdata_CTR_SWEMLC_part2Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part2Sum)[colnames(rawdata_CTR_SWEMLC_part2Sum) != "Human"])
 
 ################################
 # We load the input raw results file for OurWE-based measures
@@ -317,6 +642,13 @@ rawdata_CTR_SWEMLC_part3Sum <- read.csv(paste(inputDir, sep = "", "raw_similarit
 colnames(rawdata_BIOSSES_SWEMLC_part3Sum)[colnames(rawdata_BIOSSES_SWEMLC_part3Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_BIOSSES_SWEMLC_part3Sum)[colnames(rawdata_BIOSSES_SWEMLC_part3Sum) != "Human"])
 colnames(rawdata_MedSTS_SWEMLC_part3Sum)[colnames(rawdata_MedSTS_SWEMLC_part3Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_MedSTS_SWEMLC_part3Sum)[colnames(rawdata_MedSTS_SWEMLC_part3Sum) != "Human"])
 colnames(rawdata_CTR_SWEMLC_part3Sum)[colnames(rawdata_CTR_SWEMLC_part3Sum) != "Human"] = paste("[LC]", "", colnames(rawdata_CTR_SWEMLC_part3Sum)[colnames(rawdata_CTR_SWEMLC_part3Sum) != "Human"])
+
+
+
+
+
+
+
 
 
 # We merge the tables into one table for each dataset

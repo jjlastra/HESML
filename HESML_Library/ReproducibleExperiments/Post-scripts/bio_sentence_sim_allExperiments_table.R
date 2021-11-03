@@ -128,11 +128,11 @@ source(paste("bio_sentence_sim_scripts", "readTest.R", sep = "/"), local = knitr
 
 # We add the experiments to the list
 
-# rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BESTCOMBS)
+rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BESTCOMBS)
 
 # rawdata_experiments <- list(rawdata_BESTCOMBS)
 
-rawdata_experiments <- list(rawdata_Test)
+# rawdata_experiments <- list(rawdata_Test)
 
 # We initialize the counter of executions
 

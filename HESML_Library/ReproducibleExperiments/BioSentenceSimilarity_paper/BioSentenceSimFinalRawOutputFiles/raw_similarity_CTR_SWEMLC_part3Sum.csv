@@ -1,4 +1,4 @@
-Human;bio_embedding_extrinsic__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Sum;bio_embedding_extrinsic__tok-whitespace_notlc_sw-nonestopwords_cf-default_ner-none_Sum;BioNLP2016_PubMed-shuffle-win-2__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Sum;BioNLP2016_PubMed-shuffle-win-2__tok-whitespace_notlc_sw-nonestopwords_cf-default_ner-none_Sum
+Human;bio_embedding_extrinsic__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum;bio_embedding_extrinsic__tok-whitespace_notlc_sw-user_cf-default_ner-none_Sum;BioNLP2016_PubMed-shuffle-win-2__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum;BioNLP2016_PubMed-shuffle-win-2__tok-whitespace_notlc_sw-user_cf-default_ner-none_Sum
 2.6666666666666665;0.9387723030691829;0.942823719198163;0.9092003594058898;0.9128978479243827
 1.3333333333333333;0.9142507404910051;0.9063378814534863;0.8565864129224694;0.8759634248407359
 4.0;0.9518503015696144;0.9397318643521869;0.9222538316669052;0.9258041379134362

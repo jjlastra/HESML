@@ -663,16 +663,18 @@ public class HESMLSTSclient
                         true, NERType.MetamapExpandPreferredNames,
                         CharFilteringType.BIOSSES);
         
+        // We define the best pre-processing WBSM method
+        
+        bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
         IWordProcessing bestUBSMWordProcessingSnomed = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                 TokenizerType.StanfordCoreNLPv4_2_0, 
                 true, NERType.MetamapSNOMEDCT,
-                CharFilteringType.BIOSSES);
-        
-        IWordProcessing bestUBSMWordProcessingMeSH = PreprocessingFactory.getWordProcessing(
-                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                TokenizerType.StanfordCoreNLPv4_2_0, 
-                true, NERType.MetamapMESH,
                 CharFilteringType.BIOSSES);
         
         // Initialize the string measure
@@ -689,13 +691,6 @@ public class HESMLSTSclient
                  "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
                  bestUBSMWordProcessingSnomed,
                  m_SnomedOntology, m_taxonomySnomed,  
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.SingleOntology));
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureMeSH(
-                 "COMMixed_UBSMMeSH-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
-                 bestUBSMWordProcessingMeSH,
-                 m_MeshOntology, m_taxonomyMesh,  
                  SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.SingleOntology));
 
@@ -738,18 +733,7 @@ public class HESMLSTSclient
                  SimilarityMeasureType.AncSPLRada,
                  SimilarityMeasureType.AncSPLWeightedJiangConrath, 
                  IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.PooledMax));
-        
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                 "COMMixed_PooledAVG_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
-                 bestWBSMWordProcessing,
-                 bestUBSMWordProcessingSnomed,
-                 m_SnomedOntology, m_taxonomySnomed,  
-                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                 SimilarityMeasureType.AncSPLRada,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                 IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.PooledAVG));
+                 lambda, ComMixedVectorsMeasureType.PooledMin));
         
         /**
          * ****************************************************

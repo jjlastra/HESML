@@ -440,6 +440,7 @@ class BertEmbeddingModelMeasure extends SentenceSimilarityMeasure
             // Get the vectors
 
             String[] sentenceVectors = line.split("\t");
+            
             String[] vectorSentence1 = sentenceVectors[0].split(",");
             String[] vectorSentence2 = sentenceVectors[1].split(",");
 

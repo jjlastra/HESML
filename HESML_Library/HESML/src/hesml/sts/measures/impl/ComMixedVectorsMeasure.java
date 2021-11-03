@@ -46,7 +46,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * This class implements the BIOSSES2017 Measure for WBSM methods (WordNet-based methods)
@@ -705,6 +707,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 dictionaryWBSM = constructDictionaryList(lstWordsSentence1WBSM, lstWordsSentence2WBSM);
                 dictionaryUBSM = constructDictionaryList(lstWordsSentence1UBSM, lstWordsSentence2UBSM);
                 
+                // We combine the two dictionaries
+                
+                Set<String> set = new LinkedHashSet<>(dictionaryWBSM);
+                set.addAll(dictionaryUBSM);
+                dictionary = new ArrayList<>(set);
+                
                 break;
                 
             default:
@@ -733,14 +741,14 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
                 // With a pooling method, we calculate the similarity using UMLS and WordNet
                 
-                semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "umls");
-                semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "umls");
+                semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1UBSM, "umls");
+                semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2UBSM, "umls");
                 
-                semanticVector1_wordnet = constructSemanticVector(dictionaryUBSM, lstWordsSentence1WBSM, "wordnet");
-                semanticVector2_wordnet = constructSemanticVector(dictionaryUBSM, lstWordsSentence2WBSM, "wordnet"); 
+                semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1WBSM, "wordnet");
+                semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2WBSM, "wordnet"); 
                 
-                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector2_umls);
-                semanticVector2 = poolVectors(semanticVector1_wordnet,semanticVector2_wordnet);
+                semanticVector1 = poolVectors(semanticVector1_umls,semanticVector1_wordnet);
+                semanticVector2 = poolVectors(semanticVector2_umls,semanticVector2_wordnet);
                 
                 // 3. Compute the cosine similarity between the semantic vectors
                 
@@ -750,18 +758,19 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 
             case Mixed:
                 
-                semanticVector1_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence1UBSM, "umls");
-                semanticVector2_umls = constructSemanticVector(dictionaryUBSM, lstWordsSentence2UBSM, "umls");
+                semanticVector1_umls = constructSemanticVector(dictionary, lstWordsSentence1UBSM, "umls");
+                semanticVector2_umls = constructSemanticVector(dictionary, lstWordsSentence2UBSM, "umls");
                 
-                semanticVector1_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence1WBSM, "wordnet");
-                semanticVector2_wordnet = constructSemanticVector(dictionaryWBSM, lstWordsSentence2WBSM, "wordnet");
+                semanticVector1_wordnet = constructSemanticVector(dictionary, lstWordsSentence1WBSM, "wordnet");
+                semanticVector2_wordnet = constructSemanticVector(dictionary, lstWordsSentence2WBSM, "wordnet");
+                
                 
                 // 3. Compute the cosine similarity between the semantic vectors
                 
                 double ontologySimilarityUMLS = computeCosineSimilarity(semanticVector1_umls, semanticVector2_umls);
                 double ontologySimilarityWordNet = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
                 
-                // We get the high value for each similarity measure
+                // We get the higher value for each similarity measure
                 
                 ontologySimilarity = (ontologySimilarityUMLS + ontologySimilarityWordNet) / 2;
                 
@@ -804,7 +813,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         // Return the similarity value
         
-        return (similarity);
+        return (ontologySimilarity);
     }
     
     /**
@@ -847,6 +856,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 case PooledMin:
 
                     sentenceVector[i] = Math.min(sentenceVector[i], v2[i]);
+
+                    break;
+                    
+                default:
+
+                    sentenceVector[i] = Math.max(sentenceVector[i], v2[i]);
 
                     break;
             }
@@ -1268,7 +1283,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     {
         // Initialize the similarity values
 
-        double maxSimilarity = Double.NEGATIVE_INFINITY;
+        double maxSimilarity = 0.0;
 
         // If the concepts exists in WordNet, compute the similiarity
         

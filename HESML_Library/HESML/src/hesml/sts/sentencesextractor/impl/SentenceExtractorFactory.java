@@ -115,6 +115,32 @@ public class SentenceExtractorFactory
                 File fileInput = filesInFolder.get(i);
 
                 int idDocument = i;
+                
+                filesCounter++;
+                
+                // Check if the document has been already annotated
+                
+                if(!allInOneFile)
+                {
+                    // Define the file output name 
+                    
+                    String strFileOutput = strDocumentsPathOutput
+                        .concat(directory.getName())
+                        .concat("/")
+                        .concat(fileInput.getName().substring(0, fileInput.getName().lastIndexOf('.'))
+                        .concat(".txt"));
+                    
+                    // If the file already exists, jump to the next iteration
+                    
+                    File f = new File(strFileOutput);
+                    
+                    if(f.exists() && !f.isDirectory()) 
+                    { 
+                        // Jump to the next iteration
+                        
+                        continue;
+                    }
+                }
 
                 // Load the document and fill the paragraphs
 
@@ -150,9 +176,8 @@ public class SentenceExtractorFactory
                 }
                 
                 // Every 100 files print the system logs.
-                
+//                System.out.println("Total processed files: " + filesCounter.toString());
                 if(filesCounter%100 == 0) System.out.println("Total processed files: " + filesCounter.toString());
-                filesCounter++;
             }
         }
     }

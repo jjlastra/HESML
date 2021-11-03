@@ -597,7 +597,7 @@ public class HESMLSTSImpactEvaluationclient
         
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
-        System.out.println("Starting our SWEM-based measures experiments");
+        System.out.println("Starting SWEM-based measures experiments");
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
         
@@ -701,7 +701,7 @@ public class HESMLSTSImpactEvaluationclient
         
         // We define the number of models to be evaluated
         
-        int total_models = 15;
+        int total_models = 17;
         
         // We define the models to be evaluated
 
@@ -1320,23 +1320,27 @@ public class HESMLSTSImpactEvaluationclient
                                                 ComMixedVectorsMeasureType.PooledAVG,
                                                 ComMixedVectorsMeasureType.PooledMin,
                                                 ComMixedVectorsMeasureType.PooledMax,
-                                                };
+                                                ComMixedVectorsMeasureType.Mixed
+        };
         
         // We iterate the methods and create the measures for SnomedCT + WordNet pooling methods
 
         for(ComMixedVectorsMeasureType comMixedVectorsMeasureType : comMixedVectorsMeasuresType)
         {
-            ISentenceSimilarityMeasure measure = SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                                    "COMMixed_WBSM_UBSM_String_" + comMixedVectorsMeasureType.name(), 
-                                    bestWBSMWordProcessing,
-                                    bestUBSMWordProcessing,
-                                    m_SnomedOntology, m_taxonomySnomed,  
-                                    m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                                    SimilarityMeasureType.AncSPLRada,
-                                    SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                                    icModelType, stringMeasure,
-                                    0.5, comMixedVectorsMeasureType);
-            measuresLst.add(measure);
+            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_"+comMixedVectorsMeasuresType.toString(), 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessing,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 0.5, comMixedVectorsMeasureType));
+            
+            // Update the counter
+
+            totalCombinations++;
         }
         
         // We execute the experiments
@@ -1373,9 +1377,8 @@ public class HESMLSTSImpactEvaluationclient
         wordMeasures.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
         wordMeasures.add(SimilarityMeasureType.AncSPLRada);
         wordMeasures.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasures.add(SimilarityMeasureType.WuPalmerFast);
-        wordMeasures.add(SimilarityMeasureType.Lin);
         wordMeasures.add(SimilarityMeasureType.AncSPLCaiStrategy1);
+        wordMeasures.add(SimilarityMeasureType.JiangConrath);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -1446,9 +1449,8 @@ public class HESMLSTSImpactEvaluationclient
         wordMeasures.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
         wordMeasures.add(SimilarityMeasureType.AncSPLRada);
         wordMeasures.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasures.add(SimilarityMeasureType.WuPalmerFast);
-        wordMeasures.add(SimilarityMeasureType.Lin);
         wordMeasures.add(SimilarityMeasureType.AncSPLCaiStrategy1);
+        wordMeasures.add(SimilarityMeasureType.JiangConrath);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -2073,8 +2075,6 @@ public class HESMLSTSImpactEvaluationclient
          * strPythonScriptsDirectory + strPythonScript
          */
         
-        
-        
         modelPaths[0][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/oubiobert-base-uncased";
         modelPaths[0][1] = "../BERTExperiments/";
         modelPaths[0][2] = "python3";
@@ -2224,6 +2224,26 @@ public class HESMLSTSImpactEvaluationclient
         modelPaths[14][6] = "Tensorflow";
         modelPaths[14][7] = "model.ckpt-100000.index";
         modelPaths[14][8] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/DischargeSummaryBERT";
+        
+        modelPaths[15][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.1_pubmed";
+        modelPaths[15][1] = "../BERTExperiments/";
+        modelPaths[15][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
+        modelPaths[15][3] = "../BERTExperiments/extractBERTvectors.py";
+        modelPaths[15][4] = "";
+        modelPaths[15][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_v1.1_pubmed";
+        modelPaths[15][6] = "Tensorflow";
+        modelPaths[15][7] = "";
+        modelPaths[15][8] = "";
+        
+        modelPaths[16][0] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_large_v1.1_pubmed";
+        modelPaths[16][1] = "../BERTExperiments/";
+        modelPaths[16][2] = m_strDataDirectory + "BERTExperiments/venv/bin/python";
+        modelPaths[16][3] = "../BERTExperiments/extractBERTvectors.py";
+        modelPaths[16][4] = "";
+        modelPaths[16][5] = m_strDataDirectory + "BERTExperiments/BERTPretrainedModels/biobert_large_v1.1_pubmed";
+        modelPaths[16][6] = "Tensorflow";
+        modelPaths[16][7] = "";
+        modelPaths[16][8] = "";
         
         // Return the result
         

@@ -1,4 +1,4 @@
-Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_notlc_sw-nonestopwords_cf-default_ner-none_Min
+Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_notlc_sw-user_cf-default_ner-none_Min
 2.6666666666666665;0.9921787233450954;0.9930680099477092
 1.3333333333333333;0.982092208739402;0.9926911786185063
 4.0;0.9952639209131224;0.9647483285262025

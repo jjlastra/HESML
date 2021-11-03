@@ -23,7 +23,6 @@ package hesml.sts.preprocess.impl;
 
 import hesml.sts.preprocess.CharFilteringType;
 import hesml.sts.preprocess.ICharsFiltering;
-import java.text.Normalizer;
 import java.util.HashMap;
 
 /**

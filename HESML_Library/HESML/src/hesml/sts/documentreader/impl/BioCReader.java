@@ -284,6 +284,6 @@ class BioCReader
     {
         // Clean the preprocessing object
         
-        m_preprocessing.clear();
+//        m_preprocessing.clear();
     }
 }

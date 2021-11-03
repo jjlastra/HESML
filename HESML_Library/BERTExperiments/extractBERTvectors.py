@@ -107,6 +107,7 @@ file = f.read().split("\n")
 with open(absPathTempVectorsFile, 'w') as f:
     for row in file:
         if (not row == "") and (len(row)>1):
+
             data = row.split("\t")
 
             # get the sentences
@@ -129,6 +130,7 @@ with open(absPathTempVectorsFile, 'w') as f:
             strVector2 = ",".join(map(str, b))
             line = strVector1 + "\t" + strVector2
             f.write("%s\n" % line)
+
 
 print("Server status before:")
 print(bc.server_status)

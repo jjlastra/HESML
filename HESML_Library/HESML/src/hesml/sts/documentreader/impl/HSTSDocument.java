@@ -32,6 +32,7 @@ import hesml.sts.documentreader.HSTSISentence;
 import hesml.sts.documentreader.HSTSISentenceList;
 import hesml.sts.preprocess.IWordProcessing;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 /**
  *  This class implements a HESMLSTS Document.
@@ -177,18 +178,27 @@ class HSTSDocument implements HSTSIDocument
                 // Get the sentence
                 
                 String strSentence = sentence.getText();
+
                 if(strSentence.length() > 0)
                 {
-                    // Get the word tokens using the HESML STS preprocessed object
+                    // We need to replace special characters before preprocessing the sentence to avoid NER issues
                     
-                    String[] tokens = m_preprocessing.getWordTokens(strSentence);
-                    if(tokens.length > 0)
+                    strSentence = strSentence.replaceAll("\\+", "");
+                    
+                    if(strSentence.length() > 0)
                     {
-                        // Join the tokens and create a new preprocessed sentence
-                        
-                        String newSentence = String.join(" ", tokens);
-                        sentence.setText(newSentence); 
+                        // Get the word tokens using the HESML STS preprocessed object
+                    
+                        String[] tokens = m_preprocessing.getWordTokens(strSentence);
+                        if(tokens.length > 0)
+                        {
+                            // Join the tokens and create a new preprocessed sentence
+
+                            String newSentence = String.join(" ", tokens);
+                            sentence.setText(newSentence); 
+                        }
                     }
+                    
                 }
                 else
                 {

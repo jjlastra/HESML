@@ -24,7 +24,6 @@ package hesml.sts.preprocess.impl;
 
 import gov.nih.nlm.nls.ner.MetaMapLite;
 import hesml.sts.preprocess.CharFilteringType;
-import hesml.sts.preprocess.ICharsFiltering;
 import hesml.sts.preprocess.INER;
 import hesml.sts.preprocess.ITokenizer;
 import hesml.sts.preprocess.IWordProcessing;
@@ -57,6 +56,10 @@ class WordProcessing implements IWordProcessing
     protected NERType m_nerType;
     protected final INER m_ner;
     
+    // Metamap Lite instance
+    
+    protected MetaMapLite m_metaMapLiteInst;
+
     // Set the tokenization method
     
     protected final TokenizerType m_tokenizerType; 
@@ -186,7 +189,7 @@ class WordProcessing implements IWordProcessing
         
         // Compile the pattern in the constructor for efficiency reasons.
         
-        m_pattern = Pattern.compile("[[:alnum:]]");
+        m_pattern = Pattern.compile("[[:alnum:m_metaMapLiteInst]]");
     }
 
     /**

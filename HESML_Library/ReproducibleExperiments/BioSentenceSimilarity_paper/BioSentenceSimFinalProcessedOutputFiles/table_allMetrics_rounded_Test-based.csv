@@ -1,3 +1,3 @@
 "","r","$\rho$","r","$\rho$","r","$\rho$","Avg"
-"COMMixed_WBSM.AncSPLWeightedJiangConrath_String.Jaccard.1",0.608,0.615,0.678,0.655,0.7,0.639,0.649
-"COMMixed_WBSM.AncSPLWeightedJiangConrath_String.Jaccard",0.608,0.614,0.678,0.655,0.701,0.64,0.649
+"COMMixed_Mixed_lambda0.5",0.704,0.748,0.744,0.675,0.749,0.702,0.719
+"COMMixed_WBSM.AncSPLWeightedJiangConrath_String.BlockDistance_lambda0.5",0.423,0.482,0.627,0.584,0.521,0.495,0.521

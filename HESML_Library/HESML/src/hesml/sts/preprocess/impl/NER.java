@@ -182,6 +182,8 @@ class NER implements INER
                 // Loads Ctakes
                 
                 loadCtakes();
+                
+                break;
         }
     }
 
@@ -298,7 +300,7 @@ class NER implements INER
         // Initialize the result
         
         String annotatedSentence = sentence;
-        
+
         // Processing Section
 
         // Each document must be instantiated as a BioC document before processing
@@ -339,13 +341,13 @@ class NER implements INER
         // Create a new Metamap instance using the selected options 
         
         m_metaMapInst = new MetaMapApiImpl();
-        List<String> theOptions = new ArrayList<>();
-        theOptions.add("-y"); // turn on Word Sense Disambiguation
-        theOptions.add(options);
+
+        m_metaMapInst.setOptions("-y");
+        m_metaMapInst.setOptions(options); 
            
-        theOptions.forEach(opt -> {
-            m_metaMapInst.setOptions(opt);
-        });
+//        theOptions.forEach(opt -> {
+//            m_metaMapInst.setOptions(opt);
+//        });
     }
     
     /**
@@ -359,57 +361,83 @@ class NER implements INER
     {
         // Initialize the result
         
+        sentence = sentence.replaceAll("[^\\x00-\\x7F]", "");
+        
         String annotatedSentence = sentence;
         
-        annotatedSentence = annotatedSentence.replace(".", " ");
-
         List<Result> resultList = m_metaMapInst.processCitationsFromString(sentence);
+        
+        long pos_ini = 0;
+        int diff_lenght = 0;
         
         if(resultList.size() > 0)
         {
             Result result = resultList.get(0);
-
-            int diff_lenght = 0;
-
-            for (Utterance utterance: result.getUtteranceList()) 
-            {
-                for (PCM pcm: utterance.getPCMList()) 
+            
+            for (Utterance utterance: result.getUtteranceList()) {
+//            System.out.println("Utterance:");
+//            System.out.println(" Id: " + utterance.getId());
+//            System.out.println(" Utterance text: " + utterance.getString());
+//            System.out.println(" Position: " + utterance.getPosition());
+            
+            for (PCM pcm: utterance.getPCMList()) {
+//                System.out.println("Phrase:");
+//                System.out.println(" text: " + pcm.getPhrase().getPhraseText());
+//                
+//                System.out.println("Candidates:");
+                
+                
+//                System.out.println("Mappings:");
+                for (Mapping map: pcm.getMappingList()) 
                 {
-                    List<Mapping> maps = pcm.getMappingList();
-
-                    if(maps.size() > 0)
+//                  System.out.println(" Map Score: " + map.getScore());
+                  for (gov.nih.nlm.nls.metamap.Ev mapEv: map.getEvList()) {
+//                    System.out.println("   Score: " + mapEv.getScore());
+//                    System.out.println("   Concept Id: " + mapEv.getConceptId());
+//                    System.out.println("   Concept Name: " + mapEv.getConceptName());
+//                    System.out.println("   Preferred Name: " + mapEv.getPreferredName());
+//                    System.out.println("   Matched Words: " + mapEv.getMatchedWords());
+//                    System.out.println("   Semantic Types: " + mapEv.getSemanticTypes());
+//                    System.out.println("   MatchMap: " + mapEv.getMatchMap());
+//                    System.out.println("   MatchMap alt. repr.: " + mapEv.getMatchMapList());
+//                    System.out.println("   is Head?: " + mapEv.isHead());
+//                    System.out.println("   is Overmatch?: " + mapEv.isOvermatch());
+//                    System.out.println("   Sources: " + mapEv.getSources());
+//                    System.out.println("   Positional Info: " + mapEv.getPositionalInfo());
+                   
+                    
+                    for(Position p : mapEv.getPositionalInfo())
                     {
-                        Mapping map = maps.get(0);
+                        pos_ini = p.getX() - diff_lenght;
+                        
+                        if(pos_ini < 0)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            long num_chars = p.getY();
 
-                        List<gov.nih.nlm.nls.metamap.Ev> event = map.getEvList();
+                            int total_lenght = annotatedSentence.length();
 
-                        gov.nih.nlm.nls.metamap.Ev mapEv = event.get(0);
+                            int pos_end = (int) (pos_ini + num_chars);
 
+                            int cuiLenght = mapEv.getConceptId().length();
 
-                         List<Position> pos = mapEv.getPositionalInfo();
+                            diff_lenght += (int) (num_chars - cuiLenght);
 
-                         for(Position p : mapEv.getPositionalInfo())
-                         {
-                             long pos_ini = p.getX() - diff_lenght;
-                             long num_chars = p.getY();
+                            annotatedSentence = annotatedSentence.substring(0, (int) pos_ini) + mapEv.getConceptId() + annotatedSentence.substring(pos_end, total_lenght);
 
-                             int total_lenght = annotatedSentence.length();
+                        }
+                        
+                    }
 
-                             int pos_end = (int) (pos_ini + num_chars);
-
-                             int cuiLenght = mapEv.getConceptId().length();
-
-                             diff_lenght += (int) (num_chars - cuiLenght);
-
-                             String para = mapEv.getConceptId();
-                             String palabra = mapEv.getConceptName();
-
-                             annotatedSentence = annotatedSentence.substring(0, (int) pos_ini) + mapEv.getConceptId() + annotatedSentence.substring(pos_end, total_lenght);
-                         }
                     }
                 }
             }
         }
+    }
+        
         
         // Return the result
         
@@ -609,7 +637,9 @@ class NER implements INER
     {
         if(m_metaMapLiteInst != null)
             m_metaMapLiteInst = null;
-        m_metaMapInst.disconnect();
+        
+        if(m_metaMapInst != null)
+            m_metaMapInst.disconnect();
 //        if(m_metaMapInst != null)
 //            m_metaMapInst.disconnect();
         
