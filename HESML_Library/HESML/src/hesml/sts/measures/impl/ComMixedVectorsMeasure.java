@@ -185,7 +185,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     }
     
     /**
-     * Constructor for none ontology
+     * Constructor for none ontology (LiMixed measure)
      * @param preprocesser 
      * @param strWordNet_Dir Path to WordNet directory
      */
@@ -193,7 +193,6 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     ComMixedVectorsMeasure(
             String                      strLabel,
             IWordProcessing             preprocesser,
-            SimilarityMeasureType       wordSimilarityMeasureTypeUMLS,
             ISentenceSimilarityMeasure  stringMeasure,
             Double                      lambda,
             ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
@@ -770,9 +769,9 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
                 double ontologySimilarityUMLS = computeCosineSimilarity(semanticVector1_umls, semanticVector2_umls);
                 double ontologySimilarityWordNet = computeCosineSimilarity(semanticVector1_wordnet, semanticVector2_wordnet);
                 
-                // We get the higher value for each similarity measure
-                
-                ontologySimilarity = (ontologySimilarityUMLS + ontologySimilarityWordNet) / 2;
+                // Compute the COM value
+        
+                ontologySimilarity = (ontologySimilarityWordNet*m_lambda) + (ontologySimilarityUMLS*(1-m_lambda));
                 
                 break;
                 
@@ -807,13 +806,22 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         double stringSimilarity = m_stringMeasure.getSimilarityValue(strRawSentence1, strRawSentence2);
         
-        // Compute the value
+        if(ontologySimilarity == 0.0)
+        {
+            // Compute the value
         
-        similarity = (ontologySimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
+            similarity = stringSimilarity;
+        }
+        else
+        {
+            // Compute the value
+        
+            similarity = (ontologySimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
+        }
         
         // Return the similarity value
         
-        return (ontologySimilarity);
+        return (similarity);
     }
     
     /**

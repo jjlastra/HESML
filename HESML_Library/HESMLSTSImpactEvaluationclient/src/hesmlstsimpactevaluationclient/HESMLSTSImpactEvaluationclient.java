@@ -1291,7 +1291,7 @@ public class HESMLSTSImpactEvaluationclient
                             bestUBSMWordProcessing,
                             m_SnomedOntology, m_taxonomySnomed,  
                             SimilarityMeasureType.AncSPLWeightedJiangConrath, icModelType, stringMeasure,
-                            0.5, ComMixedVectorsMeasureType.SingleOntology));
+                            0.5, ComMixedVectorsMeasureType.NoneOntology));
 
         // Update the counter
 
@@ -1306,7 +1306,7 @@ public class HESMLSTSImpactEvaluationclient
                             bestWBSMWordProcessing,
                             m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
                             SimilarityMeasureType.AncSPLRada, icModelType, stringMeasure,
-                            0.5, ComMixedVectorsMeasureType.SingleOntology));
+                            0.5, ComMixedVectorsMeasureType.NoneOntology));
         
         // Update the counter
 

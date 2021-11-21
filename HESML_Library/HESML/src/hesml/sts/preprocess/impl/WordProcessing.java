@@ -189,7 +189,7 @@ class WordProcessing implements IWordProcessing
         
         // Compile the pattern in the constructor for efficiency reasons.
         
-        m_pattern = Pattern.compile("[[:alnum:m_metaMapLiteInst]]");
+        m_pattern = Pattern.compile("^.*[a-zA-Z0-9]+.*$");
     }
 
     /**

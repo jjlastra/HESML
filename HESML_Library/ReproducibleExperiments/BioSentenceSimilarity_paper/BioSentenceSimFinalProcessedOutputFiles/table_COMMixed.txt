@@ -1,17 +1,0 @@
-\begin{table}[!h]
-\centering
-\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised COMMixed similarity method evaluated herein.} 
-\begingroup\tiny
-\begin{tabular}{rrrrrrrr}
-  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
- & r & $\rho$ & r & $\rho$ & r & $\rho$ & Avg \\ 
-  \hline
-COMMixed\_UBSM.AncSPLWeightedJiangConrath\_String.BlockDistance & 0.808 & 0.818 & 0.770 & 0.709 & 0.794 & 0.805 & 0.783 \\ 
-  COMMixed\_WBSM\_UBSM\_String\_PooledMin & 0.808 & 0.818 & 0.770 & 0.709 & 0.794 & 0.805 & 0.783 \\ 
-  COMMixed\_WBSM\_UBSM\_String\_PooledAVG & 0.801 & 0.813 & 0.774 & 0.712 & 0.800 & 0.766 & 0.777 \\ 
-  COMMixed\_WBSM.AncSPLRada\_String.BlockDistance & 0.794 & 0.808 & 0.775 & 0.713 & 0.799 & 0.757 & 0.774 \\ 
-  COMMixed\_WBSM\_UBSM\_String\_PooledMax & 0.791 & 0.804 & 0.775 & 0.713 & 0.798 & 0.754 & 0.772 \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}

@@ -285,7 +285,7 @@ public class SentenceSimilarityFactory
     }
     
     /**
-     * This function creates a COM Mixed Vectors measure.
+     * This function creates a LiMixed measure.
      * 
      * @param strLabel
      * @param preprocesser
@@ -297,16 +297,15 @@ public class SentenceSimilarityFactory
      * @throws java.lang.Exception
      */
 
-    public static ISentenceSimilarityMeasure getComMixedVectorsMeasureNotAnnotated(
+    public static ISentenceSimilarityMeasure getLiMixedMeasure(
             String                      strLabel,
             IWordProcessing             preprocesser,
-            SimilarityMeasureType       wordSimilarityMeasureType,
             ISentenceSimilarityMeasure  stringMeasure,
             Double                      lambda,
             ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
         return (new ComMixedVectorsMeasure(strLabel, preprocesser,
-                wordSimilarityMeasureType, stringMeasure, lambda, comMixedVectorsMeasureType));
+                stringMeasure, lambda, comMixedVectorsMeasureType));
     }
     
     /**

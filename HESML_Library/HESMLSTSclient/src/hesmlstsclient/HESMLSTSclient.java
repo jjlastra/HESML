@@ -196,16 +196,21 @@ public class HESMLSTSclient
         
         totalCombinations += executeBestCombinationMethods("BESTCOMBS");
         
+//        totalCombinations += executeNERexperiment("NERexperiment");
+        
+//        totalCombinations += executeCOMMixedExperiment("COMMixed");
+        
         // We measure the elapsed time to run the experiments
         
         seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
         
         System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------/home/user/HESML/HESML_Library/HESML/dist/HESML-V1R5.0.1.jar------------------------------------------");
         System.out.println("Finished measures experiments");
         System.out.println("Processed a total of " + totalCombinations + 
                             " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
+        System.out.println("-"
+                + "------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
 
         // We measure the elapsed time to run the experiments
@@ -218,8 +223,334 @@ public class HESMLSTSclient
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
     }
     
+    private static int executeCOMMixedExperiment(
+                String outputFileNames) throws IOException, Exception
+    {
+        // Initialize the result
+        
+        int totalCombinations = 0;
+        
+        // We iterate the methods and create the measures
+        
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+        
+        // We define the lambda values
+        
+        double lambda = 0.5;
+        
+        IWordProcessing bestStringWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We define the pre-processing methods
+        
+        IWordProcessing bestStringExpandedWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingSnomed = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // Initialize the string measure
+
+        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                            "BlockDistance_" + bestStringWordProcessing.getLabel(),
+                            StringBasedSentenceSimilarityMethod.BlockDistance, 
+                            bestStringWordProcessing);
+        
+        // We create and add the measures
+            
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
+                 "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
+                 "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.Mixed));
+        
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.Mixed));
+        
+        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
+                 "COMMixed_PooledMax_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
+                 bestWBSMWordProcessing,
+                 bestUBSMWordProcessingSnomed,
+                 m_SnomedOntology, m_taxonomySnomed,  
+                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
+                 SimilarityMeasureType.AncSPLRada,
+                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                 IntrinsicICModelType.Seco, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.PooledMin));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We execute the experiments
+        
+        executeExperiments(measuresLst, outputFileNames);
+        
+        // Return the result 
+        
+        return (totalCombinations);
+    }
+    
+    private static int executeNERexperiment(
+            String outputFileNames) throws IOException, Exception
+    {
+        // Initialize the result
+        
+        int totalCombinations = 0;
+        
+        // We iterate the methods and create the measures
+        
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+        
+        // We define the pre-processing combination for string methods
+        
+        IWordProcessing bestStringWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We define the pre-processing methods with Metamap, MetamapLite and Ctakes
+
+        IWordProcessing bestUBSMWordProcessingMetamap = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLite = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakes = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting UBSM experiment
+         * ****************************************************
+         * ****************************************************
+         */
+
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeUBSM = IntrinsicICModelType.Seco;
+        
+        // We define the word similarity measures to be compared
+        
+        ArrayList<SimilarityMeasureType> wordMeasuresUBSM = new ArrayList<>();
+        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
+        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLRada);
+        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
+        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCaiStrategy1);
+        wordMeasuresUBSM.add(SimilarityMeasureType.JiangConrath);
+       
+        // We iterate word processing combinations
+
+        for(SimilarityMeasureType wordMeasure : wordMeasuresUBSM)
+        {
+            // We create the measures for each NER
+
+            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                            "UBSM_" + wordMeasure.name() + "_" + bestUBSMWordProcessingMetamap.getLabel(),
+                            bestUBSMWordProcessingMetamap,
+                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                            wordMeasure,
+                            icModelTypeUBSM));
+
+            // Update the total of combinations
+
+            totalCombinations++;
+
+            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                            "UBSM_" + wordMeasure.name() + "_" + bestUBSMWordProcessingMetamapLite.getLabel(),
+                            bestUBSMWordProcessingMetamapLite,
+                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                            wordMeasure,
+                            icModelTypeUBSM));
+
+            // Update the total of combinations
+
+            totalCombinations++;
+
+            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                            "UBSM_" + wordMeasure.name() + "_" + bestUBSMWordProcessingCtakes.getLabel(),
+                            bestUBSMWordProcessingCtakes,
+                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                            wordMeasure,
+                            icModelTypeUBSM));
+
+            // Update the total of combinations
+
+            totalCombinations++;
+        }
+       
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting COM experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeCOM = IntrinsicICModelType.Seco;
+       
+        // We calculate the best measure combination
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
+        
+        // We initialize WBSM and UBSM methods
+        
+        ISentenceSimilarityMeasure measureWBSM = 
+                SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM",
+                        bestWBSMWordProcessing,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeCOM);
+        
+        // We initialize the measures for each NER type
+        
+        ISentenceSimilarityMeasure measureUBSMMetamap =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "UBSM_" + bestUBSMWordProcessingMetamap.getLabel(),
+                    bestUBSMWordProcessingMetamap,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    icModelTypeCOM);
+        
+        ISentenceSimilarityMeasure measureUBSMMetamapLite =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "UBSM_" + bestUBSMWordProcessingMetamapLite.getLabel(),
+                    bestUBSMWordProcessingMetamapLite,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    icModelTypeCOM);
+        
+        ISentenceSimilarityMeasure measureUBSMCtakes =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "UBSM_" + bestUBSMWordProcessingCtakes.getLabel(),
+                    bestUBSMWordProcessingCtakes,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    icModelTypeCOM);
+        
+        // We add the measures to a list
+        
+        measures[0] = measureWBSM;
+        measures[1] = measureUBSMMetamap;
+
+        // We create the COM measure
+
+        measuresLst.add(SentenceSimilarityFactory.getCOMMeasure(
+            "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
+            0.5,
+            measures));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We add the measures to a list
+        
+        measures[0] = measureWBSM;
+        measures[1] = measureUBSMMetamapLite;
+        
+        measuresLst.add(SentenceSimilarityFactory.getCOMMeasure(
+            "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
+            0.5,
+            measures));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We add the measures to a list
+        
+        measures[0] = measureWBSM;
+        measures[1] = measureUBSMCtakes;
+        
+        measuresLst.add(SentenceSimilarityFactory.getCOMMeasure(
+            "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
+            0.5,
+            measures));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We execute the experiments
+        
+        executeExperiments(measuresLst, outputFileNames);
+        
+        // Return the result 
+        
+        return (totalCombinations);
+    }
+    
     /**
-     * Test all the string measures.
+     * Test the best comnbination methods.
      * 
      *  * Preprocessing configured as Blagec2019.
      * @return
@@ -288,6 +619,48 @@ public class HESMLSTSclient
             
             totalCombinations++;
         }
+        
+        // We define the lambda values
+        
+        double lambda = 0.5;
+        
+        // We define the pre-processing methods
+        
+        IWordProcessing bestStringWordProcessingCOMMixed = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestStringExpandedWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.MetamapExpandPreferredNames,
+                        CharFilteringType.BIOSSES);
+        
+        
+        // Initialize the string measure
+
+        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                            "BlockDistance_" + bestStringWordProcessingCOMMixed.getLabel(),
+                            StringBasedSentenceSimilarityMethod.BlockDistance, 
+                            bestStringWordProcessingCOMMixed);
+        
+        // We also add our method, which is based on Li et. al (2006)
+        
+//        // The expanded version uses Metamap to get the preferred name for each CUI concept and modify it in the sentence
+//        
+//        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+//                 "LiMixedExpanded", 
+//                 bestStringExpandedWordProcessing, stringMeasure,
+//                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+
+        // We add the LiMixed method not expanded
+        
+        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                 "LiMixed", 
+                 bestStringWordProcessingCOMMixed, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
         
         /**
          * ****************************************************
@@ -548,7 +921,7 @@ public class HESMLSTSclient
         IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
                 m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                 TokenizerType.StanfordCoreNLPv4_2_0, 
-                true, NERType.MetamapSNOMEDCT,
+                true, NERType.Ctakes,
                 CharFilteringType.BIOSSES);
 
         // We define the word similarity measures to be compared
@@ -594,6 +967,19 @@ public class HESMLSTSclient
          * ****************************************************
          * ****************************************************
          */
+        // We define the best UBSM and WBSM pre-processing methods
+        
+        IWordProcessing bestUBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestWBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -608,7 +994,7 @@ public class HESMLSTSclient
         ISentenceSimilarityMeasure measureWBSM = 
                 SentenceSimilarityFactory.getWBSMMeasure(
                         "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-                        bestWBSMWordProcessing,
+                        bestWBSMWordProcessingCOM,
                         m_WordNetDbSingleton, 
                         m_WordNetTaxonomySingleton, 
                         SimilarityMeasureType.AncSPLRada, 
@@ -617,7 +1003,7 @@ public class HESMLSTSclient
         ISentenceSimilarityMeasure measureUBSM =
             SentenceSimilarityFactory.getUBSMMeasureSnomed(
                     "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
-                    bestUBSMWordProcessing,
+                    bestUBSMWordProcessingCOM,
                     m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
                     SimilarityMeasureType.AncSPLWeightedJiangConrath,
                     icModelTypeCOM);
@@ -631,7 +1017,7 @@ public class HESMLSTSclient
 
         ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
             "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
-            0.25,
+            0.5,
             measures);
         
         // We add the measure
@@ -641,99 +1027,6 @@ public class HESMLSTSclient
         // Update the total of combinations
 
         totalCombinations++;
-        
-        
-        /**
-         * ****************************************************
-         * ****************************************************
-         * Starting COMMixed experiment
-         * ****************************************************
-         * ****************************************************
-         */
-        
-        // We define the lambda values
-        
-        double lambda = 0.5;
-        
-        // We define the pre-processing methods
-        
-        IWordProcessing bestStringExpandedWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.MetamapExpandPreferredNames,
-                        CharFilteringType.BIOSSES);
-        
-        // We define the best pre-processing WBSM method
-        
-        bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.MetamapExpandPreferredNames,
-                        CharFilteringType.BIOSSES);
-        
-        IWordProcessing bestUBSMWordProcessingSnomed = PreprocessingFactory.getWordProcessing(
-                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                TokenizerType.StanfordCoreNLPv4_2_0, 
-                true, NERType.MetamapSNOMEDCT,
-                CharFilteringType.BIOSSES);
-        
-        // Initialize the string measure
-
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                            "BlockDistance_" + bestStringWordProcessing.getLabel(),
-                            StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            bestStringWordProcessing);
-        
-        
-        // We create and add the measures
-            
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
-                 "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
-                 bestUBSMWordProcessingSnomed,
-                 m_SnomedOntology, m_taxonomySnomed,  
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.SingleOntology));
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
-                 "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
-                 bestWBSMWordProcessing,
-                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.SingleOntology));
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
-                 "COMMixed_LietalExpanded-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
-                 bestStringExpandedWordProcessing,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.SingleOntology));
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureNotAnnotated(
-                 "COMMixed_LietalBase-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance + "_lambda"+lambda, 
-                 bestStringWordProcessing,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.SingleOntology));
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                 "COMMixed_Mixed_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
-                 bestWBSMWordProcessing,
-                 bestUBSMWordProcessingSnomed,
-                 m_SnomedOntology, m_taxonomySnomed,  
-                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                 SimilarityMeasureType.AncSPLRada,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                 IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.Mixed));
-        
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                 "COMMixed_PooledMax_String_" + ComMixedVectorsMeasureType.Mixed.name() + "_lambda"+lambda, 
-                 bestWBSMWordProcessing,
-                 bestUBSMWordProcessingSnomed,
-                 m_SnomedOntology, m_taxonomySnomed,  
-                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                 SimilarityMeasureType.AncSPLRada,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                 IntrinsicICModelType.Seco, stringMeasure,
-                 lambda, ComMixedVectorsMeasureType.PooledMin));
         
         /**
          * ****************************************************

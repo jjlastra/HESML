@@ -1,14 +1,0 @@
-\begin{table}[!h]
-\centering
-\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised best combinations similarity method evaluated herein.} 
-\begingroup\tiny
-\begin{tabular}{rrrrrrrrrrr}
-  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
- & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
-  \hline
-WBSM\_AncSPLRada & 0.772 & 0.791 & 0.782 & 0.774 & 0.709 & 0.740 & 0.785 & 0.765 & 0.775 & 0.766 \\ 
-  Jaccard & 0.782 & 0.815 & 0.798 & 0.706 & 0.680 & 0.693 & 0.759 & 0.797 & 0.777 & 0.756 \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}
