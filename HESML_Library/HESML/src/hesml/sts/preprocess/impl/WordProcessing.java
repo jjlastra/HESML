@@ -428,7 +428,7 @@ class WordProcessing implements IWordProcessing
         // Stop words filename
         
         String[] stopwords = m_strStopWordsFileName.split("/");
-        String cleanedStopWordsFilename = stopwords[2].replace(".txt","");
+        String cleanedStopWordsFilename = stopwords[stopwords.length-1].replace(".txt","");
         label = label + "_SW-" + cleanedStopWordsFilename;
         
         // Add the char filtering method
