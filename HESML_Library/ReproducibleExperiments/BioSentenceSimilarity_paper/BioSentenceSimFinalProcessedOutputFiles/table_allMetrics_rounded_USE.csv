@@ -1,0 +1,16 @@
+"","r","$\rho$","h","r","$\rho$","h","r","$\rho$","h","Avg"
+"Human",1,1,1,1,1,1,1,1,1,1
+"Human.1",1,1,1,1,1,1,1,1,1,1
+"Human.2",1,1,1,1,1,1,1,1,1,1
+"X.TOK...USE_tok.stanfordcorenlpv4_2_0_lc_sw.nonestopwords_cf.default_ner.none",0.666,0.669,0.668,0.679,0.606,0.64,0.663,0.684,0.674,0.66
+"X.LC...USE_tok.whitespace_notlc_sw.nonestopwords_cf.default_ner.none",0.663,0.663,0.663,0.679,0.606,0.64,0.663,0.684,0.674,0.659
+"X.LC...USE_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.663,0.663,0.663,0.679,0.606,0.64,0.663,0.684,0.674,0.659
+"X.TOK...USE_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.663,0.663,0.663,0.679,0.606,0.64,0.663,0.684,0.674,0.659
+"X.SW...USE_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.663,0.663,0.663,0.679,0.606,0.64,0.663,0.684,0.674,0.659
+"X.CF...USE_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.663,0.663,0.663,0.679,0.606,0.64,0.663,0.684,0.674,0.659
+"X.TOK...USE_tok.biocnlptokenizer_lc_sw.nonestopwords_cf.default_ner.none",0.664,0.668,0.666,0.662,0.591,0.625,0.663,0.684,0.674,0.655
+"X.CF...USE_tok.whitespace_lc_sw.nonestopwords_cf.blagec2019_ner.none",0.658,0.645,0.651,0.675,0.608,0.64,0.655,0.674,0.664,0.652
+"X.CF...USE_tok.whitespace_lc_sw.nonestopwords_cf.biosses_ner.none",0.658,0.645,0.651,0.675,0.608,0.64,0.655,0.674,0.664,0.652
+"X.CF...USE_tok.whitespace_lc_sw.nonestopwords_cf.none_ner.none",0.658,0.645,0.651,0.675,0.608,0.64,0.655,0.674,0.664,0.652
+"X.SW...USE_tok.whitespace_lc_sw.biosses2017stopwords_cf.default_ner.none",0.598,0.598,0.598,0.696,0.624,0.658,0.684,0.715,0.699,0.652
+"X.SW...USE_tok.whitespace_lc_sw.nltk2018stopwords_cf.default_ner.none",0.597,0.594,0.596,0.695,0.624,0.658,0.684,0.718,0.701,0.651

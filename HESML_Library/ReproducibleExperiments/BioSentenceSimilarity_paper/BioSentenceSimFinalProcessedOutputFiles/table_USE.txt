@@ -1,0 +1,27 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised USE similarity method evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
+  \hline
+Human & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.1 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.2 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  X.TOK...USE\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.666 & 0.669 & 0.668 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.660 \\ 
+  X.LC...USE\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.663 & 0.663 & 0.663 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.659 \\ 
+  X.LC...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.663 & 0.663 & 0.663 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.659 \\ 
+  X.TOK...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.663 & 0.663 & 0.663 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.659 \\ 
+  X.SW...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.663 & 0.663 & 0.663 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.659 \\ 
+  X.CF...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.663 & 0.663 & 0.663 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.659 \\ 
+  X.TOK...USE\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.664 & 0.668 & 0.666 & 0.662 & 0.591 & 0.625 & 0.663 & 0.684 & 0.674 & 0.655 \\ 
+  X.CF...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.658 & 0.645 & 0.651 & 0.675 & 0.608 & 0.640 & 0.655 & 0.674 & 0.664 & 0.652 \\ 
+  X.CF...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.658 & 0.645 & 0.651 & 0.675 & 0.608 & 0.640 & 0.655 & 0.674 & 0.664 & 0.652 \\ 
+  X.CF...USE\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.658 & 0.645 & 0.651 & 0.675 & 0.608 & 0.640 & 0.655 & 0.674 & 0.664 & 0.652 \\ 
+  X.SW...USE\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.598 & 0.598 & 0.598 & 0.696 & 0.624 & 0.658 & 0.684 & 0.715 & 0.699 & 0.652 \\ 
+  X.SW...USE\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.597 & 0.594 & 0.596 & 0.695 & 0.624 & 0.658 & 0.684 & 0.718 & 0.701 & 0.651 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}

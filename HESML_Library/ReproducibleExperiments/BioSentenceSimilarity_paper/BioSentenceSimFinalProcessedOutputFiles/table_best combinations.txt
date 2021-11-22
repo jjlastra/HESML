@@ -1,0 +1,62 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised best combinations similarity method evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
+  \hline
+LiMixed & 0.814 & 0.823 & 0.819 & 0.770 & 0.709 & 0.738 & 0.795 & 0.805 & 0.800 & 0.786 \\ 
+  COM\_WBSM\_AncSPLRada\_UBSM\_AncSPLWeightedJiangConrath & 0.794 & 0.808 & 0.801 & 0.774 & 0.710 & 0.741 & 0.791 & 0.787 & 0.789 & 0.777 \\ 
+  UBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.ctakes & 0.793 & 0.805 & 0.799 & 0.766 & 0.704 & 0.733 & 0.781 & 0.803 & 0.792 & 0.775 \\ 
+  UBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.ctakes & 0.793 & 0.805 & 0.799 & 0.766 & 0.704 & 0.733 & 0.781 & 0.803 & 0.792 & 0.775 \\ 
+  UBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.ctakes & 0.793 & 0.805 & 0.799 & 0.766 & 0.704 & 0.733 & 0.781 & 0.803 & 0.792 & 0.775 \\ 
+  UBSM\_AncSPLCaiStrategy1\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.ctakes & 0.793 & 0.805 & 0.799 & 0.766 & 0.704 & 0.733 & 0.781 & 0.803 & 0.792 & 0.775 \\ 
+  UBSM\_JiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.ctakes & 0.793 & 0.805 & 0.799 & 0.766 & 0.704 & 0.733 & 0.781 & 0.803 & 0.792 & 0.775 \\ 
+  BlockDistance & 0.798 & 0.818 & 0.808 & 0.731 & 0.683 & 0.706 & 0.797 & 0.801 & 0.799 & 0.771 \\ 
+  WBSM\_AncSPLRada & 0.772 & 0.791 & 0.782 & 0.774 & 0.709 & 0.740 & 0.785 & 0.765 & 0.775 & 0.766 \\ 
+  Sent2vec\_BioSentVec\_PubMed\_MIMICIII.bigram\_d700 & 0.797 & 0.767 & 0.782 & 0.763 & 0.638 & 0.695 & 0.791 & 0.821 & 0.806 & 0.761 \\ 
+  PubMed\_SkipGramNegSampling & 0.771 & 0.763 & 0.767 & 0.764 & 0.641 & 0.697 & 0.799 & 0.835 & 0.817 & 0.760 \\ 
+  Jaccard & 0.782 & 0.815 & 0.798 & 0.706 & 0.680 & 0.693 & 0.759 & 0.797 & 0.777 & 0.756 \\ 
+  bioc\_skipgram\_defaultchar\_Min & 0.814 & 0.777 & 0.795 & 0.758 & 0.660 & 0.706 & 0.761 & 0.760 & 0.760 & 0.754 \\ 
+  Qgram & 0.752 & 0.773 & 0.763 & 0.701 & 0.674 & 0.687 & 0.763 & 0.766 & 0.764 & 0.738 \\ 
+  bioconceptvec\_word2vec\_skipgram & 0.742 & 0.743 & 0.742 & 0.751 & 0.652 & 0.698 & 0.738 & 0.800 & 0.768 & 0.736 \\ 
+  OverlapCoefficient & 0.782 & 0.795 & 0.788 & 0.696 & 0.564 & 0.623 & 0.781 & 0.793 & 0.787 & 0.733 \\ 
+  BioNLP2016\_PubMed.shuffle.win.30 & 0.745 & 0.751 & 0.748 & 0.714 & 0.609 & 0.657 & 0.742 & 0.810 & 0.774 & 0.727 \\ 
+  PubMed.and.PMC.w2v & 0.713 & 0.706 & 0.709 & 0.754 & 0.641 & 0.693 & 0.744 & 0.803 & 0.773 & 0.725 \\ 
+  PubMed\_CBOW & 0.675 & 0.686 & 0.681 & 0.746 & 0.647 & 0.693 & 0.697 & 0.768 & 0.731 & 0.701 \\ 
+  PubMed\_Glove & 0.671 & 0.678 & 0.674 & 0.740 & 0.643 & 0.688 & 0.732 & 0.729 & 0.731 & 0.698 \\ 
+  BioNLP2016\_PubMed.shuffle.win.2 & 0.697 & 0.693 & 0.695 & 0.699 & 0.594 & 0.642 & 0.691 & 0.759 & 0.724 & 0.687 \\ 
+  bioconceptvec\_word2vec\_cbow & 0.670 & 0.655 & 0.662 & 0.746 & 0.650 & 0.695 & 0.659 & 0.714 & 0.685 & 0.681 \\ 
+  oubiobert.base.uncased\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.default\_ner.none & 0.687 & 0.729 & 0.707 & 0.707 & 0.583 & 0.639 & 0.670 & 0.694 & 0.682 & 0.676 \\ 
+  bio\_embedding\_extrinsic & 0.648 & 0.666 & 0.657 & 0.702 & 0.641 & 0.670 & 0.632 & 0.703 & 0.666 & 0.664 \\ 
+  bio\_embedding\_intrinsic & 0.655 & 0.672 & 0.663 & 0.691 & 0.645 & 0.667 & 0.625 & 0.695 & 0.658 & 0.663 \\ 
+  ncbi\_bert\_pubmed\_uncased\_l.12\_h.768\_a.12\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.blagec2019\_ner.none & 0.682 & 0.668 & 0.675 & 0.679 & 0.565 & 0.617 & 0.668 & 0.719 & 0.693 & 0.662 \\ 
+  USE & 0.666 & 0.669 & 0.668 & 0.679 & 0.606 & 0.640 & 0.663 & 0.684 & 0.674 & 0.660 \\ 
+  biobert\_v1.1\_pubmed\_tok.wordpiecetokenizer\_notlc\_sw.user\_cf.blagec2019\_ner.none & 0.668 & 0.647 & 0.657 & 0.712 & 0.616 & 0.661 & 0.643 & 0.663 & 0.653 & 0.657 \\ 
+  scibert\_scivocab\_uncased\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.653 & 0.616 & 0.634 & 0.727 & 0.643 & 0.683 & 0.604 & 0.682 & 0.641 & 0.652 \\ 
+  ncbi\_bert\_pubmed\_uncased\_l.24\_h.1024\_a.16\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.688 & 0.712 & 0.700 & 0.636 & 0.588 & 0.611 & 0.609 & 0.674 & 0.640 & 0.650 \\ 
+  pubmedbert.base.uncased.abstract.fulltext\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.default\_ner.none & 0.660 & 0.651 & 0.655 & 0.712 & 0.590 & 0.645 & 0.596 & 0.674 & 0.633 & 0.644 \\ 
+  biobert\_v1.0\_pmc\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.664 & 0.663 & 0.664 & 0.674 & 0.581 & 0.624 & 0.601 & 0.647 & 0.623 & 0.637 \\ 
+  bioconceptvec\_glove & 0.547 & 0.585 & 0.565 & 0.720 & 0.648 & 0.682 & 0.624 & 0.694 & 0.657 & 0.635 \\ 
+  biobert\_v1.0\_pubmed\_pmc\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.616 & 0.609 & 0.612 & 0.647 & 0.561 & 0.601 & 0.638 & 0.663 & 0.650 & 0.621 \\ 
+  WBSM\_AncSPLCosineNormWeightedJiangConrath & 0.571 & 0.566 & 0.568 & 0.705 & 0.651 & 0.677 & 0.637 & 0.590 & 0.613 & 0.619 \\ 
+  biobert\_large\_v1.1\_pubmed\_tok.wordpiecetokenizer\_notlc\_sw.user\_cf.blagec2019\_ner.none & 0.557 & 0.546 & 0.551 & 0.695 & 0.622 & 0.657 & 0.579 & 0.650 & 0.612 & 0.607 \\ 
+  biobert\_v1.0\_pubmed\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.569 & 0.567 & 0.568 & 0.662 & 0.576 & 0.616 & 0.616 & 0.642 & 0.629 & 0.604 \\ 
+  ncbi\_bert\_pubmed\_mimic\_uncased\_l.12\_h.768\_a.12\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.537 & 0.536 & 0.536 & 0.733 & 0.624 & 0.674 & 0.548 & 0.553 & 0.550 & 0.587 \\ 
+  ncbi\_bert\_pubmed\_mimic\_uncased\_l.24\_h.1024\_a.16\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.biosses\_ner.none & 0.560 & 0.578 & 0.569 & 0.675 & 0.628 & 0.651 & 0.487 & 0.504 & 0.496 & 0.572 \\ 
+  Levenshtein & 0.544 & 0.536 & 0.540 & 0.618 & 0.640 & 0.629 & 0.480 & 0.513 & 0.496 & 0.555 \\ 
+  pubmedbert.base.uncased.abstract\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.default\_ner.none & 0.501 & 0.524 & 0.512 & 0.626 & 0.531 & 0.575 & 0.479 & 0.645 & 0.550 & 0.546 \\ 
+  WBSM\_JiangConrath & 0.452 & 0.454 & 0.453 & 0.660 & 0.620 & 0.639 & 0.540 & 0.503 & 0.521 & 0.538 \\ 
+  WBSM\_AncSPLWeightedJiangConrath & 0.452 & 0.454 & 0.453 & 0.660 & 0.620 & 0.639 & 0.540 & 0.503 & 0.521 & 0.538 \\ 
+  clinicalbert\_tok.wordpiecetokenizer\_notlc\_sw.user\_cf.blagec2019\_ner.none & 0.481 & 0.525 & 0.502 & 0.649 & 0.564 & 0.604 & 0.477 & 0.495 & 0.486 & 0.530 \\ 
+  bio.clinicalbert\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.blagec2019\_ner.none & 0.453 & 0.466 & 0.459 & 0.656 & 0.579 & 0.615 & 0.488 & 0.527 & 0.507 & 0.527 \\ 
+  dischargesummarybert\_tok.wordpiecetokenizer\_notlc\_sw.user\_cf.blagec2019\_ner.none & 0.459 & 0.491 & 0.474 & 0.651 & 0.567 & 0.606 & 0.420 & 0.453 & 0.436 & 0.505 \\ 
+  WBSM\_AncSPLCaiStrategy1 & 0.407 & 0.449 & 0.427 & 0.637 & 0.604 & 0.620 & 0.483 & 0.443 & 0.462 & 0.503 \\ 
+  bio.dischargesummarybert\_tok.wordpiecetokenizer\_lc\_sw.user\_cf.blagec2019\_ner.none & 0.410 & 0.431 & 0.420 & 0.631 & 0.559 & 0.592 & 0.401 & 0.433 & 0.417 & 0.476 \\ 
+  Flair & 0.628 & 0.625 & 0.626 & -0.014 & -0.035 & -0.020 & 0.652 & 0.719 & 0.684 & 0.430 \\ 
+  bioconceptvec\_fasttext & 0.091 & 0.262 & 0.135 & 0.416 & 0.456 & 0.435 & 0.178 & 0.264 & 0.212 & 0.261 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}

@@ -1,0 +1,15 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised COM similarity method evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
+  \hline
+COM\_0.75\_WBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.none\_UBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.metamapsnomedct & 0.784 & 0.806 & 0.795 & 0.771 & 0.705 & 0.737 & 0.788 & 0.775 & 0.782 & 0.771 \\ 
+  COM\_0.5\_WBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.none\_UBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.metamapsnomedct & 0.783 & 0.804 & 0.793 & 0.759 & 0.692 & 0.724 & 0.784 & 0.782 & 0.783 & 0.767 \\ 
+  COM\_0.25\_WBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.none\_UBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.user\_cf.biosses\_ner.metamapsnomedct & 0.765 & 0.790 & 0.777 & 0.739 & 0.675 & 0.706 & 0.770 & 0.781 & 0.775 & 0.753 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
