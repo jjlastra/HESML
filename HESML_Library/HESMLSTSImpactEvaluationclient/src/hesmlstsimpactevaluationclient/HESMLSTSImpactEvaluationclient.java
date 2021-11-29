@@ -356,43 +356,43 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("-------------------------------------------------");
         System.out.println("-------------------------------------------------");
         
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 2. Starting our WE-based measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting our preprocessed WE-based measures experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // Compute all the executions
-//        
-//        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
-//        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
-//        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
-//        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished our preprocessed WE-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 2. Starting our WE-based measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting our preprocessed WE-based measures experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // Compute all the executions
+        
+        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
+        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
+        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
+        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished our preprocessed WE-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
         
         /**
          * ***********************************************
@@ -538,256 +538,256 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
         
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 4. Starting SWEM measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting SWEM-based measures experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // List with all the pooling methods for WE-based methods
-//        
-//        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
-//        poolingMethods.add(SWEMpoolingMethod.Max);
-//        poolingMethods.add(SWEMpoolingMethod.Average);
-//        poolingMethods.add(SWEMpoolingMethod.Min);
-//        poolingMethods.add(SWEMpoolingMethod.Sum);
-//        
-//        // We define the models to be evaluated
-//        
-//        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
-//        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
-//        
-//        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
-//        
-//        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
-//        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
-//        
-//        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
-//        
-//        modelsBioWordVecBased.add("bio_embedding_extrinsic");
-//        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // Compute all the executions
-//        
-//        for(SWEMpoolingMethod pooling : poolingMethods)
-//        {
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//        }
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished SWEM-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 5. Starting BERT measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting BERT methods experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // We define the number of models to be evaluated
-//        
-//        int total_models = 17;
-//        
-//        // We define the models to be evaluated
-//
-//        String[][] modelPaths = getBERTModelPathList(total_models);
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // Compute all the executions
-//        
-//        totalCombinations += executeBERTMeasures(
-//        modelPaths, total_models, getStopWordsPreprocessingConfigurations(true, NERType.None), "BERTStopWords");
-//
-//        totalCombinations += executeBERTMeasures(
-//        modelPaths, total_models, getCharFilteringPreprocessingConfigurations(true, NERType.None), "BERTCharFiltering");
-//
-//        totalCombinations += executeBERTMeasures(
-//        modelPaths, total_models, getLowerCasePreprocessingConfigurations(true, NERType.None), "BERTLC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished BERT methods experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 6. Starting Sent2Vec experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Starting Sent2Vec experiments");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        // Compute all preprocessing combinations
-//        
-//        totalCombinations += executeSent2VecMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "Sent2VecStopWords");
-//        totalCombinations += executeSent2VecMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "Sent2VecCharFiltering");
-//        totalCombinations += executeSent2VecMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "Sent2VecTokenizer");
-//        totalCombinations += executeSent2VecMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "Sent2VecLC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Finished Sent2Vec measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 7. Starting USE experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Starting USE experiments");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        // Compute all preprocessing combinations
-//        
-//        totalCombinations += executeUSEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "USEStopWords");
-//        totalCombinations += executeUSEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "USECharFiltering");
-//        totalCombinations += executeUSEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "USETokenizer");
-//        totalCombinations += executeUSEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "USELC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Finished USE measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 8. Starting Flair experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Starting Flair experiments");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        // Compute all preprocessing combinations
-//        
-//        totalCombinations += executeFlairMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "FlairStopWords");
-//        totalCombinations += executeFlairMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "FlairCharFiltering");
-//        totalCombinations += executeFlairMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "FlairTokenizer");
-//        totalCombinations += executeFlairMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "FlairLC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Finished Flair measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 4. Starting SWEM measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting SWEM-based measures experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // List with all the pooling methods for WE-based methods
+        
+        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
+        poolingMethods.add(SWEMpoolingMethod.Max);
+        poolingMethods.add(SWEMpoolingMethod.Average);
+        poolingMethods.add(SWEMpoolingMethod.Min);
+        poolingMethods.add(SWEMpoolingMethod.Sum);
+        
+        // We define the models to be evaluated
+        
+        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
+        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
+        
+        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
+        
+        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
+        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
+        
+        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
+        
+        modelsBioWordVecBased.add("bio_embedding_extrinsic");
+        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // Compute all the executions
+        
+        for(SWEMpoolingMethod pooling : poolingMethods)
+        {
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+        }
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished SWEM-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 5. Starting BERT measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting BERT methods experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // We define the number of models to be evaluated
+        
+        int total_models = 17;
+        
+        // We define the models to be evaluated
+
+        String[][] modelPaths = getBERTModelPathList(total_models);
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // Compute all the executions
+        
+        totalCombinations += executeBERTMeasures(
+        modelPaths, total_models, getStopWordsPreprocessingConfigurations(true, NERType.None), "BERTStopWords");
+
+        totalCombinations += executeBERTMeasures(
+        modelPaths, total_models, getCharFilteringPreprocessingConfigurations(true, NERType.None), "BERTCharFiltering");
+
+        totalCombinations += executeBERTMeasures(
+        modelPaths, total_models, getLowerCasePreprocessingConfigurations(true, NERType.None), "BERTLC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished BERT methods experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 6. Starting Sent2Vec experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Starting Sent2Vec experiments");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        // Compute all preprocessing combinations
+        
+        totalCombinations += executeSent2VecMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "Sent2VecStopWords");
+        totalCombinations += executeSent2VecMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "Sent2VecCharFiltering");
+        totalCombinations += executeSent2VecMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "Sent2VecTokenizer");
+        totalCombinations += executeSent2VecMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "Sent2VecLC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Finished Sent2Vec measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 7. Starting USE experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Starting USE experiments");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        // Compute all preprocessing combinations
+        
+        totalCombinations += executeUSEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "USEStopWords");
+        totalCombinations += executeUSEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "USECharFiltering");
+        totalCombinations += executeUSEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "USETokenizer");
+        totalCombinations += executeUSEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "USELC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Finished USE measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 8. Starting Flair experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Starting Flair experiments");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        // Compute all preprocessing combinations
+        
+        totalCombinations += executeFlairMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "FlairStopWords");
+        totalCombinations += executeFlairMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "FlairCharFiltering");
+        totalCombinations += executeFlairMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "FlairTokenizer");
+        totalCombinations += executeFlairMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "FlairLC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Finished Flair measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
         // Return the result
         
         return (totalCombinations);
@@ -1234,114 +1234,6 @@ public class HESMLSTSImpactEvaluationclient
      * @param sentences2: second sentences of the dataset
      */
     
-    private static int executeCOMMixedMeasures(
-        IWordProcessing wordPreprocessingBestString,
-        IWordProcessing bestUBSMWordProcessing,
-        IWordProcessing bestWBSMWordProcessing,
-        String outputFileNames) 
-            throws IOException, InterruptedException, Exception
-    {
-        // Initialize the result
-        
-        int totalCombinations = 0;
-        
-        // We initialize the measures list
-
-        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-
-        // We get the intrinsic IC model if anyone has been defined
-
-        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
-        
-        // Initialize the string measure
-
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                            "BlockDistance_" + wordPreprocessingBestString.getLabel(),
-                            StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            wordPreprocessingBestString);
-        
-        // First, we add the non-pooled measures
-        
-        // We add the Snomed CT measures
-        
-        // We iterate the methods and create the measures
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
-                            "COMMixed_UBSM-" + SimilarityMeasureType.AncSPLWeightedJiangConrath +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            bestUBSMWordProcessing,
-                            m_SnomedOntology, m_taxonomySnomed,  
-                            SimilarityMeasureType.AncSPLWeightedJiangConrath, icModelType, stringMeasure,
-                            0.5, ComMixedVectorsMeasureType.NoneOntology));
-
-        // Update the counter
-
-        totalCombinations++;
-        
-        // We add the WordNet measures
-        
-        // We iterate the methods and create the measures
-
-        measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNet(
-                            "COMMixed_WBSM-" + SimilarityMeasureType.AncSPLRada +"_String-" + StringBasedSentenceSimilarityMethod.BlockDistance, 
-                            bestWBSMWordProcessing,
-                            m_WordNetDbSingleton, m_WordNetTaxonomySingleton,  
-                            SimilarityMeasureType.AncSPLRada, icModelType, stringMeasure,
-                            0.5, ComMixedVectorsMeasureType.NoneOntology));
-        
-        // Update the counter
-
-        totalCombinations++;
-        
-        // Finally, we add the pooled methods
-        
-        // Initialize the COMMixed Types
-        
-        ComMixedVectorsMeasureType[] comMixedVectorsMeasuresType = {
-                                                ComMixedVectorsMeasureType.PooledAVG,
-                                                ComMixedVectorsMeasureType.PooledMin,
-                                                ComMixedVectorsMeasureType.PooledMax,
-                                                ComMixedVectorsMeasureType.Mixed
-        };
-        
-        // We iterate the methods and create the measures for SnomedCT + WordNet pooling methods
-
-        for(ComMixedVectorsMeasureType comMixedVectorsMeasureType : comMixedVectorsMeasuresType)
-        {
-            measuresLst.add(SentenceSimilarityFactory.getComMixedVectorsMeasureWordNetSnomedCTPooled(
-                 "COMMixed_"+comMixedVectorsMeasuresType.toString(), 
-                 bestWBSMWordProcessing,
-                 bestUBSMWordProcessing,
-                 m_SnomedOntology, m_taxonomySnomed,  
-                 m_WordNetDbSingleton, m_WordNetTaxonomySingleton, 
-                 SimilarityMeasureType.AncSPLRada,
-                 SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                 IntrinsicICModelType.Seco, stringMeasure,
-                 0.5, comMixedVectorsMeasureType));
-            
-            // Update the counter
-
-            totalCombinations++;
-        }
-        
-        // We execute the experiments
-        
-        executeExperiments(measuresLst, outputFileNames);
-
-        // Return the result
-        
-        return (totalCombinations);
-    }
-    
-    /**
-     * Test all the string measures.
-     * 
-     *  * Preprocessing configured as Blagec2019.
-     * @return
-     * @throws IOException 
-     * @param sentences1: first sentences of the dataset
-     * @param sentences2: second sentences of the dataset
-     */
-    
     private static int executeWBSMMeasures(
         ArrayList<IWordProcessing> wordProcessingCombinations, 
         String outputFileNames) 
@@ -1705,51 +1597,51 @@ public class HESMLSTSImpactEvaluationclient
      */
     private static void loadOntologies(boolean useWordNetCache) throws Exception
     {
-        // We create the singleton instance of the WordNet database and taxonomy
-
-        if (m_WordNetDbSingleton == null || useWordNetCache == false)
-        {
-            // We load the singleton instance of WordNet-related objects. It is done to
-            // avoid the memory cost of multiple instances of WordNet when multiple
-            // instances of the WBSM measure are created.
-            
-            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-
-            // We pre-process the taxonomy to compute all the parameters
-            // used by the intrinsic IC-computation methods
-
-            m_WordNetTaxonomySingleton.computesCachedAttributes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_SnomedOntology == null)
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-                                    m_strSnomedConceptFilename,
-                                    m_strSnomedRelationshipsFilename,
-                                    m_strSnomedDescriptionFilename,
-                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-
-            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_MeshOntology == null)
-        {
-            // We load the MeSH ontology and get the vertex list of its taxonomy
-
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-
-            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
-        }
+//        // We create the singleton instance of the WordNet database and taxonomy
+//
+//        if (m_WordNetDbSingleton == null || useWordNetCache == false)
+//        {
+//            // We load the singleton instance of WordNet-related objects. It is done to
+//            // avoid the memory cost of multiple instances of WordNet when multiple
+//            // instances of the WBSM measure are created.
+//            
+//            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
+//            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+//
+//            // We pre-process the taxonomy to compute all the parameters
+//            // used by the intrinsic IC-computation methods
+//
+//            m_WordNetTaxonomySingleton.computesCachedAttributes();
+//        }
+//        
+//        // We create the singleton instance of the UMLS database and taxonomy
+//
+//        if (m_SnomedOntology == null)
+//        {
+//            // We load the SNOMED ontology and get the vertex list of its taxonomy
+//
+//            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+//                                    m_strSnomedConceptFilename,
+//                                    m_strSnomedRelationshipsFilename,
+//                                    m_strSnomedDescriptionFilename,
+//                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+//
+//            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
+//            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
+//        }
+//        
+//        // We create the singleton instance of the UMLS database and taxonomy
+//
+//        if (m_MeshOntology == null)
+//        {
+//            // We load the MeSH ontology and get the vertex list of its taxonomy
+//
+//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+//
+//            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
+//        }
     }
     
             

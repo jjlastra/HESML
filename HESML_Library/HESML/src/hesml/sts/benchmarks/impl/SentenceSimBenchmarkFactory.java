@@ -323,12 +323,6 @@ public class SentenceSimBenchmarkFactory
                         tempMeasureList.add(readBERTmodelSentenceMeasure(measureNode));
                         
                         break;
-                    
-                    case "ComMixedVectorsMeasure":
-                        
-                        tempMeasureList.add(readComMixedVectorsMeasure(measureNode));
-                        
-                        break;
                 }
             }
         }
@@ -1033,108 +1027,6 @@ public class SentenceSimBenchmarkFactory
                         wordMeasureType, icModelType);
         }
 
-        // We return the result
-        
-        return (measure);
-    }
-    
-    /**
-     * This function parses a UBSM measure defined in the XML-based experiment file.
-     * @param measureNode
-     * @return 
-     */
-    
-    private static ISentenceSimilarityMeasure readComMixedVectorsMeasure(
-        Element measureNode) throws Exception
-    {
-        // We initialize the mesure
-        
-        ISentenceSimilarityMeasure measure = null;
-
-        // We get the ontology database information
-
-        String UmlsCuiMappingFilename = readStringField(measureNode, "UmlsCuiMappingFilename");
-        String UMLSdir = readStringField(measureNode, "UMLSdir");
-        String MeSHdir = readStringField(measureNode, "MeSHdir");
-        String MeSHdescriptorFilename = readStringField(measureNode, "MeSHdescriptorFilename");
-        String SnomedDir = readStringField(measureNode, "SnomedDir");
-        String SnomedConceptFilename = readStringField(measureNode, "SnomedConceptFilename");
-        String SnomedRelationshipsFilename = readStringField(measureNode, "SnomedRelationshipsFilename");
-        String SnomedDescriptionFilename = readStringField(measureNode, "SnomedDescriptionFilename");
-        
-        // We get the WordNet databse information
-
-        String strWordNetDbDir = readStringField(measureNode, "WordNetDbDir");
-        String strWordNetDbFilename = readStringField(measureNode, "WordNetDbFilename");
-        
-        // We read the word similarity type
-        
-        SimilarityMeasureType wordSimilarityMeasureTypeWordnet = convertToWordSimilarityMeasureType(
-                                                readStringField(measureNode, "WordSimilarityMeasureTypeWordnet"));
-        
-        SimilarityMeasureType wordSimilarityMeasureTypeUMLS = convertToWordSimilarityMeasureType(
-                                                readStringField(measureNode, "WordSimilarityMeasureTypeUMLS"));
-        
-        // We create the singleton instance of the WordNet database and taxonomy
-
-        if (m_WordNetDbSingleton == null)
-        {
-            // We load the singleton instance of WordNet-related objects. It is done to
-            // avoid the memory cost of multiple instances of WordNet when multiple
-            // instances of the WBSM measure are created.
-            
-            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(strWordNetDbDir, strWordNetDbFilename);    
-            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-
-            // We pre-process the taxonomy to compute all the parameters
-            // used by the intrinsic IC-computation methods
-
-            m_WordNetTaxonomySingleton.computesCachedAttributes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_SnomedOntology == null)
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(SnomedDir,
-                                    SnomedConceptFilename,
-                                    SnomedRelationshipsFilename,
-                                    SnomedDescriptionFilename,
-                                    UMLSdir, UmlsCuiMappingFilename);
-
-            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-        }
-
-        // We get the intrinsic IC model if anyone has been defined
-
-        String strICModelTag = "IntrinsicICmodel";
-        
-        IntrinsicICModelType icModelType = containsChildWithTagName(measureNode, strICModelTag) ?
-                                            convertToIntrincICmodelType(readStringField(measureNode, strICModelTag))
-                                            : IntrinsicICModelType.Seco;
-            
-        // We read the String-based measure
-        
-        // We get the WBSM and UBSM nodes
-        
-        Element StringBasedSentenceSimilarityNode = (Element) measureNode.getElementsByTagName("StringBasedSentenceSimilarityMeasure").item(0);
-        
-        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                                readStringField(StringBasedSentenceSimilarityNode, "Label"),
-                                convertToStringBasedSentenceSimilarityMethod(readStringField(StringBasedSentenceSimilarityNode, "Method")),
-                                readWordProcessing(StringBasedSentenceSimilarityNode));
-        
-        measure = SentenceSimilarityFactory.getComMixedVectorsMeasureSnomedCT(
-                readStringField(measureNode, "Label"), 
-                readWordProcessing(measureNode),
-                m_SnomedOntology, m_taxonomySnomed,
-                wordSimilarityMeasureTypeUMLS, icModelType, stringMeasure,
-                readDoubleField(measureNode, "Lambda"),
-                convertToComMixedVectorsMeasureType(readStringField(measureNode, "ComMixedVectorsMeasureType")));
-               
         // We return the result
         
         return (measure);
