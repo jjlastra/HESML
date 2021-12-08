@@ -1,6 +1,6 @@
 \begin{table}[!h]
 \centering
-\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised Sent2Vec similarity method evaluated herein.} 
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by the Sent2Vec similarity methods evaluated herein.} 
 \begingroup\tiny
 \begin{tabular}{rrrrrrrrrrr}
   \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline

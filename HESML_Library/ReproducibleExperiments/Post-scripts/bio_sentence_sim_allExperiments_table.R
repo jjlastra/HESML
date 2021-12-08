@@ -127,11 +127,9 @@ source(paste("bio_sentence_sim_scripts", "readNERexperiment.R", sep = "/"), loca
 
 # We add the experiments to the list
 
-# rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair)
+rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_SWEM, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_NERexperiment, rawdata_BERT)
 
-# rawdata_experiments <- list(rawdata_BESTCOMBS, rawdata_NERexperiment)
-
-rawdata_experiments <- list(rawdata_BESTCOMBS)
+# rawdata_experiments <- list(rawdata_BERT)
 
 # We initialize the counter of executions
 
@@ -155,7 +153,7 @@ for(iexperiment in rawdata_experiments)
   
   # We get the experiment subdirectory and the caption for the Latex File
   
-  strCaption = paste("Table \\label{table:", experimentSubdirectory, "}: Pearson (r), Spearman ($\rho$) and Harmonic score (h) obtained by each unsupervised ", experimentLabel, " similarity method evaluated herein.", sep="")
+  strCaption = paste("Table \\label{table:", experimentSubdirectory, "}: Pearson (r), Spearman ($\rho$) and Harmonic score (h) obtained by the ", experimentLabel, " similarity methods evaluated herein.", sep="")
   
   rawdata_BIOSSES <- iexperiment$biosses
   rawdata_MedSTS  <- iexperiment$medsts
@@ -234,7 +232,6 @@ for(iexperiment in rawdata_experiments)
   
   # table_allMetrics <- cbind(table_Pearson, table_Spearman, Avg = rowMeans(table_Harmonic[1:nrow(table_Harmonic),]))
   
-  
   table_allMetrics <- mat.sort(table_allMetrics, ncol(table_allMetrics), decreasing = TRUE)
   
   # We set the column names to the final matrix
@@ -258,7 +255,7 @@ for(iexperiment in rawdata_experiments)
   
   table_allMetrics_rounded <- as.data.frame(table_allMetrics_rounded)
   table_allMetrics_rounded
-  
+
   # We save all final assembled data tables 
   
   write.csv(table_allMetrics, file = paste(outputDir,"table_allMetrics_", experimentLabel, ".csv", sep=""))
@@ -307,7 +304,7 @@ for(iexperiment in rawdata_experiments)
   # We save the tables in latex and HTML format files. The HTML format is for 
   
   strLatexTables <- paste(strLatexTables, sep="\n\n", tableLatex)
-  
+
   # Write the Latex table in a file
   
   file_name <- paste(outputDir,"table_", experimentLabel, ".txt", sep="")
@@ -324,5 +321,7 @@ for(iexperiment in rawdata_experiments)
 file_name <- paste(outputDir,"table_allMetricsALLJoint.txt", sep="")
 
 write_file(strLatexTables, file_name)
+
+browseURL(file_name)
 
 counter_executions

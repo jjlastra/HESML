@@ -73,15 +73,15 @@ counter_executions <- 0
 
 # We get the label
 
-experimentLabel = rawdata_BESTCOMBS$label
+experimentLabel = rawdata_NERexperiment$label
 
 # We get the experiment subdirectory and the caption for the Latex File
 
 strCaption = paste("Table \\label{table:", experimentSubdirectory, "}: Pearson (r), Spearman ($\rho$) and Harmonic score (h) obtained by each unsupervised ", experimentLabel, " similarity method evaluated herein.", sep="")
 
-rawdata_BIOSSES <- rawdata_BESTCOMBS$biosses
-rawdata_MedSTS  <- rawdata_BESTCOMBS$medsts
-rawdata_CTR     <- rawdata_BESTCOMBS$ctr
+rawdata_BIOSSES <- rawdata_NERexperiment$biosses
+rawdata_MedSTS  <- rawdata_NERexperiment$medsts
+rawdata_CTR     <- rawdata_NERexperiment$ctr
 
 # mat.sort function is copied from source files of
 # BioPhysConnectoR package which is now unavailable.
@@ -286,80 +286,4 @@ rownames(outputMatrix) = rowNames
 
 final_data <- round(outputMatrix, 3)
 
-write.csv(final_data, file = paste(outputDir, sep="","Pvalues.csv"))
-
-rowNames
-
-# [1] "Jaccard"                                                                                              
-# [2] "BlockDistance"                                                                                        
-# [3] "Levenshtein"                                                                                          
-# [4] "OverlapCoefficient"                                                                                   
-# [5] "Qgram"                                                                                                
-# [6] "bioc_skipgram_defaultchar_Min"                                                                        
-# [7] "bioconceptvec_fasttext"                                                                               
-# [8] "bioconceptvec_glove"                                                                                  
-# [9] "bioconceptvec_word2vec_cbow"                                                                          
-# [10] "bioconceptvec_word2vec_skipgram"                                                                      
-# [11] "PubMed_CBOW"                                                                                          
-# [12] "PubMed_Glove"                                                                                         
-# [13] "PubMed_SkipGramNegSampling"                                                                           
-# [14] "PubMed.and.PMC.w2v"                                                                                   
-# [15] "bio_embedding_extrinsic"                                                                              
-# [16] "bio_embedding_intrinsic"                                                                              
-# [17] "BioNLP2016_PubMed.shuffle.win.2"                                                                      
-# [18] "BioNLP2016_PubMed.shuffle.win.30"                                                                     
-# [19] "WBSM_AncSPLWeightedJiangConrath"                                                                      
-# [20] "WBSM_AncSPLRada"                                                                                      
-# [21] "WBSM_AncSPLCosineNormWeightedJiangConrath"                                                            
-# [22] "WBSM_AncSPLCaiStrategy1"                                                                              
-# [23] "WBSM_JiangConrath"                                                                                    
-# [24] "oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.user_cf.default_ner.none"                         
-# [25] "scibert_scivocab_uncased_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"                       
-# [26] "pubmedbert.base.uncased.abstract_tok.wordpiecetokenizer_lc_sw.user_cf.default_ner.none"               
-# [27] "pubmedbert.base.uncased.abstract.fulltext_tok.wordpiecetokenizer_lc_sw.user_cf.default_ner.none"      
-# [28] "biobert_v1.0_pubmed_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"                            
-# [29] "biobert_v1.0_pmc_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"                               
-# [30] "biobert_v1.0_pubmed_pmc_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"                        
-# [31] "ncbi_bert_pubmed_mimic_uncased_l.12_h.768_a.12_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none" 
-# [32] "ncbi_bert_pubmed_mimic_uncased_l.24_h.1024_a.16_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"
-# [33] "ncbi_bert_pubmed_uncased_l.12_h.768_a.12_tok.wordpiecetokenizer_lc_sw.user_cf.blagec2019_ner.none"    
-# [34] "ncbi_bert_pubmed_uncased_l.24_h.1024_a.16_tok.wordpiecetokenizer_lc_sw.user_cf.biosses_ner.none"      
-# [35] "bio.clinicalbert_tok.wordpiecetokenizer_lc_sw.user_cf.blagec2019_ner.none"                            
-# [36] "bio.dischargesummarybert_tok.wordpiecetokenizer_lc_sw.user_cf.blagec2019_ner.none"                    
-# [37] "clinicalbert_tok.wordpiecetokenizer_notlc_sw.user_cf.blagec2019_ner.none"                             
-# [38] "dischargesummarybert_tok.wordpiecetokenizer_notlc_sw.user_cf.blagec2019_ner.none"                     
-# [39] "biobert_v1.1_pubmed_tok.wordpiecetokenizer_notlc_sw.user_cf.blagec2019_ner.none"                      
-# [40] "biobert_large_v1.1_pubmed_tok.wordpiecetokenizer_notlc_sw.user_cf.blagec2019_ner.none"                
-# [41] "Sent2vec_BioSentVec_PubMed_MIMICIII.bigram_d700"                                                      
-# [42] "USE"                                                                                                  
-# [43] "Flair"                                                                                                
-# [44] "UBSM_AncSPLWeightedJiangConrath_tok.stanfordcorenlpv4_2_0_lc_sw.user_cf.biosses_ner.ctakes"           
-# [45] "UBSM_AncSPLRada_tok.stanfordcorenlpv4_2_0_lc_sw.user_cf.biosses_ner.ctakes"                           
-# [46] "UBSM_AncSPLCosineNormWeightedJiangConrath_tok.stanfordcorenlpv4_2_0_lc_sw.user_cf.biosses_ner.ctakes" 
-# [47] "UBSM_AncSPLCaiStrategy1_tok.stanfordcorenlpv4_2_0_lc_sw.user_cf.biosses_ner.ctakes"                   
-# [48] "UBSM_JiangConrath_tok.stanfordcorenlpv4_2_0_lc_sw.user_cf.biosses_ner.ctakes"                         
-# [49] "COM_WBSM_AncSPLRada_UBSM_AncSPLWeightedJiangConrath"                                                  
-# [50] "COMMixed_LietalBase.AncSPLWeightedJiangConrath_String.BlockDistance_lambda0.5"
-
-
-table_allMetrics[41, 7:9]
-
-table_allMetrics[41, 7:9]
-
-pvalues_r_harmonic <- signif(t.test(table_allMetrics[2, 7:9],
-                                    table_allMetrics[4, 7:9], 
-                                    paired = TRUE,alternative="greater", 
-                                    var.equal=TRUE)$p.value, 
-                             digits=3)
-pvalues_r_harmonic
-
-pvalues_r_spearman <- signif(t.test(table_allMetrics[41, 4:6],
-                                    table_allMetrics[43, 4:6], 
-                                    paired = TRUE,alternative="greater")$p.value, digits=3)
-pvalues_r_spearman
-
-pvalues_r_pearson <- signif(t.test(table_allMetrics[41, 1:3],
-                                   table_allMetrics[43, 1:3], 
-                                   paired = TRUE,alternative="greater")$p.value, digits=3)
-pvalues_r_pearson
-
+write.csv(final_data, file = paste(outputDir, sep="","PvaluesNER.csv"))
