@@ -561,8 +561,8 @@ class UBSMMeasure extends SentenceSimilarityMeasure
         
         // We get the SNOMED concepts evoked by each CUI
         
-        IVertex[] firstVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strFirstUmlsCUI);
-        IVertex[] secondVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strSecondUmlsCUI);
+        IVertex[] firstVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strFirstUmlsCUI.toUpperCase());
+        IVertex[] secondVertexes = m_SnomedOntology.getTaxonomyVertexesForUmlsCUI(strSecondUmlsCUI.toUpperCase());
         
         // We check the existence oif SNOMED concepts associated to the CUIS
         

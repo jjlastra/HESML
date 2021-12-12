@@ -200,7 +200,8 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         {
             // Compute the value
         
-            similarity = (liSimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
+//            similarity = (liSimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
+            similarity = (liSimilarity + stringSimilarity) / 2;
         }
         
         // Return the similarity value

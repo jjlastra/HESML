@@ -1,14 +1,0 @@
-\begin{table}[!h]
-\centering
-\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by each unsupervised COMMixed similarity method evaluated herein.} 
-\begingroup\tiny
-\begin{tabular}{rrrrrrrrrrr}
-  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
- & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
-  \hline
-COMMixed\_Mixed\_String\_Mixed\_lambda0.75 & 0.731 & 0.768 & 0.749 & 0.739 & 0.668 & 0.701 & 0.757 & 0.701 & 0.728 & 0.726 \\ 
-  COMMixed\_Mixed\_String\_Mixed\_lambda0.25 & 0.718 & 0.760 & 0.738 & 0.701 & 0.629 & 0.663 & 0.716 & 0.661 & 0.687 & 0.696 \\ 
-   \hline
-\end{tabular}
-\endgroup
-\end{table}

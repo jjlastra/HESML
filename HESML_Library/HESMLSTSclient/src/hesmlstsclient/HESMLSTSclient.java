@@ -194,11 +194,13 @@ public class HESMLSTSclient
          * ***********************************************
          */
         
+        // We execute the experiment with all the best combinations 
+        
         totalCombinations += executeBestCombinationMethods("BESTCOMBS");
-        
-//        totalCombinations += executeNERexperiment("NERexperiment");
-        
-//        totalCombinations += executeCOMMixedExperiment("COMMixed");
+
+        // We execute the NER experiment
+
+        totalCombinations += executeNERexperiment("NERexperiment");
         
         // We measure the elapsed time to run the experiments
         
@@ -223,6 +225,14 @@ public class HESMLSTSclient
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
     }
     
+    /**
+     * Execution of the NER experiment
+     * 
+     * @param outputFileNames
+     * @return
+     * @throws IOException
+     * @throws Exception 
+     */
     private static int executeNERexperiment(
             String outputFileNames) throws IOException, Exception
     {
@@ -233,14 +243,6 @@ public class HESMLSTSclient
         // We iterate the methods and create the measures
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
-        
-        // We define the pre-processing combination for string methods
-        
-        IWordProcessing bestStringWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.WhiteSpace, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
         
         // We define the pre-processing methods with Metamap, MetamapLite and Ctakes
 
@@ -262,14 +264,6 @@ public class HESMLSTSclient
                 true, NERType.Ctakes,
                 CharFilteringType.BIOSSES);
         
-        // We define the best pre-processing WBSM method
-        
-        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
-        
         /**
          * ****************************************************
          * ****************************************************
@@ -282,55 +276,265 @@ public class HESMLSTSclient
 
         IntrinsicICModelType icModelTypeUBSM = IntrinsicICModelType.Seco;
         
-        // We define the word similarity measures to be compared
+        // We define the pre-processing methods for each measure for AncSPLRada
         
-        ArrayList<SimilarityMeasureType> wordMeasuresUBSM = new ArrayList<>();
-        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLWeightedJiangConrath);
-        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLRada);
-        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath);
-        wordMeasuresUBSM.add(SimilarityMeasureType.AncSPLCaiStrategy1);
-        wordMeasuresUBSM.add(SimilarityMeasureType.JiangConrath);
-       
-        // We iterate word processing combinations
+        IWordProcessing bestUBSMWordProcessingMetamapAncSPLRada = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLiteAncSPLRada = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakesAncSPLRada = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We create the measures for each NER
 
-        for(SimilarityMeasureType wordMeasure : wordMeasuresUBSM)
-        {
-            // We create the measures for each NER
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Metamap_"+SimilarityMeasureType.AncSPLRada,
+                        bestUBSMWordProcessingMetamapAncSPLRada,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLRada,
+                        icModelTypeUBSM));
 
-            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                            "UBSM_Metamap_"+wordMeasure,
-                            bestUBSMWordProcessingMetamap,
-                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                            wordMeasure,
-                            icModelTypeUBSM));
+        // Update the total of combinations
 
-            // Update the total of combinations
+        totalCombinations++;
 
-            totalCombinations++;
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLRada,
+                        bestUBSMWordProcessingMetamapLiteAncSPLRada,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLRada,
+                        icModelTypeUBSM));
 
-            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                            "UBSM_MetamapLite_"+wordMeasure,
-                            bestUBSMWordProcessingMetamapLite,
-                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                            wordMeasure,
-                            icModelTypeUBSM));
+        // Update the total of combinations
 
-            // Update the total of combinations
+        totalCombinations++;
 
-            totalCombinations++;
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLRada,
+                        bestUBSMWordProcessingCtakesAncSPLRada,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLRada,
+                        icModelTypeUBSM));
 
-            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                            "UBSM_Ctakes_"+wordMeasure,
-                            bestUBSMWordProcessingCtakes,
-                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                            wordMeasure,
-                            icModelTypeUBSM));
+        // Update the total of combinations
 
-            // Update the total of combinations
+        totalCombinations++;
+        
+        // We define the pre-processing methods for each measure for AncSPLWeightedJiangConrath
+        
+        IWordProcessing bestUBSMWordProcessingMetamapAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLiteAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakesAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We create the measures for each NER
 
-            totalCombinations++;
-        }
-       
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Metamap_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        bestUBSMWordProcessingMetamapAncSPLWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        bestUBSMWordProcessingMetamapLiteAncSPLWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        bestUBSMWordProcessingCtakesAncSPLWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        icModelTypeUBSM));
+        
+        // We define the pre-processing methods for each measure for AncSPLCosineNormWeightedJiangConrath
+        
+        IWordProcessing bestUBSMWordProcessingMetamapAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLiteAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakesAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We create the measures for each NER
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Metamap_"+SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        bestUBSMWordProcessingMetamapAncSPLCosineNormWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        bestUBSMWordProcessingMetamapLiteAncSPLCosineNormWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        bestUBSMWordProcessingCtakesAncSPLCosineNormWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        icModelTypeUBSM));
+        
+        // We define the pre-processing methods for each measure for AncSPLCaiStrategy1
+        
+        IWordProcessing bestUBSMWordProcessingMetamapAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLiteAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakesAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We create the measures for each NER
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Metamap_"+SimilarityMeasureType.AncSPLCaiStrategy1,
+                        bestUBSMWordProcessingMetamapAncSPLCaiStrategy1,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCaiStrategy1,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLCaiStrategy1,
+                        bestUBSMWordProcessingMetamapLiteAncSPLCaiStrategy1,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCaiStrategy1,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLCaiStrategy1,
+                        bestUBSMWordProcessingCtakesAncSPLCaiStrategy1,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCaiStrategy1,
+                        icModelTypeUBSM));
+        
+        // We define the pre-processing methods for each measure for JiangConrath
+        
+        IWordProcessing bestUBSMWordProcessingMetamapJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingMetamapLiteJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestUBSMWordProcessingCtakesJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        // We create the measures for each NER
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Metamap_"+SimilarityMeasureType.JiangConrath,
+                        bestUBSMWordProcessingMetamapJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.JiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_MetamapLite_"+SimilarityMeasureType.JiangConrath,
+                        bestUBSMWordProcessingMetamapLiteJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.JiangConrath,
+                        icModelTypeUBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_Ctakes_"+SimilarityMeasureType.JiangConrath,
+                        bestUBSMWordProcessingCtakesJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.JiangConrath,
+                        icModelTypeUBSM));
+        
         /**
          * ****************************************************
          * ****************************************************
@@ -338,6 +542,22 @@ public class HESMLSTSclient
          * ****************************************************
          * ****************************************************
          */
+        
+        // We define the pre-processing combination for string methods
+        
+        IWordProcessing bestStringWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
         
         // We get the intrinsic IC model if anyone has been defined
 
@@ -471,24 +691,24 @@ public class HESMLSTSclient
          * ****************************************************
          */
 
-//        // We define the pre-processing method
-//        
-//        IWordProcessing bestStringWordProcessingJaccard = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.WhiteSpace, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the LiMixed method not expanded
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-//                 StringBasedSentenceSimilarityMethod.Jaccard.name(),
-//                 StringBasedSentenceSimilarityMethod.Jaccard, 
-//                 bestStringWordProcessingJaccard));
-//        
-//        // Update the total of combinations
-//            
-//        totalCombinations++;
+        // We define the pre-processing method
+        
+        IWordProcessing bestStringWordProcessingJaccard = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the LiMixed method not expanded
+        
+        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                 StringBasedSentenceSimilarityMethod.Jaccard.name(),
+                 StringBasedSentenceSimilarityMethod.Jaccard, 
+                 bestStringWordProcessingJaccard));
+        
+        // Update the total of combinations
+            
+        totalCombinations++;
         
         // We define the pre-processing method
         
@@ -509,62 +729,62 @@ public class HESMLSTSclient
             
         totalCombinations++;
         
-//        // We define the pre-processing method
-//        
-//        IWordProcessing bestStringWordProcessingLevenshtein = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                        TokenizerType.WhiteSpace, 
-//                        false, NERType.None,
-//                        CharFilteringType.None);
-//        
-//        // We add the method 
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-//                 StringBasedSentenceSimilarityMethod.Levenshtein.name(),
-//                 StringBasedSentenceSimilarityMethod.Levenshtein, 
-//                 bestStringWordProcessingLevenshtein));
-//        
-//        // Update the total of combinations
-//            
-//        totalCombinations++;
-//        
-//        // We define the pre-processing method
-//        
-//        IWordProcessing bestStringWordProcessingOverlapCoefficient = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.Default);
-//        
-//        // We add the method 
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-//                 StringBasedSentenceSimilarityMethod.OverlapCoefficient.name(),
-//                 StringBasedSentenceSimilarityMethod.OverlapCoefficient, 
-//                 bestStringWordProcessingOverlapCoefficient));
-//        
-//        // Update the total of combinations
-//            
-//        totalCombinations++;
-//        
-//        // We define the pre-processing method
-//        
-//        IWordProcessing bestStringWordProcessingQgram = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.WhiteSpace, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the method
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-//                 StringBasedSentenceSimilarityMethod.Qgram.name(),
-//                 StringBasedSentenceSimilarityMethod.Qgram, 
-//                 bestStringWordProcessingQgram));
-//        
-//        // Update the total of combinations
-//            
-//        totalCombinations++;
+        // We define the pre-processing method
+        
+        IWordProcessing bestStringWordProcessingLevenshtein = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        false, NERType.None,
+                        CharFilteringType.None);
+        
+        // We add the method 
+        
+        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                 StringBasedSentenceSimilarityMethod.Levenshtein.name(),
+                 StringBasedSentenceSimilarityMethod.Levenshtein, 
+                 bestStringWordProcessingLevenshtein));
+        
+        // Update the total of combinations
+            
+        totalCombinations++;
+        
+        // We define the pre-processing method
+        
+        IWordProcessing bestStringWordProcessingOverlapCoefficient = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.Default);
+        
+        // We add the method 
+        
+        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                 StringBasedSentenceSimilarityMethod.OverlapCoefficient.name(),
+                 StringBasedSentenceSimilarityMethod.OverlapCoefficient, 
+                 bestStringWordProcessingOverlapCoefficient));
+        
+        // Update the total of combinations
+            
+        totalCombinations++;
+        
+        // We define the pre-processing method
+        
+        IWordProcessing bestStringWordProcessingQgram = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the method
+        
+        measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+                 StringBasedSentenceSimilarityMethod.Qgram.name(),
+                 StringBasedSentenceSimilarityMethod.Qgram, 
+                 bestStringWordProcessingQgram));
+        
+        // Update the total of combinations
+            
+        totalCombinations++;
         
         // We define the lambda values
         
@@ -594,884 +814,904 @@ public class HESMLSTSclient
                  bestStringWordProcessingLiMixed, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.NoneOntology));
         
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting Our WE experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        IWordProcessing bestOurWEProcessing = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        // We define the models to be evaluated
-//        
-//        ArrayList<String> modelsFastextVecBased = new ArrayList<>();
-//        
-//        modelsFastextVecBased.add("bioc_skipgram_defaultchar.vec");
-//        
-//        // We iterate the methods and create the measures
-//        
-//        for(String model : modelsFastextVecBased)
-//        {
-//            // Get the model name without file extensions
-//        
-//            String label = model.replace(".vec", "").replace(".bin", "");
-//
-//            // We create the measure
-//
-//            ISentenceSimilarityMeasure measure = 
-//                SentenceSimilarityFactory.getSWEMMeasure(
-//                        label + "_" + SWEMpoolingMethod.Min.name(),
-//                        SWEMpoolingMethod.Min,
-//                        WordEmbeddingFileType.FastTextVecWordEmbedding, 
-//                        bestOurWEProcessing,
-//                        strBaseModelDir + model);
-//
-//            measuresLst.add(measure);
-//        }
-//        
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting SWEM experiments
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We define the best pre-processing method for each measure
-//        
-//        IWordProcessing[] bestSWEMProcessingsFastextVecBased = new IWordProcessing[8];
-//        
-//        bestSWEMProcessingsFastextVecBased[0] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[1] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[2] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[3] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[4] = PreprocessingFactory.getWordProcessing( // Newman-Griffis$_{word2vec\_cbow}
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[5] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[6] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsFastextVecBased[7] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        // We define the best pre-processing methods for BioWodVect-based embedding models.
-//        
-//        IWordProcessing[] bestSWEMProcessingsBioWordVecBased = new IWordProcessing[4];
-//        
-//        bestSWEMProcessingsBioWordVecBased[0] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.BIOSSES);
-//        
-//        bestSWEMProcessingsBioWordVecBased[1] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.BIOSSES);
-//        
-//        bestSWEMProcessingsBioWordVecBased[2] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                false, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        bestSWEMProcessingsBioWordVecBased[3] = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                false, NERType.None,
-//                CharFilteringType.Default);
-//   
-//        // We add the models to the arrays
-//        
-//        String[] modelsFastextVecBasedSWEM = new String[8];
-//        
-//        modelsFastextVecBasedSWEM[0] = "bioconceptvec_fasttext.txt";
-//        modelsFastextVecBasedSWEM[1] = "bioconceptvec_glove.txt";
-//        modelsFastextVecBasedSWEM[2] = "bioconceptvec_word2vec_cbow.txt";
-//        modelsFastextVecBasedSWEM[3] = "bioconceptvec_word2vec_skipgram.txt";
-//        modelsFastextVecBasedSWEM[4] = "PubMed_CBOW.txt"; // 
-//        modelsFastextVecBasedSWEM[5] = "PubMed_Glove.txt";
-//        modelsFastextVecBasedSWEM[6] = "PubMed_SkipGramNegSampling.txt"; // Newman-Griffis$_{word2vec\_sgns}
-//        modelsFastextVecBasedSWEM[7] = "PubMed-and-PMC-w2v.txt"; // Pyysalo et al. \cite{Pyysalo2013-jy}
-//        
-//        String[] modelsBioWordVecBasedSWEM = new String[4];
-//        
-//        modelsBioWordVecBasedSWEM[0] = "bio_embedding_extrinsic"; // BioWordVec$_{ext}$ \cite{Zhang2019-qq}
-//        modelsBioWordVecBasedSWEM[1] = "bio_embedding_intrinsic"; // BioWordVec$_{int}$ \cite{Zhang2019-qq}
-//        modelsBioWordVecBasedSWEM[2] = "BioNLP2016_PubMed-shuffle-win-2.bin"; // BioNLP2016$_{win2}$ \cite{Chiu2016-bs}
-//        modelsBioWordVecBasedSWEM[3] = "BioNLP2016_PubMed-shuffle-win-30.bin"; // BioNLP2016$_{win30}$ \cite{Chiu2016-bs}
-//        
-//        // Iterate the FastText-based models
-//        
-//        for(int i=0; i<modelsFastextVecBasedSWEM.length; i++)
-//        {
-//            // We ge the model
-//            
-//            String model = modelsFastextVecBasedSWEM[i];
-//            
-//            // Get the model name without file extensions
-//        
-//            String label = model.replace(".vec", "").replace(".bin", "").replace(".txt", "");
-//
-//            // We create the measure
-//
-//            measuresLst.add(SentenceSimilarityFactory.getSWEMMeasure(
-//                        label,
-//                        SWEMpoolingMethod.Average,
-//                        WordEmbeddingFileType.FastTextVecWordEmbedding, 
-//                        bestSWEMProcessingsFastextVecBased[i],
-//                        strBaseModelDir + model));
-//        }
-//        
-//        // Iterate the FastText-based models
-//        
-//        for(int i=0; i<modelsBioWordVecBasedSWEM.length; i++)
-//        {
-//            // We ge the model
-//            
-//            String model = modelsBioWordVecBasedSWEM[i];
-//            
-//            // Get the model name without file extensions
-//        
-//            String label = model.replace(".vec", "").replace(".bin", "").replace(".txt", "");
-//
-//            // We create the measure
-//
-//            measuresLst.add(SentenceSimilarityFactory.getSWEMMeasure(
-//                        label,
-//                        SWEMpoolingMethod.Average,
-//                        WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, 
-//                        bestSWEMProcessingsBioWordVecBased[i],
-//                        strBaseModelDir + model));
-//        }
-//        
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting WBSM experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We get the intrinsic IC model if anyone has been defined
-//
-//        IntrinsicICModelType icModelTypeWBSM = IntrinsicICModelType.Seco;
-//       
-//        // We create each measure with its best pre-processing configuration
-//        
-//        // We define the best pre-processing WBSM method
-//        
-//        IWordProcessing bestWBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessingAncSPLRada,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeWBSM));
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best pre-processing WBSM method
-//        
-//        IWordProcessing bestWBSMWordProcessingAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath.name(),
-//                        bestWBSMWordProcessingAncSPLCosineNormWeightedJiangConrath,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath, 
-//                        icModelTypeWBSM));
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best pre-processing WBSM method
-//        
-//        IWordProcessing bestWBSMWordProcessingAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
-//                        bestWBSMWordProcessingAncSPLWeightedJiangConrath,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-//                        icModelTypeWBSM));
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best pre-processing WBSM method
-//        
-//        IWordProcessing bestWBSMWordProcessingJiangConrath = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.JiangConrath.name(),
-//                        bestWBSMWordProcessingJiangConrath,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.JiangConrath, 
-//                        icModelTypeWBSM));
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best pre-processing WBSM method
-//        
-//        IWordProcessing bestWBSMWordProcessingAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLCaiStrategy1.name(),
-//                        bestWBSMWordProcessingAncSPLCaiStrategy1,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLCaiStrategy1, 
-//                        icModelTypeWBSM));
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//
-//        
-//
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting UBSM experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//
-//        // We get the intrinsic IC model if anyone has been defined
-//
-//        IntrinsicICModelType icModelTypeUBSM = IntrinsicICModelType.Seco;
-//       
-//        // We execute each measure with its best pre-processing configuration
-//        
-//        // We define the best UBSM pre-processing method
-//        
-//        IWordProcessing bestUBSMWordProcessingAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
-//                        bestUBSMWordProcessingAncSPLWeightedJiangConrath,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
-//                        icModelTypeUBSM));
-//        
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best UBSM pre-processing method
-//        
-//        IWordProcessing bestUBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestUBSMWordProcessingAncSPLRada,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.AncSPLRada,
-//                        icModelTypeUBSM));
-//        
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best UBSM pre-processing method
-//        
-//        IWordProcessing bestUBSMWordProcessingAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath.name(),
-//                        bestUBSMWordProcessingAncSPLCosineNormWeightedJiangConrath,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
-//                        icModelTypeUBSM));
-//        
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best UBSM pre-processing method
-//        
-//        IWordProcessing bestUBSMWordProcessingAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.AncSPLCaiStrategy1.name(),
-//                        bestUBSMWordProcessingAncSPLCaiStrategy1,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.AncSPLCaiStrategy1,
-//                        icModelTypeUBSM));
-//        
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        // We define the best UBSM pre-processing method
-//        
-//        IWordProcessing bestUBSMWordProcessingJiangConrath = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//
-//        // We add the measure
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.JiangConrath.name(),
-//                        bestUBSMWordProcessingJiangConrath,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.JiangConrath,
-//                        icModelTypeUBSM));
-//        
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting COM experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We define the best UBSM and WBSM pre-processing methods
-//        
-//        IWordProcessing bestUBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.Ctakes,
-//                CharFilteringType.BIOSSES);
-//        
-//        IWordProcessing bestWBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        // We get the intrinsic IC model if anyone has been defined
-//
-//        IntrinsicICModelType icModelTypeCOM = IntrinsicICModelType.Seco;
-//       
-//        // We calculate the best measure combination
-//        
-//        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
-//        
-//        // We initialize WBSM and UBSM methods
-//        
-//        ISentenceSimilarityMeasure measureWBSM = 
-//                SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-//                        bestWBSMWordProcessingCOM,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelTypeCOM);
-//        
-//        ISentenceSimilarityMeasure measureUBSM =
-//            SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                    "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
-//                    bestUBSMWordProcessingCOM,
-//                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
-//                    icModelTypeCOM);
-//        
-//        // We add the measures to a list
-//        
-//        measures[0] = measureWBSM;
-//        measures[1] = measureUBSM;
-//
-//        // We create the COM measure
-//
-//        ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
-//            "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
-//            0.5,
-//            measures);
-//        
-//        // We add the measure
-//
-//        measuresLst.add(measure);
-//
-//        // Update the total of combinations
-//
-//        totalCombinations++;
-//        
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting BERT experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We define the paths to Python directories
-//        
-//        String strPythonScriptsDirectory = "../BERTExperiments/";
-//        String strPythonVirtualEnvironmentDir = "python3";
-//        String strPythonScript = "../BERTExperiments/WordPieceTokenization.py";
-//        String strBERTPretrainedModelFilename = "";
-//        
-//        // We configure the best preprocessing method for each model
-//        
-//        IWordProcessing[] bestBERTProcessing = new IWordProcessing[17];
-//        
-//        bestBERTProcessing[0] = PreprocessingFactory.getWordProcessing( // oubiobert-base-uncased
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Default,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[1] = PreprocessingFactory.getWordProcessing( // scibert_scivocab_uncased
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[2] = PreprocessingFactory.getWordProcessing( // PubMedBERT-base-uncased-abstract
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Default,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[3] = PreprocessingFactory.getWordProcessing( // PubMedBERT-base-uncased-abstract-fulltext
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Default,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[4] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pubmed
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[5] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pmc
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[6] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pubmed_pmc
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[7] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12
-//                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[8] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[9] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_uncased_L-12_H-768_A-12
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[10] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16
-//                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.BIOSSES,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[11] = PreprocessingFactory.getWordProcessing( // Bio+ClinicalBERT
-//                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[12] = PreprocessingFactory.getWordProcessing( // Bio+DischargeSummaryBERT
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        true,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[13] = PreprocessingFactory.getWordProcessing( // clinicalBERT
-//                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        false,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[14] = PreprocessingFactory.getWordProcessing( // DischargeSummaryBERT
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        false,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[15] = PreprocessingFactory.getWordProcessing( // biobert_v1.1_pubmed
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        false,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        bestBERTProcessing[16] = PreprocessingFactory.getWordProcessing( // biobert_large_v1.1_pubmed
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
-//                        TokenizerType.WordPieceTokenizer,
-//                        false,
-//                        NERType.None,
-//                        CharFilteringType.Blagec2019,
-//                        strPythonScriptsDirectory,
-//                        strPythonVirtualEnvironmentDir,
-//                        strPythonScript,
-//                        strBERTPretrainedModelFilename);
-//        
-//        // We create a list for storing the BERT model paths
-//        
-//        int total_models = 17;
-//        
-//        // We call a function to retrieve all the BERT model paths
-//        
-//        String[][] modelPaths = getBERTModelPathList(total_models);
-//        
-//        // We iterate the models and add the methods to the list
-//        
-//        for(int i=0; i<total_models; i++)
-//        {
-//            // We set the BERT model in the preprocessing
-//                
-//            bestBERTProcessing[i].setBERTModel(modelPaths[i][0]);
-//
-//            // Select the python library
-//
-//            MLPythonLibrary mllibrary = MLPythonLibrary.Tensorflow;
-//            if("Pytorch".equals(modelPaths[i][6]))
-//                mllibrary = MLPythonLibrary.Pytorch;
-//
-//            // Create the measure
-//
-//            String[] poolingLayers = new String[1];
-//            poolingLayers[0] = "-2";
-//
-//            // The constructor for Tensorflow differs from Pytorch
-//
-//            if(mllibrary == MLPythonLibrary.Tensorflow)
-//            {
-//                // We add the model
-//                
-//                measuresLst.add(SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
-//                        bestBERTProcessing[i].getLabel(), 
-//                        SentenceEmbeddingMethod.BERTEmbeddingModel,
-//                        mllibrary,
-//                        bestBERTProcessing[i], 
-//                        modelPaths[i][5], 
-//                        modelPaths[i][7],
-//                        modelPaths[i][8],
-//                        modelPaths[i][1], 
-//                        modelPaths[i][2], 
-//                        modelPaths[i][3],
-//                        BERTpoolingMethod.REDUCE_MEAN, 
-//                        poolingLayers));
-//            }
-//            else
-//            {
-//                // We add the model
-//                
-//                measuresLst.add(SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
-//                        bestBERTProcessing[i].getLabel(), 
-//                        SentenceEmbeddingMethod.BERTEmbeddingModel,
-//                        mllibrary,
-//                        bestBERTProcessing[i], 
-//                        modelPaths[i][4], 
-//                        modelPaths[i][1], 
-//                        modelPaths[i][2], 
-//                        modelPaths[i][3]));
-//            }
-//        }
-//            
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting Sent2Vec experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We create the preprocessing configuration
-//        
-//        IWordProcessing bestSent2VecWordProcessing = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                true, NERType.None,
-//                CharFilteringType.BIOSSES);
-//        
-//        // We load and register a Sent2Vec measure from the XML file 
-//
-//        String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
-//        String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
-//        String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
-//        String strPythonVirtualEnvironmentDirSent2vec = m_strDataDirectory + "Sent2vecExperiments/venv/bin/python3";
-//        String strPythonScriptSent2vec = "extractSent2vecvectors.py";
-//        
-//        // We add the measure
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getSent2vecMethodMeasure(
-//                        "Sent2vec_" + strSent2vecModelFile.replace(".bin", ""), 
-//                        SentenceEmbeddingMethod.ParagraphVector,
-//                        bestSent2VecWordProcessing, 
-//                        strSent2vecModelDir + strSent2vecModelFile, 
-//                        strPythonScriptsDirectorySent2vec + strPythonScriptSent2vec,
-//                        strPythonVirtualEnvironmentDirSent2vec,
-//                        strPythonScriptsDirectorySent2vec));
-//        
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting USE experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We create the pre-processing configuration
-//        
-//        IWordProcessing bestUSEWordProcessing = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                TokenizerType.StanfordCoreNLPv4_2_0, 
-//                false, NERType.None,
-//                CharFilteringType.Default);
-//        
-//        // We define the USE paths to the model
-//        
-//        String strUSEModelURL = "https://tfhub.dev/google/universal-sentence-encoder/4";
-//        String strPythonScriptsDirectoryUSE = "../UniversalSentenceEncoderExperiments/";
-//        String strPythonVirtualEnvironmentDirUSE = "python3";
-//        String strPythonScriptUSE = "extractUniversalSentenceEncoderVectors.py";
-//
-//        // We add the method to the list
-//            
-//        measuresLst.add(SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
-//                    "USE", 
-//                    SentenceEmbeddingMethod.USEModel,
-//                    bestUSEWordProcessing, 
-//                    strUSEModelURL, 
-//                    strPythonScriptsDirectoryUSE + strPythonScriptUSE,
-//                    strPythonVirtualEnvironmentDirUSE,
-//                    strPythonScriptsDirectoryUSE));
-//        
-//        /**
-//         * ****************************************************
-//         * ****************************************************
-//         * Starting Flair experiment
-//         * ****************************************************
-//         * ****************************************************
-//         */
-//        
-//        // We create the pre-processing configuration
-//        
-//        IWordProcessing bestFlairWordProcessing = PreprocessingFactory.getWordProcessing(
-//                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
-//                TokenizerType.WhiteSpace, 
-//                false, NERType.None,
-//                CharFilteringType.BIOSSES);
-//        
-//        // We define the Flair paths to the model
-//        
-//        String strFlairModelURL = m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-backward.pt," + m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-forward.pt";
-//        String strPythonScriptsDirectoryFlair = "../FlairEmbeddings/";
-//        String strPythonVirtualEnvironmentDirFlair = "python3";
-//        String strPythonScriptFlair = "extractFlairVectors.py";
-//
-//        // We add the method to the list
-//        
-//        measuresLst.add(SentenceSimilarityFactory.getFlairEmbeddingMethod(
-//                            "Flair",  
-//                            SentenceEmbeddingMethod.Flair,
-//                            bestFlairWordProcessing, 
-//                            strFlairModelURL, 
-//                            strPythonScriptsDirectoryFlair + strPythonScriptFlair,
-//                            strPythonVirtualEnvironmentDirFlair,
-//                            strPythonScriptsDirectoryFlair));
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting Our WE experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        IWordProcessing bestOurWEProcessing = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        // We define the models to be evaluated
+        
+        ArrayList<String> modelsFastextVecBased = new ArrayList<>();
+        
+        modelsFastextVecBased.add("bioc_skipgram_defaultchar.vec");
+        
+        // We iterate the methods and create the measures
+        
+        for(String model : modelsFastextVecBased)
+        {
+            // Get the model name without file extensions
+        
+            String label = model.replace(".vec", "").replace(".bin", "");
+
+            // We create the measure
+
+            ISentenceSimilarityMeasure measure = 
+                SentenceSimilarityFactory.getSWEMMeasure(
+                        label + "_" + SWEMpoolingMethod.Min.name(),
+                        SWEMpoolingMethod.Min,
+                        WordEmbeddingFileType.FastTextVecWordEmbedding, 
+                        bestOurWEProcessing,
+                        strBaseModelDir + model);
+
+            measuresLst.add(measure);
+        }
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting SWEM experiments
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We define the best pre-processing method for each measure
+        
+        IWordProcessing[] bestSWEMProcessingsFastextVecBased = new IWordProcessing[8];
+        
+        bestSWEMProcessingsFastextVecBased[0] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[1] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[2] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[3] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[4] = PreprocessingFactory.getWordProcessing( // Newman-Griffis$_{word2vec\_cbow}
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[5] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[6] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsFastextVecBased[7] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.Default);
+        
+        // We define the best pre-processing methods for BioWodVect-based embedding models.
+        
+        IWordProcessing[] bestSWEMProcessingsBioWordVecBased = new IWordProcessing[4];
+        
+        bestSWEMProcessingsBioWordVecBased[0] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.BIOSSES);
+        
+        bestSWEMProcessingsBioWordVecBased[1] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.BIOSSES);
+        
+        bestSWEMProcessingsBioWordVecBased[2] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                false, NERType.None,
+                CharFilteringType.Default);
+        
+        bestSWEMProcessingsBioWordVecBased[3] = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                false, NERType.None,
+                CharFilteringType.Default);
+   
+        // We add the models to the arrays
+        
+        String[] modelsFastextVecBasedSWEM = new String[8];
+        
+        modelsFastextVecBasedSWEM[0] = "bioconceptvec_fasttext.txt";
+        modelsFastextVecBasedSWEM[1] = "bioconceptvec_glove.txt";
+        modelsFastextVecBasedSWEM[2] = "bioconceptvec_word2vec_cbow.txt";
+        modelsFastextVecBasedSWEM[3] = "bioconceptvec_word2vec_skipgram.txt";
+        modelsFastextVecBasedSWEM[4] = "PubMed_CBOW.txt"; // 
+        modelsFastextVecBasedSWEM[5] = "PubMed_Glove.txt";
+        modelsFastextVecBasedSWEM[6] = "PubMed_SkipGramNegSampling.txt"; // Newman-Griffis$_{word2vec\_sgns}
+        modelsFastextVecBasedSWEM[7] = "PubMed-and-PMC-w2v.txt"; // Pyysalo et al. \cite{Pyysalo2013-jy}
+        
+        // We add the pooling method for each measure 
+        
+        SWEMpoolingMethod[] SWEMPoolingMethodsFastText = new SWEMpoolingMethod[8];
+        
+        SWEMPoolingMethodsFastText[0] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[1] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[2] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[3] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[4] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[5] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[6] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsFastText[7] = SWEMpoolingMethod.Average;
+        
+        String[] modelsBioWordVecBasedSWEM = new String[4];
+        
+        modelsBioWordVecBasedSWEM[0] = "bio_embedding_extrinsic"; // BioWordVec$_{ext}$ \cite{Zhang2019-qq}
+        modelsBioWordVecBasedSWEM[1] = "bio_embedding_intrinsic"; // BioWordVec$_{int}$ \cite{Zhang2019-qq}
+        modelsBioWordVecBasedSWEM[2] = "BioNLP2016_PubMed-shuffle-win-2.bin"; // BioNLP2016$_{win2}$ \cite{Chiu2016-bs}
+        modelsBioWordVecBasedSWEM[3] = "BioNLP2016_PubMed-shuffle-win-30.bin"; // BioNLP2016$_{win30}$ \cite{Chiu2016-bs}
+        
+        // We add the pooling method for each measure 
+        
+        SWEMpoolingMethod[] SWEMPoolingMethodsBioWordVec = new SWEMpoolingMethod[4];
+        
+        SWEMPoolingMethodsBioWordVec[0] = SWEMpoolingMethod.Min;
+        SWEMPoolingMethodsBioWordVec[1] = SWEMpoolingMethod.Min;
+        SWEMPoolingMethodsBioWordVec[2] = SWEMpoolingMethod.Average;
+        SWEMPoolingMethodsBioWordVec[3] = SWEMpoolingMethod.Average;
+        
+        // Iterate the FastText-based models
+        
+        for(int i=0; i<modelsFastextVecBasedSWEM.length; i++)
+        {
+            // We ge the model
+            
+            String model = modelsFastextVecBasedSWEM[i];
+            
+            // Get the model name without file extensions
+        
+            String label = model.replace(".vec", "").replace(".bin", "").replace(".txt", "");
+
+            // We create the measure
+
+            measuresLst.add(SentenceSimilarityFactory.getSWEMMeasure(
+                        label,
+                        SWEMPoolingMethodsFastText[i],
+                        WordEmbeddingFileType.FastTextVecWordEmbedding, 
+                        bestSWEMProcessingsFastextVecBased[i],
+                        strBaseModelDir + model));
+        }
+        
+        // Iterate the FastText-based models
+        
+        for(int i=0; i<modelsBioWordVecBasedSWEM.length; i++)
+        {
+            // We ge the model
+            
+            String model = modelsBioWordVecBasedSWEM[i];
+            
+            // Get the model name without file extensions
+        
+            String label = model.replace(".vec", "").replace(".bin", "").replace(".txt", "");
+
+            // We create the measure
+
+            measuresLst.add(SentenceSimilarityFactory.getSWEMMeasure(
+                        label,
+                        SWEMPoolingMethodsBioWordVec[i],
+                        WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, 
+                        bestSWEMProcessingsBioWordVecBased[i],
+                        strBaseModelDir + model));
+        }
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting WBSM experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeWBSM = IntrinsicICModelType.Seco;
+       
+        // We create each measure with its best pre-processing configuration
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        bestWBSMWordProcessingAncSPLRada,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeWBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessingAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath.name(),
+                        bestWBSMWordProcessingAncSPLCosineNormWeightedJiangConrath,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath, 
+                        icModelTypeWBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessingAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
+                        bestWBSMWordProcessingAncSPLWeightedJiangConrath,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+                        icModelTypeWBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessingJiangConrath = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.JiangConrath.name(),
+                        bestWBSMWordProcessingJiangConrath,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.JiangConrath, 
+                        icModelTypeWBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best pre-processing WBSM method
+        
+        IWordProcessing bestWBSMWordProcessingAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLCaiStrategy1.name(),
+                        bestWBSMWordProcessingAncSPLCaiStrategy1,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLCaiStrategy1, 
+                        icModelTypeWBSM));
+
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting UBSM experiment
+         * ****************************************************
+         * ****************************************************
+         */
+
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeUBSM = IntrinsicICModelType.Seco;
+       
+        // We execute each measure with its best pre-processing configuration
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessingAncSPLWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
+                        bestUBSMWordProcessingAncSPLWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        icModelTypeUBSM));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        bestUBSMWordProcessingAncSPLRada,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLRada,
+                        icModelTypeUBSM));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessingAncSPLCosineNormWeightedJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_" + SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath.name(),
+                        bestUBSMWordProcessingAncSPLCosineNormWeightedJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCosineNormWeightedJiangConrath,
+                        icModelTypeUBSM));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessingAncSPLCaiStrategy1 = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_" + SimilarityMeasureType.AncSPLCaiStrategy1.name(),
+                        bestUBSMWordProcessingAncSPLCaiStrategy1,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.AncSPLCaiStrategy1,
+                        icModelTypeUBSM));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We define the best UBSM pre-processing method
+        
+        IWordProcessing bestUBSMWordProcessingJiangConrath = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.MetamapLite,
+                CharFilteringType.BIOSSES);
+
+        // We add the measure
+            
+        measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                        "UBSM_" + SimilarityMeasureType.JiangConrath.name(),
+                        bestUBSMWordProcessingJiangConrath,
+                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                        SimilarityMeasureType.JiangConrath,
+                        icModelTypeUBSM));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting COM experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We define the best UBSM and WBSM pre-processing methods
+        
+        IWordProcessing bestUBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+        
+        IWordProcessing bestWBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeCOM = IntrinsicICModelType.Seco;
+       
+        // We calculate the best measure combination
+        
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
+        
+        // We initialize WBSM and UBSM methods
+        
+        ISentenceSimilarityMeasure measureWBSM = 
+                SentenceSimilarityFactory.getWBSMMeasure(
+                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        bestWBSMWordProcessingCOM,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeCOM);
+        
+        ISentenceSimilarityMeasure measureUBSM =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
+                    bestUBSMWordProcessingCOM,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    icModelTypeCOM);
+        
+        // We add the measures to a list
+        
+        measures[0] = measureWBSM;
+        measures[1] = measureUBSM;
+
+        // We create the COM measure
+
+        ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
+            "COM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
+            0.5,
+            measures);
+        
+        // We add the measure
+
+        measuresLst.add(measure);
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting BERT experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We define the paths to Python directories
+        
+        String strPythonScriptsDirectory = "../BERTExperiments/";
+        String strPythonVirtualEnvironmentDir = "python3";
+        String strPythonScript = "../BERTExperiments/WordPieceTokenization.py";
+        String strBERTPretrainedModelFilename = "";
+        
+        // We configure the best preprocessing method for each model
+        
+        IWordProcessing[] bestBERTProcessing = new IWordProcessing[17];
+        
+        bestBERTProcessing[0] = PreprocessingFactory.getWordProcessing( // oubiobert-base-uncased
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Default,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[1] = PreprocessingFactory.getWordProcessing( // scibert_scivocab_uncased
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[2] = PreprocessingFactory.getWordProcessing( // PubMedBERT-base-uncased-abstract
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Default,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[3] = PreprocessingFactory.getWordProcessing( // PubMedBERT-base-uncased-abstract-fulltext
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Default,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[4] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pubmed
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[5] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pmc
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[6] = PreprocessingFactory.getWordProcessing( // biobert_v1.0_pubmed_pmc
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[7] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_mimic_uncased_L-12_H-768_A-12
+                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[8] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_mimic_uncased_L-24_H-1024_A-16
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[9] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_uncased_L-12_H-768_A-12
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[10] = PreprocessingFactory.getWordProcessing( // NCBI_BERT_pubmed_uncased_L-24_H-1024_A-16
+                        m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.BIOSSES,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[11] = PreprocessingFactory.getWordProcessing( // Bio+ClinicalBERT
+                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[12] = PreprocessingFactory.getWordProcessing( // Bio+DischargeSummaryBERT
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        true,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[13] = PreprocessingFactory.getWordProcessing( // clinicalBERT
+                        m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[14] = PreprocessingFactory.getWordProcessing( // DischargeSummaryBERT
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[15] = PreprocessingFactory.getWordProcessing( // biobert_v1.1_pubmed
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        bestBERTProcessing[16] = PreprocessingFactory.getWordProcessing( // biobert_large_v1.1_pubmed
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt",
+                        TokenizerType.WordPieceTokenizer,
+                        false,
+                        NERType.None,
+                        CharFilteringType.Blagec2019,
+                        strPythonScriptsDirectory,
+                        strPythonVirtualEnvironmentDir,
+                        strPythonScript,
+                        strBERTPretrainedModelFilename);
+        
+        // We create a list for storing the BERT model paths
+        
+        int total_models = 17;
+        
+        // We call a function to retrieve all the BERT model paths
+        
+        String[][] modelPaths = getBERTModelPathList(total_models);
+        
+        // We iterate the models and add the methods to the list
+        
+        for(int i=0; i<total_models; i++)
+        {
+            // We set the BERT model in the preprocessing
+                
+            bestBERTProcessing[i].setBERTModel(modelPaths[i][0]);
+
+            // Select the python library
+
+            MLPythonLibrary mllibrary = MLPythonLibrary.Tensorflow;
+            if("Pytorch".equals(modelPaths[i][6]))
+                mllibrary = MLPythonLibrary.Pytorch;
+
+            // Create the measure
+
+            String[] poolingLayers = new String[1];
+            poolingLayers[0] = "-2";
+
+            // The constructor for Tensorflow differs from Pytorch
+
+            if(mllibrary == MLPythonLibrary.Tensorflow)
+            {
+                // We add the model
+                
+                measuresLst.add(SentenceSimilarityFactory.getBERTTensorflowSentenceEmbeddingMethod(
+                        bestBERTProcessing[i].getLabel(), 
+                        SentenceEmbeddingMethod.BERTEmbeddingModel,
+                        mllibrary,
+                        bestBERTProcessing[i], 
+                        modelPaths[i][5], 
+                        modelPaths[i][7],
+                        modelPaths[i][8],
+                        modelPaths[i][1], 
+                        modelPaths[i][2], 
+                        modelPaths[i][3],
+                        BERTpoolingMethod.REDUCE_MEAN, 
+                        poolingLayers));
+            }
+            else
+            {
+                // We add the model
+                
+                measuresLst.add(SentenceSimilarityFactory.getBERTPytorchSentenceEmbeddingMethod(
+                        bestBERTProcessing[i].getLabel(), 
+                        SentenceEmbeddingMethod.BERTEmbeddingModel,
+                        mllibrary,
+                        bestBERTProcessing[i], 
+                        modelPaths[i][4], 
+                        modelPaths[i][1], 
+                        modelPaths[i][2], 
+                        modelPaths[i][3]));
+            }
+        }
+            
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting Sent2Vec experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We create the preprocessing configuration
+        
+        IWordProcessing bestSent2VecWordProcessing = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.None,
+                CharFilteringType.BIOSSES);
+        
+        // We load and register a Sent2Vec measure from the XML file 
+
+        String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
+        String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
+        String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
+        String strPythonVirtualEnvironmentDirSent2vec = m_strDataDirectory + "Sent2vecExperiments/venv/bin/python3";
+        String strPythonScriptSent2vec = "extractSent2vecvectors.py";
+        
+        // We add the measure
+        
+        measuresLst.add(SentenceSimilarityFactory.getSent2vecMethodMeasure(
+                        "Sent2vec_" + strSent2vecModelFile.replace(".bin", ""), 
+                        SentenceEmbeddingMethod.ParagraphVector,
+                        bestSent2VecWordProcessing, 
+                        strSent2vecModelDir + strSent2vecModelFile, 
+                        strPythonScriptsDirectorySent2vec + strPythonScriptSent2vec,
+                        strPythonVirtualEnvironmentDirSent2vec,
+                        strPythonScriptsDirectorySent2vec));
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting USE experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We create the pre-processing configuration
+        
+        IWordProcessing bestUSEWordProcessing = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                false, NERType.None,
+                CharFilteringType.Default);
+        
+        // We define the USE paths to the model
+        
+        String strUSEModelURL = "https://tfhub.dev/google/universal-sentence-encoder/4";
+        String strPythonScriptsDirectoryUSE = "../UniversalSentenceEncoderExperiments/";
+        String strPythonVirtualEnvironmentDirUSE = "python3";
+        String strPythonScriptUSE = "extractUniversalSentenceEncoderVectors.py";
+
+        // We add the method to the list
+            
+        measuresLst.add(SentenceSimilarityFactory.getUSESentenceEmbeddingMethod(
+                    "USE", 
+                    SentenceEmbeddingMethod.USEModel,
+                    bestUSEWordProcessing, 
+                    strUSEModelURL, 
+                    strPythonScriptsDirectoryUSE + strPythonScriptUSE,
+                    strPythonVirtualEnvironmentDirUSE,
+                    strPythonScriptsDirectoryUSE));
+        
+        /**
+         * ****************************************************
+         * ****************************************************
+         * Starting Flair experiment
+         * ****************************************************
+         * ****************************************************
+         */
+        
+        // We create the pre-processing configuration
+        
+        IWordProcessing bestFlairWordProcessing = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "NoneStopWords.txt", 
+                TokenizerType.WhiteSpace, 
+                false, NERType.None,
+                CharFilteringType.BIOSSES);
+        
+        // We define the Flair paths to the model
+        
+        String strFlairModelURL = m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-backward.pt," + m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-forward.pt";
+        String strPythonScriptsDirectoryFlair = "../FlairEmbeddings/";
+        String strPythonVirtualEnvironmentDirFlair = "python3";
+        String strPythonScriptFlair = "extractFlairVectors.py";
+
+        // We add the method to the list
+        
+        measuresLst.add(SentenceSimilarityFactory.getFlairEmbeddingMethod(
+                            "Flair",  
+                            SentenceEmbeddingMethod.Flair,
+                            bestFlairWordProcessing, 
+                            strFlairModelURL, 
+                            strPythonScriptsDirectoryFlair + strPythonScriptFlair,
+                            strPythonVirtualEnvironmentDirFlair,
+                            strPythonScriptsDirectoryFlair));
 
         // We execute the experiments
         
@@ -1535,51 +1775,51 @@ public class HESMLSTSclient
     
     private static void loadOntologies(boolean useWordNetCache) throws Exception
     {
-//        // We create the singleton instance of the WordNet database and taxonomy
-//
-//        if (m_WordNetDbSingleton == null || useWordNetCache == false)
-//        {
-//            // We load the singleton instance of WordNet-related objects. It is done to
-//            // avoid the memory cost of multiple instances of WordNet when multiple
-//            // instances of the WBSM measure are created.
-//            
-//            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-//            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-//
-//            // We pre-process the taxonomy to compute all the parameters
-//            // used by the intrinsic IC-computation methods
-//
-//            m_WordNetTaxonomySingleton.computesCachedAttributes();
-//        }
-//        
-//        // We create the singleton instance of the UMLS database and taxonomy
-//
-//        if (m_SnomedOntology == null)
-//        {
-//            // We load the SNOMED ontology and get the vertex list of its taxonomy
-//
-//            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-//                                    m_strSnomedConceptFilename,
-//                                    m_strSnomedRelationshipsFilename,
-//                                    m_strSnomedDescriptionFilename,
-//                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-//
-//            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-//            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-//        }
-//        
-//        // We create the singleton instance of the UMLS database and taxonomy
-//
-//        if (m_MeshOntology == null)
-//        {
-//            // We load the MeSH ontology and get the vertex list of its taxonomy
-//
-//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-//
-//            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
-//        }
+        // We create the singleton instance of the WordNet database and taxonomy
+
+        if (m_WordNetDbSingleton == null || useWordNetCache == false)
+        {
+            // We load the singleton instance of WordNet-related objects. It is done to
+            // avoid the memory cost of multiple instances of WordNet when multiple
+            // instances of the WBSM measure are created.
+            
+            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
+            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+
+            // We pre-process the taxonomy to compute all the parameters
+            // used by the intrinsic IC-computation methods
+
+            m_WordNetTaxonomySingleton.computesCachedAttributes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+        if (m_SnomedOntology == null)
+        {
+            // We load the SNOMED ontology and get the vertex list of its taxonomy
+
+            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+                                    m_strSnomedConceptFilename,
+                                    m_strSnomedRelationshipsFilename,
+                                    m_strSnomedDescriptionFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+
+            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
+            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+        if (m_MeshOntology == null)
+        {
+            // We load the MeSH ontology and get the vertex list of its taxonomy
+
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+
+            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
+        }
     }
    
     /**

@@ -447,7 +447,7 @@ public class HESMLSTSImpactEvaluationclient
           totalCombinations += executeWBSMMeasures(
                 bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
         
-        // We calculate the best preprocessing configurations for UBSM using CTakes as default NER
+//         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
         
         totalCombinations += executeUBSMMeasures(
                 getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
@@ -461,16 +461,6 @@ public class HESMLSTSImpactEvaluationclient
         totalCombinations += executeUBSMMeasures(
                 getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
         
-        // We also evaluate the best NER configuration
-        
-        totalCombinations += executeUBSMMeasures(
-                getNERPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsNERCtakes", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getNERPreprocessingConfigurations(NERType.MetamapLite), "UBSM_PreprocessingCombsNERMetamapLite", NERType.MetamapLite);
-        
-        totalCombinations += executeUBSMMeasures(
-                getNERPreprocessingConfigurations(NERType.MetamapSNOMEDCT), "UBSM_PreprocessingCombsNERMetamapSNOMEDCT", NERType.MetamapSNOMEDCT);
 
         // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
         
@@ -1597,51 +1587,51 @@ public class HESMLSTSImpactEvaluationclient
      */
     private static void loadOntologies(boolean useWordNetCache) throws Exception
     {
-//        // We create the singleton instance of the WordNet database and taxonomy
-//
-//        if (m_WordNetDbSingleton == null || useWordNetCache == false)
-//        {
-//            // We load the singleton instance of WordNet-related objects. It is done to
-//            // avoid the memory cost of multiple instances of WordNet when multiple
-//            // instances of the WBSM measure are created.
-//            
-//            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-//            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-//
-//            // We pre-process the taxonomy to compute all the parameters
-//            // used by the intrinsic IC-computation methods
-//
-//            m_WordNetTaxonomySingleton.computesCachedAttributes();
-//        }
-//        
-//        // We create the singleton instance of the UMLS database and taxonomy
-//
-//        if (m_SnomedOntology == null)
-//        {
-//            // We load the SNOMED ontology and get the vertex list of its taxonomy
-//
-//            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-//                                    m_strSnomedConceptFilename,
-//                                    m_strSnomedRelationshipsFilename,
-//                                    m_strSnomedDescriptionFilename,
-//                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-//
-//            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-//            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-//        }
-//        
-//        // We create the singleton instance of the UMLS database and taxonomy
-//
-//        if (m_MeshOntology == null)
-//        {
-//            // We load the MeSH ontology and get the vertex list of its taxonomy
-//
-//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-//
-//            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
-//        }
+        // We create the singleton instance of the WordNet database and taxonomy
+
+        if (m_WordNetDbSingleton == null || useWordNetCache == false)
+        {
+            // We load the singleton instance of WordNet-related objects. It is done to
+            // avoid the memory cost of multiple instances of WordNet when multiple
+            // instances of the WBSM measure are created.
+            
+            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
+            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+
+            // We pre-process the taxonomy to compute all the parameters
+            // used by the intrinsic IC-computation methods
+
+            m_WordNetTaxonomySingleton.computesCachedAttributes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+        if (m_SnomedOntology == null)
+        {
+            // We load the SNOMED ontology and get the vertex list of its taxonomy
+
+            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+                                    m_strSnomedConceptFilename,
+                                    m_strSnomedRelationshipsFilename,
+                                    m_strSnomedDescriptionFilename,
+                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+
+            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
+            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
+        }
+        
+        // We create the singleton instance of the UMLS database and taxonomy
+
+        if (m_MeshOntology == null)
+        {
+            // We load the MeSH ontology and get the vertex list of its taxonomy
+
+            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+
+            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
+        }
     }
     
             
