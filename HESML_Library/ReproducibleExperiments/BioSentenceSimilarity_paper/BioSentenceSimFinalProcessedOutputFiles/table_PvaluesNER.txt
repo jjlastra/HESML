@@ -1,0 +1,30 @@
+\begin{table}[!h]
+\centering
+\caption{This table shows the resulting p-values comparing the NER tools, which allows us to study the statistical significance of the results, as detailed in the Discussion section.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrrrrrrrrrr}
+  \hline
+ & UBSM_Ctakes_AncSPLRada & UBSM_MetamapLite_AncSPLRada & COM_WBSM_UBSM_MetamapLite_AncSPLWeightedJiangConrath & COM_WBSM_UBSM_Ctakes_AncSPLWeightedJiangConrath & COM_WBSM_UBSM_Metamap_AncSPLWeightedJiangConrath & UBSM_MetamapLite_AncSPLCosineNormWeightedJiangConrath & UBSM_Metamap_AncSPLRada & UBSM_Ctakes_AncSPLCosineNormWeightedJiangConrath & UBSM_MetamapLite_AncSPLWeightedJiangConrath & UBSM_MetamapLite_AncSPLCaiStrategy1 & UBSM_MetamapLite_JiangConrath & UBSM_Metamap_AncSPLCosineNormWeightedJiangConrath & UBSM_Ctakes_AncSPLWeightedJiangConrath & UBSM_Ctakes_AncSPLCaiStrategy1 & UBSM_Ctakes_JiangConrath & UBSM_Metamap_AncSPLWeightedJiangConrath & UBSM_Metamap_AncSPLCaiStrategy1 & UBSM_Metamap_JiangConrath \\ 
+  \hline
+UBSM\_Ctakes\_AncSPLRada &  & 0.015 & 0.004 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_MetamapLite\_AncSPLRada & 0.015 &  & 0.211 & 0.026 & 0.011 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  COM\_WBSM\_UBSM\_MetamapLite\_AncSPLWeightedJiangConrath & 0.004 & 0.211 &  & 0.007 & 0.003 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  COM\_WBSM\_UBSM\_Ctakes\_AncSPLWeightedJiangConrath & 0.000 & 0.026 & 0.007 &  & 0.076 & 0.016 & 0.013 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  COM\_WBSM\_UBSM\_Metamap\_AncSPLWeightedJiangConrath & 0.000 & 0.011 & 0.003 & 0.076 &  & 0.055 & 0.044 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_MetamapLite\_AncSPLCosineNormWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.016 & 0.055 &  & 0.182 & 0.023 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_Metamap\_AncSPLRada & 0.000 & 0.001 & 0.001 & 0.013 & 0.044 & 0.182 &  & 0.026 & 0.027 & 0.007 & 0.005 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_Ctakes\_AncSPLCosineNormWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.023 & 0.026 &  & 0.163 & 0.038 & 0.030 & 0.004 & 0.000 & 0.000 & 0.000 & 0.001 & 0.001 & 0.001 \\ 
+  UBSM\_MetamapLite\_AncSPLWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.001 & 0.000 & 0.000 & 0.027 & 0.163 &  & 0.002 & 0.001 & 0.006 & 0.002 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_MetamapLite\_AncSPLCaiStrategy1 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.007 & 0.038 & 0.002 &  & 0.035 & 0.112 & 0.071 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_MetamapLite\_JiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.005 & 0.030 & 0.001 & 0.035 &  & 0.149 & 0.099 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 \\ 
+  UBSM\_Metamap\_AncSPLCosineNormWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.004 & 0.006 & 0.112 & 0.149 &  & 0.146 & 0.002 & 0.001 & 0.000 & 0.000 & 0.001 \\ 
+  UBSM\_Ctakes\_AncSPLWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.002 & 0.071 & 0.099 & 0.146 &  & 0.000 & 0.000 & 0.016 & 0.006 & 0.004 \\ 
+  UBSM\_Ctakes\_AncSPLCaiStrategy1 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.001 & 0.002 & 0.000 &  & 0.009 & 0.165 & 0.028 & 0.014 \\ 
+  UBSM\_Ctakes\_JiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.000 & 0.009 &  & 0.222 & 0.033 & 0.015 \\ 
+  UBSM\_Metamap\_AncSPLWeightedJiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.016 & 0.165 & 0.222 &  & 0.001 & 0.001 \\ 
+  UBSM\_Metamap\_AncSPLCaiStrategy1 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.000 & 0.006 & 0.028 & 0.033 & 0.001 &  & 0.002 \\ 
+  UBSM\_Metamap\_JiangConrath & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.000 & 0.001 & 0.000 & 0.000 & 0.000 & 0.001 & 0.004 & 0.014 & 0.015 & 0.001 & 0.002 &  \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}

@@ -286,4 +286,24 @@ rownames(outputMatrix) = rowNames
 
 final_data <- round(outputMatrix, 3)
 
+library(knitr)
+library(readr)
+library(kableExtra)
+library(stringr)
+library(xtable)
+
+strCaption = "This table shows the resulting p-values comparing the NER tools, which allows us to study the statistical significance of the results, as detailed in the Discussion section."
+
+# We define the latex table with the data
+
+table_latex <- xtable(final_data, type = "latex", digits=4, method = "compact")
+tableLatex <- print(xtable(table_latex, caption = strCaption, digits=3), caption.placement = 'top',
+                    comment=FALSE, size="\\tiny", table.placement="!h", sanitize.colnames.function = identity)
+
+# Write the Latex table in a file
+
+file_name <- paste(outputDir,"table_PvaluesNER.txt", sep="")
+
+write_file(tableLatex, file_name)
+
 write.csv(final_data, file = paste(outputDir, sep="","PvaluesNER.csv"))
