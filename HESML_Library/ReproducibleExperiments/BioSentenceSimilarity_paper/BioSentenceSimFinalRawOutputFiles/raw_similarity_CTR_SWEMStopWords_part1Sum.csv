@@ -1,4 +1,4 @@
-Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum
+Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-nltk2018stopwords_cf-default_ner-none_Sum;bioconceptvec_fasttext__tok-whitespace_lc_sw-biosses2017stopwords_cf-default_ner-none_Sum;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Sum
 2.6666666666666665;0.9969497065784962;0.9965990018625118;0.9987280150423573
 1.3333333333333333;0.9927740787509031;0.9923552300654748;0.9979523434336358
 4.0;0.9981566873123553;0.9974829426522172;0.9994915829791696

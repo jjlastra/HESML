@@ -1,4 +1,4 @@
-Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_notlc_sw-user_cf-default_ner-none_Min
+Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_notlc_sw-nonestopwords_cf-default_ner-none_Min
 4.0;0.9211507557283029;0.9403827150952044
 3.0;0.9217650343698904;0.9225914884452358
 2.2;0.9087485165342419;0.9054730313296705

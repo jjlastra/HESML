@@ -1,4 +1,4 @@
-Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum;PubMed-and-PMC-w2v__tok-biocnlptokenizer_lc_sw-user_cf-default_ner-none_Sum;PubMed-and-PMC-w2v__tok-stanfordcorenlpv4_2_0_lc_sw-user_cf-default_ner-none_Sum
+Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Sum;PubMed-and-PMC-w2v__tok-biocnlptokenizer_lc_sw-nonestopwords_cf-default_ner-none_Sum;PubMed-and-PMC-w2v__tok-stanfordcorenlpv4_2_0_lc_sw-nonestopwords_cf-default_ner-none_Sum
 2.6666666666666665;0.817738914988921;0.817738914988921;0.8442264095864531
 1.3333333333333333;0.7374733059190084;0.7374733059190084;0.7374733059190084
 4.0;0.8748190154412948;0.8748190154412948;0.8606449746963696

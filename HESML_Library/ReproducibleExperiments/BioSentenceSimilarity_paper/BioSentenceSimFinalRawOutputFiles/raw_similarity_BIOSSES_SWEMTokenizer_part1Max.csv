@@ -1,4 +1,4 @@
-Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Max;bioconceptvec_fasttext__tok-biocnlptokenizer_lc_sw-user_cf-default_ner-none_Max;bioconceptvec_fasttext__tok-stanfordcorenlpv4_2_0_lc_sw-user_cf-default_ner-none_Max
+Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Max;bioconceptvec_fasttext__tok-biocnlptokenizer_lc_sw-nonestopwords_cf-default_ner-none_Max;bioconceptvec_fasttext__tok-stanfordcorenlpv4_2_0_lc_sw-nonestopwords_cf-default_ner-none_Max
 4.0;0.9805228105282937;0.9805228105282937;0.9804986120358528
 3.0;0.9946278419337258;0.9946278419337258;0.9949108036511226
 2.2;0.9900914848375576;0.9900914848375576;0.9906456891649247

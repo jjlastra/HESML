@@ -1,4 +1,4 @@
-Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-none_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-biosses_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-blagec2019_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Sum
+Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-none_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-biosses_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-blagec2019_ner-none_Sum;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Sum
 4.0;0.7161827622692474;0.7960649224685464;0.7960649224685464;0.8298225650592453
 3.0;0.8240047521817057;0.8367626312028168;0.8367626312028168;0.8231953540237181
 2.2;0.7916681205474072;0.8261088493234772;0.8261088493234772;0.8261088493234772

@@ -323,210 +323,210 @@ public class HESMLSTSImpactEvaluationclient
         long minutes = 0;
         long seconds = 0;
         
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 1. Starting String-based measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        System.out.println("Starting String-based measures experiments");
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        
-        // Compute all preprocessing combinations
-        
-        totalCombinations += executeStringMeasures(
-                getAllPreprocessingConfigurations(NERType.None), 
-                "Stringbased_ALLPreprocessingCombs");
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        System.out.println("Finished String-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 2. Starting our WE-based measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting our preprocessed WE-based measures experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // Compute all the executions
-        
-        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
-        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
-        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
-        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished our preprocessed WE-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 3. Starting WBSM and UBSM measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting ontology-based measures experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // We calculate the best preprocessing configurations for WBSM
-        
-        totalCombinations += executeWBSMMeasures(
-                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
-        
-        totalCombinations += executeWBSMMeasures(
-                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
-        
-        totalCombinations += executeWBSMMeasures(
-                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
-        
-        totalCombinations += executeWBSMMeasures(
-                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
-
-        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
-        
-        // We define the preprocessing configuration
-        
-        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
-        
-        // We create the WBSM preprocessing configuration with the best results
-
-        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
-        
-        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
-        
-          totalCombinations += executeWBSMMeasures(
-                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
-        
-//         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
-        
-        totalCombinations += executeUBSMMeasures(
-                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
-        
-
-        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
-        
-        // We define the preprocessing configuration
-        
-        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
-        
-        // We create the WBSM preprocessing configuration with the best results
-
-        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.MetamapSNOMEDCT,
-                        CharFilteringType.BIOSSES);
-        
-        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
-        
-          totalCombinations += executeUBSMMeasures(
-                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
-        
-        // We initialize the array of measures for the COM measure: WBSM + UBSM
-        
-        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];
-        
-        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
-        
-        ISentenceSimilarityMeasure WBSMmeasure = 
-                SentenceSimilarityFactory.getWBSMMeasure(
-                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name() + "_" + bestWBSMWordProcessing.getLabel(),
-                        bestWBSMWordProcessing,
-                        m_WordNetDbSingleton, 
-                        m_WordNetTaxonomySingleton, 
-                        SimilarityMeasureType.AncSPLRada, 
-                        icModelType);
-        
-        // We create the UBSM measures with the best partial results for each UBSM NER type
-        
-        ISentenceSimilarityMeasure UBSMmeasure = 
-                SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name() + "_" + bestUBSMWordProcessing.getLabel(),
-                        bestUBSMWordProcessing,
-                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                        icModelType);
-        
-        // We create the measures combinations and add execute the experiments
-        
-        measures[0] = WBSMmeasure;
-        measures[1] = UBSMmeasure;
-        
-        // We configure three different lambda parameter value
-        
-        Double[] lambdas = new Double[]{0.5, 0.25, 0.75};
-                
-        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
-
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished ontology-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 1. Starting String-based measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("Starting String-based measures experiments");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        
+//        // Compute all preprocessing combinations
+//        
+//        totalCombinations += executeStringMeasures(
+//                getAllPreprocessingConfigurations(NERType.None), 
+//                "Stringbased_ALLPreprocessingCombs");
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("Finished String-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 2. Starting our WE-based measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting our preprocessed WE-based measures experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // Compute all the executions
+//        
+//        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
+//        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
+//        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
+//        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished our preprocessed WE-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 3. Starting WBSM and UBSM measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting ontology-based measures experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // We calculate the best preprocessing configurations for WBSM
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
+//
+//        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
+//        
+//        // We define the preprocessing configuration
+//        
+//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
+//        
+//        // We create the WBSM preprocessing configuration with the best results
+//
+//        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.StanfordCoreNLPv4_2_0, 
+//                        true, NERType.None,
+//                        CharFilteringType.BIOSSES);
+//        
+//        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
+//        
+//          totalCombinations += executeWBSMMeasures(
+//                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
+//        
+////         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
+//        
+//
+//        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
+//        
+//        // We define the preprocessing configuration
+//        
+//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
+//        
+//        // We create the WBSM preprocessing configuration with the best results
+//
+//        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.StanfordCoreNLPv4_2_0, 
+//                        true, NERType.MetamapSNOMEDCT,
+//                        CharFilteringType.BIOSSES);
+//        
+//        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
+//        
+//          totalCombinations += executeUBSMMeasures(
+//                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
+//        
+//        // We initialize the array of measures for the COM measure: WBSM + UBSM
+//        
+//        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];
+//        
+//        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
+//        
+//        ISentenceSimilarityMeasure WBSMmeasure = 
+//                SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name() + "_" + bestWBSMWordProcessing.getLabel(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelType);
+//        
+//        // We create the UBSM measures with the best partial results for each UBSM NER type
+//        
+//        ISentenceSimilarityMeasure UBSMmeasure = 
+//                SentenceSimilarityFactory.getUBSMMeasureSnomed(
+//                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name() + "_" + bestUBSMWordProcessing.getLabel(),
+//                        bestUBSMWordProcessing,
+//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+//                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+//                        icModelType);
+//        
+//        // We create the measures combinations and add execute the experiments
+//        
+//        measures[0] = WBSMmeasure;
+//        measures[1] = UBSMmeasure;
+//        
+//        // We configure three different lambda parameter value
+//        
+//        Double[] lambdas = new Double[]{0.5, 0.25, 0.75};
+//                
+//        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
+//
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished ontology-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
         
         /**
          * ***********************************************
@@ -564,7 +564,7 @@ public class HESMLSTSImpactEvaluationclient
         
         ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
         
-        modelsBioWordVecBased.add("bio_embedding_extrinsic");
+        modelsBioWordVecBased.add("bio_embedding_intrinsic");
         modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
         
         // Reset the total combinations
@@ -626,55 +626,55 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
 
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 5. Starting BERT measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting BERT methods experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // We define the number of models to be evaluated
-        
-        int total_models = 17;
-        
-        // We define the models to be evaluated
-
-        String[][] modelPaths = getBERTModelPathList(total_models);
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // Compute all the executions
-        
-        totalCombinations += executeBERTMeasures(
-        modelPaths, total_models, getStopWordsPreprocessingConfigurations(true, NERType.None), "BERTStopWords");
-
-        totalCombinations += executeBERTMeasures(
-        modelPaths, total_models, getCharFilteringPreprocessingConfigurations(true, NERType.None), "BERTCharFiltering");
-
-        totalCombinations += executeBERTMeasures(
-        modelPaths, total_models, getLowerCasePreprocessingConfigurations(true, NERType.None), "BERTLC");
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished BERT methods experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 5. Starting BERT measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting BERT methods experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // We define the number of models to be evaluated
+//        
+//        int total_models = 17;
+//        
+//        // We define the models to be evaluated
+//
+//        String[][] modelPaths = getBERTModelPathList(total_models);
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // Compute all the executions
+//        
+//        totalCombinations += executeBERTMeasures(
+//        modelPaths, total_models, getStopWordsPreprocessingConfigurations(true, NERType.None), "BERTStopWords");
+//
+//        totalCombinations += executeBERTMeasures(
+//        modelPaths, total_models, getCharFilteringPreprocessingConfigurations(true, NERType.None), "BERTCharFiltering");
+//
+//        totalCombinations += executeBERTMeasures(
+//        modelPaths, total_models, getLowerCasePreprocessingConfigurations(true, NERType.None), "BERTLC");
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished BERT methods experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
         
         /**
          * ***********************************************

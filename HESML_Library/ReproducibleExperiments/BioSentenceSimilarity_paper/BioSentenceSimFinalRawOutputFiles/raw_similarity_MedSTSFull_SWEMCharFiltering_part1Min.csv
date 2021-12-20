@@ -1,4 +1,4 @@
-Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-none_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-biosses_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-blagec2019_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-user_cf-default_ner-none_Min
+Human;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-none_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-biosses_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-blagec2019_ner-none_Min;bioconceptvec_fasttext__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Min
 3.5;0.9999461063480571;0.9999902862581169;0.9998979415995776;1.0
 2.5;0.9986476003235154;0.9984720013722409;0.9984720013722409;0.9984720013722409
 3.45;0.9878180300109581;0.9890375512471717;0.9890375512471717;0.9890375512471717

@@ -1,0 +1,16 @@
+"","Human","Human","Human","[SW]  Flair_tok.whitespace_lc_sw.nltk2018stopwords_cf.default_ner.none","[SW]  Flair_tok.whitespace_lc_sw.biosses2017stopwords_cf.default_ner.none","[SW]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none","[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.none_ner.none","[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.biosses_ner.none","[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.blagec2019_ner.none","[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none","[TOK]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none","[TOK]  Flair_tok.biocnlptokenizer_lc_sw.nonestopwords_cf.default_ner.none","[TOK]  Flair_tok.stanfordcorenlpv4_2_0_lc_sw.nonestopwords_cf.default_ner.none","[LC]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none","[LC]  Flair_tok.whitespace_notlc_sw.nonestopwords_cf.default_ner.none"
+"Human",NA,NA,NA,0.008,0.008,0.011,0.011,0.013,0.01,0.011,0.011,0.011,0.011,0.011,0.014
+"Human",NA,NA,NA,0.008,0.008,0.011,0.011,0.013,0.01,0.011,0.011,0.011,0.011,0.011,0.014
+"Human",NA,NA,NA,0.008,0.008,0.011,0.011,0.013,0.01,0.011,0.011,0.011,0.011,0.011,0.014
+"[SW]  Flair_tok.whitespace_lc_sw.nltk2018stopwords_cf.default_ner.none",0.008,0.008,0.008,NA,0.486,0.309,0.319,0.386,0.332,0.309,0.309,0.285,0.303,0.309,0.372
+"[SW]  Flair_tok.whitespace_lc_sw.biosses2017stopwords_cf.default_ner.none",0.008,0.008,0.008,0.486,NA,0.289,0.304,0.373,0.311,0.289,0.289,0.266,0.282,0.289,0.358
+"[SW]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.309,0.289,NA,0.323,0.493,0.344,NA,NA,0.052,0.104,NA,0.436
+"[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.none_ner.none",0.011,0.011,0.011,0.319,0.304,0.323,NA,0.398,0.214,0.177,0.177,0.144,0.167,0.177,0.334
+"[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.biosses_ner.none",0.013,0.013,0.013,0.386,0.373,0.493,0.398,NA,0.047,0.007,0.007,0.002,0.01,0.007,0.185
+"[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.blagec2019_ner.none",0.01,0.01,0.01,0.332,0.311,0.344,0.214,0.047,NA,0.156,0.156,0.11,0.118,0.156,0.38
+"[CF]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.309,0.289,NA,0.177,0.007,0.156,NA,NA,0.052,0.104,NA,0.436
+"[TOK]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.309,0.289,NA,0.177,0.007,0.156,NA,NA,0.052,0.104,NA,0.436
+"[TOK]  Flair_tok.biocnlptokenizer_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.285,0.266,0.052,0.144,0.002,0.11,0.052,0.052,NA,0.395,0.448,0.467
+"[TOK]  Flair_tok.stanfordcorenlpv4_2_0_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.303,0.282,0.104,0.167,0.01,0.118,0.104,0.104,0.395,NA,0.396,0.443
+"[LC]  Flair_tok.whitespace_lc_sw.nonestopwords_cf.default_ner.none",0.011,0.011,0.011,0.309,0.289,NA,0.177,0.007,0.156,NA,NA,0.448,0.396,NA,0.436
+"[LC]  Flair_tok.whitespace_notlc_sw.nonestopwords_cf.default_ner.none",0.014,0.014,0.014,0.372,0.358,0.436,0.334,0.185,0.38,0.436,0.436,0.467,0.443,0.436,NA

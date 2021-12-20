@@ -127,11 +127,11 @@ source(paste("bio_sentence_sim_scripts", "readNERexperiment.R", sep = "/"), loca
 
 # We add the experiments to the list
 
-# rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_COMMixed, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BESTCOMBS, rawdata_NERexperiment)
+rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_SWEM, rawdata_BERT, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair)
 
 # rawdata_experiments <- list(rawdata_string)
 
-rawdata_experiments <- list(rawdata_BERT)
+# rawdata_experiments <- list(rawdata_BERT)
 
 # We initialize the counter of executions
 

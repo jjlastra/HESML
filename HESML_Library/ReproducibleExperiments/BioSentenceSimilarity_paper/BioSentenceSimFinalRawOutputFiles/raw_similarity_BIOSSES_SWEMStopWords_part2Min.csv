@@ -1,4 +1,4 @@
-Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-user_cf-default_ner-none_Min
+Human;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nltk2018stopwords_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-biosses2017stopwords_cf-default_ner-none_Min;PubMed-and-PMC-w2v__tok-whitespace_lc_sw-nonestopwords_cf-default_ner-none_Min
 4.0;0.8718022474173325;0.8718022474173325;0.9211507557283029
 3.0;0.9039403989541706;0.9039403989541706;0.9217650343698904
 2.2;0.9041598487858956;0.9041598487858956;0.9087485165342419
