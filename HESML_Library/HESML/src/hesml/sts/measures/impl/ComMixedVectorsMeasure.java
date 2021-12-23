@@ -188,7 +188,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         
         double stringSimilarity = m_stringMeasure.getSimilarityValue(strRawSentence1, strRawSentence2);
 
-        // if the 
+        // if the Li-based method cannot evaluate the similarity, we use the string-based score
         
         if(liSimilarity == 0.0)
         {
@@ -198,9 +198,8 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         }
         else
         {
-            // Compute the value
+            // Compute the mean value between both methods
         
-//            similarity = (liSimilarity * m_lambda) + (stringSimilarity * (1.0 - m_lambda));
             similarity = (liSimilarity + stringSimilarity) / 2;
         }
         
@@ -313,7 +312,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
             }
             else
             {
-                wordVectorComponent = getWordSimilarityScore(word, lstWordsSentence);
+                wordVectorComponent = 0.0;
             }
             
             semanticVector[count] = wordVectorComponent;
@@ -323,70 +322,6 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
         // Return the result
         
         return (semanticVector);
-    }
-    
-    /**
-     * Get the maximum similarity value comparing a word with a list of words.
-     * 
-     * @param word
-     * @param lstWordsSentence
-     * @return double
-     */
-    
-    private double getWordSimilarityScore(
-            String              word,
-            String[]            lstWordsSentence) throws Exception
-    {
-        // Initialize the result
-        
-        double maxValue = 0.0;
-        
-        // Iterate the dictionary and compare the similarity 
-        // between the pivot word and the dictionary words to get the maximum value.
-        
-        for (String wordDict : lstWordsSentence)
-        {
-            // Get the similarity between the words
-            
-            double similarityScore = getSimilarityWordPairs(word, wordDict);
-            
-            // If the returned value is greater, set the new similarity value
-            
-            maxValue = maxValue < similarityScore ? similarityScore : maxValue;
-        }
-        
-        // Return the result
-        
-        return (maxValue);
-    }
-    
-    /**
-     * This function returns the degree of similarity between two CUI concepts or words.
-     * @param strFirstConceptId
-     * @param strSecondConceptId
-     * @return 
-     */
-
-    private double getSimilarityWordPairs(
-            String  strFirstConceptId,
-            String  strSecondConceptId) throws Exception
-    {
-        // We initialize the output
-        
-        double similarity = 0.0;
-        
-        // We compute the similarity by its ontology
-        
-        // In this case, if the concept is in the array, the similarity value is 1, else the similarity value is 0
-                
-        if(strFirstConceptId.equals(strSecondConceptId))
-            similarity = 1.0;
-        else
-            similarity = 0.0;
-        
-        // We return the result
-        
-        return (similarity);
     }
     
     /**
