@@ -144,7 +144,9 @@ public class SentenceSimilarityFactory
      * @param strLabel
      * @param preprocesser
      * @param SnomedOntology
+     * @param vertexes
      * @param wordSimilarityMeasureType
+     * @param taxonomy
      * @param icModelType
      * @return ISentenceSimilarityMeasure
      * @throws java.lang.Exception
@@ -257,7 +259,6 @@ public class SentenceSimilarityFactory
      * 
      * @param strLabel
      * @param preprocesser
-     * @param wordSimilarityMeasureType
      * @param stringMeasure
      * @param lambda
      * @param comMixedVectorsMeasureType
@@ -272,7 +273,7 @@ public class SentenceSimilarityFactory
             Double                      lambda,
             ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
-        return (new ComMixedVectorsMeasure(strLabel, preprocesser,
+        return (new LiMixedVectorsMeasure(strLabel, preprocesser,
                 stringMeasure, lambda, comMixedVectorsMeasureType));
     }
     

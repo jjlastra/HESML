@@ -225,7 +225,7 @@ class SentenceSimilarityDataset
         
         // Remove the filename extension
         
-        m_label = path[2].replace(".", "");
+        m_label = path[path.length-1].replace(".", "").replace("tsv", "").replace("csv", "");
     }
     
     /**

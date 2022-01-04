@@ -26,6 +26,8 @@ import hesml.sts.measures.ISentenceSimilarityMeasure;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class implements a sentence similarity benchmark using a normalized
@@ -133,6 +135,18 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
             similarityMatrix[iPair][0] = m_Dataset.getHumanJudgementAt(iPair);
         }
         
+        // We will save into a file the execution time of each method
+        
+        HashMap<String, String> execution_times = new HashMap<>();
+        
+        // We get the start time
+
+        long startFileProcessingTime = 0;
+        
+        long endTime = 0;
+        long miliseconds = 0;
+        long seconds = 0;
+        
         // We evaluate all similarity measures 
 
         for (int iMeasure = 0; iMeasure < m_Measures.length; iMeasure++)
@@ -141,8 +155,12 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
             {
                 System.out.println("Computing measure " + m_Measures[iMeasure].getLabel());
             }
+            
+            // We start the execution time counter
+            
+            startFileProcessingTime = System.currentTimeMillis();
 
-            // We set the coluimn header for the current measure
+            // We set the column header for the current measure
 
             strColumnHeaders[iMeasure + 1] = m_Measures[iMeasure].getLabel();
             
@@ -161,7 +179,21 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
             {
                 similarityMatrix[iScore][iMeasure + 1] = similarityScores[iScore];
             }
+            
+            // We measure the elapsed time to run the experiments
+
+            endTime = System.currentTimeMillis();
+            seconds = (endTime - startFileProcessingTime) / 1000;
+            miliseconds = (endTime - startFileProcessingTime);
+            
+            // We update the hashmap with the execution times data
+            
+            execution_times.put(m_Measures[iMeasure].getLabel() + "_" + m_Dataset.getLabel(), String.valueOf(miliseconds));
         }
+        
+        // We save the execution times record
+        
+        writeExecutionTimesfile(execution_times, "Execution_times_" + m_Dataset.getLabel() + "_miliseconds.txt");
         
         // We save the raw similarity values into the output file
         
@@ -215,6 +247,36 @@ class SentenceSimilaritySingleBenchmark implements ISentenceSimilarityBenchmark
             // Write the end of line
             
             writer.write("\n");
+        }
+        
+        // We close the file
+        
+        writer.close();
+    }
+    
+    /**
+     * This function writes the raw execution times to a file
+     * @param strMatrix 
+     */
+    
+    private void writeExecutionTimesfile(
+            HashMap<String, String> execution_times,
+            String      strOutputFile) throws IOException
+    {
+        // We create the directory structure (if necessary)
+        
+        File file = new File(strOutputFile);
+       
+        // We open for writing the file
+        
+        FileWriter writer = new FileWriter(strOutputFile, true);
+        System.out.println(strOutputFile);
+        
+        for (Map.Entry<String, String> entry : execution_times.entrySet()) 
+        {
+            // We write the execution time
+            
+            writer.write(entry.getKey() + " : " + entry.getValue() + " ms \n");
         }
         
         // We close the file

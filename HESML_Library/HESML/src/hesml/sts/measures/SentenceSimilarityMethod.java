@@ -157,5 +157,9 @@ public enum SentenceSimilarityMethod
     
     COM,
     
-    ComMixedVectorsMeasure
+    /*
+     * Our proposed string-based method, which is a combination of two measures.
+    */
+    
+    LiMixedVectorsMeasure
 }

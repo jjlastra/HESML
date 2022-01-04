@@ -40,7 +40,7 @@ import java.util.Set;
  * @author alicia
  */
 
-class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
+class LiMixedVectorsMeasure extends SentenceSimilarityMeasure
 {
     // User label which is shown in all raw matrix results
     
@@ -56,11 +56,12 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     
     /**
      * Constructor for none ontology (LiMixed measure)
+     * 
      * @param preprocesser 
      * @param strWordNet_Dir Path to WordNet directory
      */
     
-    ComMixedVectorsMeasure(
+    LiMixedVectorsMeasure(
             String                      strLabel,
             IWordProcessing             preprocesser,
             ISentenceSimilarityMeasure  stringMeasure,
@@ -119,7 +120,7 @@ class ComMixedVectorsMeasure extends SentenceSimilarityMeasure
     @Override
     public SentenceSimilarityMethod getMethod()
     {
-        return (SentenceSimilarityMethod.ComMixedVectorsMeasure);
+        return (SentenceSimilarityMethod.LiMixedVectorsMeasure);
     }
 
     /**
