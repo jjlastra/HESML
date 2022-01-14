@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2016-2020 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2022 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -166,7 +166,7 @@ public class HESMLSTSclient
     {
         // We print the HESML version
         
-        System.out.println("Running HESMLSTSClient V2R1 (2.1.0.0, February 2020) based on "
+        System.out.println("Running HESMLSTSClient V2R1 (2.1.0.0, January 2022) based on "
                 + HESMLversion.getReleaseName() + " " + HESMLversion.getVersionCode());
         
         System.out.println("Java heap size in Mb = "
@@ -285,7 +285,7 @@ public class HESMLSTSclient
         seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
         
         System.out.println("-------------------------------------------------------");
-        System.out.println("-------------/home/user/HESML/HESML_Library/HESML/dist/HESML-V1R5.0.1.jar------------------------------------------");
+        System.out.println("-------------/home/user/HESML/HESML_Library/HESMLSTSclient/dist/HESMLSTSclient.jar------------------------------------------");
         System.out.println("Finished measures experiments");
         System.out.println("Processed a total of " + totalCombinations + 
                             " combinations in = " + seconds + " (seconds)");

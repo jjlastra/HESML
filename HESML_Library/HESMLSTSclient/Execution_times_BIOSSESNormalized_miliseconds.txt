@@ -54,3 +54,14 @@ Levenshtein_BIOSSESNormalized : 34 ms
 Jaccard_BIOSSESNormalized : 45 ms 
 LiMixed_BIOSSESNormalized : 75 ms 
 BlockDistance_BIOSSESNormalized : 64 ms 
+UBSM_AncSPLWeightedJiangConrath_BIOSSESNormalized : 16499 ms 
+WBSM_AncSPLWeightedJiangConrath_BIOSSESNormalized : 4582 ms 
+WBSM_JiangConrath_BIOSSESNormalized : 4318 ms 
+UBSM_JiangConrath_BIOSSESNormalized : 12746 ms 
+COM_WBSM_AncSPLRada_UBSM_AncSPLWeightedJiangConrath_BIOSSESNormalized : 2835 ms 
+WBSM_AncSPLRada_BIOSSESNormalized : 563 ms 
+UBSM_AncSPLRada_BIOSSESNormalized : 2910 ms 
+UBSM_AncSPLCaiStrategy1_BIOSSESNormalized : 21176 ms 
+UBSM_AncSPLCosineNormWeightedJiangConrath_BIOSSESNormalized : 2463 ms 
+WBSM_AncSPLCosineNormWeightedJiangConrath_BIOSSESNormalized : 458 ms 
+WBSM_AncSPLCaiStrategy1_BIOSSESNormalized : 21732 ms 
