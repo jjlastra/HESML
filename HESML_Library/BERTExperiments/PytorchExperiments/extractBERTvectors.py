@@ -18,7 +18,7 @@ absPathTempVectorsFile = sys.argv[3] # the output path
 # absPathTempSentencesFile = "../wordpiecetokenizer_lc_nonestopwords_none_none_pubmedbert-base-uncased-abstract__Sents.txt"
 # absPathTempVectorsFile = "../wordpiecetokenizer_lc_nonestopwords_none_none_pubmedbert-base-uncased-abstract__Vecs.txt"
 
-model = SentenceTransformer(strModelPath, device="cuda")
+model = SentenceTransformer(strModelPath, device="cpu")
 model.save("downl_" + strModelPath.replace("/", "_"))
 
 f = open(absPathTempSentencesFile, "r")

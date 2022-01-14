@@ -79,7 +79,7 @@ if not fine_tunned:
                                      '-model_dir', strModelPath,
                                      '-port', str(port),
                                      '-port_out', str(port+1),
-                                     '-device_map', "0"])
+                                     '-cpu'])
 else:
 
     # Fine tunned model
@@ -87,7 +87,7 @@ else:
     args = get_args_parser().parse_args([
         '-pooling_strategy', strPoolingStrategy,
         '-pooling_layer', strPoolingLayer,
-        '-device_map', "0",
+        '-cpu',
         '-ckpt_name', checkPointFilename,
         '-model_dir', strModelPath,
         '-tuned_model_dir', FineTunedModelPath,
