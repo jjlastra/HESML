@@ -206,6 +206,14 @@ public class HESMLSTSclient
         inputb.setRequired(false);
         options.addOption(inputb);
         
+        Option inputner = new Option("n", "ner", false, "Execute only the NERs experiment");
+        inputner.setRequired(false);
+        options.addOption(inputner);
+        
+        Option inputliblockner = new Option("l", "liblock_ner", false, "Execute only the LiBlock with NERs experiment");
+        inputliblockner.setRequired(false);
+        options.addOption(inputliblockner);
+        
         // Define the arguments parser
         
         CommandLine cmd;
@@ -240,6 +248,16 @@ public class HESMLSTSclient
                 System.out.println("Execute only BERT-based methods");
                 familyMethods = "b";
             }
+            if(cmd.hasOption("l")) 
+            {
+                System.out.println("Execute only the LiBlock with NERs experiment");
+                familyMethods = "l";
+            }
+            if(cmd.hasOption("n")) 
+            {
+                System.out.println("Execute only the NERs experiment");
+                familyMethods = "n";
+            }
             
         } catch (ParseException e) 
         {
@@ -248,14 +266,9 @@ public class HESMLSTSclient
             System.exit(0);
         }
         
-        // We load the ontologies if necessary (complete execution or ontology-based methods)
+        // We load the ontologies
         
-        if(familyMethods.equals("all") || familyMethods.equals("o"))
-        {
-            // We load the ontologies
-        
-            loadOntologies(false);
-        }
+        loadOntologies(false);
         
         // Reset the total combinations
         
@@ -271,14 +284,34 @@ public class HESMLSTSclient
          * ***********************************************
          */
         
-        // We execute the experiment with all the best combinations 
+        // We can execute only the experiment LiBlock-NER, NER or BEST METHODS experiments
         
-        totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
-
-        // We execute the NER experiment in the complete execution of methods
+        if(familyMethods.equals("l"))
+        {
+            // We execute the experiment with LiBlockNER experiment
+            
+            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+        }
+        else if(familyMethods.equals("n"))
+        {
+            // We execute the experiment with all the NER combinations 
         
-        if(familyMethods.equals("all"))
             totalCombinations += executeNERexperiment("NERexperiment");
+        }
+        else
+        {
+            // We execute the experiment with all the best combinations 
+        
+            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
+        }
+        
+        // We execute the NER experiment in the complete execution of methods
+
+        if(familyMethods.equals("all"))
+        {
+            totalCombinations += executeNERexperiment("NERexperiment");
+            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+        }
         
         // We measure the elapsed time to run the experiments
         
@@ -301,6 +334,116 @@ public class HESMLSTSclient
 
         System.out.println("Overall elapsed loading and computation time (minutes) = " + minutes);
         System.out.println("Overall elapsed loading and computation time (seconds) = " + seconds);
+    }
+    
+    /**
+     * Execution of the NER experiment
+     * 
+     * @param outputFileNames
+     * @return
+     * @throws IOException
+     * @throws Exception 
+     */
+    
+    private static int executeLiBlockNERexperiment(
+            String outputFileNames) throws IOException, Exception
+    {
+        // Initialize the result
+        
+        int totalCombinations = 0;
+        
+        // We iterate the methods and create the measures
+        
+        ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
+        
+        // We define the pre-processing method
+
+        IWordProcessing bestStringWordProcessingBlockDistance = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);        
+        
+        // We define the lambda values
+
+        double lambda = 0.5;
+
+        // We define the pre-processing methods
+
+        IWordProcessing bestStringWordProcessingLiMixed = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.Default);
+
+        // Initialize the string measure
+
+        ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
+                            "BlockDistance_" + bestStringWordProcessingBlockDistance.getLabel(),
+                            StringBasedSentenceSimilarityMethod.BlockDistance, 
+                            bestStringWordProcessingBlockDistance);
+
+        // We also add our method, which is based on Li et. al (2006)
+
+        // We add the LiMixed method 
+
+        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                 "LiMixed - Original", 
+                 bestStringWordProcessingLiMixed, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+        
+        // We define the pre-processing methods with Metamap, MetamapLite and Ctakes
+        
+        // We add the LiMixed method using Ctakes
+        
+        IWordProcessing bestStringWordProcessingLiMixedCtakes = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.Ctakes,
+                        CharFilteringType.Default);
+
+        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                 "LiMixed - CTakes", 
+                 bestStringWordProcessingLiMixedCtakes, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+        
+        // We add the LiMixed method using Metamap
+        
+        IWordProcessing bestStringWordProcessingLiMixedMetamap = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapSNOMEDCT,
+                        CharFilteringType.Default);
+
+        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                 "LiMixed - Metamap", 
+                 bestStringWordProcessingLiMixedMetamap, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+        
+        // We add the LiMixed method using Metamap
+        
+        IWordProcessing bestStringWordProcessingLiMixedMetamapLite = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapLite,
+                        CharFilteringType.Default);
+
+        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                 "LiMixed - MetamapLite", 
+                 bestStringWordProcessingLiMixedMetamapLite, stringMeasure,
+                 lambda, ComMixedVectorsMeasureType.NoneOntology));
+        
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        // We execute the experiments
+        
+        executeExperiments(measuresLst, outputFileNames);
+        
+        // Return the result 
+        
+        return (totalCombinations);
     }
     
     /**
@@ -894,6 +1037,19 @@ public class HESMLSTSclient
             measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
                      "LiMixed", 
                      bestStringWordProcessingLiMixed, stringMeasure,
+                     lambda, ComMixedVectorsMeasureType.NoneOntology));
+            
+            // We add the LiMixed method using Ctakes
+        
+            IWordProcessing bestStringWordProcessingLiMixedCtakes = PreprocessingFactory.getWordProcessing(
+                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                            TokenizerType.StanfordCoreNLPv4_2_0, 
+                            true, NERType.Ctakes,
+                            CharFilteringType.Default);
+
+            measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+                     "LiMixed - CTakes", 
+                     bestStringWordProcessingLiMixedCtakes, stringMeasure,
                      lambda, ComMixedVectorsMeasureType.NoneOntology));
         }
         
