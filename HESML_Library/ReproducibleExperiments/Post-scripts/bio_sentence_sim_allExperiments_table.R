@@ -125,12 +125,18 @@ source(paste("bio_sentence_sim_scripts", "readBESTCOMBS.R", sep = "/"), local = 
 
 source(paste("bio_sentence_sim_scripts", "readNERexperiment.R", sep = "/"), local = knitr::knit_global())
 
+# We load the input raw results file forNER experiments (FINAL RESULTS)
+
+source(paste("bio_sentence_sim_scripts", "readLiBlockNERexperiment.R", sep = "/"), local = knitr::knit_global())
+
 # We add the experiments to the list
 
-rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_SWEM, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BERT, rawdata_NERexperiment, rawdata_BESTCOMBS)
+# rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_SWEM, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BERT, rawdata_NERexperiment, rawdata_LiBlockNERexperiment, rawdata_BESTCOMBS)
 
 # rawdata_experiments <- list(rawdata_BESTCOMBS)
 # rawdata_experiments <- list(rawdata_NERexperiment)
+
+rawdata_experiments <- list(rawdata_LiBlockNERexperiment)
 
 
 # We initialize the counter of executions
