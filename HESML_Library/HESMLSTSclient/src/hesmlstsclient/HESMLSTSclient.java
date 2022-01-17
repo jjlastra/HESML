@@ -50,10 +50,11 @@ import hesml.taxonomyreaders.snomed.ISnomedCtOntology;
 import hesml.taxonomyreaders.snomed.impl.SnomedCtFactory;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
 import hesml.taxonomyreaders.wordnet.impl.WordNetFactory;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
 
 /**
  * This class implements a basic client application of the HESML for sentence similarity
@@ -266,9 +267,10 @@ public class HESMLSTSclient
             System.exit(0);
         }
         
-        // We load the ontologies
+        // We load the ontologies if we execute an ontology-based experiment
         
-        loadOntologies(false);
+        if(familyMethods.equals("all") || familyMethods.equals("o"))
+            loadOntologies(false);
         
         // Reset the total combinations
         
@@ -284,46 +286,60 @@ public class HESMLSTSclient
          * ***********************************************
          */
         
-        // We can execute only the experiment LiBlock-NER, NER or BEST METHODS experiments
-        
-        if(familyMethods.equals("l"))
-        {
-            // We execute the experiment with LiBlockNER experiment
-            
-            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
-        }
-        else if(familyMethods.equals("n"))
-        {
-            // We execute the experiment with all the NER combinations 
-        
-            totalCombinations += executeNERexperiment("NERexperiment");
-        }
-        else
-        {
-            // We execute the experiment with all the best combinations 
-        
-            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
-        }
-        
-        // We execute the NER experiment in the complete execution of methods
-
-        if(familyMethods.equals("all"))
-        {
-            totalCombinations += executeNERexperiment("NERexperiment");
-            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
-        }
+//        // We can execute only the experiment LiBlock-NER, NER or BEST METHODS experiments
+//        
+//        if(familyMethods.equals("l"))
+//        {
+//            // We execute the experiment with LiBlockNER experiment
+//            
+//            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+//        }
+//        else if(familyMethods.equals("n"))
+//        {
+//            // We execute the experiment with all the NER combinations 
+//        
+//            totalCombinations += executeNERexperiment("NERexperiment");
+//        }
+//        else
+//        {
+//            // We execute the experiment with all the best combinations 
+//        
+//            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
+//        }
+//        
+//        // We execute the NER experiment in the complete execution of methods
+//
+//        if(familyMethods.equals("all"))
+//        {
+//            totalCombinations += executeNERexperiment("NERexperiment");
+//            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+//        }
         
         // We measure the elapsed time to run the experiments
         
         seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
         
         System.out.println("-------------------------------------------------------");
-        System.out.println("-------------/home/user/HESML/HESML_Library/HESMLSTSclient/dist/HESMLSTSclient.jar------------------------------------------");
+        System.out.println("------------- HESMLSTSclient --------------------------");
         System.out.println("Finished measures experiments");
         System.out.println("Processed a total of " + totalCombinations + 
                             " combinations in = " + seconds + " (seconds)");
-        System.out.println("-"
-                + "------------------------------------------------------");
+        System.out.println("-------------------------------------------------------"
+                         + "-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        System.out.println("Copying results to HESML_DATA/ReproducibleExperiments...");
+        
+        String source = "/home/user/HESML/HESML_Library/ReproducibleExperiments";
+        File srcDir = new File(source);
+
+        String destination = "/home/user/HESML_DATA/ReproducibleResults";
+        File destDir = new File(destination);
+
+        FileUtils.copyDirectory(srcDir, destDir);
+        
+        
+        System.out.println("-------------------------------------------------------");
         System.out.println("-------------------------------------------------------");
 
         // We measure the elapsed time to run the experiments
@@ -1886,7 +1902,7 @@ public class HESMLSTSclient
             String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
             String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
             String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
-            String strPythonVirtualEnvironmentDirSent2vec = m_strDataDirectory + "Sent2vecExperiments/venv/bin/python3";
+            String strPythonVirtualEnvironmentDirSent2vec = "python";
             String strPythonScriptSent2vec = "extractSent2vecvectors.py";
 
             // We add the measure
