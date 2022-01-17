@@ -286,34 +286,34 @@ public class HESMLSTSclient
          * ***********************************************
          */
         
-//        // We can execute only the experiment LiBlock-NER, NER or BEST METHODS experiments
-//        
-//        if(familyMethods.equals("l"))
-//        {
-//            // We execute the experiment with LiBlockNER experiment
-//            
-//            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
-//        }
-//        else if(familyMethods.equals("n"))
-//        {
-//            // We execute the experiment with all the NER combinations 
-//        
-//            totalCombinations += executeNERexperiment("NERexperiment");
-//        }
-//        else
-//        {
-//            // We execute the experiment with all the best combinations 
-//        
-//            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
-//        }
-//        
-//        // We execute the NER experiment in the complete execution of methods
-//
-//        if(familyMethods.equals("all"))
-//        {
-//            totalCombinations += executeNERexperiment("NERexperiment");
-//            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
-//        }
+        // We can execute only the experiment LiBlock-NER, NER or BEST METHODS experiments
+        
+        if(familyMethods.equals("l"))
+        {
+            // We execute the experiment with LiBlockNER experiment
+            
+            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+        }
+        else if(familyMethods.equals("n"))
+        {
+            // We execute the experiment with all the NER combinations 
+        
+            totalCombinations += executeNERexperiment("NERexperiment");
+        }
+        else
+        {
+            // We execute the experiment with all the best combinations 
+        
+            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
+        }
+        
+        // We execute the NER experiment in the complete execution of methods
+
+        if(familyMethods.equals("all"))
+        {
+            totalCombinations += executeNERexperiment("NERexperiment");
+            totalCombinations += executeLiBlockNERexperiment("LiBlockNER");
+        }
         
         // We measure the elapsed time to run the experiments
         
