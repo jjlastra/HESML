@@ -1051,7 +1051,7 @@ public class HESMLSTSclient
             IWordProcessing bestStringWordProcessingLiBlockCtakes = PreprocessingFactory.getWordProcessing(
                             m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                             TokenizerType.StanfordCoreNLPv4_2_0, 
-                            true, NERType.None,
+                            true, NERType.Ctakes,
                             CharFilteringType.Default);
 
             measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
