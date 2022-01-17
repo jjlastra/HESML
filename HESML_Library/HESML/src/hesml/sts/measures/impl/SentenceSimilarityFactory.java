@@ -255,7 +255,7 @@ public class SentenceSimilarityFactory
     }
     
     /**
-     * This function creates a LiMixed measure.
+     * This function creates a LiBlock measure.
      * 
      * @param strLabel
      * @param preprocesser
@@ -266,14 +266,14 @@ public class SentenceSimilarityFactory
      * @throws java.lang.Exception
      */
 
-    public static ISentenceSimilarityMeasure getLiMixedMeasure(
+    public static ISentenceSimilarityMeasure getLiBlockMeasure(
             String                      strLabel,
             IWordProcessing             preprocesser,
             ISentenceSimilarityMeasure  stringMeasure,
             Double                      lambda,
             ComMixedVectorsMeasureType  comMixedVectorsMeasureType) throws Exception
     {
-        return (new LiMixedVectorsMeasure(strLabel, preprocesser,
+        return (new LiBlockVectorsMeasure(strLabel, preprocesser,
                 stringMeasure, lambda, comMixedVectorsMeasureType));
     }
     

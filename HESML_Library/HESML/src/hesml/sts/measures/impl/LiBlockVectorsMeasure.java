@@ -40,7 +40,7 @@ import java.util.Set;
  * @author alicia
  */
 
-class LiMixedVectorsMeasure extends SentenceSimilarityMeasure
+class LiBlockVectorsMeasure extends SentenceSimilarityMeasure
 {
     // User label which is shown in all raw matrix results
     
@@ -61,7 +61,7 @@ class LiMixedVectorsMeasure extends SentenceSimilarityMeasure
      * @param strWordNet_Dir Path to WordNet directory
      */
     
-    LiMixedVectorsMeasure(
+    LiBlockVectorsMeasure(
             String                      strLabel,
             IWordProcessing             preprocesser,
             ISentenceSimilarityMeasure  stringMeasure,
@@ -151,6 +151,9 @@ class LiMixedVectorsMeasure extends SentenceSimilarityMeasure
             throws IOException, FileNotFoundException, 
             InterruptedException, Exception
     {
+//        strRawSentence1 = "C0280089 formation mice oncogenic C1537502 requires formation craf not C0812241";
+//        strRawSentence2 = "oncogenic activity mutant C1537502 appears dependent functional craf not C0812241";
+        
         // We initialize the output score
         
         double similarity = 0.0;

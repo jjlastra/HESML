@@ -386,7 +386,7 @@ public class HESMLSTSclient
 
         // We define the pre-processing methods
 
-        IWordProcessing bestStringWordProcessingLiMixed = PreprocessingFactory.getWordProcessing(
+        IWordProcessing bestStringWordProcessingLiBlock = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv4_2_0, 
                         true, NERType.None,
@@ -401,52 +401,52 @@ public class HESMLSTSclient
 
         // We also add our method, which is based on Li et. al (2006)
 
-        // We add the LiMixed method 
+        // We add the LiBlock method 
 
-        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                 "LiMixed - Original", 
-                 bestStringWordProcessingLiMixed, stringMeasure,
+        measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
+                 "LiBlock - Original", 
+                 bestStringWordProcessingLiBlock, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.NoneOntology));
         
         // We define the pre-processing methods with Metamap, MetamapLite and Ctakes
         
-        // We add the LiMixed method using Ctakes
+        // We add the LiBlock method using Ctakes
         
-        IWordProcessing bestStringWordProcessingLiMixedCtakes = PreprocessingFactory.getWordProcessing(
+        IWordProcessing bestStringWordProcessingLiBlockCtakes = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv4_2_0, 
                         true, NERType.Ctakes,
                         CharFilteringType.Default);
 
-        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                 "LiMixed - CTakes", 
-                 bestStringWordProcessingLiMixedCtakes, stringMeasure,
+        measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
+                 "LiBlock - CTakes", 
+                 bestStringWordProcessingLiBlockCtakes, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.NoneOntology));
         
-        // We add the LiMixed method using Metamap
+        // We add the LiBlock method using Metamap
         
-        IWordProcessing bestStringWordProcessingLiMixedMetamap = PreprocessingFactory.getWordProcessing(
+        IWordProcessing bestStringWordProcessingLiBlockMetamap = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv4_2_0, 
                         true, NERType.MetamapSNOMEDCT,
                         CharFilteringType.Default);
 
-        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                 "LiMixed - Metamap", 
-                 bestStringWordProcessingLiMixedMetamap, stringMeasure,
+        measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
+                 "LiBlock - Metamap", 
+                 bestStringWordProcessingLiBlockMetamap, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.NoneOntology));
         
-        // We add the LiMixed method using Metamap
+        // We add the LiBlock method using Metamap
         
-        IWordProcessing bestStringWordProcessingLiMixedMetamapLite = PreprocessingFactory.getWordProcessing(
+        IWordProcessing bestStringWordProcessingLiBlockMetamapLite = PreprocessingFactory.getWordProcessing(
                         m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                         TokenizerType.StanfordCoreNLPv4_2_0, 
                         true, NERType.MetamapLite,
                         CharFilteringType.Default);
 
-        measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                 "LiMixed - MetamapLite", 
-                 bestStringWordProcessingLiMixedMetamapLite, stringMeasure,
+        measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
+                 "LiBlock - MetamapLite", 
+                 bestStringWordProcessingLiBlockMetamapLite, stringMeasure,
                  lambda, ComMixedVectorsMeasureType.NoneOntology));
         
         // Update the total of combinations
@@ -934,98 +934,104 @@ public class HESMLSTSclient
         {
             // We define the pre-processing method
 
-            IWordProcessing bestStringWordProcessingJaccard = PreprocessingFactory.getWordProcessing(
+//            IWordProcessing bestStringWordProcessingJaccard = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                            TokenizerType.WhiteSpace, 
+//                            true, NERType.None,
+//                            CharFilteringType.BIOSSES);
+//
+//            // We add the LiBlock method not expanded
+//
+//            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+//                     StringBasedSentenceSimilarityMethod.Jaccard.name(),
+//                     StringBasedSentenceSimilarityMethod.Jaccard, 
+//                     bestStringWordProcessingJaccard));
+//
+//            // Update the total of combinations
+//
+//            totalCombinations++;
+//
+//            // We define the pre-processing method
+//
+//            IWordProcessing bestStringWordProcessingBlockDistance = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                            TokenizerType.WhiteSpace, 
+//                            true, NERType.None,
+//                            CharFilteringType.BIOSSES);
+//
+//            // We add the method
+//
+//            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+//                     StringBasedSentenceSimilarityMethod.BlockDistance.name(),
+//                     StringBasedSentenceSimilarityMethod.BlockDistance, 
+//                     bestStringWordProcessingBlockDistance));
+//
+//            // Update the total of combinations
+//
+//            totalCombinations++;
+//
+//            // We define the pre-processing method
+//
+//            IWordProcessing bestStringWordProcessingLevenshtein = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
+//                            TokenizerType.WhiteSpace, 
+//                            false, NERType.None,
+//                            CharFilteringType.None);
+//
+//            // We add the method 
+//
+//            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+//                     StringBasedSentenceSimilarityMethod.Levenshtein.name(),
+//                     StringBasedSentenceSimilarityMethod.Levenshtein, 
+//                     bestStringWordProcessingLevenshtein));
+//
+//            // Update the total of combinations
+//
+//            totalCombinations++;
+//
+//            // We define the pre-processing method
+//
+//            IWordProcessing bestStringWordProcessingOverlapCoefficient = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                            TokenizerType.StanfordCoreNLPv4_2_0, 
+//                            true, NERType.None,
+//                            CharFilteringType.Default);
+//
+//            // We add the method 
+//
+//            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+//                     StringBasedSentenceSimilarityMethod.OverlapCoefficient.name(),
+//                     StringBasedSentenceSimilarityMethod.OverlapCoefficient, 
+//                     bestStringWordProcessingOverlapCoefficient));
+//
+//            // Update the total of combinations
+//
+//            totalCombinations++;
+//
+//            // We define the pre-processing method
+//
+//            IWordProcessing bestStringWordProcessingQgram = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                            TokenizerType.WhiteSpace, 
+//                            true, NERType.None,
+//                            CharFilteringType.BIOSSES);
+//
+//            // We add the method
+//
+//            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
+//                     StringBasedSentenceSimilarityMethod.Qgram.name(),
+//                     StringBasedSentenceSimilarityMethod.Qgram, 
+//                     bestStringWordProcessingQgram));
+//
+//            // Update the total of combinations
+//
+//            totalCombinations++;
+            
+            IWordProcessing bestStringWordProcessingBlockDistanceLi = PreprocessingFactory.getWordProcessing(
                             m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                             TokenizerType.WhiteSpace, 
                             true, NERType.None,
                             CharFilteringType.BIOSSES);
-
-            // We add the LiMixed method not expanded
-
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                     StringBasedSentenceSimilarityMethod.Jaccard.name(),
-                     StringBasedSentenceSimilarityMethod.Jaccard, 
-                     bestStringWordProcessingJaccard));
-
-            // Update the total of combinations
-
-            totalCombinations++;
-
-            // We define the pre-processing method
-
-            IWordProcessing bestStringWordProcessingBlockDistance = PreprocessingFactory.getWordProcessing(
-                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                            TokenizerType.WhiteSpace, 
-                            true, NERType.None,
-                            CharFilteringType.BIOSSES);
-
-            // We add the method
-
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                     StringBasedSentenceSimilarityMethod.BlockDistance.name(),
-                     StringBasedSentenceSimilarityMethod.BlockDistance, 
-                     bestStringWordProcessingBlockDistance));
-
-            // Update the total of combinations
-
-            totalCombinations++;
-
-            // We define the pre-processing method
-
-            IWordProcessing bestStringWordProcessingLevenshtein = PreprocessingFactory.getWordProcessing(
-                            m_strBaseDir + m_strStopWordsDir + "Biosses2017StopWords.txt", 
-                            TokenizerType.WhiteSpace, 
-                            false, NERType.None,
-                            CharFilteringType.None);
-
-            // We add the method 
-
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                     StringBasedSentenceSimilarityMethod.Levenshtein.name(),
-                     StringBasedSentenceSimilarityMethod.Levenshtein, 
-                     bestStringWordProcessingLevenshtein));
-
-            // Update the total of combinations
-
-            totalCombinations++;
-
-            // We define the pre-processing method
-
-            IWordProcessing bestStringWordProcessingOverlapCoefficient = PreprocessingFactory.getWordProcessing(
-                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                            TokenizerType.StanfordCoreNLPv4_2_0, 
-                            true, NERType.None,
-                            CharFilteringType.Default);
-
-            // We add the method 
-
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                     StringBasedSentenceSimilarityMethod.OverlapCoefficient.name(),
-                     StringBasedSentenceSimilarityMethod.OverlapCoefficient, 
-                     bestStringWordProcessingOverlapCoefficient));
-
-            // Update the total of combinations
-
-            totalCombinations++;
-
-            // We define the pre-processing method
-
-            IWordProcessing bestStringWordProcessingQgram = PreprocessingFactory.getWordProcessing(
-                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                            TokenizerType.WhiteSpace, 
-                            true, NERType.None,
-                            CharFilteringType.BIOSSES);
-
-            // We add the method
-
-            measuresLst.add(SentenceSimilarityFactory.getStringBasedMeasure(
-                     StringBasedSentenceSimilarityMethod.Qgram.name(),
-                     StringBasedSentenceSimilarityMethod.Qgram, 
-                     bestStringWordProcessingQgram));
-
-            // Update the total of combinations
-
-            totalCombinations++;
 
             // We define the lambda values
 
@@ -1033,39 +1039,24 @@ public class HESMLSTSclient
 
             // We define the pre-processing methods
 
-//            IWordProcessing bestStringWordProcessingLiMixed = PreprocessingFactory.getWordProcessing(
-//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                            TokenizerType.StanfordCoreNLPv4_2_0, 
-//                            true, NERType.None,
-//                            CharFilteringType.Default);
-
             // Initialize the string measure
 
             ISentenceSimilarityMeasure stringMeasure = SentenceSimilarityFactory.getStringBasedMeasure(
-                                "BlockDistance_" + bestStringWordProcessingBlockDistance.getLabel(),
+                                "BlockDistance_" + bestStringWordProcessingBlockDistanceLi.getLabel(),
                                 StringBasedSentenceSimilarityMethod.BlockDistance, 
-                                bestStringWordProcessingBlockDistance);
+                                bestStringWordProcessingBlockDistanceLi);
 
-            // We also add our method, which is based on Li et. al (2006)
-
-            // We add the LiMixed method not expanded
-
-//            measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-//                     "LiMixed", 
-//                     bestStringWordProcessingLiMixed, stringMeasure,
-//                     lambda, ComMixedVectorsMeasureType.NoneOntology));
-            
-            // We add the LiMixed method using Ctakes
+            // We add the LiBlock method using Ctakes
         
-            IWordProcessing bestStringWordProcessingLiMixedCtakes = PreprocessingFactory.getWordProcessing(
+            IWordProcessing bestStringWordProcessingLiBlockCtakes = PreprocessingFactory.getWordProcessing(
                             m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
                             TokenizerType.StanfordCoreNLPv4_2_0, 
-                            true, NERType.Ctakes,
+                            true, NERType.None,
                             CharFilteringType.Default);
 
-            measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                     "LiMixed", 
-                     bestStringWordProcessingLiMixedCtakes, stringMeasure,
+            measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
+                     "LiBlock", 
+                     bestStringWordProcessingLiBlockCtakes, stringMeasure,
                      lambda, ComMixedVectorsMeasureType.NoneOntology));
         }
         
