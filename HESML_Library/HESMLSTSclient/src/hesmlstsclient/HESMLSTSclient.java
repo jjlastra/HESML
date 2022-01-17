@@ -1033,11 +1033,11 @@ public class HESMLSTSclient
 
             // We define the pre-processing methods
 
-            IWordProcessing bestStringWordProcessingLiMixed = PreprocessingFactory.getWordProcessing(
-                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                            TokenizerType.StanfordCoreNLPv4_2_0, 
-                            true, NERType.None,
-                            CharFilteringType.Default);
+//            IWordProcessing bestStringWordProcessingLiMixed = PreprocessingFactory.getWordProcessing(
+//                            m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                            TokenizerType.StanfordCoreNLPv4_2_0, 
+//                            true, NERType.None,
+//                            CharFilteringType.Default);
 
             // Initialize the string measure
 
@@ -1050,10 +1050,10 @@ public class HESMLSTSclient
 
             // We add the LiMixed method not expanded
 
-            measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                     "LiMixed", 
-                     bestStringWordProcessingLiMixed, stringMeasure,
-                     lambda, ComMixedVectorsMeasureType.NoneOntology));
+//            measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
+//                     "LiMixed", 
+//                     bestStringWordProcessingLiMixed, stringMeasure,
+//                     lambda, ComMixedVectorsMeasureType.NoneOntology));
             
             // We add the LiMixed method using Ctakes
         
@@ -1064,7 +1064,7 @@ public class HESMLSTSclient
                             CharFilteringType.Default);
 
             measuresLst.add(SentenceSimilarityFactory.getLiMixedMeasure(
-                     "LiMixed - CTakes", 
+                     "LiMixed", 
                      bestStringWordProcessingLiMixedCtakes, stringMeasure,
                      lambda, ComMixedVectorsMeasureType.NoneOntology));
         }
