@@ -33,19 +33,23 @@ with open(absPathTempVectorsFile, 'w') as f:
 
             s1 = data[0].strip()
             s2 = data[1].strip()
+            if len(s1) > 2 and len(s2) > 2:
 
-            # infer the vectors of the sentences
+                # infer the vectors of the sentences
 
-            sentence_embeddings_1 = model.encode(s1, convert_to_numpy=True)
-            sentence_embeddings_2 = model.encode(s2, convert_to_numpy=True)
+                sentence_embeddings_1 = model.encode(s1, convert_to_numpy=True)
+                sentence_embeddings_2 = model.encode(s2, convert_to_numpy=True)
 
-            sentence_embeddings_1 = sentence_embeddings_1.tolist()  # nested lists with same data, indices
-            sentence_embeddings_2 = sentence_embeddings_2.tolist()  # nested lists with same data, indices
+                sentence_embeddings_1 = sentence_embeddings_1.tolist()  # nested lists with same data, indices
+                sentence_embeddings_2 = sentence_embeddings_2.tolist()  # nested lists with same data, indices
 
-            # format and write the output
+                # format and write the output
 
-            strVector1 = ",".join(map(str, sentence_embeddings_1))
-            strVector2 = ",".join(map(str, sentence_embeddings_2))
+                strVector1 = ",".join(map(str, sentence_embeddings_1))
+                strVector2 = ",".join(map(str, sentence_embeddings_2))
 
-            line = strVector1 + "\t" + strVector2
-            f.write("%s\n" % line)
+                line = strVector1 + "\t" + strVector2
+                f.write("%s\n" % line)
+            else:
+                line = "," + "\t" + ","
+                f.write("%s\n" % line)

@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * This class implements the LiMixed method
+ * This class implements the LiBlock method
  * 
  * @author alicia
  */
@@ -55,7 +55,7 @@ class LiBlockVectorsMeasure extends SentenceSimilarityMeasure
     private final Double m_lambda;
     
     /**
-     * Constructor for none ontology (LiMixed measure)
+     * Constructor for none ontology (LiBlock measure)
      * 
      * @param preprocesser 
      * @param strWordNet_Dir Path to WordNet directory
@@ -120,7 +120,7 @@ class LiBlockVectorsMeasure extends SentenceSimilarityMeasure
     @Override
     public SentenceSimilarityMethod getMethod()
     {
-        return (SentenceSimilarityMethod.LiMixedVectorsMeasure);
+        return (SentenceSimilarityMethod.LiBlockVectorsMeasure);
     }
 
     /**
@@ -151,9 +151,6 @@ class LiBlockVectorsMeasure extends SentenceSimilarityMeasure
             throws IOException, FileNotFoundException, 
             InterruptedException, Exception
     {
-//        strRawSentence1 = "C0280089 formation mice oncogenic C1537502 requires formation craf not C0812241";
-//        strRawSentence2 = "oncogenic activity mutant C1537502 appears dependent functional craf not C0812241";
-        
         // We initialize the output score
         
         double similarity = 0.0;
@@ -176,7 +173,7 @@ class LiBlockVectorsMeasure extends SentenceSimilarityMeasure
                 
         lstWordsSentence1 = m_preprocesser.getWordTokens(strRawSentence1);
         lstWordsSentence2 = m_preprocesser.getWordTokens(strRawSentence2);
-
+        
         dictionary = constructDictionaryList(lstWordsSentence1, lstWordsSentence2);
         
         // 2. Initialize the semantic vectors.

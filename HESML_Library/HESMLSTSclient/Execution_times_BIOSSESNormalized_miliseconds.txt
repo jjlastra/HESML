@@ -71,3 +71,16 @@ LiMixed - Original_BIOSSESNormalized : 35 ms
 LiMixed - MetamapLite_BIOSSESNormalized : 12435 ms 
 LiMixed - CTakes_BIOSSESNormalized : 2121 ms 
 LiMixed - Metamap_BIOSSESNormalized : 15702 ms 
+Qgram_BIOSSESNormalized : 38 ms 
+OverlapCoefficient_BIOSSESNormalized : 147 ms 
+LiBlock_BIOSSESNormalized : 3566 ms 
+Levenshtein_BIOSSESNormalized : 34 ms 
+Jaccard_BIOSSESNormalized : 23 ms 
+BlockDistance_BIOSSESNormalized : 30 ms 
+Qgram_BIOSSESNormalized : 37 ms 
+OverlapCoefficient_BIOSSESNormalized : 137 ms 
+LiBlock_BIOSSESNormalized : 3786 ms 
+Levenshtein_BIOSSESNormalized : 34 ms 
+Jaccard_BIOSSESNormalized : 36 ms 
+BlockDistance_BIOSSESNormalized : 29 ms 
+oubiobert-base-uncased_tok-wordpiecetokenizer_lc_sw-nonestopwords_cf-default_ner-none_BIOSSESNormalized : 259910 ms 

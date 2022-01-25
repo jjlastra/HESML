@@ -71,3 +71,15 @@ LiMixed - CTakes_CTRNormalized_averagedScore : 3638 ms
 LiMixed - Original_CTRNormalized_averagedScore : 65 ms 
 LiMixed - Metamap_CTRNormalized_averagedScore : 22178 ms 
 LiMixed - MetamapLite_CTRNormalized_averagedScore : 13360 ms 
+OverlapCoefficient_CTRNormalized_averagedScore : 37 ms 
+Jaccard_CTRNormalized_averagedScore : 11 ms 
+Levenshtein_CTRNormalized_averagedScore : 23 ms 
+BlockDistance_CTRNormalized_averagedScore : 32 ms 
+LiBlock_CTRNormalized_averagedScore : 4221 ms 
+Qgram_CTRNormalized_averagedScore : 35 ms 
+OverlapCoefficient_CTRNormalized_averagedScore : 36 ms 
+Jaccard_CTRNormalized_averagedScore : 37 ms 
+Levenshtein_CTRNormalized_averagedScore : 23 ms 
+BlockDistance_CTRNormalized_averagedScore : 31 ms 
+LiBlock_CTRNormalized_averagedScore : 4590 ms 
+Qgram_CTRNormalized_averagedScore : 34 ms 

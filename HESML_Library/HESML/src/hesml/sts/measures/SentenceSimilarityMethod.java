@@ -161,5 +161,5 @@ public enum SentenceSimilarityMethod
      * Our proposed string-based method, which is a combination of two measures.
     */
     
-    LiMixedVectorsMeasure
+    LiBlockVectorsMeasure
 }

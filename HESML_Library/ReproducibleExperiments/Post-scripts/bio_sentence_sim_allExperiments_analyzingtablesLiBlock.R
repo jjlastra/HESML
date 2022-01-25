@@ -65,7 +65,7 @@ inputDir = paste(rootDir, "/", experimentSubdirectory, "/", sep = "")
 
 # We load the input raw results file for best combinations (FINAL RESULTS)
 
-source(paste("bio_sentence_sim_scripts", "readBESTCOMBS.R", sep = "/"), local = knitr::knit_global())
+source(paste("bio_sentence_sim_scripts", "readLiBlockNERexperiment.R", sep = "/"), local = knitr::knit_global())
 
 # We initialize the counter of executions
 
@@ -73,15 +73,15 @@ counter_executions <- 0
 
 # We get the label
 
-experimentLabel = rawdata_BESTCOMBS$label
+experimentLabel = rawdata_LiBlockNERexperiment$label
 
 # We get the experiment subdirectory and the caption for the Latex File
 
 strCaption = paste("Table \\label{table:", experimentSubdirectory, "}: Pearson (r), Spearman ($\rho$) and Harmonic score (h) obtained by each unsupervised ", experimentLabel, " similarity method evaluated herein.", sep="")
 
-rawdata_BIOSSES <- rawdata_BESTCOMBS$biosses
-rawdata_MedSTS  <- rawdata_BESTCOMBS$medsts
-rawdata_CTR     <- rawdata_BESTCOMBS$ctr
+rawdata_BIOSSES <- rawdata_LiBlockNERexperiment$biosses
+rawdata_MedSTS  <- rawdata_LiBlockNERexperiment$medsts
+rawdata_CTR     <- rawdata_LiBlockNERexperiment$ctr
 
 # mat.sort function is copied from source files of
 # BioPhysConnectoR package which is now unavailable.
@@ -285,7 +285,25 @@ colnames(outputMatrix) = rowNames
 rownames(outputMatrix) = rowNames
 
 final_data <- round(outputMatrix, 3)
-final_data
 
-write.csv(final_data, file = paste(outputDir, sep="","Pvalues.csv"))
+library(knitr)
+library(readr)
+library(kableExtra)
+library(stringr)
+library(xtable)
 
+strCaption = "This table shows the resulting p-values comparing the NER tools, which allows us to study the statistical significance of the results, as detailed in the Discussion section."
+
+# We define the latex table with the data
+
+table_latex <- xtable(final_data, type = "latex", digits=4, method = "compact")
+tableLatex <- print(xtable(table_latex, caption = strCaption, digits=3), caption.placement = 'top',
+                    comment=FALSE, size="\\tiny", table.placement="!h", sanitize.colnames.function = identity)
+
+# Write the Latex table in a file
+
+file_name <- paste(outputDir,"table_PvaluesLiBlockNERs.txt", sep="")
+
+write_file(tableLatex, file_name)
+
+write.csv(final_data, file = paste(outputDir, sep="","PvaluesLiBlockNERs.csv"))

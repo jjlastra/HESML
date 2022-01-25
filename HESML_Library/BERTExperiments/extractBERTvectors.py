@@ -115,22 +115,25 @@ with open(absPathTempVectorsFile, 'w') as f:
             s1 = data[0].strip().split(" ")
             s2 = data[1].strip().split(" ")
 
-            # infer the vectors of the sentences
+            if len(s1) > 2 and len(s2) > 2:
+                # infer the vectors of the sentences
 
-            doc_vecs = bc.encode([s1, s2], is_tokenized=True)
-            v1 = doc_vecs[0]
-            v2 = doc_vecs[1]
+                doc_vecs = bc.encode([s1, s2], is_tokenized=True)
+                v1 = doc_vecs[0]
+                v2 = doc_vecs[1]
 
-            a = v1.tolist()  # nested lists with same data, indices
-            b = v2.tolist()  # nested lists with same data, indices
+                a = v1.tolist()  # nested lists with same data, indices
+                b = v2.tolist()  # nested lists with same data, indices
 
-            # format and write the output
+                # format and write the output
 
-            strVector1 = ",".join(map(str, a))
-            strVector2 = ",".join(map(str, b))
-            line = strVector1 + "\t" + strVector2
-            f.write("%s\n" % line)
-
+                strVector1 = ",".join(map(str, a))
+                strVector2 = ",".join(map(str, b))
+                line = strVector1 + "\t" + strVector2
+                f.write("%s\n" % line)
+            else:
+                line = "," + "\t" + ","
+                f.write("%s\n" % line)
 
 print("Server status before:")
 print(bc.server_status)
