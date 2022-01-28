@@ -121,6 +121,67 @@ for (i in colnames(rawdata_results_ctr))
 
 rawdata_results_biosses_filtered <- rawdata_results_ctr
 
+mean_liblock <- round(mean(rawdata_results_biosses_filtered$LiBlock), 3)
+mean_WBSM_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+mean_bio_embedding_intrinsic <- round(mean(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
+mean_oubiobert <- round(mean(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
+mean_human <- round(mean(rawdata_results_biosses_filtered$HumanNormalized), 3)
+
+
+mean_liblock
+mean_WBSM_AncSPLRada
+mean_bio_embedding_intrinsic
+mean_oubiobert
+mean_human
+
+median_liblock <- round(median(rawdata_results_biosses_filtered$LiBlock), 3)
+median_WBSM_AncSPLRada <- round(median(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+median_bio_embedding_intrinsic <- round(median(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
+median_oubiobert <- round(median(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
+median_human <- round(median(rawdata_results_biosses_filtered$HumanNormalized), 3)
+
+median_liblock
+median_WBSM_AncSPLRada
+median_bio_embedding_intrinsic
+median_oubiobert
+median_human
+
+sd_liblock <- round(sd(rawdata_results_biosses_filtered$LiBlock, TRUE), 3)
+sd_WBSM_AncSPLRada <- round(sd(rawdata_results_biosses_filtered$WBSM_AncSPLRada, TRUE), 3)
+sd_bio_embedding_intrinsic <- round(sd(rawdata_results_biosses_filtered$bio_embedding_intrinsic, TRUE), 3)
+sd_oubiobert <- round(sd(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none, TRUE), 3)
+sd_human <- round(sd(rawdata_results_biosses_filtered$HumanNormalized, TRUE), 3)
+
+sd_liblock
+sd_WBSM_AncSPLRada
+sd_bio_embedding_intrinsic
+sd_oubiobert
+sd_human
+
+max_liblock <- round(max(rawdata_results_biosses_filtered$LiBlock), 3)
+max_WBSM_AncSPLRada <- round(max(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+max_bio_embedding_intrinsic <- round(max(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
+max_oubiobert <- round(max(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
+max_human <- round(max(rawdata_results_biosses_filtered$HumanNormalized), 3)
+
+max_liblock
+max_WBSM_AncSPLRada
+max_bio_embedding_intrinsic
+max_oubiobert
+max_human
+
+min_liblock <- round(min(rawdata_results_biosses_filtered$LiBlock), 3)
+min_WBSM_AncSPLRada <- round(min(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+min_bio_embedding_intrinsic <- round(min(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
+min_oubiobert <- round(min(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
+min_human <- round(min(rawdata_results_biosses_filtered$HumanNormalized), 3)
+
+min_liblock
+min_WBSM_AncSPLRada
+min_bio_embedding_intrinsic
+min_oubiobert
+min_human
+
 #################################################
 #################################################
 
@@ -131,17 +192,41 @@ rawdata_results_biosses_filtered <- rawdata_results_ctr
 
 # We plot the histograms
 
-# LiBlock <- hist(rawdata_results_biosses_filtered$rel_error_LiBlock, plot=FALSE)
-# 
-# lines(density(rawdata_results_biosses_filtered$rel_error_LiBlock), # density plot
-#       lwd = 2, # thickness of line
-#       col = rgb(0,0,1,1/4))
+# LiBlock <- hist(rawdata_results_biosses_filtered$rel_error_LiBlock)
 
+# We test if the data has a normal distribution
+
+library("dplyr")
+library("ggpubr")
+
+hist(rawdata_results_biosses_filtered$HumanNormalized)
+
+# First, visually, using the Q-Q plot
+
+rawdata_results_biosses_filtered$rel_error_LiBlock
+
+ggqqplot(rawdata_results_biosses_filtered$rel_error_LiBlock)
+
+# Second, we make the saphiro test
+
+t <- shapiro.test(rawdata_results_biosses_filtered$rel_error_LiBlock)
+
+is_normal_distribution = FALSE
+if(t$p.value > 0.05)
+  is_normal_distribution = TRUE
+
+is_normal_distribution
+
+mean_error_liblock <- round(mean(rawdata_results_biosses_filtered$rel_error_LiBlock), 3)
+mean_error_WBSM_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$rel_error_WBSM_AncSPLRada), 3)
+mean_error_bio_embedding_intrinsic <- round(mean(rawdata_results_biosses_filtered$rel_error_bio_embedding_intrinsic), 3)
+mean_error_oubiobert <- round(mean(rawdata_results_biosses_filtered$rel_error_oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 
 # Get the density estimate
 density_LiBlock=density(rawdata_results_biosses_filtered$rel_error_LiBlock)
-plot(density_LiBlock$x,density_LiBlock$y,type="l", col=rgb(0,0,1), xlim=c(-1,1), main="Probability Density Function (DF) of the similarity error function",xlab="Similarity error = Estimated similarity value - Normalized human score",ylab="Frequency of error")
+plot(density_LiBlock$x,density_LiBlock$y,type="l", col=rgb(0,0,1), xlim=c(-1,1), main="Probability Density Function (PDF) of the similarity error function",xlab="Similarity error = Estimated similarity value - Normalized human score",ylab="Frequency of error")
 
+density_LiBlock
 density_WBSM_AncSPLRada=density(rawdata_results_biosses_filtered$rel_error_WBSM_AncSPLRada)
 lines(density_WBSM_AncSPLRada$x,density_WBSM_AncSPLRada$y,type="l", col=rgb(1,0,0))
 
@@ -151,6 +236,9 @@ lines(density_bio_embedding_intrinsic$x,density_bio_embedding_intrinsic$y,type="
 density_oubiobert=density(rawdata_results_biosses_filtered$rel_error_oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none)
 lines(density_oubiobert$x,density_oubiobert$y,type="l", col=rgb(0,1,1))
 
-legend("topright", c("LiBlock (M4)", "WBSM_Rada (M7)", "BioWordVec_int (26)", "ouBioBERT (M47)"), col=c(rgb(0,0,1), rgb(1,0,0),rgb(0,1,0),rgb(0,1,1)), lwd=10)
-
-
+legend("topleft", c(
+  paste("LiBlock (M4) (mean val. ", mean_error_liblock,")", sep=""), 
+  paste("WBSM_Rada (M7) (mean val. ", mean_error_WBSM_AncSPLRada,")", sep=""), 
+  paste("BioWordVec_int (26) (mean val. ", mean_error_bio_embedding_intrinsic,")", sep=""), 
+  paste("ouBioBERT (M47) (mean val. ", mean_error_oubiobert,")", sep="")), 
+  col=c(rgb(0,0,1), rgb(1,0,0),rgb(0,1,0),rgb(0,1,1)), lwd=10)
