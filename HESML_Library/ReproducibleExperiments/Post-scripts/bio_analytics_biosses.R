@@ -127,10 +127,10 @@ rawdata_results_biosses$abs_sum_errors_all_methods <- rowSums(rawdata_results_bi
 
 # On the other hand, we will filter the columns and we will also compute the summatory of the relative error taking into account only the best-performing methods of each family
 
-# colnames(rawdata_results_biosses)
+colnames(rawdata_results_biosses)
 # colnames(rawdata_results_biosses[c(63,85,91,113)])
 
-rawdata_results_biosses$abs_sum_errors_best_methods <- rowSums(rawdata_results_biosses[c(63,85,91,113)])
+rawdata_results_biosses$abs_sum_errors_best_methods <- rowSums(rawdata_results_biosses[c(63,85,111,113)])
 
 # We reorder the table by the abs_sum_errors_all_methods or the abs_sum_errors_best_methods column
 
@@ -143,7 +143,7 @@ rawdata_results_biosses$abs_sum_errors_best_methods <- rowSums(rawdata_results_b
 # colnames(rawdata_results_biosses)
 # colnames(rawdata_results_biosses[c(1,52,7,18,21,32,63,64,85,86,91,92,113,114,153,154)])
 
-rawdata_results_biosses_filtered <- rawdata_results_biosses[, c(1,52,7,18,21,32,63,64,85,86,91,92,113,114,153,154)]
+rawdata_results_biosses_filtered <- rawdata_results_biosses[, c(1,52,7,18,31,32,63,64,85,86,111,112,113,114,153,154)]
 
 # The selection of the sentences will take into account the accumulated errors for all methods
 
@@ -186,62 +186,62 @@ write.csv2(results_biosses_all_methods_higher_errors, file = paste(outputDir,"re
 results_biosses_all_methods_lower_errors$rawSentences
 
 mean_liblock <- round(mean(rawdata_results_biosses_filtered$LiBlock), 3)
-mean_WBSM_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+mean_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$COM_WBSM_UBSM_Ctakes_AncSPLRada), 3)
 mean_bio_embedding_intrinsic <- round(mean(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
 mean_oubiobert <- round(mean(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 mean_human <- round(mean(rawdata_results_biosses_filtered$HumanNormalized), 3)
 
 
 mean_liblock
-mean_WBSM_AncSPLRada
+mean_COM_WBSM_UBSM_Ctakes_AncSPLRada
 mean_bio_embedding_intrinsic
 mean_oubiobert
 mean_human
 
 median_liblock <- round(median(rawdata_results_biosses_filtered$LiBlock), 3)
-median_WBSM_AncSPLRada <- round(median(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+median_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(median(rawdata_results_biosses_filtered$COM_WBSM_UBSM_Ctakes_AncSPLRada), 3)
 median_bio_embedding_intrinsic <- round(median(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
 median_oubiobert <- round(median(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 median_human <- round(median(rawdata_results_biosses_filtered$HumanNormalized), 3)
 
 median_liblock
-median_WBSM_AncSPLRada
+median_COM_WBSM_UBSM_Ctakes_AncSPLRada
 median_bio_embedding_intrinsic
 median_oubiobert
 median_human
 
 sd_liblock <- round(sd(rawdata_results_biosses_filtered$LiBlock, TRUE), 3)
-sd_WBSM_AncSPLRada <- round(sd(rawdata_results_biosses_filtered$WBSM_AncSPLRada, TRUE), 3)
+sd_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(sd(rawdata_results_biosses_filtered$COM_WBSM_UBSM_Ctakes_AncSPLRada, TRUE), 3)
 sd_bio_embedding_intrinsic <- round(sd(rawdata_results_biosses_filtered$bio_embedding_intrinsic, TRUE), 3)
 sd_oubiobert <- round(sd(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none, TRUE), 3)
 sd_human <- round(sd(rawdata_results_biosses_filtered$HumanNormalized, TRUE), 3)
 
 sd_liblock
-sd_WBSM_AncSPLRada
+sd_COM_WBSM_UBSM_Ctakes_AncSPLRada
 sd_bio_embedding_intrinsic
 sd_oubiobert
 sd_human
 
 max_liblock <- round(max(rawdata_results_biosses_filtered$LiBlock), 3)
-max_WBSM_AncSPLRada <- round(max(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+max_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(max(rawdata_results_biosses_filtered$COM_WBSM_UBSM_Ctakes_AncSPLRada), 3)
 max_bio_embedding_intrinsic <- round(max(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
 max_oubiobert <- round(max(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 max_human <- round(max(rawdata_results_biosses_filtered$HumanNormalized), 3)
 
 max_liblock
-max_WBSM_AncSPLRada
+max_COM_WBSM_UBSM_Ctakes_AncSPLRada
 max_bio_embedding_intrinsic
 max_oubiobert
 max_human
 
 min_liblock <- round(min(rawdata_results_biosses_filtered$LiBlock), 3)
-min_WBSM_AncSPLRada <- round(min(rawdata_results_biosses_filtered$WBSM_AncSPLRada), 3)
+min_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(min(rawdata_results_biosses_filtered$COM_WBSM_UBSM_Ctakes_AncSPLRada), 3)
 min_bio_embedding_intrinsic <- round(min(rawdata_results_biosses_filtered$bio_embedding_intrinsic), 3)
 min_oubiobert <- round(min(rawdata_results_biosses_filtered$oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 min_human <- round(min(rawdata_results_biosses_filtered$HumanNormalized), 3)
 
 min_liblock
-min_WBSM_AncSPLRada
+min_COM_WBSM_UBSM_Ctakes_AncSPLRada
 min_bio_embedding_intrinsic
 min_oubiobert
 min_human
@@ -282,7 +282,7 @@ if(t$p.value > 0.05)
 is_normal_distribution
 
 mean_error_liblock <- round(mean(rawdata_results_biosses_filtered$rel_error_LiBlock), 3)
-mean_error_WBSM_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$rel_error_WBSM_AncSPLRada), 3)
+mean_error_COM_WBSM_UBSM_Ctakes_AncSPLRada <- round(mean(rawdata_results_biosses_filtered$rel_error_COM_WBSM_UBSM_Ctakes_AncSPLRada), 3)
 mean_error_bio_embedding_intrinsic <- round(mean(rawdata_results_biosses_filtered$rel_error_bio_embedding_intrinsic), 3)
 mean_error_oubiobert <- round(mean(rawdata_results_biosses_filtered$rel_error_oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none), 3)
 
@@ -291,8 +291,8 @@ density_LiBlock=density(rawdata_results_biosses_filtered$rel_error_LiBlock)
 plot(density_LiBlock$x,density_LiBlock$y,type="l", col=rgb(0,0,1), xlim=c(-1,1), main="Probability Density Function (PDF) of the similarity error function",xlab="Similarity error = Estimated similarity value - Normalized human score",ylab="Frequency of error")
 
 density_LiBlock
-density_WBSM_AncSPLRada=density(rawdata_results_biosses_filtered$rel_error_WBSM_AncSPLRada)
-lines(density_WBSM_AncSPLRada$x,density_WBSM_AncSPLRada$y,type="l", col=rgb(1,0,0))
+density_COM_WBSM_UBSM_Ctakes_AncSPLRada=density(rawdata_results_biosses_filtered$rel_error_COM_WBSM_UBSM_Ctakes_AncSPLRada)
+lines(density_COM_WBSM_UBSM_Ctakes_AncSPLRada$x,density_COM_WBSM_UBSM_Ctakes_AncSPLRada$y,type="l", col=rgb(1,0,0))
 
 density_bio_embedding_intrinsic=density(rawdata_results_biosses_filtered$rel_error_bio_embedding_intrinsic)
 lines(density_bio_embedding_intrinsic$x,density_bio_embedding_intrinsic$y,type="l", col=rgb(0,1,0))
@@ -300,9 +300,9 @@ lines(density_bio_embedding_intrinsic$x,density_bio_embedding_intrinsic$y,type="
 density_oubiobert=density(rawdata_results_biosses_filtered$rel_error_oubiobert.base.uncased_tok.wordpiecetokenizer_lc_sw.nonestopwords_cf.default_ner.none)
 lines(density_oubiobert$x,density_oubiobert$y,type="l", col=rgb(0,1,1))
 
-legend("topleft", c(
+legend("topright", c(
   paste("LiBlock (M4) (mean val. ", mean_error_liblock,")", sep=""), 
-  paste("WBSM_Rada (M7) (mean val. ", mean_error_WBSM_AncSPLRada,")", sep=""), 
+  paste("COM (M17) (mean val. ", mean_error_COM_WBSM_UBSM_Ctakes_AncSPLRada,")", sep=""), 
   paste("BioWordVec_int (26) (mean val. ", mean_error_bio_embedding_intrinsic,")", sep=""), 
   paste("ouBioBERT (M47) (mean val. ", mean_error_oubiobert,")", sep="")), 
   col=c(rgb(0,0,1), rgb(1,0,0),rgb(0,1,0),rgb(0,1,1)), lwd=10)
