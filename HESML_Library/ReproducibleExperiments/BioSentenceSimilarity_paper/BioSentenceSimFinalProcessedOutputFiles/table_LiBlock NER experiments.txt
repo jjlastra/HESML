@@ -1,0 +1,16 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by the LiBlock NER experiments similarity methods evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
+  \hline
+LiBlock...CTakes & 0.820 & 0.828 & 0.824 & 0.769 & 0.710 & 0.739 & 0.793 & 0.808 & 0.800 & 0.788 \\ 
+  LiBlock...Original & 0.814 & 0.823 & 0.819 & 0.770 & 0.709 & 0.738 & 0.795 & 0.805 & 0.800 & 0.786 \\ 
+  LiBlock...MetamapLite & 0.799 & 0.819 & 0.809 & 0.763 & 0.705 & 0.733 & 0.794 & 0.808 & 0.801 & 0.781 \\ 
+  LiBlock...Metamap & 0.807 & 0.826 & 0.816 & 0.753 & 0.690 & 0.720 & 0.792 & 0.807 & 0.799 & 0.779 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}

@@ -1,0 +1,81 @@
+\begin{table}[!h]
+\centering
+\caption{Table \label{table:BioSentenceSimFinalRawOutputFiles}: Pearson (r), Spearman ($ho$) and Harmonic score (h) obtained by the WBSM similarity methods evaluated herein.} 
+\begingroup\tiny
+\begin{tabular}{rrrrrrrrrrr}
+  \hline \multicolumn{1}{c}{ } & \multicolumn{3}{c}{BIOSSES} & \multicolumn{3}{c}{MedSTS} & \multicolumn{3}{c}{CTR} & \multicolumn{1}{c}{Avg} \\  \hline
+ & r & $\rho$ & h & r & $\rho$ & h & r & $\rho$ & h & Avg \\ 
+  \hline
+Human & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.1 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.2 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  Human.3 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\ 
+  WBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nltk2018stopwords\_cf.biosses\_ner.none & 0.772 & 0.791 & 0.782 & 0.774 & 0.709 & 0.740 & 0.785 & 0.765 & 0.775 & 0.766 \\ 
+  X.SW...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.743 & 0.769 & 0.756 & 0.762 & 0.700 & 0.730 & 0.786 & 0.755 & 0.770 & 0.752 \\ 
+  X.SW...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.738 & 0.770 & 0.753 & 0.763 & 0.700 & 0.731 & 0.787 & 0.753 & 0.770 & 0.751 \\ 
+  X.TOK...WBSM\_AncSPLRada\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.723 & 0.765 & 0.743 & 0.753 & 0.702 & 0.726 & 0.726 & 0.723 & 0.725 & 0.731 \\ 
+  X.CF...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.694 & 0.733 & 0.713 & 0.741 & 0.691 & 0.715 & 0.720 & 0.712 & 0.716 & 0.715 \\ 
+  X.SW...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.687 & 0.730 & 0.708 & 0.742 & 0.692 & 0.716 & 0.721 & 0.715 & 0.718 & 0.714 \\ 
+  X.CF...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.687 & 0.730 & 0.708 & 0.742 & 0.692 & 0.716 & 0.721 & 0.715 & 0.718 & 0.714 \\ 
+  X.TOK...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.687 & 0.730 & 0.708 & 0.742 & 0.692 & 0.716 & 0.721 & 0.715 & 0.718 & 0.714 \\ 
+  X.LC...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.687 & 0.730 & 0.708 & 0.742 & 0.692 & 0.716 & 0.721 & 0.715 & 0.718 & 0.714 \\ 
+  X.TOK...WBSM\_AncSPLRada\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.690 & 0.733 & 0.711 & 0.722 & 0.677 & 0.699 & 0.721 & 0.715 & 0.718 & 0.709 \\ 
+  X.CF...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.673 & 0.717 & 0.695 & 0.741 & 0.692 & 0.716 & 0.685 & 0.687 & 0.686 & 0.699 \\ 
+  X.LC...WBSM\_AncSPLRada\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.646 & 0.685 & 0.665 & 0.703 & 0.657 & 0.679 & 0.712 & 0.702 & 0.707 & 0.684 \\ 
+  X.CF...WBSM\_AncSPLRada\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.609 & 0.641 & 0.625 & 0.701 & 0.662 & 0.681 & 0.692 & 0.688 & 0.690 & 0.665 \\ 
+  X.TOK...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.569 & 0.607 & 0.587 & 0.688 & 0.645 & 0.666 & 0.615 & 0.601 & 0.608 & 0.620 \\ 
+  WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nltk2018stopwords\_cf.biosses\_ner.none & 0.571 & 0.566 & 0.568 & 0.705 & 0.651 & 0.677 & 0.637 & 0.590 & 0.613 & 0.619 \\ 
+  X.CF...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.548 & 0.606 & 0.575 & 0.675 & 0.622 & 0.647 & 0.614 & 0.595 & 0.604 & 0.609 \\ 
+  X.SW...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.538 & 0.560 & 0.549 & 0.689 & 0.630 & 0.658 & 0.641 & 0.590 & 0.615 & 0.607 \\ 
+  X.SW...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.541 & 0.599 & 0.569 & 0.673 & 0.625 & 0.648 & 0.614 & 0.594 & 0.604 & 0.607 \\ 
+  X.CF...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.541 & 0.599 & 0.569 & 0.673 & 0.625 & 0.648 & 0.614 & 0.594 & 0.604 & 0.607 \\ 
+  X.TOK...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.541 & 0.599 & 0.569 & 0.673 & 0.625 & 0.648 & 0.614 & 0.594 & 0.604 & 0.607 \\ 
+  X.LC...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.541 & 0.599 & 0.569 & 0.673 & 0.625 & 0.648 & 0.614 & 0.594 & 0.604 & 0.607 \\ 
+  X.SW...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.535 & 0.556 & 0.545 & 0.690 & 0.633 & 0.660 & 0.638 & 0.592 & 0.614 & 0.607 \\ 
+  X.TOK...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.546 & 0.601 & 0.572 & 0.654 & 0.609 & 0.631 & 0.614 & 0.594 & 0.604 & 0.602 \\ 
+  X.CF...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.530 & 0.581 & 0.554 & 0.674 & 0.622 & 0.647 & 0.586 & 0.579 & 0.582 & 0.594 \\ 
+  X.LC...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.494 & 0.547 & 0.519 & 0.630 & 0.594 & 0.611 & 0.598 & 0.576 & 0.587 & 0.572 \\ 
+  X.CF...WBSM\_AncSPLCosineNormWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.462 & 0.509 & 0.484 & 0.651 & 0.617 & 0.633 & 0.597 & 0.585 & 0.591 & 0.570 \\ 
+  X.TOK...WBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.480 & 0.548 & 0.512 & 0.647 & 0.615 & 0.631 & 0.536 & 0.515 & 0.525 & 0.556 \\ 
+  X.TOK...WBSM\_JiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.480 & 0.548 & 0.512 & 0.647 & 0.615 & 0.631 & 0.536 & 0.515 & 0.525 & 0.556 \\ 
+  X.CF...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.458 & 0.513 & 0.484 & 0.633 & 0.589 & 0.610 & 0.537 & 0.514 & 0.525 & 0.540 \\ 
+  X.CF...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.458 & 0.513 & 0.484 & 0.633 & 0.589 & 0.610 & 0.537 & 0.514 & 0.525 & 0.540 \\ 
+  WBSM\_JiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nltk2018stopwords\_cf.biosses\_ner.none & 0.452 & 0.454 & 0.453 & 0.660 & 0.620 & 0.639 & 0.540 & 0.503 & 0.521 & 0.538 \\ 
+  WBSM\_AncSPLWeightedJiangConrath\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nltk2018stopwords\_cf.biosses\_ner.none & 0.452 & 0.454 & 0.453 & 0.660 & 0.620 & 0.639 & 0.540 & 0.503 & 0.521 & 0.538 \\ 
+  X.SW...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.CF...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.TOK...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.LC...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.SW...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.CF...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.TOK...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.LC...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.450 & 0.504 & 0.476 & 0.630 & 0.592 & 0.611 & 0.537 & 0.515 & 0.526 & 0.537 \\ 
+  X.TOK...WBSM\_JiangConrath\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.456 & 0.514 & 0.483 & 0.615 & 0.578 & 0.596 & 0.537 & 0.515 & 0.526 & 0.535 \\ 
+  X.TOK...WBSM\_AncSPLWeightedJiangConrath\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.456 & 0.514 & 0.483 & 0.615 & 0.578 & 0.596 & 0.537 & 0.515 & 0.526 & 0.535 \\ 
+  X.CF...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.447 & 0.508 & 0.475 & 0.632 & 0.589 & 0.610 & 0.513 & 0.495 & 0.504 & 0.530 \\ 
+  X.CF...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.447 & 0.508 & 0.475 & 0.632 & 0.589 & 0.610 & 0.513 & 0.495 & 0.504 & 0.530 \\ 
+  X.TOK...WBSM\_AncSPLCaiStrategy1\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.455 & 0.535 & 0.492 & 0.628 & 0.603 & 0.615 & 0.494 & 0.459 & 0.476 & 0.527 \\ 
+  X.SW...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.415 & 0.432 & 0.423 & 0.638 & 0.592 & 0.614 & 0.543 & 0.503 & 0.522 & 0.520 \\ 
+  X.SW...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.415 & 0.432 & 0.423 & 0.638 & 0.592 & 0.614 & 0.543 & 0.503 & 0.522 & 0.520 \\ 
+  X.SW...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.417 & 0.430 & 0.423 & 0.640 & 0.594 & 0.616 & 0.540 & 0.500 & 0.519 & 0.520 \\ 
+  X.SW...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.417 & 0.430 & 0.423 & 0.640 & 0.594 & 0.616 & 0.540 & 0.500 & 0.519 & 0.520 \\ 
+  X.CF...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.biosses\_ner.none & 0.434 & 0.513 & 0.470 & 0.614 & 0.576 & 0.594 & 0.498 & 0.461 & 0.478 & 0.514 \\ 
+  X.SW...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.424 & 0.507 & 0.462 & 0.610 & 0.579 & 0.594 & 0.499 & 0.459 & 0.478 & 0.511 \\ 
+  X.CF...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.424 & 0.507 & 0.462 & 0.610 & 0.579 & 0.594 & 0.499 & 0.459 & 0.478 & 0.511 \\ 
+  X.TOK...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.424 & 0.507 & 0.462 & 0.610 & 0.579 & 0.594 & 0.499 & 0.459 & 0.478 & 0.511 \\ 
+  X.LC...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.424 & 0.507 & 0.462 & 0.610 & 0.579 & 0.594 & 0.499 & 0.459 & 0.478 & 0.511 \\ 
+  X.CF...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.371 & 0.438 & 0.401 & 0.615 & 0.598 & 0.607 & 0.530 & 0.512 & 0.520 & 0.509 \\ 
+  X.CF...WBSM\_JiangConrath\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.371 & 0.438 & 0.401 & 0.615 & 0.598 & 0.607 & 0.530 & 0.512 & 0.520 & 0.509 \\ 
+  X.TOK...WBSM\_AncSPLCaiStrategy1\_tok.biocnlptokenizer\_lc\_sw.nonestopwords\_cf.default\_ner.none & 0.429 & 0.509 & 0.466 & 0.598 & 0.565 & 0.581 & 0.499 & 0.459 & 0.478 & 0.508 \\ 
+  X.CF...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.blagec2019\_ner.none & 0.426 & 0.506 & 0.463 & 0.612 & 0.575 & 0.593 & 0.473 & 0.439 & 0.455 & 0.504 \\ 
+  X.LC...WBSM\_AncSPLWeightedJiangConrath\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.400 & 0.455 & 0.426 & 0.582 & 0.561 & 0.572 & 0.526 & 0.500 & 0.512 & 0.503 \\ 
+  X.LC...WBSM\_JiangConrath\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.400 & 0.455 & 0.426 & 0.582 & 0.561 & 0.572 & 0.526 & 0.500 & 0.512 & 0.503 \\ 
+  WBSM\_AncSPLCaiStrategy1\_tok.stanfordcorenlpv4\_2\_0\_lc\_sw.nltk2018stopwords\_cf.biosses\_ner.none & 0.407 & 0.449 & 0.427 & 0.637 & 0.604 & 0.620 & 0.483 & 0.443 & 0.462 & 0.503 \\ 
+  X.CF...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nonestopwords\_cf.none\_ner.none & 0.339 & 0.422 & 0.376 & 0.598 & 0.592 & 0.595 & 0.491 & 0.458 & 0.474 & 0.482 \\ 
+  X.SW...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.nltk2018stopwords\_cf.default\_ner.none & 0.373 & 0.393 & 0.383 & 0.613 & 0.574 & 0.593 & 0.488 & 0.445 & 0.465 & 0.480 \\ 
+  X.SW...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_lc\_sw.biosses2017stopwords\_cf.default\_ner.none & 0.377 & 0.391 & 0.384 & 0.614 & 0.576 & 0.595 & 0.482 & 0.443 & 0.462 & 0.480 \\ 
+  X.LC...WBSM\_AncSPLCaiStrategy1\_tok.whitespace\_notlc\_sw.nonestopwords\_cf.default\_ner.none & 0.366 & 0.442 & 0.400 & 0.561 & 0.549 & 0.555 & 0.483 & 0.464 & 0.473 & 0.476 \\ 
+   \hline
+\end{tabular}
+\endgroup
+\end{table}
