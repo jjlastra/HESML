@@ -357,275 +357,275 @@ public class HESMLSTSImpactEvaluationclient
         System.out.println("-------------------------------------------------");
         System.out.println("-------------------------------------------------");
         
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 2. Starting our WE-based measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting our preprocessed WE-based measures experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // Compute all the executions
-        
-        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
-        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
-        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
-        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished our preprocessed WE-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 3. Starting LiBlock, WBSM and UBSM measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting ontology-based measures experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // We calculate the best preprocessing configurations for WBSM
-        
-        totalCombinations += executeWBSMMeasures(
-                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
-        
-        totalCombinations += executeWBSMMeasures(
-                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
-        
-        totalCombinations += executeWBSMMeasures(
-                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
-        
-        totalCombinations += executeWBSMMeasures(
-                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
-
-        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
-        
-        // We define the preprocessing configuration
-        
-        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
-        
-        // We create the WBSM preprocessing configuration with the best results
-
-        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.None,
-                        CharFilteringType.BIOSSES);
-        
-        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
-        
-          totalCombinations += executeWBSMMeasures(
-                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
-        
-//         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
-        
-        totalCombinations += executeUBSMMeasures(
-                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
-        
-        totalCombinations += executeUBSMMeasures(
-                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
-        
-
-        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
-        
-        // We define the preprocessing configuration
-        
-        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
-        
-        // We create the WBSM preprocessing configuration with the best results
-
-        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                        TokenizerType.StanfordCoreNLPv4_2_0, 
-                        true, NERType.MetamapSNOMEDCT,
-                        CharFilteringType.BIOSSES);
-        
-        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
-        
-          totalCombinations += executeUBSMMeasures(
-                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
-        
-        // We initialize the array of measures for the COM measure: WBSM + UBSM
-        
-        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];
-        
-        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
-        
-        ISentenceSimilarityMeasure WBSMmeasure = 
-                SentenceSimilarityFactory.getWBSMMeasure(
-                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name() + "_" + bestWBSMWordProcessing.getLabel(),
-                        bestWBSMWordProcessing,
-                        m_WordNetDbSingleton, 
-                        m_WordNetTaxonomySingleton, 
-                        SimilarityMeasureType.AncSPLRada, 
-                        icModelType);
-        
-        // We create the UBSM measures with the best partial results for each UBSM NER type
-        
-        ISentenceSimilarityMeasure UBSMmeasure = 
-                SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name() + "_" + bestUBSMWordProcessing.getLabel(),
-                        bestUBSMWordProcessing,
-                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-                        icModelType);
-        
-        // We create the measures combinations and add execute the experiments
-        
-        measures[0] = WBSMmeasure;
-        measures[1] = UBSMmeasure;
-        
-        // We configure three different lambda parameter value
-        
-        Double[] lambdas = new Double[]{0.5, 0.25, 0.75};
-                
-        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
-
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished ontology-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 4. Starting SWEM measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Starting SWEM-based measures experiments");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        
-        // List with all the pooling methods for WE-based methods
-        
-        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
-        poolingMethods.add(SWEMpoolingMethod.Max);
-        poolingMethods.add(SWEMpoolingMethod.Average);
-        poolingMethods.add(SWEMpoolingMethod.Min);
-        poolingMethods.add(SWEMpoolingMethod.Sum);
-        
-        // We define the models to be evaluated
-        
-        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
-        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
-        
-        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
-        
-        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
-        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
-        
-        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
-        
-        modelsBioWordVecBased.add("bio_embedding_intrinsic");
-        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
-        
-        // Reset the total combinations
-        
-        totalCombinations = 0;
-        
-        // Compute all the executions
-        
-        for(SWEMpoolingMethod pooling : poolingMethods)
-        {
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
-                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-            
-            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
-                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
-                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
-                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
-                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-        }
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("Finished SWEM-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------------");
-        System.out.println("-------------------------------------------------------");
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 2. Starting our WE-based measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting our preprocessed WE-based measures experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // Compute all the executions
+//        
+//        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
+//        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
+//        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
+//        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished our preprocessed WE-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 3. Starting WBSM and UBSM measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting ontology-based measures experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // We calculate the best preprocessing configurations for WBSM
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
+//        
+//        totalCombinations += executeWBSMMeasures(
+//                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
+//
+//        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
+//        
+//        // We define the preprocessing configuration
+//        
+//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
+//        
+//        // We create the WBSM preprocessing configuration with the best results
+//
+//        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.StanfordCoreNLPv4_2_0, 
+//                        true, NERType.None,
+//                        CharFilteringType.BIOSSES);
+//        
+//        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
+//        
+//          totalCombinations += executeWBSMMeasures(
+//                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
+//        
+////         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
+//        
+//        totalCombinations += executeUBSMMeasures(
+//                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
+//        
+//
+//        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
+//        
+//        // We define the preprocessing configuration
+//        
+//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
+//        
+//        // We create the WBSM preprocessing configuration with the best results
+//
+//        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+//                        TokenizerType.StanfordCoreNLPv4_2_0, 
+//                        true, NERType.MetamapSNOMEDCT,
+//                        CharFilteringType.BIOSSES);
+//        
+//        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
+//        
+//          totalCombinations += executeUBSMMeasures(
+//                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
+//        
+//        // We initialize the array of measures for the COM measure: WBSM + UBSM
+//        
+//        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];
+//        
+//        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
+//        
+//        ISentenceSimilarityMeasure WBSMmeasure = 
+//                SentenceSimilarityFactory.getWBSMMeasure(
+//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name() + "_" + bestWBSMWordProcessing.getLabel(),
+//                        bestWBSMWordProcessing,
+//                        m_WordNetDbSingleton, 
+//                        m_WordNetTaxonomySingleton, 
+//                        SimilarityMeasureType.AncSPLRada, 
+//                        icModelType);
+//        
+//        // We create the UBSM measures with the best partial results for each UBSM NER type
+//        
+//        ISentenceSimilarityMeasure UBSMmeasure = 
+//                SentenceSimilarityFactory.getUBSMMeasureSnomed(
+//                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name() + "_" + bestUBSMWordProcessing.getLabel(),
+//                        bestUBSMWordProcessing,
+//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+//                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
+//                        icModelType);
+//        
+//        // We create the measures combinations and add execute the experiments
+//        
+//        measures[0] = WBSMmeasure;
+//        measures[1] = UBSMmeasure;
+//        
+//        // We configure three different lambda parameter value
+//        
+//        Double[] lambdas = new Double[]{0.5, 0.25, 0.75};
+//                
+//        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
+//
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished ontology-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 4. Starting SWEM measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Starting SWEM-based measures experiments");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        
+//        // List with all the pooling methods for WE-based methods
+//        
+//        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
+//        poolingMethods.add(SWEMpoolingMethod.Max);
+//        poolingMethods.add(SWEMpoolingMethod.Average);
+//        poolingMethods.add(SWEMpoolingMethod.Min);
+//        poolingMethods.add(SWEMpoolingMethod.Sum);
+//        
+//        // We define the models to be evaluated
+//        
+//        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
+//        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
+//        
+//        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
+//        
+//        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
+//        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
+//        
+//        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
+//        
+//        modelsBioWordVecBased.add("bio_embedding_intrinsic");
+//        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
+//        
+//        // Reset the total combinations
+//        
+//        totalCombinations = 0;
+//        
+//        // Compute all the executions
+//        
+//        for(SWEMpoolingMethod pooling : poolingMethods)
+//        {
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
+//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+//            
+//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
+//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
+//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
+//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
+//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+//        }
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("Finished SWEM-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println("-------------------------------------------------------");
 
         /**
          * ***********************************************
@@ -863,7 +863,7 @@ public class HESMLSTSImpactEvaluationclient
             // We create a copy of the wordProcessing object
             
             measuresLst.add(SentenceSimilarityFactory.getLiBlockMeasure(
-                 "LiMixed_" + wordProcessing.getLabel(), 
+                 "LiBlock_" + wordProcessing.getLabel(), 
                  wordProcessing, stringMeasure,
                  0.5, ComMixedVectorsMeasureType.NoneOntology));
         }
@@ -1062,7 +1062,7 @@ public class HESMLSTSImpactEvaluationclient
         String strSent2vecModelDir = m_strDataDirectory + "SentenceEmbeddings/";
         String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
         String strPythonScriptsDirectory = "../Sent2vecExperiments/";
-        String strPythonVirtualEnvironmentDir = "../Sent2vecExperiments/venv/bin/python3";
+        String strPythonVirtualEnvironmentDir = "/home/user/HESML_DATA/Sent2vecExperiments/venv/bin/python";
         String strPythonScript = "extractSent2vecvectors.py";
         
         // We iterate word processing combinations
@@ -1464,7 +1464,8 @@ public class HESMLSTSImpactEvaluationclient
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
         
-        for(int i=0; i<total_models; i++)
+//        for(int i=0; i<total_models; i++)
+        for(int i=0; i<1; i++)
         {
             // We iterate word processing combinations
             
@@ -1589,51 +1590,51 @@ public class HESMLSTSImpactEvaluationclient
      */
     private static void loadOntologies(boolean useWordNetCache) throws Exception
     {
-        // We create the singleton instance of the WordNet database and taxonomy
-
-        if (m_WordNetDbSingleton == null || useWordNetCache == false)
-        {
-            // We load the singleton instance of WordNet-related objects. It is done to
-            // avoid the memory cost of multiple instances of WordNet when multiple
-            // instances of the WBSM measure are created.
-            
-            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
-            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
-
-            // We pre-process the taxonomy to compute all the parameters
-            // used by the intrinsic IC-computation methods
-
-            m_WordNetTaxonomySingleton.computesCachedAttributes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_SnomedOntology == null)
-        {
-            // We load the SNOMED ontology and get the vertex list of its taxonomy
-
-            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
-                                    m_strSnomedConceptFilename,
-                                    m_strSnomedRelationshipsFilename,
-                                    m_strSnomedDescriptionFilename,
-                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
-
-            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
-            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
-        }
-        
-        // We create the singleton instance of the UMLS database and taxonomy
-
-        if (m_MeshOntology == null)
-        {
-            // We load the MeSH ontology and get the vertex list of its taxonomy
-
-            m_MeshOntology = MeSHFactory.loadMeSHOntology(
-                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
-                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
-
-            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
-        }
+//        // We create the singleton instance of the WordNet database and taxonomy
+//
+//        if (m_WordNetDbSingleton == null || useWordNetCache == false)
+//        {
+//            // We load the singleton instance of WordNet-related objects. It is done to
+//            // avoid the memory cost of multiple instances of WordNet when multiple
+//            // instances of the WBSM measure are created.
+//            
+//            m_WordNetDbSingleton = WordNetFactory.loadWordNetDatabase(m_strWordNetDatasetsDir, m_strWordNetDBDir);    
+//            m_WordNetTaxonomySingleton = WordNetFactory.buildTaxonomy(m_WordNetDbSingleton);  
+//
+//            // We pre-process the taxonomy to compute all the parameters
+//            // used by the intrinsic IC-computation methods
+//
+//            m_WordNetTaxonomySingleton.computesCachedAttributes();
+//        }
+//        
+//        // We create the singleton instance of the UMLS database and taxonomy
+//
+//        if (m_SnomedOntology == null)
+//        {
+//            // We load the SNOMED ontology and get the vertex list of its taxonomy
+//
+//            m_SnomedOntology = SnomedCtFactory.loadSnomedDatabase(m_strSnomedDir,
+//                                    m_strSnomedConceptFilename,
+//                                    m_strSnomedRelationshipsFilename,
+//                                    m_strSnomedDescriptionFilename,
+//                                    m_strUMLSdir, m_strUmlsCuiMappingFilename);
+//
+//            m_taxonomySnomed = m_SnomedOntology.getTaxonomy();
+//            m_vertexesSnomed = m_taxonomySnomed.getVertexes();
+//        }
+//        
+//        // We create the singleton instance of the UMLS database and taxonomy
+//
+//        if (m_MeshOntology == null)
+//        {
+//            // We load the MeSH ontology and get the vertex list of its taxonomy
+//
+//            m_MeshOntology = MeSHFactory.loadMeSHOntology(
+//                                    m_strMeSHdir + "/" + m_strMeSHdescriptorFilename,
+//                                    m_strUMLSdir + "/" + m_strUmlsCuiMappingFilename);
+//
+//            m_taxonomyMesh = m_MeshOntology.getTaxonomy();
+//        }
     }
     
             

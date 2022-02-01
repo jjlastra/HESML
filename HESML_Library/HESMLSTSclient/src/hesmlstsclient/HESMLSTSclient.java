@@ -215,6 +215,10 @@ public class HESMLSTSclient
         inputliblockner.setRequired(false);
         options.addOption(inputliblockner);
         
+        Option inputsentenceEmbeddings = new Option("u", "setence_embeddings", false, "Execute only the character and sentence embeddings experiment");
+        inputsentenceEmbeddings.setRequired(false);
+        options.addOption(inputsentenceEmbeddings);
+        
         // Define the arguments parser
         
         CommandLine cmd;
@@ -259,6 +263,11 @@ public class HESMLSTSclient
                 System.out.println("Execute only the NERs experiment");
                 familyMethods = "n";
             }
+            if(cmd.hasOption("u")) 
+            {
+                System.out.println("Execute only the character and sentence embeddings experiment");
+                familyMethods = "u";
+            }
             
         } catch (ParseException e) 
         {
@@ -269,7 +278,7 @@ public class HESMLSTSclient
         
         // We load the ontologies if we execute an ontology-based experiment
         
-        if(familyMethods.equals("all") || familyMethods.equals("o"))
+        if(familyMethods.equals("all") || familyMethods.equals("o") || familyMethods.equals("n"))
             loadOntologies(false);
         
         // Reset the total combinations
@@ -298,13 +307,13 @@ public class HESMLSTSclient
         {
             // We execute the experiment with all the NER combinations 
         
-            totalCombinations += executeNERexperiment("NERexperiment");
+            totalCombinations += executeNERexperiment("NERexperiment1");
         }
         else
         {
             // We execute the experiment with all the best combinations 
         
-            totalCombinations += executeBestCombinationMethods("BESTCOMBS1", familyMethods);
+            totalCombinations += executeBestCombinationMethods("BESTCOMBS", familyMethods);
         }
         
         // We execute the NER experiment in the complete execution of methods
@@ -820,26 +829,26 @@ public class HESMLSTSclient
         
         ISentenceSimilarityMeasure measureUBSMMetamap =
             SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                    "UBSM_Metamap_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    "UBSM_Metamap_"+SimilarityMeasureType.AncSPLRada,
                     bestUBSMWordProcessingMetamap,
                     m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    SimilarityMeasureType.AncSPLRada,
                     icModelTypeCOM);
         
         ISentenceSimilarityMeasure measureUBSMMetamapLite =
             SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                    "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    "UBSM_MetamapLite_"+SimilarityMeasureType.AncSPLRada,
                     bestUBSMWordProcessingMetamapLite,
                     m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    SimilarityMeasureType.AncSPLRada,
                     icModelTypeCOM);
         
         ISentenceSimilarityMeasure measureUBSMCtakes =
             SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                    "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    "UBSM_Ctakes_"+SimilarityMeasureType.AncSPLRada,
                     bestUBSMWordProcessingCtakes,
                     m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                    SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                    SimilarityMeasureType.AncSPLRada,
                     icModelTypeCOM);
         
         // We add the measures to a list
@@ -1422,6 +1431,27 @@ public class HESMLSTSclient
             IntrinsicICModelType icModelTypeUBSM = IntrinsicICModelType.Seco;
 
             // We execute each measure with its best pre-processing configuration
+            
+            // We define the best UBSM pre-processing method
+
+            IWordProcessing bestUBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
+                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                    TokenizerType.StanfordCoreNLPv4_2_0, 
+                    true, NERType.Ctakes,
+                    CharFilteringType.BIOSSES);
+
+            // We add the measure
+
+            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                            "UBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                            bestUBSMWordProcessingAncSPLRada,
+                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                            SimilarityMeasureType.AncSPLRada,
+                            icModelTypeUBSM));
+
+            // Update the total of combinations
+
+            totalCombinations++;
 
             // We define the best UBSM pre-processing method
 
@@ -1438,27 +1468,6 @@ public class HESMLSTSclient
                             bestUBSMWordProcessingAncSPLWeightedJiangConrath,
                             m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
                             SimilarityMeasureType.AncSPLWeightedJiangConrath,
-                            icModelTypeUBSM));
-
-            // Update the total of combinations
-
-            totalCombinations++;
-
-            // We define the best UBSM pre-processing method
-
-            IWordProcessing bestUBSMWordProcessingAncSPLRada = PreprocessingFactory.getWordProcessing(
-                    m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-                    TokenizerType.StanfordCoreNLPv4_2_0, 
-                    true, NERType.Ctakes,
-                    CharFilteringType.BIOSSES);
-
-            // We add the measure
-
-            measuresLst.add(SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                            "UBSM_" + SimilarityMeasureType.AncSPLRada.name(),
-                            bestUBSMWordProcessingAncSPLRada,
-                            m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                            SimilarityMeasureType.AncSPLRada,
                             icModelTypeUBSM));
 
             // Update the total of combinations
@@ -1571,10 +1580,10 @@ public class HESMLSTSclient
 
             ISentenceSimilarityMeasure measureUBSM =
                 SentenceSimilarityFactory.getUBSMMeasureSnomed(
-                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name(),
+                        "UBSM_" + SimilarityMeasureType.AncSPLRada.name(),
                         bestUBSMWordProcessingCOM,
                         m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-                        SimilarityMeasureType.AncSPLWeightedJiangConrath,
+                        SimilarityMeasureType.AncSPLRada,
                         icModelTypeCOM);
 
             // We add the measures to a list
@@ -1873,12 +1882,12 @@ public class HESMLSTSclient
         /**
          * ****************************************************
          * ****************************************************
-         * Starting Sent2Vec experiment (-e option)
+         * Starting Sent2Vec experiment (-u option)
          * ****************************************************
          * ****************************************************
          */
         
-        if(familyMethods.equals("all") || familyMethods.equals("e"))
+        if(familyMethods.equals("all") || familyMethods.equals("u"))
         {
             // We create the preprocessing configuration
 
@@ -1893,7 +1902,7 @@ public class HESMLSTSclient
             String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
             String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
             String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
-            String strPythonVirtualEnvironmentDirSent2vec = "python";
+            String strPythonVirtualEnvironmentDirSent2vec = "/home/user/HESML_DATA/Sent2vecExperiments/venv/bin/python";
             String strPythonScriptSent2vec = "extractSent2vecvectors.py";
 
             // We add the measure
@@ -1911,12 +1920,12 @@ public class HESMLSTSclient
         /**
          * ****************************************************
          * ****************************************************
-         * Starting USE experiment (-e option)
+         * Starting USE experiment (-u option)
          * ****************************************************
          * ****************************************************
          */
         
-        if(familyMethods.equals("all") || familyMethods.equals("e"))
+        if(familyMethods.equals("all") || familyMethods.equals("u"))
         {
             // We create the pre-processing configuration
 
@@ -1948,12 +1957,12 @@ public class HESMLSTSclient
         /**
          * ****************************************************
          * ****************************************************
-         * Starting Flair experiment (-e option)
+         * Starting Flair experiment (-u option)
          * ****************************************************
          * ****************************************************
          */
         
-        if(familyMethods.equals("all") || familyMethods.equals("e"))
+        if(familyMethods.equals("all") || familyMethods.equals("u"))
         {
             // We create the pre-processing configuration
 
