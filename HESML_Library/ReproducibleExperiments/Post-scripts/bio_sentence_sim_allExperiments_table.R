@@ -93,14 +93,6 @@ source(paste("bio_sentence_sim_scripts", "readWBSM.R", sep = "/"), local = knitr
 
 source(paste("bio_sentence_sim_scripts", "readUBSM.R", sep = "/"), local = knitr::knit_global())
 
-# We load the input raw results file for COM-based measures
-
-source(paste("bio_sentence_sim_scripts", "readCOM.R", sep = "/"), local = knitr::knit_global())
-
-# We load the input raw results file for COMMixed-based measures
-
-source(paste("bio_sentence_sim_scripts", "readCOMMixed.R", sep = "/"), local = knitr::knit_global())
-
 # We load the input raw results file for Sent2Vec-based measures
 
 source(paste("bio_sentence_sim_scripts", "readBERT.R", sep = "/"), local = knitr::knit_global())
@@ -131,7 +123,7 @@ source(paste("bio_sentence_sim_scripts", "readLiBlockNERexperiment.R", sep = "/"
 
 # We add the experiments to the list
 
-rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_COM, rawdata_SWEM, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BERT, rawdata_NERexperiment, rawdata_LiBlockNERexperiment, rawdata_BESTCOMBS)
+rawdata_experiments <- list(rawdata_string, rawdata_OurWE, rawdata_WBSM, rawdata_UBSM, rawdata_SWEM, rawdata_Sent2Vec, rawdata_USE, rawdata_Flair, rawdata_BERT, rawdata_NERexperiment, rawdata_LiBlockNERexperiment, rawdata_BESTCOMBS)
 
 # rawdata_experiments <- list(rawdata_BESTCOMBS)
 # rawdata_experiments <- list(rawdata_NERexperiment)

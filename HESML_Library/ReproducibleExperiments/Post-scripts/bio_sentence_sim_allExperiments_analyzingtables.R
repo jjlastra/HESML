@@ -279,8 +279,10 @@ for (i in 1:(nrows - 1))
 
 # We modify the colnames and rownames
 
-colnames(outputMatrix) <- c("M4","M7","M12","M26","M3","M33","M27","M32","M22","M17","M2","M20","M19","M1","M23","M21","M24","M29","M43","M25","M15","M10","M14","M37","M28","M41","M47","M6","M38","M31","M46","M16","M13","M39","M42","M35","M40","M9","M8","M34","M5","M36","M11","M44","M48","M50","M49","M45","M30","M18")
-rownames(outputMatrix) <- c("M4","M7","M12","M26","M3","M33","M27","M32","M22","M17","M2","M20","M19","M1","M23","M21","M24","M29","M43","M25","M15","M10","M14","M37","M28","M41","M47","M6","M38","M31","M46","M16","M13","M39","M42","M35","M40","M9","M8","M34","M5","M36","M11","M44","M48","M50","M49","M45","M30","M18")
+# colnames(outputMatrix)
+
+colnames(outputMatrix) <- c("M4","M17","M7","M12","M26","M3","M33","M27","M32","M22","M2","M20","M19","M1","M23","M21","M24","M29","M43","M25","M15","M10","M14","M37","M28","M41","M47","M6","M38","M31","M46","M16","M13","M39","M42","M35","M40","M9","M8","M34","M5","M36","M11","M44","M48","M50","M49","M45","M30","M18")
+rownames(outputMatrix) <- c("M4","M17","M7","M12","M26","M3","M33","M27","M32","M22","M2","M20","M19","M1","M23","M21","M24","M29","M43","M25","M15","M10","M14","M37","M28","M41","M47","M6","M38","M31","M46","M16","M13","M39","M42","M35","M40","M9","M8","M34","M5","M36","M11","M44","M48","M50","M49","M45","M30","M18")
 
 # We set the names of rows and columns
 
@@ -288,6 +290,9 @@ rownames(outputMatrix) <- c("M4","M7","M12","M26","M3","M33","M27","M32","M22","
 # rownames(outputMatrix) = rowNames
 
 final_data <- round(outputMatrix, 3)
+
+final_data_part_0 <- final_data[,0:25]
+final_data_part_1 <- final_data[,26:50]
 
 library(knitr)
 library(readr)
