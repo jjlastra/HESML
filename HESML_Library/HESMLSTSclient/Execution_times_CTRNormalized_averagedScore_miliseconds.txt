@@ -120,3 +120,5 @@ LiBlock - CTakes_CTRNormalized_averagedScore : 4243 ms
 LiBlock - Metamap_CTRNormalized_averagedScore : 24040 ms 
 LiBlock - Original_CTRNormalized_averagedScore : 67 ms 
 LiBlock - MetamapLite_CTRNormalized_averagedScore : 13589 ms 
+worstCOM_worstWBSM_AncSPLRada_worstUBSM_AncSPLRada_CTRNormalized_averagedScore : 24323 ms 
+bestCOM_bestWBSM_AncSPLRada_bestUBSM_AncSPLRada_CTRNormalized_averagedScore : 5282 ms 

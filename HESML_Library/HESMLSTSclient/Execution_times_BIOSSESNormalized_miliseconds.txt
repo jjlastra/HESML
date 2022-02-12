@@ -70,3 +70,5 @@ LiBlock - Metamap_BIOSSESNormalized : 17261 ms
 LiBlock - Original_BIOSSESNormalized : 37 ms 
 LiBlock - MetamapLite_BIOSSESNormalized : 12675 ms 
 LiBlock - CTakes_BIOSSESNormalized : 2577 ms 
+worstCOM_worstWBSM_AncSPLRada_worstUBSM_AncSPLRada_BIOSSESNormalized : 17882 ms 
+bestCOM_bestWBSM_AncSPLRada_bestUBSM_AncSPLRada_BIOSSESNormalized : 3699 ms 

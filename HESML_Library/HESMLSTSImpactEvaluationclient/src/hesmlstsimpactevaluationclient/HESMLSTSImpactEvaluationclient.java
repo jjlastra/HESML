@@ -323,40 +323,40 @@ public class HESMLSTSImpactEvaluationclient
         long minutes = 0;
         long seconds = 0;
         
-        /**
-         * ***********************************************
-         * ***********************************************
-         * 
-         * EXPERIMENT 1. Starting String-based measures experiments
-         * 
-         * ***********************************************
-         * ***********************************************
-         */
-        
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        System.out.println("Starting String-based measures experiments");
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        
-        // Compute all preprocessing combinations
-        
-        totalCombinations += executeStringMeasures(
-                getAllPreprocessingConfigurations(NERType.None), 
-                getAllPreprocessingConfigurations(NERType.Ctakes), 
-                "Stringbased_ALLPreprocessingCombs");
-        
-        // We measure the elapsed time to run the experiments
-
-        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        System.out.println("Finished String-based measures experiments");
-        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        
+//        /**
+//         * ***********************************************
+//         * ***********************************************
+//         * 
+//         * EXPERIMENT 1. Starting String-based measures experiments
+//         * 
+//         * ***********************************************
+//         * ***********************************************
+//         */
+//        
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("Starting String-based measures experiments");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        
+//        // Compute all preprocessing combinations
+//        
+//        totalCombinations += executeStringMeasures(
+//                getAllPreprocessingConfigurations(NERType.None), 
+//                getAllPreprocessingConfigurations(NERType.Ctakes), 
+//                "Stringbased_ALLPreprocessingCombs");
+//        
+//        // We measure the elapsed time to run the experiments
+//
+//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+//
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("Finished String-based measures experiments");
+//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        
 //        /**
 //         * ***********************************************
 //         * ***********************************************
@@ -482,40 +482,10 @@ public class HESMLSTSImpactEvaluationclient
 //          totalCombinations += executeUBSMMeasures(
 //                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
 //        
-//        // We initialize the array of measures for the COM measure: WBSM + UBSM
-//        
-//        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];
-//        
-//        IntrinsicICModelType icModelType = IntrinsicICModelType.Seco;
-//        
-//        ISentenceSimilarityMeasure WBSMmeasure = 
-//                SentenceSimilarityFactory.getWBSMMeasure(
-//                        "WBSM_" + SimilarityMeasureType.AncSPLRada.name() + "_" + bestWBSMWordProcessing.getLabel(),
-//                        bestWBSMWordProcessing,
-//                        m_WordNetDbSingleton, 
-//                        m_WordNetTaxonomySingleton, 
-//                        SimilarityMeasureType.AncSPLRada, 
-//                        icModelType);
-//        
-//        // We create the UBSM measures with the best partial results for each UBSM NER type
-//        
-//        ISentenceSimilarityMeasure UBSMmeasure = 
-//                SentenceSimilarityFactory.getUBSMMeasureSnomed(
-//                        "UBSM_" + SimilarityMeasureType.AncSPLWeightedJiangConrath.name() + "_" + bestUBSMWordProcessing.getLabel(),
-//                        bestUBSMWordProcessing,
-//                        m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
-//                        SimilarityMeasureType.AncSPLWeightedJiangConrath, 
-//                        icModelType);
-//        
-//        // We create the measures combinations and add execute the experiments
-//        
-//        measures[0] = WBSMmeasure;
-//        measures[1] = UBSMmeasure;
+           totalCombinations +=  executeCOMMeasures("COMBestWorst");
 //        
 //        // We configure three different lambda parameter value
 //        
-//        Double[] lambdas = new Double[]{0.5, 0.25, 0.75};
-//                
 //        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
 //
 //        // We measure the elapsed time to run the experiments
@@ -1180,10 +1150,10 @@ public class HESMLSTSImpactEvaluationclient
 
         // We load and register a Flair measure from the XML file 
 
-        String strFlairModelURL = "../FlairEmbeddings/embeddings/pubmed-backward.pt,../FlairEmbeddings/embeddings/pubmed-forward.pt";
-        String strPythonScriptsDirectory = "../FlairEmbeddings/";
-        String strPythonVirtualEnvironmentDir = "python3";
-        String strPythonScript = "extractFlairVectors.py";
+        String strFlairModelURL = m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-backward.pt," + m_strDataDirectory + "/FlairEmbeddings/embeddings/pubmed-forward.pt";
+        String strPythonScriptsDirectoryFlair = "../FlairEmbeddings/";
+        String strPythonVirtualEnvironmentDirFlair = "python3";
+        String strPythonScriptFlair = "extractFlairVectors.py";
 
         // We iterate word processing combinations
             
@@ -1194,9 +1164,9 @@ public class HESMLSTSImpactEvaluationclient
                             SentenceEmbeddingMethod.Flair,
                             wordProcessing, 
                             strFlairModelURL, 
-                            strPythonScriptsDirectory + strPythonScript,
-                            strPythonVirtualEnvironmentDir,
-                            strPythonScriptsDirectory);
+                            strPythonScriptsDirectoryFlair + strPythonScriptFlair,
+                            strPythonVirtualEnvironmentDirFlair,
+                            strPythonScriptsDirectoryFlair);
             
             // We add the measure
             
@@ -1401,40 +1371,148 @@ public class HESMLSTSImpactEvaluationclient
      */
     
     private static int executeCOMMeasures(
-        ISentenceSimilarityMeasure[]    measures,
-        Double[]                          lambdas,
         String                          outputFileNames) 
             throws IOException, InterruptedException, Exception
     {
-        // Initialize the result
+       // Initialize the result
         
-        int totalCombinations = 1;
-        
-        System.out.println("Calculating the combination of " + totalCombinations + " word processing configurations");
+        int totalCombinations = 0;
         
         // We iterate the methods and create the measures
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
         
-        // We iterate the lambdas options
+        /**
+         * Best COM configuation
+         */
         
-        for(Double lambda: lambdas)
-        {
-            // We initialize the measure
-                
-            ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
-                    "COM_" + lambda + "_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
-                    lambda,
-                    measures);
+        // We define the best UBSM and WBSM pre-processing methods
 
-            measuresLst.add(measure);
-        }
+        IWordProcessing bestUBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                TokenizerType.StanfordCoreNLPv4_2_0, 
+                true, NERType.Ctakes,
+                CharFilteringType.BIOSSES);
+
+        IWordProcessing bestWBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+
+        // We get the intrinsic IC model if anyone has been defined
+
+        IntrinsicICModelType icModelTypeCOM = IntrinsicICModelType.Seco;
+
+        // We calculate the best measure combination
+
+        ISentenceSimilarityMeasure[] measures = new ISentenceSimilarityMeasure[2];    
+
+        // We initialize WBSM and UBSM methods
+
+        ISentenceSimilarityMeasure measureWBSM = 
+                SentenceSimilarityFactory.getWBSMMeasure(
+                        "bestWBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        bestWBSMWordProcessingCOM,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeCOM);
+
+        ISentenceSimilarityMeasure measureUBSM =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "bestUBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                    bestUBSMWordProcessingCOM,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLRada,
+                    icModelTypeCOM);
+
+        // We add the measures to a list
+
+        measures[0] = measureWBSM;
+        measures[1] = measureUBSM;
+
+        // We create the COM measure
+
+        ICombinedSentenceSimilarityMeasure measure = SentenceSimilarityFactory.getCOMMeasure(
+            "bestCOM_" + measures[0].getLabel() + "_" + measures[1].getLabel(),
+            0.5,
+            measures);
+
+        // We add the measure
+
+        measuresLst.add(measure);
+
+        // Update the total of combinations
+
+        totalCombinations++;
+        
+        /**
+         * Worst COM configuation
+         */
+        
+        // We define the worst UBSM and WBSM pre-processing methods
+
+        IWordProcessing worstUBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                m_strBaseDir + m_strStopWordsDir + "noneStopWords.txt", 
+                TokenizerType.WhiteSpace, 
+                true, NERType.MetamapSNOMEDCT,
+                CharFilteringType.None);
+
+        IWordProcessing worstWBSMWordProcessingCOM = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "noneStopWords.txt", 
+                        TokenizerType.WhiteSpace, 
+                        true, NERType.None,
+                        CharFilteringType.None);
+
+        // We calculate the worst measure combination
+
+        ISentenceSimilarityMeasure[] worstMeasures = new ISentenceSimilarityMeasure[2];    
+
+        // We initialize WBSM and UBSM methods
+
+        ISentenceSimilarityMeasure worstMeasureWBSM = 
+                SentenceSimilarityFactory.getWBSMMeasure(
+                        "worstWBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                        worstWBSMWordProcessingCOM,
+                        m_WordNetDbSingleton, 
+                        m_WordNetTaxonomySingleton, 
+                        SimilarityMeasureType.AncSPLRada, 
+                        icModelTypeCOM);
+
+        ISentenceSimilarityMeasure worstMeasureUBSM =
+            SentenceSimilarityFactory.getUBSMMeasureSnomed(
+                    "worstUBSM_" + SimilarityMeasureType.AncSPLRada.name(),
+                    worstUBSMWordProcessingCOM,
+                    m_SnomedOntology, m_vertexesSnomed, m_taxonomySnomed,
+                    SimilarityMeasureType.AncSPLRada,
+                    icModelTypeCOM);
+
+        // We add the measures to a list
+
+        worstMeasures[0] = worstMeasureWBSM;
+        worstMeasures[1] = worstMeasureUBSM;
+
+        // We create the COM measure
+
+        ICombinedSentenceSimilarityMeasure worstMeasure = SentenceSimilarityFactory.getCOMMeasure(
+            "worstCOM_" + worstMeasures[0].getLabel() + "_" + worstMeasures[1].getLabel(),
+            0.5,
+            worstMeasures);
+
+        // We add the measure
+
+        measuresLst.add(worstMeasure);
+
+        // Update the total of combinations
+
+        totalCombinations++;
         
         // We execute the experiments
         
         executeExperiments(measuresLst, outputFileNames);
-
-        // Return the result
+        
+        // Return the result 
         
         return (totalCombinations);
     }
@@ -1464,8 +1542,7 @@ public class HESMLSTSImpactEvaluationclient
         
         ArrayList<ISentenceSimilarityMeasure> measuresLst = new ArrayList<>();
         
-//        for(int i=0; i<total_models; i++)
-        for(int i=0; i<1; i++)
+        for(int i=0; i<total_models; i++)
         {
             // We iterate word processing combinations
             
