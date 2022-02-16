@@ -2061,7 +2061,7 @@ public class HESMLSTSclient
             String strSent2vecModelDir = m_strDataDirectory + "/SentenceEmbeddings/";
             String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
             String strPythonScriptsDirectorySent2vec = "../Sent2vecExperiments/";
-            String strPythonVirtualEnvironmentDirSent2vec = "/home/user/HESML_DATA/Sent2vecExperiments/venv/bin/python";
+            String strPythonVirtualEnvironmentDirSent2vec = "python3";
             String strPythonScriptSent2vec = "extractSent2vecvectors.py";
 
             // We add the measure

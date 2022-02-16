@@ -1032,7 +1032,7 @@ public class HESMLSTSImpactEvaluationclient
         String strSent2vecModelDir = m_strDataDirectory + "SentenceEmbeddings/";
         String strSent2vecModelFile = "BioSentVec_PubMed_MIMICIII-bigram_d700.bin";
         String strPythonScriptsDirectory = "../Sent2vecExperiments/";
-        String strPythonVirtualEnvironmentDir = "/home/user/HESML_DATA/Sent2vecExperiments/venv/bin/python";
+        String strPythonVirtualEnvironmentDir = "python3";
         String strPythonScript = "extractSent2vecvectors.py";
         
         // We iterate word processing combinations
