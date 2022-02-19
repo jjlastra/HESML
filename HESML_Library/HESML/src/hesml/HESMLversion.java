@@ -42,7 +42,7 @@ public class HESMLversion
         System.out.println("semantic similarity measures and information content models");
         System.out.println("\nRelease name: " + getReleaseName());    
         System.out.println("Version code: " + getVersionCode());
-        System.out.println("Version date: July 2020");
+        System.out.println("Version date: February 2022");
         System.out.println("Copyright (C) 2020 Universidad Nacional de Educación a Distancia (UNED)");
         
         System.out.println("\nMain HESML publications:\n");
@@ -54,9 +54,14 @@ public class HESMLversion
         
         System.out.println("[2] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano,");
         System.out.println("HESML: a real-time semantic measures library for the biomedical");
-        System.out.println("domain with a reproducible survey, Submitted for Publication. (2020)\n");
+        System.out.println("domain with a reproducible survey, BMC Bioinformatics. 2022;23: 23. doi:10.1186/s12859-021-04539-0\n");
+        
+        System.out.println("[3] Lara-Clares A, Lastra-Díaz JJ, Garcia-Serrano A.,");
+        System.out.println("A reproducible experimental survey on biomedical sentence similarity: a string-based method sets");
+        System.out.println("the state of the art. Submitted to PLoS One. 2022.");
     }
-    
+     
+      
     /**
      * This function returns the name of the HESML version.
      * @return The name of the version.
@@ -64,7 +69,7 @@ public class HESMLversion
     
     public static String getReleaseName()
     {
-        return ("HESML V1R5");
+        return ("HESML V2R1");
     }
     
     /**
@@ -74,6 +79,6 @@ public class HESMLversion
     
     public static String getVersionCode()
     {
-        return ("(1.5.0.1)");
+        return ("(2.1.0.1)");
     }
 }

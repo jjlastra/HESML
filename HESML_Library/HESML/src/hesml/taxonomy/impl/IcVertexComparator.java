@@ -23,7 +23,7 @@ import hesml.taxonomy.IVertex;
 import java.util.Comparator;
 
 /**
- * Comparator of vertexex according to their IC value
+ * Comparator of vertexes according to their IC value
  * @author juan
  */
 
