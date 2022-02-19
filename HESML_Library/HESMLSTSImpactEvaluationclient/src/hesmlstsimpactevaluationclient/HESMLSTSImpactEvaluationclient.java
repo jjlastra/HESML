@@ -323,279 +323,280 @@ public class HESMLSTSImpactEvaluationclient
         long minutes = 0;
         long seconds = 0;
         
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 1. Starting String-based measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Starting String-based measures experiments");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        // Compute all preprocessing combinations
-//        
-//        totalCombinations += executeStringMeasures(
-//                getAllPreprocessingConfigurations(NERType.None), 
-//                getAllPreprocessingConfigurations(NERType.Ctakes), 
-//                "Stringbased_ALLPreprocessingCombs");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("Finished String-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 2. Starting our WE-based measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting our preprocessed WE-based measures experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // Compute all the executions
-//        
-//        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
-//        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
-//        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
-//        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished our preprocessed WE-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 3. Starting WBSM and UBSM measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting ontology-based measures experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // We calculate the best preprocessing configurations for WBSM
-//        
-//        totalCombinations += executeWBSMMeasures(
-//                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
-//        
-//        totalCombinations += executeWBSMMeasures(
-//                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
-//        
-//        totalCombinations += executeWBSMMeasures(
-//                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
-//        
-//        totalCombinations += executeWBSMMeasures(
-//                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
-//
-//        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
-//        
-//        // We define the preprocessing configuration
-//        
-//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
-//        
-//        // We create the WBSM preprocessing configuration with the best results
-//
-//        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.None,
-//                        CharFilteringType.BIOSSES);
-//        
-//        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
-//        
-//          totalCombinations += executeWBSMMeasures(
-//                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
-//        
-////         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
-//        
-//        totalCombinations += executeUBSMMeasures(
-//                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
-//        
-//        totalCombinations += executeUBSMMeasures(
-//                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
-//        
-//        totalCombinations += executeUBSMMeasures(
-//                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
-//        
-//        totalCombinations += executeUBSMMeasures(
-//                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
-//        
-//
-//        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
-//        
-//        // We define the preprocessing configuration
-//        
-//        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
-//        
-//        // We create the WBSM preprocessing configuration with the best results
-//
-//        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
-//                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
-//                        TokenizerType.StanfordCoreNLPv4_2_0, 
-//                        true, NERType.MetamapSNOMEDCT,
-//                        CharFilteringType.BIOSSES);
-//        
-//        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
-//        
-//          totalCombinations += executeUBSMMeasures(
-//                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
-//        
-           totalCombinations +=  executeCOMMeasures("COMBestWorst");
-//        
-//        // We configure three different lambda parameter value
-//        
-//        totalCombinations += executeCOMMeasures(measures, lambdas, "COM");
-//
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished ontology-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        /**
-//         * ***********************************************
-//         * ***********************************************
-//         * 
-//         * EXPERIMENT 4. Starting SWEM measures experiments
-//         * 
-//         * ***********************************************
-//         * ***********************************************
-//         */
-//        
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Starting SWEM-based measures experiments");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        
-//        // List with all the pooling methods for WE-based methods
-//        
-//        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
-//        poolingMethods.add(SWEMpoolingMethod.Max);
-//        poolingMethods.add(SWEMpoolingMethod.Average);
-//        poolingMethods.add(SWEMpoolingMethod.Min);
-//        poolingMethods.add(SWEMpoolingMethod.Sum);
-//        
-//        // We define the models to be evaluated
-//        
-//        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
-//        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
-//        
-//        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
-//        
-//        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
-//        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
-//        
-//        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
-//        
-//        modelsBioWordVecBased.add("bio_embedding_intrinsic");
-//        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
-//        
-//        // Reset the total combinations
-//        
-//        totalCombinations = 0;
-//        
-//        // Compute all the executions
-//        
-//        for(SWEMpoolingMethod pooling : poolingMethods)
-//        {
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
-//                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
-//            
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
-//                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
-//                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
-//        }
-//        
-//        // We measure the elapsed time to run the experiments
-//
-//        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
-//
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("Finished SWEM-based measures experiments");
-//        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
-//        System.out.println("-------------------------------------------------------");
-//        System.out.println("-------------------------------------------------------");
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 1. Starting String-based measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Starting String-based measures experiments");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        // Compute all preprocessing combinations
+        
+        totalCombinations += executeStringMeasures(
+                getAllPreprocessingConfigurations(NERType.None), 
+                getAllPreprocessingConfigurations(NERType.Ctakes), 
+                "Stringbased_ALLPreprocessingCombs");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Finished String-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------");
+        System.out.println("-------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 2. Starting our WE-based measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting our preprocessed WE-based measures experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // Compute all the executions
+        
+        totalCombinations += executeOurWEMeasures(getStopWordsPreprocessingConfigurations(false, NERType.None), "OurWEStopWords");
+        totalCombinations += executeOurWEMeasures(getCharFilteringPreprocessingConfigurations(false, NERType.None), "OurWECharFiltering");
+        totalCombinations += executeOurWEMeasures(getTokenizerPreprocessingConfigurations(NERType.None), "OurWETokenizer");
+        totalCombinations += executeOurWEMeasures(getLowerCasePreprocessingConfigurations(false, NERType.None), "OurWELC");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished our preprocessed WE-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 3. Starting WBSM and UBSM measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting ontology-based measures experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // We calculate the best preprocessing configurations for WBSM
+        
+        totalCombinations += executeWBSMMeasures(
+                getStopWordsPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsStopWords");
+        
+        totalCombinations += executeWBSMMeasures(
+                getCharFilteringPreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsCharFiltering");
+        
+        totalCombinations += executeWBSMMeasures(
+                getTokenizerPreprocessingConfigurations(NERType.None), "WBSM_PreprocessingCombsTokenizer");
+        
+        totalCombinations += executeWBSMMeasures(
+                getLowerCasePreprocessingConfigurations(false, NERType.None), "WBSM_PreprocessingCombsLC");
+
+        // We calculate the best word measure combination for WBSM measures based on the best preprocessing partial results
+        
+        // We define the preprocessing configuration
+        
+        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigWBSM = new ArrayList<>();
+        
+        // We create the WBSM preprocessing configuration with the best results
+
+        IWordProcessing bestWBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.None,
+                        CharFilteringType.BIOSSES);
+        
+        bestWordPartialPreprocessingConfigWBSM.add(bestWBSMWordProcessing);
+        
+          totalCombinations += executeWBSMMeasures(
+                bestWordPartialPreprocessingConfigWBSM, "WBSM_PreprocessingCombsBestMeasure");
+        
+//         We calculate the best preprocessing configurations for UBSM using CTakes as default NER
+        
+        totalCombinations += executeUBSMMeasures(
+                getStopWordsPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsStopWords", NERType.Ctakes);
+        
+        totalCombinations += executeUBSMMeasures(
+                getCharFilteringPreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsCharFiltering", NERType.Ctakes);
+        
+        totalCombinations += executeUBSMMeasures(
+                getTokenizerPreprocessingConfigurations(NERType.Ctakes), "UBSM_PreprocessingCombsTokenizer", NERType.Ctakes);
+        
+        totalCombinations += executeUBSMMeasures(
+                getLowerCasePreprocessingConfigurations(false, NERType.Ctakes), "UBSM_PreprocessingCombsLC", NERType.Ctakes);
+        
+
+        // We calculate the best word measure combination for UBSM measures based on the best preprocessing partial results
+        
+        // We define the preprocessing configuration
+        
+        ArrayList<IWordProcessing> bestWordPartialPreprocessingConfigUBSM = new ArrayList<>();
+        
+        // We create the WBSM preprocessing configuration with the best results
+
+        IWordProcessing bestUBSMWordProcessing = PreprocessingFactory.getWordProcessing(
+                        m_strBaseDir + m_strStopWordsDir + "nltk2018StopWords.txt", 
+                        TokenizerType.StanfordCoreNLPv4_2_0, 
+                        true, NERType.MetamapSNOMEDCT,
+                        CharFilteringType.BIOSSES);
+        
+        bestWordPartialPreprocessingConfigUBSM.add(bestUBSMWordProcessing);
+        
+        // We execute the UBSM measures
+        
+        totalCombinations += executeUBSMMeasures(
+                bestWordPartialPreprocessingConfigUBSM, "UBSM_PreprocessingCombsBestMeasure", NERType.MetamapSNOMEDCT);
+        
+        
+        // We execute the best-and-worst COM combinations experiment
+        
+        totalCombinations +=  executeCOMMeasures("COMBestWorst");
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished ontology-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        /**
+         * ***********************************************
+         * ***********************************************
+         * 
+         * EXPERIMENT 4. Starting SWEM measures experiments
+         * 
+         * ***********************************************
+         * ***********************************************
+         */
+        
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Starting SWEM-based measures experiments");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        
+        // List with all the pooling methods for WE-based methods
+        
+        ArrayList<SWEMpoolingMethod> poolingMethods = new ArrayList<>();
+        poolingMethods.add(SWEMpoolingMethod.Max);
+        poolingMethods.add(SWEMpoolingMethod.Average);
+        poolingMethods.add(SWEMpoolingMethod.Min);
+        poolingMethods.add(SWEMpoolingMethod.Sum);
+        
+        // We define the models to be evaluated
+        
+        ArrayList<String> modelsFastextVecBased_part1 = new ArrayList<>();
+        ArrayList<String> modelsFastextVecBased_part2 = new ArrayList<>();
+        
+        // We only add a sample of each WE model, we do not select all the available models for execution time restrictions
+        
+        modelsFastextVecBased_part1.add("bioconceptvec_fasttext.txt");
+        modelsFastextVecBased_part2.add("PubMed-and-PMC-w2v.txt");
+        
+        ArrayList<String> modelsBioWordVecBased = new ArrayList<>();
+        
+        modelsBioWordVecBased.add("bio_embedding_intrinsic");
+        modelsBioWordVecBased.add("BioNLP2016_PubMed-shuffle-win-2.bin");
+        
+        // Reset the total combinations
+        
+        totalCombinations = 0;
+        
+        // Compute all the executions
+        
+        for(SWEMpoolingMethod pooling : poolingMethods)
+        {
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part1, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part1" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsFastextVecBased_part2, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part2" + pooling.name(), 
+                    WordEmbeddingFileType.FastTextVecWordEmbedding, pooling);
+            
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getStopWordsPreprocessingConfigurations(false, NERType.None), "SWEMStopWords_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getCharFilteringPreprocessingConfigurations(false, NERType.None), "SWEMCharFiltering_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getTokenizerPreprocessingConfigurations(NERType.None), "SWEMTokenizer_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+            totalCombinations += executeSWEMMeasures(modelsBioWordVecBased, 
+                    getLowerCasePreprocessingConfigurations(false, NERType.None), "SWEMLC_part3" + pooling.name(), 
+                    WordEmbeddingFileType.BioWordVecBinaryWordEmbedding, pooling);
+        }
+        
+        // We measure the elapsed time to run the experiments
+
+        seconds = (System.currentTimeMillis() - startFileProcessingTime) / 1000;
+
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("Finished SWEM-based measures experiments");
+        System.out.println("Processed a total of " + totalCombinations + " combinations in = " + seconds + " (seconds)");
+        System.out.println("-------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
 
         /**
          * ***********************************************
