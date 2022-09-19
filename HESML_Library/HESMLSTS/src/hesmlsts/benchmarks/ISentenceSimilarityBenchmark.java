@@ -19,9 +19,9 @@
  *
  */
 
-package hesml.sts.benchmarks;
+package hesmlsts.benchmarks;
 
-import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesmlsts.measures.ISentenceSimilarityMeasure;
 import java.io.IOException;
 
 /**

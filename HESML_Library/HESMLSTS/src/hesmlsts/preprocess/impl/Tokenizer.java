@@ -19,14 +19,14 @@
  *
  */
 
-package hesml.sts.preprocess.impl;
+package hesmlsts.preprocess.impl;
 
 import bioc.preprocessing.pipeline.PreprocessingPipeline;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import hesml.sts.preprocess.ITokenizer;
-import hesml.sts.preprocess.TokenizerType;
+import hesmlsts.preprocess.ITokenizer;
+import hesmlsts.preprocess.TokenizerType;
 
 import edu.stanford.nlp.simple.*;
 import java.io.BufferedReader;

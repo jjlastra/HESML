@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.documentreader;
+package hesmlsts.documentreader;
 
 /**
  * Enumeration type for all the input documents.

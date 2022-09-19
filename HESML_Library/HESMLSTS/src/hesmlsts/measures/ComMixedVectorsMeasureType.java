@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures;
+package hesmlsts.measures;
 
 /**
  * COM Mixed Vectors measure type

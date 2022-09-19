@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.benchmarks.impl;
+package hesmlsts.benchmarks.impl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

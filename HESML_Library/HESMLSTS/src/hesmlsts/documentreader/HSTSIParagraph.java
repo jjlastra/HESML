@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.documentreader;
+package hesmlsts.documentreader;
 
 /**
  * Interface that encapsulates the creation of a Document.

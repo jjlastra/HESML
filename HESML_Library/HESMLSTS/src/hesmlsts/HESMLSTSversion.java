@@ -19,14 +19,14 @@
  *
  */
 
-package hesml;
+package hesmlsts;
 
 /**
  * This class is included only to report the HESML version info.
  * @author j.lastra
  */
 
-public class HESMLversion
+public class HESMLSTSversion
 {
     /**
      * This function reports the version of the current HESML software library.

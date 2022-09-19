@@ -19,16 +19,15 @@
  *
  */
 
-package hesml.sts.preprocess.impl;
+package hesmlsts.preprocess.impl;
 
 
-import gov.nih.nlm.nls.ner.MetaMapLite;
-import hesml.sts.preprocess.CharFilteringType;
-import hesml.sts.preprocess.INER;
-import hesml.sts.preprocess.ITokenizer;
-import hesml.sts.preprocess.IWordProcessing;
-import hesml.sts.preprocess.NERType;
-import hesml.sts.preprocess.TokenizerType;
+import hesmlsts.preprocess.CharFilteringType;
+import hesmlsts.preprocess.INER;
+import hesmlsts.preprocess.ITokenizer;
+import hesmlsts.preprocess.IWordProcessing;
+import hesmlsts.preprocess.NERType;
+import hesmlsts.preprocess.TokenizerType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,10 +54,6 @@ class WordProcessing implements IWordProcessing
     
     protected NERType m_nerType;
     protected final INER m_ner;
-    
-    // Metamap Lite instance
-    
-    protected MetaMapLite m_metaMapLiteInst;
 
     // Set the tokenization method
     

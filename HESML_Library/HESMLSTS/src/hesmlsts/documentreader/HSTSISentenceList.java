@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.documentreader;
+package hesmlsts.documentreader;
 
 /**
  * A SentenceList is an object for iterating between sentences.

@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.sentencesextractor;
+package hesmlsts.sentencesextractor;
 
 /**
  * Enumeration for selecting the different pipelines in the preprocessing step.

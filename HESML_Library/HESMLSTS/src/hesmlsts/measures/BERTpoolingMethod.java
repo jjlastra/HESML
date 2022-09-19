@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures;
+package hesmlsts.measures;
 
 /**
  * This enumeration sets the pooling methods for BERT experiments.

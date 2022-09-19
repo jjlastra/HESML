@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.documentreader;
+package hesmlsts.documentreader;
 
 import java.io.File;
 import java.io.FileNotFoundException;

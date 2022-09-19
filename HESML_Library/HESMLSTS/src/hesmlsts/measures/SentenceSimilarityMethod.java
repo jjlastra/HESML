@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures;
+package hesmlsts.measures;
 
 /**
  * This enumeration groups all of sentence similarity methods.

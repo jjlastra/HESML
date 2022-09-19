@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures;
+package hesmlsts.measures;
 
 /**
  * This enumeration sets the families or classes of sentence similarity measures.

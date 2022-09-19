@@ -19,12 +19,12 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import hesml.sts.documentreader.HSTSISentence;
-import hesml.sts.documentreader.HSTSISentenceList;
+import hesmlsts.documentreader.HSTSISentence;
+import hesmlsts.documentreader.HSTSISentenceList;
 
 /**
  * A HSTSSentenceList is an object for iterating between sentences.

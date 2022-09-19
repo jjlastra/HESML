@@ -19,13 +19,13 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
-import hesml.sts.measures.BERTpoolingMethod;
-import hesml.sts.measures.MLPythonLibrary;
-import hesml.sts.measures.SentenceSimilarityFamily;
-import hesml.sts.measures.SentenceSimilarityMethod;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.measures.BERTpoolingMethod;
+import hesmlsts.measures.MLPythonLibrary;
+import hesmlsts.measures.SentenceSimilarityFamily;
+import hesmlsts.measures.SentenceSimilarityMethod;
+import hesmlsts.preprocess.IWordProcessing;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

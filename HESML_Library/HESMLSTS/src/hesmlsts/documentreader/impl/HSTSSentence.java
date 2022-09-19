@@ -19,9 +19,9 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
-import hesml.sts.documentreader.HSTSISentence;
+import hesmlsts.documentreader.HSTSISentence;
 
 /**
  * This class implements a HSTS sentence object.

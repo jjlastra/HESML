@@ -19,13 +19,13 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
-import hesml.sts.measures.ComMixedVectorsMeasureType;
-import hesml.sts.measures.ISentenceSimilarityMeasure;
-import hesml.sts.measures.SentenceSimilarityFamily;
-import hesml.sts.measures.SentenceSimilarityMethod;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.measures.ComMixedVectorsMeasureType;
+import hesmlsts.measures.ISentenceSimilarityMeasure;
+import hesmlsts.measures.SentenceSimilarityFamily;
+import hesmlsts.measures.SentenceSimilarityMethod;
+import hesmlsts.preprocess.IWordProcessing;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;

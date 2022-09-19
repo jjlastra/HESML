@@ -19,10 +19,10 @@
  *
  */
 
-package hesml.sts.benchmarks.impl;
+package hesmlsts.benchmarks.impl;
 
-import hesml.sts.benchmarks.IAggregatedSentenceSimilarityBenchmark;
-import hesml.sts.measures.ISentenceSimilarityMeasure;
+import hesmlsts.benchmarks.IAggregatedSentenceSimilarityBenchmark;
+import hesmlsts.measures.ISentenceSimilarityMeasure;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

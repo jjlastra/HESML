@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.preprocess;
+package hesmlsts.preprocess;
 
 /**
  *  Interface class for filtering punctuation methods

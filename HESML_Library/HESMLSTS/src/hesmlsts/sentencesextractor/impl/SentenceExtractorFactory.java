@@ -19,12 +19,12 @@
  *
  */
 
-package hesml.sts.sentencesextractor.impl;
+package hesmlsts.sentencesextractor.impl;
 
-import hesml.sts.documentreader.HSTSDocumentType;
-import hesml.sts.documentreader.impl.HSTSDocumentFactory;
-import hesml.sts.sentencesextractor.SentenceExtractorType;
-import hesml.sts.sentencesextractor.SentenceSplitterType;
+import hesmlsts.documentreader.HSTSDocumentType;
+import hesmlsts.documentreader.impl.HSTSDocumentFactory;
+import hesmlsts.sentencesextractor.SentenceExtractorType;
+import hesmlsts.sentencesextractor.SentenceSplitterType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,8 +34,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.xml.stream.XMLStreamException;
-import hesml.sts.documentreader.HSTSIDocument;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.documentreader.HSTSIDocument;
+import hesmlsts.preprocess.IWordProcessing;
 
 /**
  * The aim of this class is to instantiate all the preprocessing pipeline

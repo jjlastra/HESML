@@ -19,11 +19,11 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
-import hesml.sts.measures.ISentenceSimilarityMeasure;
-import hesml.sts.measures.SentenceSimilarityFamily;
-import hesml.sts.measures.SentenceSimilarityMethod;
+import hesmlsts.measures.ISentenceSimilarityMeasure;
+import hesmlsts.measures.SentenceSimilarityFamily;
+import hesmlsts.measures.SentenceSimilarityMethod;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;

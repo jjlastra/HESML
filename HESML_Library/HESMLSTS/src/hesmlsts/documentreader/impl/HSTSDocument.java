@@ -19,18 +19,18 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import hesml.sts.documentreader.HSTSIDocument;
-import hesml.sts.documentreader.HSTSIParagraph;
-import hesml.sts.documentreader.HSTSIParagraphList;
-import hesml.sts.documentreader.HSTSISentence;
-import hesml.sts.documentreader.HSTSISentenceList;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.documentreader.HSTSIDocument;
+import hesmlsts.documentreader.HSTSIParagraph;
+import hesmlsts.documentreader.HSTSIParagraphList;
+import hesmlsts.documentreader.HSTSISentence;
+import hesmlsts.documentreader.HSTSISentenceList;
+import hesmlsts.preprocess.IWordProcessing;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 

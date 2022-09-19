@@ -19,10 +19,10 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
-import hesml.sts.documentreader.HSTSIParagraph;
-import hesml.sts.documentreader.HSTSISentenceList;
+import hesmlsts.documentreader.HSTSIParagraph;
+import hesmlsts.documentreader.HSTSISentenceList;
 
 /**
  * This functions implements a paragraph object.

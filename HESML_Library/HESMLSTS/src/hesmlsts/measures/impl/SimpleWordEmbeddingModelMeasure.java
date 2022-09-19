@@ -19,15 +19,15 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
 import hesml.measures.IPretrainedWordEmbedding;
 import hesml.measures.WordEmbeddingFileType;
 import hesml.measures.impl.MeasureFactory;
-import hesml.sts.measures.SWEMpoolingMethod;
-import hesml.sts.measures.SentenceSimilarityFamily;
-import hesml.sts.measures.SentenceSimilarityMethod;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.measures.SWEMpoolingMethod;
+import hesmlsts.measures.SentenceSimilarityFamily;
+import hesmlsts.measures.SentenceSimilarityMethod;
+import hesmlsts.preprocess.IWordProcessing;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;

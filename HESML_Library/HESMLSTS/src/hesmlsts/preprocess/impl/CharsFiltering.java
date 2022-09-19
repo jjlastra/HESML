@@ -19,10 +19,10 @@
  *
  */
 
-package hesml.sts.preprocess.impl;
+package hesmlsts.preprocess.impl;
 
-import hesml.sts.preprocess.CharFilteringType;
-import hesml.sts.preprocess.ICharsFiltering;
+import hesmlsts.preprocess.CharFilteringType;
+import hesmlsts.preprocess.ICharsFiltering;
 import java.util.HashMap;
 
 /**

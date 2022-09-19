@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.sentencesextractor;
+package hesmlsts.sentencesextractor;
 
 
 /**

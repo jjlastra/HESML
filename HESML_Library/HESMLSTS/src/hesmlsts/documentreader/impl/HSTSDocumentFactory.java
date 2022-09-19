@@ -19,11 +19,11 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
-import hesml.sts.documentreader.HSTSDocumentType;
-import hesml.sts.documentreader.HSTSIDocument;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.documentreader.HSTSDocumentType;
+import hesmlsts.documentreader.HSTSIDocument;
+import hesmlsts.preprocess.IWordProcessing;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

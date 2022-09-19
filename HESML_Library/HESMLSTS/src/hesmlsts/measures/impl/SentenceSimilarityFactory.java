@@ -19,20 +19,20 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
 import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.WordEmbeddingFileType;
-import hesml.sts.measures.BERTpoolingMethod;
-import hesml.sts.measures.ComMixedVectorsMeasureType;
-import hesml.sts.measures.ICombinedSentenceSimilarityMeasure;
-import hesml.sts.measures.ISentenceSimilarityMeasure;
-import hesml.sts.measures.MLPythonLibrary;
-import hesml.sts.measures.SWEMpoolingMethod;
-import hesml.sts.measures.SentenceEmbeddingMethod;
-import hesml.sts.measures.StringBasedSentenceSimilarityMethod;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.measures.BERTpoolingMethod;
+import hesmlsts.measures.ComMixedVectorsMeasureType;
+import hesmlsts.measures.ICombinedSentenceSimilarityMeasure;
+import hesmlsts.measures.ISentenceSimilarityMeasure;
+import hesmlsts.measures.MLPythonLibrary;
+import hesmlsts.measures.SWEMpoolingMethod;
+import hesmlsts.measures.SentenceEmbeddingMethod;
+import hesmlsts.measures.StringBasedSentenceSimilarityMethod;
+import hesmlsts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.mesh.IMeSHOntology;

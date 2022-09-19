@@ -19,12 +19,12 @@
  *
  */
 
-package hesml.sts.documentreader.impl;
+package hesmlsts.documentreader.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import hesml.sts.documentreader.HSTSIParagraph;
-import hesml.sts.documentreader.HSTSIParagraphList;
+import hesmlsts.documentreader.HSTSIParagraph;
+import hesmlsts.documentreader.HSTSIParagraphList;
 
 /**
  * Iterable object for storing a list of paragraph objects.

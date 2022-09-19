@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.documentreader;
+package hesmlsts.documentreader;
 
 /**
  * This interface encapsulates the creation of a paragraphs iterable object.

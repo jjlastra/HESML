@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures.impl;
+package hesmlsts.measures.impl;
 
 import hesml.configurators.ITaxonomyInfoConfigurator;
 import hesml.configurators.IntrinsicICModelType;
@@ -27,9 +27,9 @@ import hesml.configurators.icmodels.ICModelsFactory;
 import hesml.measures.ISimilarityMeasure;
 import hesml.measures.SimilarityMeasureType;
 import hesml.measures.impl.MeasureFactory;
-import hesml.sts.measures.SentenceSimilarityFamily;
-import hesml.sts.measures.SentenceSimilarityMethod;
-import hesml.sts.preprocess.IWordProcessing;
+import hesmlsts.measures.SentenceSimilarityFamily;
+import hesmlsts.measures.SentenceSimilarityMethod;
+import hesmlsts.preprocess.IWordProcessing;
 import hesml.taxonomy.ITaxonomy;
 import hesml.taxonomy.IVertexList;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;

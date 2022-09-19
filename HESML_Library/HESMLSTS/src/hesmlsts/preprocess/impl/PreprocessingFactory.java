@@ -19,12 +19,12 @@
  *
  */
 
-package hesml.sts.preprocess.impl;
+package hesmlsts.preprocess.impl;
 
-import hesml.sts.preprocess.CharFilteringType;
-import hesml.sts.preprocess.IWordProcessing;
-import hesml.sts.preprocess.NERType;
-import hesml.sts.preprocess.TokenizerType;
+import hesmlsts.preprocess.CharFilteringType;
+import hesmlsts.preprocess.IWordProcessing;
+import hesmlsts.preprocess.NERType;
+import hesmlsts.preprocess.TokenizerType;
 import java.io.IOException;
 
 /**

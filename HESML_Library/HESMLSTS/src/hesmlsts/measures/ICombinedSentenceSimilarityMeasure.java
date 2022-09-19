@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.measures;
+package hesmlsts.measures;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

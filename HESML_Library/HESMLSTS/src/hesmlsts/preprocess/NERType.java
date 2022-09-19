@@ -19,7 +19,7 @@
  *
  */
 
-package hesml.sts.preprocess;
+package hesmlsts.preprocess;
 
 /**
  *  Enumeration class for selecting the different methods 
