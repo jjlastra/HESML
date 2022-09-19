@@ -1,32 +1,36 @@
-# HESML V1R5 (1.5.0.2)
+# HESML V2R1 (2.1.0.0)
 
-HESML V1R5 Java software library of ontology-based semantic similarity measures and information content (IC) models. Main novelty of V1R5 version is the implementation of the most important biomedical ontologies, such as SNOMED-CT, MeSH, GO and OBO-based ontologies, in addition to WordNet.
+HESML V2R1 Java software library of ontology-based semantic similarity measures and information content (IC) models. The main novelty of HESML V2R1 is the implementation of most sentence similarity methods for the biomedical domain.
 
 This is the GitHub public repository for the HESML Java software library of ontology-based semantic similarity measures and Information Content (IC) models.
 
 The initial master code of this repository matches the HESML V1R2 version available as Mendeley dataset at http://dx.doi.org/10.17632/t87s78dg78.2.
 
-HESML V1R5 is the fifth release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models, which also implements the evaluation of pre-trained word embedding models.
+HESML V2R1 is the sixth release of the Half-Edge Semantic Measures Library (HESML) [1], which is a new, scalable and efficient Java software library of ontology-based semantic similarity measures and Information Content (IC) models, which also implements the evaluation of pre-trained word embedding models and sentence similarity methods for the biomedical domain.
 
-HESML V1R5 implements most ontology-based semantic similarity measures and Information Content (IC) models reported in the literature which are based on WordNet, SNOMED-CT, MeSH, GO and OBO-based ontologies. In addition, it provides a XML-based input file format in order to specify the execution of reproducible experiments on word/concept similarity based on WordNet, SNOMED-CT, MeSH, and GO ontologies, even with no software coding.
+HESML V2R1 implements most ontology-based semantic similarity measures and Information Content (IC) models reported in the literature which are based on WordNet, SNOMED-CT, MeSH, GO and OBO-based ontologies. In addition, it provides a XML-based input file format in order to specify the execution of reproducible experiments on word/concept similarity based on WordNet, SNOMED-CT, MeSH, and GO ontologies, even with no software coding.
 
 HESML is introduced and detailed in a companion reproducibility paper [1, 7] of the methods and experiments introduced in [2,3,4, 6].
 
 The main features of HESML are as follows: (1) it is based on an efficient and linearly scalable representation for taxonomies called PosetHERep introduced in [1], (2) its performance exhibits a linear scalability as regards the size of the taxonomy, and (3) it does not use any caching strategy of vertex sets.
 
-# Minor novelties in HESML V1R5 (1.5.0.2)
+# Main novelties in HESML V2R1
 
-This is a minor service release of HESML V1R5 that introduces a minor performance improvement of the AncSPL algorithm introduced in the HESML V1R5 paper [7] and the HESML_UMLS_bencmark program, which implements the experiments reported in the aforementioned paper [7]. IMPORTANT NOTE: the HESML_UMLS_bencmark program does not compile because it uses METAMAP Java libraries, which require a license from the National Library of Medicine (NLM) of the United States, and thus, they cannot be included in the HESML distribution. We refer any reader interested in these benchmarks to the HESML V1R5 paper [7] and its reproducibility dataset [12].
+Main novelties provided by HESML V2R1 are as follows:
 
-# Main novelties in HESML V1R5
+(1) The main novelties introduced by HESML V2R1 are as follows: (1) the software implementation of a new package for the evaluation of sentence similarity methods; 
 
-Main novelties provided by HESML V1R5 are as follows:
+(2) the software implementation of most of the sentence similarity methods in the biomedical domain; 
 
-(1) implementation of the SNOMED-CT, MeSH, GO and OBO-based ontologies for the biomedical doman [5].
+(3) the implementation of a new package for sentence pre-processing together with a set of sentence pre-processing configurations; 
 
-(2) software implementation of six new groupwise similarity measures as follows: SimUI [8], SimLP [8], SimGIC [9], Average [10], Maximum [11], Best-match-Average (BMA) [10].
+(4) the integration of the three main biomedical NER tools, Metamap , MetamapLite and cTAKES; 
 
-(3) the introduction of a new family of efficient path-based semantic similarity measures based on the reformulation of path-based measures using the new AncSPL  [7] algorithm for the real-time computation of the length of the shortest path between concepts.
+(5) the software implementation of a parser based on the averaging Simple Word EMbeddings (SWEM) models introduced by Shen et al. for efficiently loading and evaluating FastText-based  and other word embedding models; 
+
+(6) the integration of Python wrappers for the evaluation of BERT Universal Sentence Encoder (USE) and Flair models; and finally, 
+
+(7) the software implementation of a new string-based sentence similarity method based on the aggregation of the Li et al. similarity and Block distance measures, called LiBlock, as well as eight new variants of the ontology-based methods proposed by Sogancioglu et al., and a new pre-trained word embedding model based on FastText and trained on the full-text of the articles in the PMC-BioC corpus.
 
 # Licensing information
 
@@ -58,19 +62,21 @@ HESML library is freely distributed for any non-commercial purpose under a CC By
 
 [12] J.J. Lastra-Díaz, A. Lara-Clares, A. García-Serrano, Reproducibility dataset for a benchmark of biomedical semantic measures libraries, (2020). https://doi.org/10.21950/OTDA4Z.
 
+[13] Lara-Clares, Alicia; Lastra-Díaz, Juan J.; Garcia-Serrano, Ana, Reproducible experiments on word and sentence similarity measures for the biomedical domain (2021), https://doi.org/10.21950/EPNXTR
+
 Steps to reproduce the library
 
-HESML V1R5 is distributed as a Java class library (HESML-V1R5.0.1.jar) plus three test driver applications (HESMLclient.jar, HESML_GOclien, HESML_UMLScliet), which have been developed using NetBeans 8.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
+HESML V2R1 is distributed as a Java class library (HESML-V2R1.0.1.jar) plus three test driver applications (HESMLclient.jar, HESML_GOclien, HESML_UMLScliet), which have been developed using NetBeans 8.2 for Windows, although it has been also compiled and evaluated on Linux-based platforms using the corresponding NetBeans versions.
 
-The HESML-V1R5.0.1.jar file is already included in the HESML_Library\HESML\dist folder of the HESML_Release_V1R5.zip distribution file. In order to compile HESML from its source files, you must follow the following steps:
+The HESML-V2R1.0.1.jar file is already included in the HESML_Library\HESML\dist folder of the HESML_Release_V2R1.zip distribution file. In order to compile HESML from its source files, you must follow the following steps:
 
-(1) Download the full distribution of HESML V1R5.
+(1) Download the full distribution of HESML V2R1.
 
 (2) Install Java 8, Java SE Dev Kit 8 and NetBeans 8.0.2 or higher in your workstation.
 
 (3) Launch NetBeans IDE and open the HESML and client projects contained in the root folder. NetBeans automatically detects the presence of a nbproject subfolder with the project files.
 
-(4) Select HESML and client projects in the project treeview respectively. Then, invoke the "Clean and Build project (Shift + F11)" command in order to compile both projects.
+(4) Select HESML, HESMLSTS and client projects in the project treeview respectively. Then, invoke the "Clean and Build project (Shift + F11)" command in order to compile both projects.
 
 In order to remain up to date on new HESML versions, as well as asking for technical support, we invite the readers to visit http://hesml.lsi.uned.es and subscribe to the HESML forum by sending an email to the following address:
 
