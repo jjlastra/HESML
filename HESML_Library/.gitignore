@@ -1,0 +1,9 @@
+/UMLS/
+/public_mm_lite/
+/WordEmbeddings/
+/BERTPretrainedModels/
+/SentenceEmbeddings/
+/BERTExperiments/
+/public_mm/
+/apache-ctakes-4.0.0.1-src/
+*.class

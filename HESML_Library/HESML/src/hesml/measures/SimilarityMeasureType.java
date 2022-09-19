@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2022 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -499,5 +499,6 @@ public enum SimilarityMeasureType
     
     EMBWordEmbedding,
     UKBppvEmbedding,
-    NasariEmbedding
+    NasariEmbedding,
+    FastTextBinaryWordEmbedding
 }

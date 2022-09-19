@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation=".\WordNetBasedExperiments.xsd"/>
+	<xs:element name="SentenceSimilarityExperiments">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SingleDatasetSentenceSimilarityValuesExperiment" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SingleDatasetSentenceSimilarityValuesExperiment">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OutputFilename" type="xs:string"/>
+				<xs:element name="DatasetDirectory" type="xs:string"/>
+				<xs:element name="DatasetFilename" type="xs:string"/>
+				<xs:element name="SentenceSimilarityMeasures">
+					<xs:complexType>
+						<xs:choice maxOccurs="unbounded">
+							<xs:element ref="StringBasedSentenceSimilarityMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="SWEMMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="BertEmbeddingModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="USEModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="FlairModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="WBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="UBSMMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="Sent2vecModelMeasure" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element ref="COMMeasure" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SWEMMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Pooling" type="SWEMpoolingMethod"/>
+				<xs:element name="WordEmbeddingFileFormat" type="WordEmbeddingFileType"/>
+				<xs:element name="PretrainedModelFilename" type="xs:string"/>
+				<xs:element name="PretrainedModelDirectory"/>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="SWEMpoolingMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Average"/>
+			<xs:enumeration value="Max"/>
+			<xs:enumeration value="Min"/>
+			<xs:enumeration value="Sum"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WordEmbeddingFileType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BioWordVecBinaryWordEmbedding"/>
+			<xs:enumeration value="FastTextVecWordEmbedding"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="WordProcessing">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="StopWordsFileDir" type="xs:string"/>
+				<xs:element name="StopWordsFilename" type="xs:string"/>
+				<xs:element name="TokenizerType" type="TokenizerType"/>
+				<xs:element name="LowercaseNormalization"/>
+				<xs:element name="ConceptAnnotation" minOccurs="0"/>
+				<xs:choice>
+					<xs:element name="CharFilteringType" type="CharFilteringType" minOccurs="0"/>
+					<xs:element name="ReplacementPatterns" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Pattern">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="InputText" type="xs:string"/>
+											<xs:element name="OutputText" type="xs:string"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="PythonScriptsDirectory" type="xs:string" minOccurs="0"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string" minOccurs="0"/>
+				<xs:element name="PythonWordPieceTokenizerScript" type="xs:string" minOccurs="0"/>
+				<xs:element name="PretrainedModelDirectory" minOccurs="0"/>
+				<xs:element name="PretrainedModelFilename" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="StringBasedSentenceSimilarityMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Jaccard"/>
+			<xs:enumeration value="Qgram"/>
+			<xs:enumeration value="BlockDistance"/>
+			<xs:enumeration value="OverlapCoefficient"/>
+			<xs:enumeration value="Levenshtein"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="StringBasedSentenceSimilarityMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Method" type="StringBasedSentenceSimilarityMethod"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BertEmbeddingModelMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="MLPythonLibrary" type="MLPythonLibrary"/>
+				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
+				<xs:element name="Pooling" type="BERTpoolingMethod" minOccurs="0"/>
+				<xs:element name="PoolingLayers" type="xs:string" minOccurs="0"/>
+				<xs:element name="PretrainedModelDirectory" type="xs:string"/>
+				<xs:element name="PretrainedModelName" type="xs:string"/>
+				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
+				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element name="PreprocessedSentencesPath" type="xs:string"/>
+				<xs:element name="PythonServerPort" type="xs:string" minOccurs="0"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="USEModelMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
+				<xs:element name="PretrainedModelURL" type="xs:string"/>
+				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
+				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FlairModelMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
+				<xs:element name="PretrainedModelPath" type="xs:string"/>
+				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
+				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Sent2vecModelMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="SentenceEmbeddingMethod"/>
+				<xs:element name="PretrainedModelDir" type="xs:string"/>
+				<xs:element name="PretrainedModelFile" type="xs:string"/>
+				<xs:element name="PythonScriptsDirectory" type="xs:string"/>
+				<xs:element name="PythonVirtualEnvironmentDir" type="xs:string"/>
+				<xs:element name="PythonScriptFilename" type="xs:string"/>
+				<xs:element ref="WordProcessing"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="WBSMMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="OntologyBasedMethod"/>
+				<xs:element name="WordNetDbDir" type="xs:string"/>
+				<xs:element name="WordNetDbFilename" type="xs:string"/>
+				<xs:element name="WordSimilarityMeasureType" type="SimilarityMeasureType"/>
+				<xs:element ref="WordProcessing"/>
+				<xs:element name="IntrinsicICmodel" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UBSMMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Method" type="OntologyBasedMethod"/>
+				<xs:element name="SnomedDir" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedConceptFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedRelationshipsFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="SnomedDescriptionFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="UmlsCuiMappingFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="UMLSdir" type="xs:string" minOccurs="0"/>
+				<xs:element name="MeSHdir" type="xs:string" minOccurs="0"/>
+				<xs:element name="MeSHdescriptorFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="OboFilename" type="xs:string" minOccurs="0"/>
+				<xs:element name="WordSimilarityMeasureType" type="SimilarityMeasureType"/>
+				<xs:element ref="WordProcessing"/>
+				<xs:element name="IntrinsicICmodel" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="COMMeasure">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Label" type="xs:string"/>
+				<xs:element name="Lambda" type="xs:double"/>
+				<xs:element name="WBSMMeasure" type="WBSMMeasure"/>
+				<xs:element name="UBSMMeasure" type="UBSMMeasure"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="SentenceEmbeddingMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BERTEmbeddingModel"/>
+			<xs:enumeration value="USEModel"/>
+			<xs:enumeration value="ParagraphVector"/>
+			<xs:enumeration value="Sent2vecModel"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OntologyBasedMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WBSMMeasure"/>
+			<xs:enumeration value="UBSMMeasure"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BERTpoolingMethod">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE"/>
+			<xs:enumeration value="FIRST_TOKEN"/>
+			<xs:enumeration value="LAST_TOKEN"/>
+			<xs:enumeration value="REDUCE_MAX"/>
+			<xs:enumeration value="REDUCE_MEAN"/>
+			<xs:enumeration value="REDUCE_MEAN_MAX"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TokenizerType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WhiteSpace"/>
+			<xs:enumeration value="StanfordCoreNLPv3_9_1"/>
+			<xs:enumeration value="WordPieceTokenizer"/>
+			<xs:enumeration value="BioCNLPTokenizer"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CharFilteringType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Default"/>
+			<xs:enumeration value="BIOSSES"/>
+			<xs:enumeration value="Blagec2019"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MLPythonLibrary">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Tensorflow"/>
+			<xs:enumeration value="Pytorch"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

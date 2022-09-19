@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 U (http://www.xmlspy.com) by Ramon Yepes (Investronica) -->
+<SentenceSimilarityExperiments xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../SentenceSimilarityExperiments.xsd">
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_BIOSSES.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>BIOSSESNormalized.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+
+			
+
+			<COMMeasure>
+				<Label>COM AncSPLRada</Label>
+				<Method>COMMeasure</Method>
+				<Lambda>0.5</Lambda>
+				<WBSMMeasure>
+					<Label>WBSM AncSPLRada</Label>
+					<Method>WBSMMeasure</Method>
+					<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+					<WordNetDbFilename>data.noun</WordNetDbFilename>
+					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>None</NERType>
+						<CharFilteringType>BIOSSES</CharFilteringType>
+					</WordProcessing>
+				</WBSMMeasure>
+				<UBSMMeasure>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+					<Method>UBSMMeasure</Method>
+					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+					<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+					<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+					<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+					<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+					<OboFilename>None</OboFilename>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
+					</WordProcessing>
+				</UBSMMeasure>
+			</COMMeasure>
+
+			
+			<StringBasedSentenceSimilarityMeasure>
+				<Method>Jaccard</Method>
+				<Label>Jaccard</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<NERType>MetamapLite</NERType>
+					<CharFilteringType>Default</CharFilteringType>
+				</WordProcessing>
+			</StringBasedSentenceSimilarityMeasure>
+	
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_MedSTSFull.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>MedStsFullNormalized.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+
+			<COMMeasure>
+				<Label>COM AncSPLRada</Label>
+				<Method>COMMeasure</Method>
+				<Lambda>0.5</Lambda>
+				<WBSMMeasure>
+					<Label>WBSM AncSPLRada</Label>
+					<Method>WBSMMeasure</Method>
+					<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+					<WordNetDbFilename>data.noun</WordNetDbFilename>
+					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>None</NERType>
+						<CharFilteringType>BIOSSES</CharFilteringType>
+					</WordProcessing>
+				</WBSMMeasure>
+				<UBSMMeasure>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+					<Method>UBSMMeasure</Method>
+					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+					<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+					<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+					<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+					<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+					<OboFilename>None</OboFilename>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
+					</WordProcessing>
+				</UBSMMeasure>
+			</COMMeasure>
+
+			
+			<StringBasedSentenceSimilarityMeasure>
+				<Method>Jaccard</Method>
+				<Label>Jaccard</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<NERType>MetamapLite</NERType>
+					<CharFilteringType>Default</CharFilteringType>
+				</WordProcessing>
+			</StringBasedSentenceSimilarityMeasure>
+
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+	<SingleDatasetSentenceSimilarityValuesExperiment>
+		<OutputFilename>BioSentenceSimFinalRawOutputFiles/raw_similarity_CTR.csv</OutputFilename>
+		<DatasetDirectory>../SentenceSimDatasets</DatasetDirectory>
+		<DatasetFilename>CTRNormalized_averagedScore.tsv</DatasetFilename>
+		<SentenceSimilarityMeasures>
+			
+			<COMMeasure>
+				<Label>COM AncSPLRada</Label>
+				<Method>COMMeasure</Method>
+				<Lambda>0.5</Lambda>
+				<WBSMMeasure>
+					<Label>WBSM AncSPLRada</Label>
+					<Method>WBSMMeasure</Method>
+					<WordNetDbDir>../Wordnet-3.0/dict</WordNetDbDir>
+					<WordNetDbFilename>data.noun</WordNetDbFilename>
+					<WordSimilarityMeasureType>AncSPLRada</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>None</NERType>
+						<CharFilteringType>BIOSSES</CharFilteringType>
+					</WordProcessing>
+				</WBSMMeasure>
+				<UBSMMeasure>
+					<Label>UBSM AncSPLCosineNormWeightedJiangConrath</Label>
+					<Method>UBSMMeasure</Method>
+					<SnomedDir>../UMLS/SNOMED_Nov2019</SnomedDir>
+					<SnomedConceptFilename>sct2_Concept_Snapshot_US1000124_20190901.txt</SnomedConceptFilename>
+					<SnomedRelationshipsFilename>sct2_Relationship_Snapshot_US1000124_20190901.txt</SnomedRelationshipsFilename>
+					<SnomedDescriptionFilename>sct2_Description_Snapshot-en_US1000124_20190901.txt</SnomedDescriptionFilename>
+					<UmlsCuiMappingFilename>MRCONSO.RRF</UmlsCuiMappingFilename>
+					<UMLSdir>../UMLS/UMLS2019AB</UMLSdir>
+					<MeSHdir>../UMLS/MeSH_Nov2019</MeSHdir>
+					<MeSHdescriptorFilename>desc2020.xml</MeSHdescriptorFilename>
+					<OboFilename>None</OboFilename>
+					<WordSimilarityMeasureType>AncSPLCosineNormWeightedJiangConrath</WordSimilarityMeasureType>
+					<WordProcessing>
+						<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+						<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+						<TokenizerType>WhiteSpace</TokenizerType>
+						<LowercaseNormalization>true</LowercaseNormalization>
+						<NERType>MetamapLite</NERType>
+						<CharFilteringType>Blagec2019</CharFilteringType>
+					</WordProcessing>
+				</UBSMMeasure>
+			</COMMeasure>
+
+			
+			<StringBasedSentenceSimilarityMeasure>
+				<Method>Jaccard</Method>
+				<Label>Jaccard</Label>
+				<WordProcessing>
+					<StopWordsFileDir>../StopWordsFiles</StopWordsFileDir>
+					<StopWordsFilename>nltk2018StopWords.txt</StopWordsFilename>
+					<TokenizerType>WhiteSpace</TokenizerType>
+					<LowercaseNormalization>true</LowercaseNormalization>
+					<NERType>MetamapLite</NERType>
+					<CharFilteringType>Default</CharFilteringType>
+				</WordProcessing>
+			</StringBasedSentenceSimilarityMeasure>
+						
+			
+		</SentenceSimilarityMeasures>
+	</SingleDatasetSentenceSimilarityValuesExperiment>
+</SentenceSimilarityExperiments>

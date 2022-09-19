@@ -6,11 +6,11 @@
 #
 # References:
 # ----------
-# [1] Lastra-Díaz, J. J., & García-Serrano, A. (2016).
+# [1] Lastra-D?az, J. J., & Garc?a-Serrano, A. (2016).
 # A refinement of the well-founded Information Content models with a
 # very detailed experimental survey on WordNet (No. TR-2016-01).
-# NLP and IR Research Group. ETSI Informática. Universidad Nacional
-# de Educación a Distancia (UNED).
+# NLP and IR Research Group. ETSI Inform?tica. Universidad Nacional
+# de Educaci?n a Distancia (UNED).
 # http://e-spacio.uned.es/fez/view/bibliuned:DptoLSI-ETSI-Informes-Jlastra-refinement
 
 # We clear all session variables
@@ -29,8 +29,19 @@ rm(list = ls())
 # The input and output directories below must end with '/' in
 # Unix-like format to be compatible with Windows
 # or Linux-based R distributions.
+# First, we get the current file script directory
 
-inputDir = "C:/Versiones_Oficiales_HESML/Full_Trunk_HESML/HESML/HESML_Library/ReproducibleExperiments/RawOutputFiles/"
+current_working_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+
+# and we set the working directory for the R project
+
+setwd(current_working_dir)
+
+# Define the root path 
+
+inputDir = "../RawOutputFiles/"
+
+# inputDir = "C:/Versiones_Oficiales_HESML/Full_Trunk_HESML/HESML/HESML_Library/ReproducibleExperiments/RawOutputFiles/"
 
 outputDir = inputDir
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2021 Universidad Nacional de Educación a Distancia (UNED)
+ * Copyright (C) 2016-2022 Universidad Nacional de Educación a Distancia (UNED)
  *
  * This program is free software for non-commercial use:
  * you can redistribute it and/or modify it under the terms of the
@@ -24,7 +24,6 @@ package hesml.measures.impl;
 // HESML references
 
 import hesml.configurators.ITaxonomyInfoConfigurator;
-import hesml.configurators.IntrinsicICModelType;
 import hesml.measures.*;
 import hesml.taxonomy.*;
 import hesml.taxonomyreaders.wordnet.IWordNetDB;
@@ -204,7 +203,7 @@ public class MeasureFactory
         
         IGroupwiseSimilarityMeasure groupwiseMeasure = null;
         
-        // We create the specific groupwise similarity measure
+        // We create the specific groupwise similairty measure
         
         switch (groupwiseMeasureType)
         {
@@ -653,5 +652,72 @@ public class MeasureFactory
         // We return the result
         
         return (pathBasedMeasures);
+    }
+    
+    /**
+     * This function computes the Euclidean norm of the input vector
+     * @param vector
+     * @return 
+     */
+    
+    public static double getVectorNorm(
+        double[]    vector)
+    {
+        double norm = 0.0;  // Returned value
+        
+        // We compute the acumulated square-coordinates
+        
+        for (int i = 0; i < vector.length; i++)
+        {
+            norm += vector[i] * vector[i];
+        }
+        
+        // Finally, we compute the square root
+        
+        norm = Math.sqrt(norm);
+        
+        // We return the result
+        
+        return (norm);
+    }
+    
+    /**
+     * This function loads a word embedding model implementing
+     * a word similarity measure.
+     * @param embeddingType
+     * @param strRawVectorFile
+     * @return 
+     * @throws java.io.IOException 
+     * @throws java.text.ParseException 
+     */
+    
+    public static IPretrainedWordEmbedding getWordEmbeddingModel(
+            WordEmbeddingFileType   embeddingType,
+            String                  strRawVectorFile) throws IOException, ParseException, Exception
+    {
+        // We initialize the output
+        
+        IPretrainedWordEmbedding model = null;
+        
+        // We create the word mebedding model
+        
+        switch(embeddingType)
+        {
+            case BioWordVecBinaryWordEmbedding:
+             
+                model = new BioWordVecBinaryEmbeddingModel(strRawVectorFile);
+                
+                break;
+                
+            case FastTextVecWordEmbedding:
+             
+                model = new FastTextVecWordEmbeddingModel(strRawVectorFile);
+                
+                break;
+        }
+        
+        // We return the result
+        
+        return (model);
     }
 }
