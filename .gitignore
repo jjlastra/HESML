@@ -21,3 +21,11 @@
 /.gitconfig
 /HESML_Library/HESMLSTSTestclient/nbproject/private/
 /HESML_Library/HESMLSTSImpactEvaluationclient/dist/
+/HESML_Library/HESML/dist/
+/HESML_Library/HESMLSTSclient/dist/
+/HESML_Library/HESMLSTSImpactEvaluationclient/build/
+/HESML_Library/HESML_GOclient/dist/
+/HESML_Library/HESMLclient/dist/
+/HESML_Library/HESML_UMLSclient/dist/
+/HESML_Library/HESMLSTS/build/
+/HESML_Library/HESMLSTS/dist/
