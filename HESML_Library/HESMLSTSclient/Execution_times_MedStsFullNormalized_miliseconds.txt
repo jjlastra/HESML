@@ -125,3 +125,9 @@ LiBlock - CTakes_MedStsFullNormalized : 27434 ms
 LiBlock - Metamap_MedStsFullNormalized : 152297 ms 
 worstCOM_worstWBSM_AncSPLRada_worstUBSM_AncSPLRada_MedStsFullNormalized : 145008 ms 
 bestCOM_bestWBSM_AncSPLRada_bestUBSM_AncSPLRada_MedStsFullNormalized : 33648 ms 
+LiBlock_MedStsFullNormalized : 611 ms 
+BlockDistance_MedStsFullNormalized : 250 ms 
+Levenshtein_MedStsFullNormalized : 210 ms 
+Qgram_MedStsFullNormalized : 287 ms 
+OverlapCoefficient_MedStsFullNormalized : 323 ms 
+Jaccard_MedStsFullNormalized : 250 ms 

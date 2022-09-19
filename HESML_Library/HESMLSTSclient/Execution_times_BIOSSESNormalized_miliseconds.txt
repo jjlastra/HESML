@@ -72,3 +72,9 @@ LiBlock - MetamapLite_BIOSSESNormalized : 12675 ms
 LiBlock - CTakes_BIOSSESNormalized : 2577 ms 
 worstCOM_worstWBSM_AncSPLRada_worstUBSM_AncSPLRada_BIOSSESNormalized : 17882 ms 
 bestCOM_bestWBSM_AncSPLRada_bestUBSM_AncSPLRada_BIOSSESNormalized : 3699 ms 
+Qgram_BIOSSESNormalized : 34 ms 
+OverlapCoefficient_BIOSSESNormalized : 46 ms 
+LiBlock_BIOSSESNormalized : 282 ms 
+Levenshtein_BIOSSESNormalized : 38 ms 
+Jaccard_BIOSSESNormalized : 28 ms 
+BlockDistance_BIOSSESNormalized : 24 ms 
