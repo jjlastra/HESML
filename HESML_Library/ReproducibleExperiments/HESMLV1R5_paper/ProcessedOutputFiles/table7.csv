@@ -1,0 +1,5 @@
+"","Similarity measure","\makecell[c]{\underline{UMLS::Sim} \\ Avg. speed \\ (pairs/sec)}","\makecell[c]{\underline{SML} \\ Avg. speed \\ (pairs/sec)}","\makecell[c]{\underline{HESML} \\ Avg. speed \\ (pairs/sec)}"
+"1","Rada \cite{Rada1989-cv}","\hl{30.43} (15)","\hl{0.096} (15)","\hl{\textbf{644729}}$(10^7)$"
+"2","\makecell[l]{AncSPL-Rada \\ (this work)}","---","---","\hl{\textbf{705189}}$(10^7)$"
+"3","Lin-Seco \cite{Lin1998-pm, Seco2004-fd}","\hl{140.82} (500)","\hl{532913}$(10^7)$","\hl{\textbf{824307}}$(10^7)$"
+"4","Wu-Palmer$_{fast}$ \cite{Wu1994-hh}","\hl{21.34} (15)","---","\hl{\textbf{717535}}$(10^7)$"

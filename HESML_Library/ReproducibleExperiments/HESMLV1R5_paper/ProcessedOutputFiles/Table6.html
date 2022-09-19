@@ -1,0 +1,37 @@
+<table>
+<caption>Average speed in CUI concept pairs per second for the evaluation of random CUI pairs with three representative ontology-based similarity measures based on the SNOMED-CT US 2019AB ontology (357406 nodes) implemented by the three UMLS-based semantic measures libraries reported in the literature. Best performing values are shown in bold. Non-implemented methods (---) or more than 1 hour/pair (xxx). UMLS::Similarity uses caching for the shortest path computations. \hl{The number of random CUI pairs evaluated to measure each value is shown between parentheses.}</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Similarity measure </th>
+   <th style="text-align:left;"> \makecell[c]{\underline{UMLS::Sim} \\ Avg. speed \\ (pairs/sec)} </th>
+   <th style="text-align:left;"> \makecell[c]{\underline{SML} \\ Avg. speed \\ (pairs/sec)} </th>
+   <th style="text-align:left;"> \makecell[c]{\underline{HESML} \\ Avg. speed \\ (pairs/sec)} </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Rada \cite{Rada1989-cv} </td>
+   <td style="text-align:left;"> \hl{\textbf{0.122}} (15) </td>
+   <td style="text-align:left;"> xxx </td>
+   <td style="text-align:left;"> \hl{0.041} (15) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> \makecell[l]{AncSPL-Rada \\ (this work)} </td>
+   <td style="text-align:left;"> --- </td>
+   <td style="text-align:left;"> --- </td>
+   <td style="text-align:left;"> \hl{\textbf{30110}}$(10^7)$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Lin-Seco \cite{Lin1998-pm, Seco2004-fd} </td>
+   <td style="text-align:left;"> \hl{0.744} (500) </td>
+   <td style="text-align:left;"> \hl{202160}$(10^7)$ </td>
+   <td style="text-align:left;"> \hl{\textbf{491942}}$(10^7)$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wu-Palmer$_{fast}$ \cite{Wu1994-hh} </td>
+   <td style="text-align:left;"> \hl{0.035} (15) </td>
+   <td style="text-align:left;"> --- </td>
+   <td style="text-align:left;"> \hl{\textbf{435252}}$(10^7)$ </td>
+  </tr>
+</tbody>
+</table>

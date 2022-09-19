@@ -1,0 +1,15 @@
+\begin{table*}[h!]
+\centering
+\caption{Average speed in sentence pairs per second \hl{(sent/secs) and CUI pairs per second (CUIs/secs)} for the evaluation of the UBSM \cite{Sogancioglu2017-kb} sentence similarity measure combined with three representative ontology-based similarity measures based on MeSH (Nov, 2019) in \hl{30} sentence pairs \hl{extracted from} the MedSTS \cite{Wang2018-oj} sentence similarity dataset, \hl{and 1 million sentence pairs extracted from BioC corpus} \cite{Comeau2019-ex}\hl{. We provide the average evaluation in normalized CUI pairs per second to allow a fair and unbiased comparison of the results reported for 30 and 1 million sentence pairs. The dataset with 30 sentence pairs requires XXXX pairwise CUI comparisons, whilst the 1 million sentence pairs dataset requires YYY pairwise CUI comparisons.} Best performing values are shown in bold. Non-implemented methods (---).} 
+\label{tab:medsts_results}
+\begin{tabular}{lllllllll}
+  \hline \makecell[l]{Pairwise sentence \\ comparison based \\ on MeSH} & \multicolumn{2}{c}{\underline{UMLS::Sim (30 pairs)}} & \multicolumn{2}{c}{\underline{SML (30 pairs)}} & \multicolumn{2}{c}{\underline{HESML (30 pairs)}} & \multicolumn{2}{c}{\underline{HESML ($10^6$ pairs)}} \\  \hline
+Similarity measure & \makecell[c]{Avg. speed \\ (sent/sec)} & \makecell[c]{Avg. speed \\ (CUIs/sec)} & \makecell[c]{Avg. speed \\ (sent/sec)} & \makecell[c]{Avg. speed \\ (CUIs/sec)} & \makecell[c]{Avg. speed \\ (sent/sec)} & \makecell[c]{Avg. speed \\ (CUIs/sec)} & \makecell[c]{Avg. speed \\ (sent/sec)} & \makecell[c]{Avg. speed \\ (CUIs/sec)} \\ 
+  \hline
+Rada et al. \cite{Rada1989-cv} & 0.441 & 36.63 & 0.126 & 10.478 & \textbf{2830.189} & 235000 & 7982.222 & 337843.826 \\ 
+  \makecell[l]{AncSPL-Rada \\ (this work)} & --- & --- & --- & --- & \textbf{2542.373} & 211101.695 & 7958.742 & 336850.041 \\ 
+  Lin-Seco \cite{Lin1998-pm, Seco2004-fd} & 0.782 & 64.956 & \textbf{2586.207} & 214741.379 & \textbf{3125} & 259479.167 & 8166.185 & 345629.98 \\ 
+  Wu-Palmer$_{fast}$\cite{Wu1994-hh} & 0.181 & 15.067 & --- & --- & \textbf{3125} & 259479.167 & 7892.959 & 334065.805 \\ 
+   \hline
+\end{tabular}
+\end{table*}

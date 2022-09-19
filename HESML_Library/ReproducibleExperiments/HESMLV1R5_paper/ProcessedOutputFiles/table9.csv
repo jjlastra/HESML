@@ -1,0 +1,5 @@
+"","Similarity measure","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}","\makecell[c]{Avg. speed \\ (sent/sec)}","\makecell[c]{Avg. speed \\ (CUIs/sec)}"
+"1","Rada et al. \cite{Rada1989-cv}","0.441","36.63","0.126","10.478","\textbf{2830.189}","235000","7982.222","337843.826"
+"2","\makecell[l]{AncSPL-Rada \\ (this work)}","---","---","---","---","\textbf{2542.373}","211101.695","7958.742","336850.041"
+"3","Lin-Seco \cite{Lin1998-pm, Seco2004-fd}","0.782","64.956","\textbf{2586.207}","214741.379","\textbf{3125}","259479.167","8166.185","345629.98"
+"4","Wu-Palmer$_{fast}$\cite{Wu1994-hh}","0.181","15.067","---","---","\textbf{3125}","259479.167","7892.959","334065.805"
